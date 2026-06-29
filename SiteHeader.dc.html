@@ -65,8 +65,9 @@
   .p3d-mob-nav-link:first-of-type { border-top: 1px solid var(--color-charcoal); }
   .p3d-mob-nav-link:hover { color: var(--color-accent); transform: translateX(-4px); }
 
-  /* ===== Desktop: header row is a flow-height spacer, nav is fixed centered ===== */
+  /* ===== Desktop: logo+CTA scroll away, only nav pill is fixed ===== */
   @media (min-width: 769px) {
+    /* 136px flow spacer — logo+CTA live here and scroll away naturally */
     .p3d-hdr {
       position: relative;
       height: 136px;
@@ -81,7 +82,7 @@
       padding: 18px var(--layout-margin);
       pointer-events: auto;
     }
-    /* Nav pill — fixed, centered, always visible */
+    /* Nav pill only — fixed, centered, always visible while scrolling */
     .p3d-hdr-nav {
       display: flex !important;
       position: fixed !important;
@@ -96,7 +97,7 @@
     .p3d-logo-img { height: 100px; }
   }
 
-  /* ===== Mobile: header bar fixed so hamburger stays reachable ===== */
+  /* ===== Mobile: full header bar fixed so hamburger stays reachable ===== */
   @media (max-width: 768px) {
     .p3d-hdr {
       position: fixed !important;
@@ -107,15 +108,18 @@
       -webkit-backdrop-filter: blur(16px);
       z-index: 50;
       pointer-events: auto;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--layout-margin, 20px);
     }
     .p3d-hdr-inner {
-      display: flex;
+      display: flex !important;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      height: 100%;
-      padding: 0 var(--layout-margin, 20px);
     }
+    .p3d-hdr-logo { position: static !important; display: flex; align-items: center; }
+    .p3d-hdr-cta-wrap { position: static !important; display: flex; align-items: center; gap: 12px; }
     .p3d-hdr-nav  { display: none !important; }
     .p3d-hdr-cta  { display: none !important; }
     .p3d-hamburger { display: flex !important; }
@@ -125,12 +129,12 @@
 </helmet>
 
 <header class="p3d-hdr" style="{{ headerStyle }}">
-  <!-- Logo + CTA row: scrolls away on desktop, fixed on mobile -->
+  <!-- Logo + CTA: fixed on desktop (display:contents unwraps .p3d-hdr-inner), fixed bar on mobile -->
   <div class="p3d-hdr-inner">
-    <a href="Home.dc.html" style="display:flex; align-items:center; text-decoration:none;">
+    <a href="Home.dc.html" class="p3d-hdr-logo" style="display:flex; align-items:center; text-decoration:none;">
       <img class="p3d-logo-img" src="assets/logo-print3d-transparent.png" alt="Print3D" style="width:auto; height:100px;">
     </a>
-    <div style="display:flex; align-items:center; gap:12px;">
+    <div class="p3d-hdr-cta-wrap" style="display:flex; align-items:center; gap:12px;">
       <a href="Contact.dc.html" class="p3d-hdr-cta" style="{{ ctaStyle }}" style-hover="background:var(--color-accent-hover); transform:translateY(-2px); box-shadow:0 16px 34px rgba(44,123,229,0.5);">צור קשר</a>
       <!-- Hamburger — visible only on mobile via CSS -->
       <button class="p3d-hamburger" onclick="{{ onHamburgerClick }}" style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:46px; height:46px; background:rgba(20,40,80,0.75); border:1px solid rgba(120,160,220,0.28); border-radius:10px; cursor:pointer; padding:0; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); flex-shrink:0;">

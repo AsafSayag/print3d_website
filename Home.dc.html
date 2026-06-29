@@ -61,18 +61,20 @@
     .p3d-hero-h1-glass { margin-bottom:0; }
   }
 
-  /* ===== Glass headline container ===== */
+  /* ===== Glass headline container — portrait/vertical shape ===== */
   .p3d-hero-h1-glass {
     display: inline-block;
+    max-width: clamp(200px, 24vw, 360px);
     background: rgba(120,170,240,0.10);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(150,190,255,0.18);
     border-radius: 16px;
-    padding: 20px 28px;
+    padding: 24px 28px;
     box-shadow: inset 0 1px 1px rgba(200,225,255,0.5), 0 10px 28px rgba(8,24,55,0.4);
     margin-bottom: var(--space-lg);
   }
+  .p3d-hero-h1-glass h1 { max-width: 100% !important; }
 
   /* Hero floating card — hide on narrow viewports */
   @media (max-width: 1024px) {
@@ -118,11 +120,13 @@
   }
 </style>
 </helmet>
-<!-- VIDEO INTRO SPLASH — fullscreen for 2s then fades out -->
+<!-- VIDEO INTRO SPLASH — hook_to_the_right plays fullscreen for 2s, then fades to reveal page -->
 <div id="p3d-splash" style="position:fixed; inset:0; z-index:9999; background:#0E0E0F; overflow:hidden; pointer-events:all; opacity:1; transition:opacity 0.7s ease;">
-  <video src="assets/hero-demo.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(1.7);"></video>
-  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.18) 0%, rgba(14,14,15,0.55) 100%); display:flex; align-items:center; justify-content:center;">
-    <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:120px; width:auto; filter:drop-shadow(0 8px 24px rgba(44,123,229,0.6)); animation:p3dFade 0.6s ease both;">
+  <video id="p3d-splash-video" src="uploads/hook_to_the_right.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(1.9);"></video>
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.35) 100%);"></div>
+  <!-- Logo top-right, matches its header position -->
+  <div style="position:absolute; top:18px; right:var(--layout-margin, 40px); animation:p3dFade 0.5s ease both;">
+    <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:100px; width:auto; filter:drop-shadow(0 6px 20px rgba(44,123,229,0.5));">
   </div>
 </div>
 
@@ -132,9 +136,9 @@
 
   <!-- HERO -->
   <section class="p3d-hero-section" style="position:relative; min-height:94vh; display:flex; align-items:flex-end; overflow:hidden; margin-top:-136px; background:#0E0E0F;">
-    <video class="p3d-hero-video" src="assets/hero-demo.mp4" autoplay="" muted="" loop="" playsinline="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; filter:grayscale(6%) brightness(1.55) contrast(1.03); animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
-    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.12) 0%, rgba(14,14,15,0.04) 30%, rgba(14,14,15,0.38) 72%, rgba(14,14,15,0.85) 100%);"></div>
-    <div style="position:absolute; inset:0; background:linear-gradient(270deg, rgba(14,14,15,0.72) 0%, rgba(14,14,15,0.52) 26%, rgba(14,14,15,0.22) 50%, rgba(14,14,15,0) 72%);"></div>
+    <video class="p3d-hero-video" src="uploads/hoot_to_the_left.mp4" muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; filter:grayscale(6%) brightness(1.9) contrast(1.02); animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.02) 30%, rgba(14,14,15,0.28) 72%, rgba(14,14,15,0.78) 100%);"></div>
+    <div style="position:absolute; inset:0; background:linear-gradient(270deg, rgba(14,14,15,0.55) 0%, rgba(14,14,15,0.38) 26%, rgba(14,14,15,0.15) 50%, rgba(14,14,15,0) 72%);"></div>
     <!-- Floating credential card — hidden on < 1024px via CSS -->
     <div class="p3d-hero-card" style="position:absolute; left:var(--layout-margin); top:50%; transform:translateY(-50%); z-index:3; animation:p3dCardIn 0.8s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.5s;">
       <div style="position:relative; direction:rtl; text-align:right; width:230px; padding:26px 22px 24px; border-radius:8px; background:linear-gradient(155deg, rgba(36,58,104,0.78) 0%, rgba(13,22,46,0.82) 100%); border:1px solid rgba(140,178,255,0.22); box-shadow:0 1px 0 rgba(255,255,255,0.14) inset, 0 18px 40px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(0,0,0,0.25), 0 0 40px -8px rgba(80,140,255,0.35); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); animation:p3dBob 6s ease-in-out infinite;">
@@ -251,21 +255,30 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
   componentDidMount() {
-    const tryPlay = () => {
-      document.querySelectorAll('video[src*="hero-demo"]').forEach((v) => {
-        v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {});
-      });
-    };
-    tryPlay();
-    setTimeout(tryPlay, 400);
+    // Start splash video immediately
+    const splashVideo = document.getElementById('p3d-splash-video');
+    if (splashVideo) {
+      splashVideo.muted = true;
+      const sp = splashVideo.play(); if (sp && sp.catch) sp.catch(() => {});
+    }
 
-    // Splash: show fullscreen video for 2s then fade out to reveal page
+    const startHeroVideo = () => {
+      const hero = document.querySelector('.p3d-hero-video');
+      if (hero) { hero.muted = true; const p = hero.play(); if (p && p.catch) p.catch(() => {}); }
+    };
+
+    // After 2s: start hero video and fade out splash simultaneously
     const splash = document.getElementById('p3d-splash');
     if (splash) {
       setTimeout(() => {
+        startHeroVideo();
         splash.style.opacity = '0';
         setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
       }, 2000);
+    } else {
+      // No splash (e.g. in preview) — start hero immediately
+      startHeroVideo();
+      setTimeout(startHeroVideo, 400);
     }
 
     // Scroll-reveal via IntersectionObserver
