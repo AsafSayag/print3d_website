@@ -47,8 +47,30 @@
   /* Hero section negative margin — shrink on mobile to match smaller header */
   @media (max-width: 768px) {
     /* Mobile header is now position:fixed (no flow space) so hero starts at y:0 */
-    .p3d-hero-section { margin-top:0 !important; min-height:100svh !important; }
-    .p3d-hero-video { object-fit:cover !important; }
+    .p3d-hero-section { margin-top:0 !important; min-height:100svh !important; align-items:flex-start !important; }
+    .p3d-hero-video { object-fit:cover !important; transform:scale(0.82) !important; transform-origin:center center !important; }
+    /* Push content to right, vertically higher — above the 3D model */
+    .p3d-hero-content {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding-top: 22svh !important;
+      padding-bottom: var(--space-xl) !important;
+      justify-content: flex-start !important;
+    }
+    .p3d-hero-h1-glass {
+      max-width: clamp(160px, 56vw, 240px) !important;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+      text-align: right !important;
+      margin-bottom: 16px !important;
+    }
+    .p3d-hero-h1-glass h1 {
+      font-size: clamp(26px, 7vw, 38px) !important;
+    }
+    .p3d-hero-btns {
+      align-self: flex-start !important;
+    }
   }
 
   /* ===== Desktop: two-zone hero layout — headline at top, buttons at bottom ===== */
@@ -58,9 +80,11 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding-top: clamp(150px, 22vh, 220px) !important;
+      align-items: flex-start !important; /* flex-start = physical RIGHT in RTL */
+      padding-top: clamp(80px, 11vh, 130px) !important;
     }
-    .p3d-hero-h1-glass { margin-bottom:0; }
+    .p3d-hero-h1-glass { margin-bottom:0; align-self: flex-start !important; margin-right: 0 !important; }
+    .p3d-hero-btns { align-self: flex-start !important; margin-right: 0 !important; }
   }
 
   /* ===== Glass headline container — portrait/vertical shape ===== */
@@ -124,12 +148,7 @@
 </helmet>
 <!-- VIDEO INTRO SPLASH — hook_to_the_right plays fullscreen for 2s, then fades to reveal page -->
 <div id="p3d-splash" style="position:fixed; inset:0; z-index:9999; background:#0E0E0F; overflow:hidden; pointer-events:all; opacity:1; transition:opacity 0.7s ease;">
-  <iframe id="p3d-splash-video"
-    src="https://player.cloudinary.com/embed/?cloud_name=dla9noz31&public_id=hook_to_the_right_kyxrh6&autoplay=true&muted=true&controls=false&loop=false"
-    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-    allowfullscreen frameborder="0"
-    style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:177.78vh; height:100vh; min-width:100%; min-height:56.25vw; border:0; pointer-events:none;">
-  </iframe>
+  <video id="p3d-splash-video" src="uploads/heichal_hamodelim.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
   <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.35) 100%);"></div>
   <!-- Logo top-right, matches its header position -->
   <div style="position:absolute; top:18px; right:var(--layout-margin, 40px); animation:p3dFade 0.5s ease both;">
@@ -143,22 +162,16 @@
 
   <!-- HERO -->
   <section class="p3d-hero-section" style="position:relative; min-height:94vh; display:flex; align-items:flex-end; overflow:hidden; margin-top:-136px; background:#0E0E0F;">
-    <video class="p3d-hero-video" src="uploads/hoot_to_the_left.mp4" muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
+    <video id="p3d-hero-v2" class="p3d-hero-video" src="uploads/heichal_mitkarev.mp4" muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
     <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.02) 30%, rgba(14,14,15,0.28) 72%, rgba(14,14,15,0.78) 100%);"></div>
     <div style="position:absolute; inset:0; background:linear-gradient(270deg, rgba(14,14,15,0.55) 0%, rgba(14,14,15,0.38) 26%, rgba(14,14,15,0.15) 50%, rgba(14,14,15,0) 72%);"></div>
-    <!-- Floating credential card — hidden on < 1024px via CSS -->
-    <div class="p3d-hero-card" style="position:absolute; left:var(--layout-margin); top:50%; transform:translateY(-50%); z-index:3; animation:p3dCardIn 0.8s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.5s;">
-      <div style="position:relative; direction:rtl; text-align:right; width:230px; padding:26px 22px 24px; border-radius:8px; background:linear-gradient(155deg, rgba(36,58,104,0.78) 0%, rgba(13,22,46,0.82) 100%); border:1px solid rgba(140,178,255,0.22); box-shadow:0 1px 0 rgba(255,255,255,0.14) inset, 0 18px 40px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(0,0,0,0.25), 0 0 40px -8px rgba(80,140,255,0.35); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); animation:p3dBob 6s ease-in-out infinite;">
-        <div style="position:absolute; inset:0; border-radius:8px; background:linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 36%); pointer-events:none;"></div>
-        <div style="position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:14px;">
-          <div style="flex:none; display:flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:12px; font-size:22px; background:linear-gradient(150deg, rgba(120,170,255,0.30), rgba(60,110,220,0.18)); border:1px solid rgba(150,190,255,0.35); box-shadow:0 6px 16px -6px rgba(60,120,255,0.55), 0 1px 0 rgba(255,255,255,0.25) inset;">📈</div>
-          <div style="font-family:var(--font-body); font-size:16px; font-weight:600; line-height:1.4; color:#FFFFFF;">מעל 12 שנות ניסיון בתחום</div>
-        </div>
-        <div style="position:relative; height:1px; margin:16px 0; background:linear-gradient(270deg, rgba(150,190,255,0.35), rgba(150,190,255,0));"></div>
-        <div style="position:relative; font-family:var(--font-body); font-size:13.5px; line-height:1.5; color:rgba(226,235,255,0.86);">עבודה מול הגופים הגדולים ביותר בענף</div>
-        <div style="position:relative; margin-top:20px;">
-          <span style="display:inline-block; padding:6px 14px; border-radius:999px; font-family:var(--font-body); font-size:12px; font-weight:700; letter-spacing:0.02em; color:#EAF3FF; background:linear-gradient(180deg, rgba(96,156,255,0.32), rgba(40,92,210,0.22)); border:1px solid rgba(150,190,255,0.45); box-shadow:0 0 18px -2px rgba(90,150,255,0.6), 0 1px 0 rgba(255,255,255,0.3) inset; text-shadow:0 0 10px rgba(150,190,255,0.7);">שירות פרימיום</span>
-        </div>
+    <!-- Stat block — editorial, black text, hairline frame -->
+    <div class="p3d-hero-card" style="position:absolute; left:var(--layout-margin); top:50%; transform:translateY(-50%); z-index:3; animation:p3dCardIn 0.9s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.6s;">
+      <div style="direction:rtl; text-align:right; background:rgba(255,255,255,0.82); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-radius:10px; border:1px solid rgba(0,0,0,0.07); padding:20px 20px 18px; box-shadow:0 2px 16px rgba(0,0,0,0.06);">
+        <div style="font-family:var(--font-heading); font-size:68px; font-weight:800; line-height:1; color:#111; letter-spacing:-0.04em; margin-bottom:4px;">12<span style="font-size:32px; font-weight:400; color:rgba(0,0,0,0.35); vertical-align:top; margin-top:10px; display:inline-block;">+</span></div>
+        <div style="font-family:var(--font-body); font-size:10.5px; font-weight:500; letter-spacing:0.13em; text-transform:uppercase; color:rgba(0,0,0,0.38); margin-bottom:18px;">שנות ניסיון בתחום</div>
+        <div style="height:1px; background:rgba(0,0,0,0.08); margin-bottom:14px;"></div>
+        <div style="font-family:var(--font-body); font-size:12.5px; line-height:1.65; color:rgba(0,0,0,0.42); max-width:160px;">עבודה מול הגופים הגדולים ביותר בענף</div>
       </div>
     </div>
     <div class="p3d-hero-content" style="position:relative; width:100%; max-width:var(--layout-max); margin:0 auto; padding:0 var(--layout-margin) var(--space-3xl); animation:p3dRise 0.9s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.15s;">
@@ -270,18 +283,18 @@ class Component extends DCLogic {
     }
 
     const startHeroVideo = () => {
-      const hero = document.querySelector('.p3d-hero-video');
-      if (hero) { hero.muted = true; const p = hero.play(); if (p && p.catch) p.catch(() => {}); }
+      const v2 = document.getElementById('p3d-hero-v2');
+      if (v2) { v2.muted = true; v2.playbackRate = 3.1; const p = v2.play(); if (p && p.catch) p.catch(() => {}); }
     };
 
-    // After hook_to_the_right finishes (~3.8s): start hero video and fade out splash
+    // After intro video finishes (~5s): start hero video and fade out splash
     const splash = document.getElementById('p3d-splash');
     if (splash) {
       setTimeout(() => {
         startHeroVideo();
         splash.style.opacity = '0';
         setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
-      }, 3800);
+      }, 5000);
     } else {
       // No splash (e.g. in preview) — start hero immediately
       startHeroVideo();
