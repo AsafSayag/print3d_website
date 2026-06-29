@@ -44,33 +44,50 @@
 
   /* ===== Responsive layout ===== */
 
-  /* Hero section negative margin — shrink on mobile to match smaller header */
+  /* Hero section — mobile responsive */
   @media (max-width: 768px) {
-    /* Mobile header is now position:fixed (no flow space) so hero starts at y:0 */
-    .p3d-hero-section { margin-top:0 !important; min-height:100svh !important; align-items:flex-start !important; }
-    .p3d-hero-video { object-fit:cover !important; transform:scale(0.82) !important; transform-origin:center center !important; }
-    /* Push content to right, vertically higher — above the 3D model */
+    .p3d-hero-section {
+      margin-top: 0 !important;
+      min-height: 100svh !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+    }
+    .p3d-hero-video { object-fit: cover !important; }
+    /* Content: right-aligned column, starts ~26% from top — above the buildings */
     .p3d-hero-content {
       display: flex !important;
       flex-direction: column !important;
       align-items: flex-start !important;
-      padding-top: 22svh !important;
-      padding-bottom: var(--space-xl) !important;
       justify-content: flex-start !important;
+      padding-top: clamp(80px, 26svh, 200px) !important;
+      padding-bottom: clamp(16px, 3svh, 40px) !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      gap: 10px !important;
     }
+    /* Glass: narrower so buildings stay visible */
     .p3d-hero-h1-glass {
-      max-width: clamp(160px, 56vw, 240px) !important;
-      margin-right: 0 !important;
-      margin-left: 0 !important;
+      max-width: clamp(140px, 50vw, 210px) !important;
+      margin: 0 !important;
+      padding: 14px 16px !important;
       text-align: right !important;
-      margin-bottom: 16px !important;
     }
     .p3d-hero-h1-glass h1 {
-      font-size: clamp(26px, 7vw, 38px) !important;
+      font-size: clamp(20px, 6vw, 32px) !important;
+      line-height: 1.12 !important;
+      max-width: 100% !important;
     }
+    /* Buttons: same width as glass, stacked */
     .p3d-hero-btns {
       align-self: flex-start !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      width: clamp(140px, 50vw, 210px) !important;
     }
+  }
+  @media (max-width: 390px) {
+    .p3d-hero-h1-glass h1 { font-size: 19px !important; }
+    .p3d-hero-content { padding-top: clamp(70px, 22svh, 150px) !important; }
   }
 
   /* ===== Desktop: two-zone hero layout — headline at top, buttons at bottom ===== */
@@ -90,7 +107,7 @@
   /* ===== Glass headline container — portrait/vertical shape ===== */
   .p3d-hero-h1-glass {
     display: inline-block;
-    max-width: clamp(200px, 24vw, 360px);
+    max-width: clamp(180px, 20vw, 300px);
     background: rgba(120,170,240,0.10);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -150,10 +167,7 @@
 <div id="p3d-splash" style="position:fixed; inset:0; z-index:9999; background:#0E0E0F; overflow:hidden; pointer-events:all; opacity:1; transition:opacity 0.7s ease;">
   <video id="p3d-splash-video" src="uploads/heichal_hamodelim.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
   <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.35) 100%);"></div>
-  <!-- Logo top-right, matches its header position -->
-  <div style="position:absolute; top:18px; right:var(--layout-margin, 40px); animation:p3dFade 0.5s ease both;">
-    <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:100px; width:auto; filter:drop-shadow(0 6px 20px rgba(44,123,229,0.5));">
-  </div>
+  <!-- Logo removed from splash -->
 </div>
 
 <div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh;">
