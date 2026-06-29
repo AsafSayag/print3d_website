@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<style>
+  /* ===== Footer grid: 4-col → 2-col → 1-col ===== */
+  @media (max-width: 900px) {
+    .p3d-footer-grid { grid-template-columns:1fr 1fr !important; gap:var(--space-xl) var(--space-lg) !important; }
+  }
+  @media (max-width: 480px) {
+    .p3d-footer-grid { grid-template-columns:1fr !important; gap:var(--space-xl) !important; }
+  }
+
+  /* ===== Footer bottom bar: stack on small mobile ===== */
+  @media (max-width: 480px) {
+    .p3d-footer-bottom {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px !important;
+    }
+  }
+</style>
+</helmet>
+<footer style="background:var(--color-bg-primary); border-top:1px solid var(--border-subtle); padding:var(--space-2xl) var(--layout-margin) var(--space-lg);">
+  <div class="p3d-footer-grid" style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:var(--space-xl); padding-bottom:var(--space-xl); border-bottom:1px solid var(--border-subtle);">
+    <div>
+      <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:48px; width:auto; margin-bottom:var(--space-md);">
+      <p style="font-family:var(--font-serif); font-size:20px; line-height:1.5; color:var(--color-text-primary); margin:0 0 var(--space-md); max-width:30ch;">צורה, חומר, אור — דגמים אדריכליים בעבודת יד.</p>
+      <p style="font-family:var(--font-body); font-size:var(--text-body-size); line-height:1.6; color:var(--color-text-secondary); margin:0; max-width:34ch;">סטודיו Print3D מתרגם תוכניות אדריכליות לדגמים פיזיים מדויקים עבור מובילי הנדל״ן והבנייה בישראל.</p>
+    </div>
+    <div>
+      <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.18em; text-transform:uppercase; color:var(--color-accent); margin-bottom:var(--space-md);">ניווט</div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <a href="Home.dc.html" style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">בית</a>
+        <a href="About.dc.html" style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">אודות</a>
+        <a href="Portfolio.dc.html" style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">פרויקטים</a>
+        <a href="Blog.dc.html" style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">בלוג</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.18em; text-transform:uppercase; color:var(--color-accent); margin-bottom:var(--space-md);">תחומים</div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <span style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary);">מגדלי מגורים</span>
+        <span style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary);">פרויקטי מגורים</span>
+        <span style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary);">תכנון עירוני / תב״ע</span>
+        <span style="font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary);">פנטהאוז / דירת מכר</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.18em; text-transform:uppercase; color:var(--color-accent); margin-bottom:var(--space-md);">צרו קשר</div>
+      <a href="tel:036000000" style="display:block; font-family:var(--font-heading); font-size:24px; font-weight:var(--weight-bold); color:var(--color-text-primary); text-decoration:none; margin-bottom:8px; letter-spacing:0.02em;">03-600-0000</a>
+      <a href="mailto:studio@print3d.co.il" style="display:block; font-family:var(--font-body); font-size:15px; color:var(--color-text-secondary); text-decoration:none; margin-bottom:var(--space-md);" style-hover="color:var(--color-accent);">studio@print3d.co.il</a>
+      <p style="font-family:var(--font-body); font-size:15px; line-height:1.6; color:var(--color-text-secondary); margin:0;">המלאכה 12, תל אביב</p>
+    </div>
+  </div>
+  <div class="p3d-footer-bottom" style="display:flex; align-items:center; justify-content:space-between; padding-top:var(--space-lg);">
+    <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.04em; color:var(--color-text-secondary);">© 2026 Print3D · Architectural Modeling</span>
+    <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.18em; text-transform:uppercase; color:var(--color-text-secondary);">תל אביב · ישראל</span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;auto&quot;}}"></script>
+</body>
+</html>

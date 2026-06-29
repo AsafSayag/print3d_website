@@ -1,0 +1,8 @@
+/* Print3D — Radius & elevation. Soft, fully-rounded edges. */
+:root {
+  --radius-sm: 999px; /* buttons, inputs, badges — pill */
+  --radius-md: 24px;  /* cards, image containers */
+
+  --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.25); /* cards on dark */
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.35);  /* hover elevation */
+}

@@ -1,0 +1,30 @@
+/* Print3D — Color tokens (Adi 3D blue palette)
+   Deep navy surfaces, one bright blue accent. */
+:root {
+  /* Base — navy */
+  --color-bg-primary: #0E1F38;     /* main background, deep navy */
+  --color-bg-secondary: #15294A;   /* secondary sections, cards */
+  --color-charcoal: #27406A;       /* borders, dividers, subtle separation */
+  --color-cream: #EAF1F9;          /* light sections, inverted areas */
+
+  /* Text */
+  --color-text-primary: #EAF2FC;   /* body text on dark */
+  --color-text-secondary: #9FB2CE; /* muted text, captions, labels */
+  --color-text-on-light: #0E1F38;  /* text on light sections */
+
+  /* Accent — bright blue */
+  --color-accent: #2C7BE5;         /* CTAs, key highlights */
+  --color-accent-hover: #4791ED;   /* hover / active accent */
+  --color-accent-muted: #1C4A86;   /* accent on dark, subtle use */
+
+  /* Semantic aliases */
+  --surface-page: var(--color-bg-primary);
+  --surface-raised: var(--color-bg-secondary);
+  --surface-light: var(--color-cream);
+  --border-subtle: var(--color-charcoal);
+  --border-strong: #34528A;
+  --text-body: var(--color-text-primary);
+  --text-muted: var(--color-text-secondary);
+  --text-inverse: var(--color-text-on-light);
+  --focus-ring: var(--color-accent);
+}

@@ -1,0 +1,54 @@
+/* Print3D — Typography tokens */
+:root {
+  /* Families */
+  --font-heading: 'Heebo', system-ui, sans-serif;
+  --font-body: 'Heebo', system-ui, sans-serif;
+  --font-serif: 'Frank Ruhl Libre', Georgia, serif; /* editorial display option */
+  --font-fallback: system-ui, sans-serif;
+
+  /* Weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  /* Type scale — desktop */
+  --text-hero-size: 72px;
+  --text-hero-lh: 1.1;
+  --text-hero-ls: -0.01em;
+
+  --text-h1-size: 48px;
+  --text-h1-lh: 1.15;
+  --text-h1-ls: -0.005em;
+
+  --text-h2-size: 32px;
+  --text-h2-lh: 1.2;
+  --text-h2-ls: normal;
+
+  --text-h3-size: 22px;
+  --text-h3-lh: 1.3;
+  --text-h3-ls: normal;
+
+  --text-body-lg-size: 18px;
+  --text-body-lg-lh: 1.6;
+
+  --text-body-size: 16px;
+  --text-body-lh: 1.6;
+
+  --text-caption-size: 13px;
+  --text-caption-lh: 1.4;
+  --text-caption-ls: 0.02em;
+}
+
+/* Mobile scale (~30-35% smaller) */
+@media (max-width: 768px) {
+  :root {
+    --text-hero-size: 40px;
+    --text-h1-size: 32px;
+    --text-h2-size: 24px;
+    --text-h3-size: 18px;
+    --text-body-lg-size: 17px;
+    --text-body-size: 15px;
+  }
+}

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:var(--color-bg-primary); color:var(--color-text-primary); }
+  @keyframes p3dRise { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes p3dFade { from { opacity:0; } to { opacity:1; } }
+  @keyframes p3dZoom { from { transform:scale(1.12); } to { transform:scale(1); } }
+  @keyframes p3dBob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+  @keyframes p3dCardIn { from { opacity:0; transform:translateY(24px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+  /* ===== Scroll-reveal ===== */
+  .p3d-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.72s cubic-bezier(0.16,1,0.3,1), transform 0.72s cubic-bezier(0.16,1,0.3,1);
+  }
+  .p3d-reveal.p3d-visible { opacity:1; transform:translateY(0); }
+  .p3d-reveal-d1 { transition-delay: 0.08s; }
+  .p3d-reveal-d2 { transition-delay: 0.16s; }
+  .p3d-reveal-d3 { transition-delay: 0.24s; }
+  .p3d-reveal-d4 { transition-delay: 0.32s; }
+  @media (prefers-reduced-motion: reduce) {
+    .p3d-reveal { opacity:1; transform:none; transition:none; }
+  }
+
+  /* ===== Responsive layout ===== */
+
+  /* Hero section negative margin — shrink on mobile to match smaller header */
+  @media (max-width: 768px) {
+    /* Mobile header is now position:fixed (no flow space) so hero starts at y:0 */
+    .p3d-hero-section { margin-top:0 !important; min-height:100svh !important; }
+    .p3d-hero-video { object-fit:cover !important; }
+  }
+
+  /* ===== Desktop: two-zone hero layout — headline at top, buttons at bottom ===== */
+  @media (min-width: 769px) {
+    .p3d-hero-section { align-items:stretch !important; }
+    .p3d-hero-content {
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding-top: clamp(150px, 22vh, 220px) !important;
+    }
+    .p3d-hero-h1-glass { margin-bottom:0; }
+  }
+
+  /* ===== Glass headline container ===== */
+  .p3d-hero-h1-glass {
+    display: inline-block;
+    background: rgba(120,170,240,0.10);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(150,190,255,0.18);
+    border-radius: 16px;
+    padding: 20px 28px;
+    box-shadow: inset 0 1px 1px rgba(200,225,255,0.5), 0 10px 28px rgba(8,24,55,0.4);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Hero floating card — hide on narrow viewports */
+  @media (max-width: 1024px) {
+    .p3d-hero-card { display:none !important; }
+  }
+
+  /* Intro section 5/7 split → 1 col */
+  @media (max-width: 768px) {
+    .p3d-intro-grid { grid-template-columns:1fr !important; gap:var(--space-xl) !important; }
+  }
+
+  /* Portfolio grid 4-col → 2-col → 1-col; remove stagger offsets on mobile */
+  @media (max-width: 768px) {
+    .p3d-portfolio-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .p3d-portfolio-grid > * { margin-top:0 !important; }
+  }
+  @media (max-width: 480px) {
+    .p3d-portfolio-grid { grid-template-columns:1fr !important; }
+  }
+
+  /* Why Us 4-col → 2-col → 1-col */
+  @media (max-width: 768px) {
+    .p3d-why-grid { grid-template-columns:repeat(2,1fr) !important; gap:var(--space-lg) var(--space-md) !important; }
+  }
+  @media (max-width: 480px) {
+    .p3d-why-grid { grid-template-columns:1fr !important; }
+  }
+
+  /* CTA section 7/5 split → 1 col */
+  @media (max-width: 768px) {
+    .p3d-cta-grid { grid-template-columns:1fr !important; gap:var(--space-xl) !important; }
+  }
+
+  /* Trust logos — tighten gap on small mobile */
+  @media (max-width: 480px) {
+    .p3d-trust-logos { gap:var(--space-md) var(--space-lg) !important; }
+    .p3d-trust-logos span { font-size:16px !important; }
+  }
+
+  /* Hero CTA buttons stack on very small screens */
+  @media (max-width: 380px) {
+    .p3d-hero-btns { flex-direction:column !important; align-items:flex-start !important; }
+  }
+</style>
+</helmet>
+<!-- VIDEO INTRO SPLASH — fullscreen for 2s then fades out -->
+<div id="p3d-splash" style="position:fixed; inset:0; z-index:9999; background:#0E0E0F; overflow:hidden; pointer-events:all; opacity:1; transition:opacity 0.7s ease;">
+  <video src="assets/hero-demo.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(1.7);"></video>
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.18) 0%, rgba(14,14,15,0.55) 100%); display:flex; align-items:center; justify-content:center;">
+    <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:120px; width:auto; filter:drop-shadow(0 8px 24px rgba(44,123,229,0.6)); animation:p3dFade 0.6s ease both;">
+  </div>
+</div>
+
+<div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh;">
+
+  <dc-import name="SiteHeader" active="home" mode="over" hint-size="100%,84px"></dc-import>
+
+  <!-- HERO -->
+  <section class="p3d-hero-section" style="position:relative; min-height:94vh; display:flex; align-items:flex-end; overflow:hidden; margin-top:-136px; background:#0E0E0F;">
+    <video class="p3d-hero-video" src="assets/hero-demo.mp4" autoplay="" muted="" loop="" playsinline="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; filter:grayscale(6%) brightness(1.55) contrast(1.03); animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
+    <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.12) 0%, rgba(14,14,15,0.04) 30%, rgba(14,14,15,0.38) 72%, rgba(14,14,15,0.85) 100%);"></div>
+    <div style="position:absolute; inset:0; background:linear-gradient(270deg, rgba(14,14,15,0.72) 0%, rgba(14,14,15,0.52) 26%, rgba(14,14,15,0.22) 50%, rgba(14,14,15,0) 72%);"></div>
+    <!-- Floating credential card — hidden on < 1024px via CSS -->
+    <div class="p3d-hero-card" style="position:absolute; left:var(--layout-margin); top:50%; transform:translateY(-50%); z-index:3; animation:p3dCardIn 0.8s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.5s;">
+      <div style="position:relative; direction:rtl; text-align:right; width:230px; padding:26px 22px 24px; border-radius:8px; background:linear-gradient(155deg, rgba(36,58,104,0.78) 0%, rgba(13,22,46,0.82) 100%); border:1px solid rgba(140,178,255,0.22); box-shadow:0 1px 0 rgba(255,255,255,0.14) inset, 0 18px 40px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(0,0,0,0.25), 0 0 40px -8px rgba(80,140,255,0.35); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); animation:p3dBob 6s ease-in-out infinite;">
+        <div style="position:absolute; inset:0; border-radius:8px; background:linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 36%); pointer-events:none;"></div>
+        <div style="position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:14px;">
+          <div style="flex:none; display:flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:12px; font-size:22px; background:linear-gradient(150deg, rgba(120,170,255,0.30), rgba(60,110,220,0.18)); border:1px solid rgba(150,190,255,0.35); box-shadow:0 6px 16px -6px rgba(60,120,255,0.55), 0 1px 0 rgba(255,255,255,0.25) inset;">📈</div>
+          <div style="font-family:var(--font-body); font-size:16px; font-weight:600; line-height:1.4; color:#FFFFFF;">מעל 12 שנות ניסיון בתחום</div>
+        </div>
+        <div style="position:relative; height:1px; margin:16px 0; background:linear-gradient(270deg, rgba(150,190,255,0.35), rgba(150,190,255,0));"></div>
+        <div style="position:relative; font-family:var(--font-body); font-size:13.5px; line-height:1.5; color:rgba(226,235,255,0.86);">עבודה מול הגופים הגדולים ביותר בענף</div>
+        <div style="position:relative; margin-top:20px;">
+          <span style="display:inline-block; padding:6px 14px; border-radius:999px; font-family:var(--font-body); font-size:12px; font-weight:700; letter-spacing:0.02em; color:#EAF3FF; background:linear-gradient(180deg, rgba(96,156,255,0.32), rgba(40,92,210,0.22)); border:1px solid rgba(150,190,255,0.45); box-shadow:0 0 18px -2px rgba(90,150,255,0.6), 0 1px 0 rgba(255,255,255,0.3) inset; text-shadow:0 0 10px rgba(150,190,255,0.7);">שירות פרימיום</span>
+        </div>
+      </div>
+    </div>
+    <div class="p3d-hero-content" style="position:relative; width:100%; max-width:var(--layout-max); margin:0 auto; padding:0 var(--layout-margin) var(--space-3xl); animation:p3dRise 0.9s cubic-bezier(0.16,1,0.3,1) both; animation-delay:0.15s;">
+      <div class="p3d-hero-h1-glass">
+        <h1 style="font-family:var(--font-heading); font-size:clamp(40px,6vw,86px); line-height:1.04; letter-spacing:-0.015em; font-weight:var(--weight-black); color:var(--color-text-primary); margin:0; text-wrap:balance; max-width:clamp(280px,55vw,640px);">הופכים תכנון<br>למודל פיזי מדויק.</h1>
+      </div>
+      <div class="p3d-hero-btns" style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+        <dc-import name="GlassButton" variant="primary" size="lg" href="Contact.dc.html" hint-size="auto,60px">קבעו פגישה</dc-import>
+        <dc-import name="GlassButton" variant="secondary" size="lg" href="Portfolio.dc.html" hint-size="auto,60px">הפרויקטים שלנו</dc-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <section style="background:var(--color-bg-primary); border-bottom:1px solid var(--border-subtle); padding:var(--space-xl) var(--layout-margin);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div class="p3d-reveal" style="text-align:center; font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:var(--space-lg);">מובילי הנדל״ן והבנייה בוחרים ב‑Print3D</div>
+      <div class="p3d-trust-logos p3d-reveal p3d-reveal-d1" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--space-lg) var(--space-2xl);">
+        <sc-for list="{{ trustLogos }}" as="logo" hint-placeholder-count="6">
+          <span style="font-family:var(--font-heading); font-size:21px; font-weight:var(--weight-bold); letter-spacing:0.01em; color:var(--color-text-secondary); opacity:0.6; filter:grayscale(100%); transition:opacity var(--duration-fast) var(--ease-default), color var(--duration-fast) var(--ease-default);" style-hover="opacity:1; color:var(--color-text-primary);">{{ logo }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO STATEMENT -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin);">
+    <div class="p3d-intro-grid" style="max-width:var(--layout-max); margin:0 auto; display:grid; grid-template-columns:5fr 7fr; gap:var(--space-3xl); align-items:start;">
+      <div class="p3d-reveal">
+        <span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>הסטודיו</span>
+      </div>
+      <div class="p3d-reveal p3d-reveal-d1">
+        <h2 style="font-family:var(--font-serif); font-size:clamp(28px,3.3vw,46px); line-height:1.28; font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 0 var(--space-lg); max-width:24ch; text-wrap:balance;">כל פרויקט מתחיל בשרטוט. אנחנו נותנים לו נפח, חומר ואור.</h2>
+        <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.75; color:var(--color-text-secondary); max-width:62ch; margin:0;">במשך למעלה מעשור אנו מתרגמים תוכניות אדריכליות לדגמים פיזיים מדויקים. כל מודל נבנה בעבודת יד, עם תשומת לב אובססיבית לפרופורציה, לטקסטורה ולתאורה — כלי שמאפשר ללקוחות לראות, לגעת ולמכור את החזון לפני שהונחה אבן הפינה.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO PREVIEW -->
+  <section style="background:var(--color-bg-secondary); padding:var(--space-3xl) var(--layout-margin);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div class="p3d-reveal" style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--space-2xl); gap:var(--space-lg); flex-wrap:wrap;">
+        <div>
+          <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>נבחרת עבודות</span></div>
+          <h2 style="font-family:var(--font-heading); font-size:var(--text-h1-size); font-weight:var(--weight-bold); letter-spacing:var(--text-h1-ls); color:var(--color-text-primary); margin:0;">פרויקטים נבחרים</h2>
+        </div>
+        <a href="Portfolio.dc.html" style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent); text-decoration:none; white-space:nowrap; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent-hover);">לכל הפרויקטים ←</a>
+      </div>
+      <div class="p3d-portfolio-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-md);">
+        <sc-for list="{{ previewProjects }}" as="proj">
+          <a href="Portfolio.dc.html" class="{{ proj.revealClass }}" style="display:block; text-decoration:none; margin-top:{{ proj.offset }};">
+            <div style="aspect-ratio:4 / 5; overflow:hidden; border-radius:var(--radius-md); position:relative; background:var(--color-bg-primary);">
+              <div role="img" aria-label="{{ proj.title }}" style="{{ proj.imgStyle }}" style-hover="transform:scale(1.05); filter:grayscale(0%) brightness(1);"></div>
+            </div>
+            <div style="padding:var(--space-md) 2px 0;">
+              <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:var(--text-caption-ls); text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:8px;">{{ proj.meta }}</div>
+              <h3 style="font-family:var(--font-heading); font-weight:var(--weight-bold); font-size:var(--text-h3-size); line-height:var(--text-h3-lh); color:var(--color-text-primary); margin:0;">{{ proj.title }}</h3>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div class="p3d-reveal" style="max-width:46ch; margin-bottom:var(--space-2xl);">
+        <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>למה Print3D</span></div>
+        <h2 style="font-family:var(--font-heading); font-size:var(--text-h1-size); font-weight:var(--weight-bold); letter-spacing:var(--text-h1-ls); color:var(--color-text-primary); margin:0; text-wrap:balance;">המודל שמוכר את הפרויקט עוד לפני שנבנה.</h2>
+      </div>
+      <div class="p3d-why-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-xl) var(--space-lg);">
+        <sc-for list="{{ whyPoints }}" as="point" hint-placeholder-count="4">
+          <div class="{{ point.revealClass }}" style="border-top:1px solid var(--border-strong); padding-top:var(--space-md);">
+            <div style="font-family:var(--font-heading); font-size:14px; font-weight:var(--weight-bold); letter-spacing:0.04em; color:var(--color-accent-muted); margin-bottom:var(--space-md);">{{ point.num }}</div>
+            <h3 style="font-family:var(--font-heading); font-size:var(--text-h3-size); font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 0 12px;">{{ point.title }}</h3>
+            <p style="font-family:var(--font-body); font-size:var(--text-body-size); line-height:1.65; color:var(--color-text-secondary); margin:0;">{{ point.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section style="position:relative; overflow:hidden; background:var(--color-cream);">
+    <div class="p3d-cta-grid" style="max-width:var(--layout-max); margin:0 auto; padding:var(--space-3xl) var(--layout-margin); display:grid; grid-template-columns:7fr 5fr; gap:var(--space-3xl); align-items:center;">
+      <div class="p3d-reveal">
+        <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent-muted);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>בואו נתחיל</span></div>
+        <h2 style="font-family:var(--font-serif); font-size:clamp(32px,4vw,56px); line-height:1.15; font-weight:var(--weight-bold); color:var(--color-text-on-light); margin:0 0 var(--space-md); text-wrap:balance;">בואו נבנה את הדגם הבא שלכם.</h2>
+        <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:#5A5853; max-width:46ch; margin:0;">השאירו פרטים ונחזור אליכם תוך יום עסקים עם הצעת מחיר ראשונית ולוח זמנים.</p>
+      </div>
+      <div class="p3d-reveal p3d-reveal-d1" style="display:flex; justify-content:flex-start;">
+        <dc-import name="GlassButton" variant="primary" size="lg" href="Contact.dc.html" hint-size="auto,60px">לפנייה ולתיאום פגישה</dc-import>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,auto"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const tryPlay = () => {
+      document.querySelectorAll('video[src*="hero-demo"]').forEach((v) => {
+        v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {});
+      });
+    };
+    tryPlay();
+    setTimeout(tryPlay, 400);
+
+    // Splash: show fullscreen video for 2s then fade out to reveal page
+    const splash = document.getElementById('p3d-splash');
+    if (splash) {
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
+      }, 2000);
+    }
+
+    // Scroll-reveal via IntersectionObserver
+    const initReveal = () => {
+      const targets = document.querySelectorAll('.p3d-reveal');
+      if (!targets.length) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('p3d-visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+      targets.forEach((el) => obs.observe(el));
+    };
+    initReveal();
+    setTimeout(initReveal, 600);
+  }
+
+  imgStyle(url) {
+    return "position:absolute; inset:0; background-image:url('" + url + "'); background-size:cover; background-position:center; filter:grayscale(25%) brightness(0.92); transition:transform var(--duration-slow) var(--ease-default), filter var(--duration-base) var(--ease-default);";
+  }
+
+  renderVals() {
+    const previewProjects = [
+      { image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80', meta: 'מגדלי מגורים · רמת גן', title: 'מגדל אאורה סנטר', offset: '0', revealClass: 'p3d-reveal p3d-reveal-d1' },
+      { image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80', meta: 'תכנון עירוני · תל אביב', title: 'מתחם שדה דב', offset: 'var(--space-2xl)', revealClass: 'p3d-reveal p3d-reveal-d2' },
+      { image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80', meta: 'פרויקטי מגורים · הרצליה', title: 'שכונת הפארק', offset: '0', revealClass: 'p3d-reveal p3d-reveal-d3' },
+      { image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80', meta: 'פנטהאוז · תל אביב', title: 'דירת מכר רוטשילד', offset: 'var(--space-2xl)', revealClass: 'p3d-reveal p3d-reveal-d4' },
+    ].map((p) => ({ ...p, imgStyle: this.imgStyle(p.image) }));
+    return {
+      previewProjects,
+      trustLogos: ['שפיר הנדסה', 'גינדי החזקות', 'אלקטרה מגורים', 'שיכון ובינוי', 'אפריקה ישראל מגורים', 'קבוצת חג׳ג׳'],
+      whyPoints: [
+        { num: '01', title: 'דיוק אובססיבי', body: 'כל פרופורציה, חיתוך וטקסטורה נאמנים לתוכנית האדריכלית — עד הפרט הקטן ביותר.', revealClass: 'p3d-reveal p3d-reveal-d1' },
+        { num: '02', title: 'חומרים אותנטיים', body: 'אקריליק, עץ, מתכת ובטון בזעיר אנפין — חומריות שמרגישה אמיתית למגע ולעין.', revealClass: 'p3d-reveal p3d-reveal-d2' },
+        { num: '03', title: 'תאורה משולבת', body: 'מערכות תאורה פנימית מובנות שמדגישות נפח, עומק ואווירה במצגות לקוח.', revealClass: 'p3d-reveal p3d-reveal-d3' },
+        { num: '04', title: 'מסירה מושלמת', body: 'בקרת איכות, ארגז תצוגה מותאם ומשלוח עד הדלת — מוכן לרגע ההצגה.', revealClass: 'p3d-reveal p3d-reveal-d4' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

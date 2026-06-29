@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:var(--color-bg-primary); color:var(--color-text-primary); }
+</style>
+</helmet>
+<div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh;">
+  <dc-import name="SiteHeader" active="clients" mode="solid" hint-size="100%,84px"></dc-import>
+
+  <!-- HEADER -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin) var(--space-xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto; display:grid; grid-template-columns:7fr 5fr; gap:var(--space-3xl); align-items:end;">
+      <div>
+        <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>היכל הלקוחות</span></div>
+        <h1 style="font-family:var(--font-heading); font-size:clamp(40px, 5vw, 72px); line-height:1.1; letter-spacing:-0.01em; font-weight:var(--weight-black); color:var(--color-text-primary); margin:0; text-wrap:balance;">הם בוטחים בנו.</h1>
+      </div>
+      <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:var(--color-text-secondary); margin:0;">מובילי הנדל״ן, הבנייה והאדריכלות בישראל בוחרים ב‑Print3D להצגת הפרויקטים החשובים ביותר שלהם.</p>
+    </div>
+  </section>
+
+  <!-- LOGO WALL -->
+  <section style="background:var(--color-bg-primary); padding:0 var(--layout-margin) var(--space-3xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:var(--border-subtle); border:1px solid var(--border-subtle);">
+        <sc-for list="{{ clients }}" as="name" hint-placeholder-count="16">
+          <div style="display:flex; align-items:center; justify-content:center; min-height:150px; padding:var(--space-md); background:var(--color-bg-primary); filter:grayscale(100%) opacity(0.55); transition:filter var(--duration-fast) var(--ease-default);" style-hover="filter:grayscale(0%) opacity(1);">
+            <span style="font-family:var(--font-heading); font-weight:var(--weight-bold); font-size:22px; letter-spacing:0.01em; color:var(--color-text-secondary); text-align:center;">{{ name }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <section style="background:var(--color-cream); padding:var(--space-3xl) var(--layout-margin);">
+    <div style="max-width:980px; margin:0 auto; text-align:center;">
+      <div style="font-family:var(--font-serif); font-size:64px; line-height:0.6; color:var(--color-accent); margin-bottom:var(--space-md);">״</div>
+      <blockquote style="font-family:var(--font-serif); font-size:clamp(24px, 3vw, 38px); line-height:1.4; font-weight:var(--weight-medium); color:var(--color-text-on-light); margin:0 0 var(--space-lg); text-wrap:balance;">המודל של Print3D היה הרגע שבו הוועדה והרוכשים הפוטנציאליים הבינו את הפרויקט. שום רינדור לא עשה את זה כמו שהמודל הפיזי עשה.</blockquote>
+      <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.14em; text-transform:uppercase; color:var(--color-accent-muted);">סמנכ״לית שיווק · קבוצת נדל״ן מובילה</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin); text-align:center;">
+    <h2 style="font-family:var(--font-serif); font-size:clamp(28px, 3.5vw, 46px); line-height:1.2; font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 auto var(--space-lg); max-width:22ch; text-wrap:balance;">להצטרף לרשימה?</h2>
+    <dc-import name="GlassButton" variant="primary" size="lg" href="Contact.dc.html" hint-size="auto,60px">בואו נדבר</dc-import>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,auto"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      clients: [
+        'שפיר הנדסה', 'גינדי החזקות', 'אלקטרה מגורים', 'שיכון ובינוי',
+        'אפריקה ישראל מגורים', 'קבוצת חג׳ג׳', 'אאורה', 'אזורים',
+        'רוטשטיין', 'ב.יאיר', 'צמח המרמן', 'דמרי',
+        'קרדן נדל״ן', 'אשדר', 'תדהר', 'אבני דרך',
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

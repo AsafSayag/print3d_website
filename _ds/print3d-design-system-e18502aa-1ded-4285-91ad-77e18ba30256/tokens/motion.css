@@ -1,0 +1,7 @@
+/* Print3D — Motion tokens. Smooth deceleration, no bounce. */
+:root {
+  --duration-fast: 200ms; /* @kind other */ /* hover, micro-interactions */
+  --duration-base: 450ms; /* @kind other */ /* scroll-reveal entrances */
+  --duration-slow: 700ms; /* @kind other */ /* hero / page-level transitions */
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+}

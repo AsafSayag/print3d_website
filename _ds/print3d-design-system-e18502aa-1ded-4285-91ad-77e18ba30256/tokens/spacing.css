@@ -1,0 +1,29 @@
+/* Print3D — Spacing tokens. Base unit 4px. Generous spacing is brand. */
+:root {
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-2xl: 96px;
+  --space-3xl: 144px;
+
+  /* Section vertical padding minimums */
+  --section-pad-desktop: var(--space-2xl); /* 96px */
+  --section-pad-mobile: var(--space-xl);   /* 64px */
+
+  /* Layout grid */
+  --layout-max: 1440px;
+  --layout-margin: 80px;   /* desktop outer margins */
+  --layout-gutter: 24px;   /* desktop gutter */
+  --layout-margin-mobile: 20px;
+  --layout-gutter-mobile: 16px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-pad-desktop: var(--space-xl);
+    --layout-margin: var(--layout-margin-mobile);
+    --layout-gutter: var(--layout-gutter-mobile);
+  }
+}

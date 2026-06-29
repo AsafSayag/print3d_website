@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  /* ===== Hamburger bar strokes ===== */
+  .p3d-ham-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+    transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), opacity 0.2s;
+  }
+
+  /* ===== Mobile full-screen overlay ===== */
+  .p3d-mob-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(8,16,34,0.97);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    flex-direction: column;
+    padding: 24px var(--layout-margin-mobile, 20px);
+    overflow-y: auto;
+    direction: rtl;
+    animation: p3dOverlayIn 0.32s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .p3d-mob-overlay.p3d-open { display:flex; }
+
+  @keyframes p3dOverlayIn {
+    from { opacity:0; transform:translateY(-12px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Overlay nav links — large display */
+  .p3d-mob-nav-link {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 8vw, 40px);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--color-charcoal);
+    letter-spacing: -0.01em;
+    transition: color 0.18s, transform 0.18s;
+  }
+  .p3d-mob-nav-link:first-of-type { border-top: 1px solid var(--color-charcoal); }
+  .p3d-mob-nav-link:hover { color: var(--color-accent); transform: translateX(-4px); }
+
+  /* ===== Desktop: header row is a flow-height spacer, nav is fixed centered ===== */
+  @media (min-width: 769px) {
+    .p3d-hdr {
+      position: relative;
+      height: 136px;
+      pointer-events: none;
+    }
+    .p3d-hdr-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px var(--layout-margin);
+      pointer-events: auto;
+    }
+    /* Nav pill — fixed, centered, always visible */
+    .p3d-hdr-nav {
+      display: flex !important;
+      position: fixed !important;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      pointer-events: auto !important;
+    }
+    .p3d-hdr-cta  { display: inline-flex !important; }
+    .p3d-hamburger { display: none !important; }
+    .p3d-logo-img { height: 100px; }
+  }
+
+  /* ===== Mobile: header bar fixed so hamburger stays reachable ===== */
+  @media (max-width: 768px) {
+    .p3d-hdr {
+      position: fixed !important;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      background: rgba(8,16,34,0.92) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 50;
+      pointer-events: auto;
+    }
+    .p3d-hdr-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      padding: 0 var(--layout-margin, 20px);
+    }
+    .p3d-hdr-nav  { display: none !important; }
+    .p3d-hdr-cta  { display: none !important; }
+    .p3d-hamburger { display: flex !important; }
+    .p3d-logo-img { height: 56px !important; }
+  }
+</style>
+</helmet>
+
+<header class="p3d-hdr" style="{{ headerStyle }}">
+  <!-- Logo + CTA row: scrolls away on desktop, fixed on mobile -->
+  <div class="p3d-hdr-inner">
+    <a href="Home.dc.html" style="display:flex; align-items:center; text-decoration:none;">
+      <img class="p3d-logo-img" src="assets/logo-print3d-transparent.png" alt="Print3D" style="width:auto; height:100px;">
+    </a>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="Contact.dc.html" class="p3d-hdr-cta" style="{{ ctaStyle }}" style-hover="background:var(--color-accent-hover); transform:translateY(-2px); box-shadow:0 16px 34px rgba(44,123,229,0.5);">צור קשר</a>
+      <!-- Hamburger — visible only on mobile via CSS -->
+      <button class="p3d-hamburger" onclick="{{ onHamburgerClick }}" style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:46px; height:46px; background:rgba(20,40,80,0.75); border:1px solid rgba(120,160,220,0.28); border-radius:10px; cursor:pointer; padding:0; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); flex-shrink:0;">
+        <span class="p3d-ham-bar"></span>
+        <span class="p3d-ham-bar"></span>
+        <span class="p3d-ham-bar"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Nav pill — position:fixed via CSS, always visible, centered -->
+  <nav class="p3d-hdr-nav" style="display:flex; align-items:center; gap:2px; padding:7px 10px; background:rgba(8,20,40,0.72); border:1px solid rgba(120,160,220,0.18); border-radius:999px; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); box-shadow:0 12px 34px rgba(6,16,34,0.45);">
+    <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="5">
+      <a href="{{ link.href }}" style="{{ link.style }}" style-hover="color:var(--color-text-primary); background:rgba(120,160,220,0.14);">{{ link.label }}</a>
+    </sc-for>
+  </nav>
+</header>
+
+<!-- Mobile nav overlay — toggled by JS -->
+<div id="p3dMobNav" class="p3d-mob-overlay">
+  <!-- Overlay header row -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
+    <img src="assets/logo-print3d-transparent.png" alt="Print3D" style="height:48px; width:auto;">
+    <button onclick="{{ onCloseClick }}" style="display:flex; align-items:center; justify-content:center; width:46px; height:46px; background:rgba(20,40,80,0.75); border:1px solid rgba(120,160,220,0.28); border-radius:10px; cursor:pointer; color:var(--color-text-primary); font-size:18px; font-family:var(--font-body); padding:0; line-height:1;">✕</button>
+  </div>
+  <!-- Nav links -->
+  <nav style="flex:1;">
+    <a href="Home.dc.html"      class="p3d-mob-nav-link">בית</a>
+    <a href="About.dc.html"     class="p3d-mob-nav-link">אודות</a>
+    <a href="Portfolio.dc.html" class="p3d-mob-nav-link">פרויקטים</a>
+    <a href="Clients.dc.html"   class="p3d-mob-nav-link">לקוחות</a>
+    <a href="Blog.dc.html"      class="p3d-mob-nav-link">בלוג</a>
+  </nav>
+  <!-- CTA -->
+  <div style="margin-top:48px; padding-bottom:40px;">
+    <a href="Contact.dc.html" style="display:flex; align-items:center; justify-content:center; width:100%; padding:18px 32px; border-radius:999px; background:var(--color-accent); color:#ffffff; font-family:var(--font-body); font-size:16px; font-weight:500; letter-spacing:0.04em; text-decoration:none; box-shadow:0 12px 28px rgba(44,123,229,0.42); transition:background 0.2s, transform 0.2s;">צור קשר</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:84},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;about&quot;,&quot;portfolio&quot;,&quot;clients&quot;,&quot;blog&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;solid&quot;,&quot;over&quot;],&quot;default&quot;:&quot;solid&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active || 'home';
+    const mode   = this.props.mode   || 'solid';
+
+    const headerStyle = 'background:transparent; border:none;';
+
+    const linkBase = 'position:relative; display:inline-flex; align-items:center; padding:9px 17px; border-radius:999px; font-family:var(--font-body); font-size:14px; font-weight:var(--weight-medium); text-decoration:none; white-space:nowrap; transition:color var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default);';
+
+    const ctaStyle = 'display:inline-flex; align-items:center; justify-content:center; padding:13px 32px; border-radius:999px; background:var(--color-accent); color:#ffffff; font-family:var(--font-body); font-size:14px; font-weight:var(--weight-medium); letter-spacing:0.04em; text-decoration:none; white-space:nowrap; box-shadow:0 12px 28px rgba(44,123,229,0.42); transition:transform var(--duration-fast) var(--ease-default), background var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default);';
+
+    const items = [
+      { key: 'home',      label: 'בית',       href: 'Home.dc.html' },
+      { key: 'about',     label: 'אודות',     href: 'About.dc.html' },
+      { key: 'portfolio', label: 'פרויקטים', href: 'Portfolio.dc.html' },
+      { key: 'clients',   label: 'לקוחות',   href: 'Clients.dc.html' },
+      { key: 'blog',      label: 'בלוג',      href: 'Blog.dc.html' },
+    ];
+
+    const navLinks = items.map((it) => {
+      const isActive = it.key === active;
+      return {
+        label: it.label,
+        href:  it.href,
+        style: linkBase + (isActive
+          ? ' color:#ffffff; background:var(--color-accent);'
+          : ' color:#C7D4E8;'),
+      };
+    });
+
+    const onHamburgerClick = () => {
+      const overlay = document.getElementById('p3dMobNav');
+      if (overlay) {
+        overlay.classList.add('p3d-open');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    const onCloseClick = () => {
+      const overlay = document.getElementById('p3dMobNav');
+      if (overlay) {
+        overlay.classList.remove('p3d-open');
+        document.body.style.overflow = '';
+      }
+    };
+
+    return { headerStyle, navLinks, ctaStyle, onHamburgerClick, onCloseClick };
+  }
+}
+</script>
+</body>
+</html>

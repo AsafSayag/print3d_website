@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:var(--color-bg-primary); color:var(--color-text-primary); }
+  @keyframes p3dFade { from { opacity:0; } to { opacity:1; } }
+</style>
+</helmet>
+<div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh;">
+  <dc-import name="SiteHeader" active="portfolio" mode="solid" hint-size="100%,84px"></dc-import>
+
+  <!-- HEADER BLOCK -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin) var(--space-xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>תיק עבודות</span></div>
+      <h1 style="font-family:var(--font-heading); font-size:clamp(40px, 5vw, 72px); line-height:1.1; letter-spacing:-0.01em; font-weight:var(--weight-black); color:var(--color-text-primary); margin:0 0 var(--space-md); text-wrap:balance;">פרויקטים נבחרים</h1>
+      <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:var(--color-text-secondary); margin:0; max-width:54ch;">מבחר מתוך מאות דגמים שנמסרו — ממגדלי מגורים ועד מתחמי תכנון עירוני ודירות מכר.</p>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <section style="background:var(--color-bg-primary); padding:0 var(--layout-margin) var(--space-xl); position:sticky; top:84px; z-index:20;">
+    <div style="max-width:var(--layout-max); margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; padding:var(--space-md) 0; border-bottom:1px solid var(--border-subtle); background:var(--color-bg-primary);">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+        <sc-if value="{{ f.active }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ f.select }}" style="font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.06em; text-transform:uppercase; padding:9px 20px; border-radius:var(--radius-sm); cursor:pointer; background:var(--color-accent); color:var(--color-text-on-light); border:1px solid var(--color-accent);">{{ f.label }}</button>
+        </sc-if>
+        <sc-if value="{{ f.inactive }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ f.select }}" style="font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.06em; text-transform:uppercase; padding:9px 20px; border-radius:var(--radius-sm); cursor:pointer; background:transparent; color:var(--color-text-secondary); border:1px solid var(--border-strong); transition:color var(--duration-fast) var(--ease-default), border-color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-text-primary); border-color:var(--color-accent);">{{ f.label }}</button>
+        </sc-if>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MASONRY GALLERY -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-lg) var(--layout-margin) var(--space-3xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto; column-count:3; column-gap:var(--space-md);">
+      <sc-for list="{{ visibleProjects }}" as="proj">
+        <div style="break-inside:avoid; margin-bottom:var(--space-md); animation:p3dFade var(--duration-base) var(--ease-default) both;">
+          <button onClick="{{ proj.open }}" style="display:block; width:100%; padding:0; border:none; background:var(--color-bg-secondary); border-radius:var(--radius-md); overflow:hidden; cursor:pointer; text-align:start;">
+            <div style="overflow:hidden; position:relative;">
+              <div role="img" aria-label="{{ proj.title }}" style="{{ proj.imgStyle }}" style-hover="transform:scale(1.04); filter:grayscale(0%) brightness(1);"></div>
+            </div>
+            <div style="padding:var(--space-md);">
+              <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:var(--text-caption-ls); text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:8px;">{{ proj.meta }}</div>
+              <h3 style="font-family:var(--font-heading); font-weight:var(--weight-bold); font-size:var(--text-h3-size); line-height:var(--text-h3-lh); color:var(--color-text-primary); margin:0;">{{ proj.title }}</h3>
+            </div>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLightbox }}" style="position:fixed; inset:0; z-index:100; background:rgba(10,10,11,0.94); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:var(--space-xl); animation:p3dFade var(--duration-fast) var(--ease-default) both;">
+      <button onClick="{{ closeLightbox }}" aria-label="סגור" style="position:absolute; top:var(--space-lg); inset-inline-end:var(--space-lg); width:48px; height:48px; display:grid; place-items:center; background:transparent; border:1px solid var(--border-strong); border-radius:var(--radius-sm); color:var(--color-text-primary); font-size:22px; cursor:pointer; transition:border-color var(--duration-fast) var(--ease-default);" style-hover="border-color:var(--color-accent);">✕</button>
+      <button onClick="{{ prevLightbox }}" aria-label="הקודם" style="position:absolute; inset-inline-end:var(--space-lg); top:50%; transform:translateY(-50%); width:52px; height:52px; display:grid; place-items:center; background:transparent; border:1px solid var(--border-strong); border-radius:var(--radius-sm); color:var(--color-text-primary); font-size:24px; cursor:pointer; transition:border-color var(--duration-fast) var(--ease-default);" style-hover="border-color:var(--color-accent);">›</button>
+      <button onClick="{{ nextLightbox }}" aria-label="הבא" style="position:absolute; inset-inline-start:var(--space-lg); top:50%; transform:translateY(-50%); width:52px; height:52px; display:grid; place-items:center; background:transparent; border:1px solid var(--border-strong); border-radius:var(--radius-sm); color:var(--color-text-primary); font-size:24px; cursor:pointer; transition:border-color var(--duration-fast) var(--ease-default);" style-hover="border-color:var(--color-accent);">‹</button>
+      <div onClick="{{ stop }}" style="max-width:1100px; width:100%; display:flex; flex-direction:column; align-items:center; gap:var(--space-md);">
+        <div role="img" aria-label="{{ current.title }}" style="{{ current.imgStyle }}"></div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:var(--text-caption-ls); text-transform:uppercase; color:var(--color-accent); margin-bottom:8px;">{{ current.meta }}</div>
+          <h3 style="font-family:var(--font-heading); font-weight:var(--weight-bold); font-size:var(--text-h2-size); color:var(--color-text-primary); margin:0;">{{ current.title }}</h3>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <dc-import name="SiteFooter" hint-size="100%,auto"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { filter: 'all', lightbox: null };
+
+  componentDidMount() {
+    this._key = (e) => {
+      if (this.state.lightbox === null) return;
+      if (e.key === 'Escape') this.setState({ lightbox: null });
+      if (e.key === 'ArrowLeft') this.move(1);
+      if (e.key === 'ArrowRight') this.move(-1);
+    };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+
+  get cats() {
+    return [
+      { key: 'all', label: 'הכל' },
+      { key: 'towers', label: 'מגדלי מגורים' },
+      { key: 'residential', label: 'פרויקטי מגורים' },
+      { key: 'urban', label: 'תכנון עירוני / תב״ע' },
+      { key: 'penthouse', label: 'פנטהאוז / דירת מכר' },
+    ];
+  }
+
+  imgStyle(url, ratio) {
+    return "aspect-ratio:" + ratio + "; background-image:url('" + url + "'); background-size:cover; background-position:center; filter:grayscale(25%) brightness(0.9); transition:transform var(--duration-slow) var(--ease-default), filter var(--duration-base) var(--ease-default);";
+  }
+
+  get data() {
+    return [
+      { image: 'https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?w=900&q=80', cat: 'towers', meta: 'מגדלי מגורים · רמת גן', title: 'מגדל אאורה סנטר', ratio: '3 / 4' },
+      { image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80', cat: 'residential', meta: 'פרויקטי מגורים · הרצליה', title: 'שכונת הפארק', ratio: '4 / 5' },
+      { image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80', cat: 'urban', meta: 'תכנון עירוני · תל אביב', title: 'מתחם שדה דב', ratio: '1 / 1' },
+      { image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80', cat: 'penthouse', meta: 'פנטהאוז · תל אביב', title: 'דירת מכר רוטשילד', ratio: '3 / 4' },
+      { image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=80', cat: 'urban', meta: 'תכנון עירוני · ירושלים', title: 'מתחם תרבות', ratio: '4 / 3' },
+      { image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80', cat: 'residential', meta: 'פרויקטי מגורים · רמת השרון', title: 'וילה פרטית', ratio: '4 / 5' },
+      { image: 'https://images.unsplash.com/photo-1494891848038-7bd202a2afeb?w=900&q=80', cat: 'towers', meta: 'מגדלי מגורים · תל אביב', title: 'מגדל רוטשילד', ratio: '1 / 1' },
+      { image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=900&q=80', cat: 'penthouse', meta: 'דירת מכר · הרצליה פיתוח', title: 'פנטהאוז מארינה', ratio: '3 / 4' },
+      { image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=900&q=80', cat: 'towers', meta: 'מגדלי מגורים · באר שבע', title: 'מגדלי הנגב', ratio: '4 / 5' },
+      { image: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=900&q=80', cat: 'urban', meta: 'תכנון עירוני · חיפה', title: 'תב״ע מפרץ', ratio: '4 / 3' },
+      { image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=900&q=80', cat: 'towers', meta: 'מגדלי מגורים · גבעתיים', title: 'מגדל סביוני', ratio: '3 / 4' },
+      { image: 'https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=900&q=80', cat: 'residential', meta: 'פרויקטי מגורים · כפר סבא', title: 'מתחם בוטיק', ratio: '1 / 1' },
+    ];
+  }
+
+  get visible() {
+    const f = this.state.filter;
+    return f === 'all' ? this.data : this.data.filter((p) => p.cat === f);
+  }
+
+  move(dir) {
+    const list = this.visible;
+    const n = list.length;
+    this.setState((s) => ({ lightbox: (s.lightbox + dir + n) % n }));
+  }
+
+  renderVals() {
+    const filters = this.cats.map((c) => ({
+      label: c.label,
+      active: this.state.filter === c.key,
+      inactive: this.state.filter !== c.key,
+      select: () => this.setState({ filter: c.key, lightbox: null }),
+    }));
+
+    const visibleProjects = this.visible.map((p, i) => ({
+      ...p,
+      imgStyle: this.imgStyle(p.image, p.ratio),
+      open: () => this.setState({ lightbox: i }),
+    }));
+
+    const lightboxOpen = this.state.lightbox !== null;
+    const cur = lightboxOpen ? this.visible[this.state.lightbox] : null;
+    const current = cur
+      ? { ...cur, imgStyle: "width:100%; height:74vh; background-image:url('" + cur.image + "'); background-size:contain; background-repeat:no-repeat; background-position:center;" }
+      : {};
+
+    return {
+      filters,
+      visibleProjects,
+      lightboxOpen,
+      current,
+      closeLightbox: () => this.setState({ lightbox: null }),
+      nextLightbox: (e) => { e.stopPropagation(); this.move(1); },
+      prevLightbox: (e) => { e.stopPropagation(); this.move(-1); },
+      stop: (e) => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

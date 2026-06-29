@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:var(--color-bg-primary); color:var(--color-text-primary); }
+  input::placeholder, textarea::placeholder { color:var(--color-text-secondary); opacity:0.65; }
+</style>
+</helmet>
+<div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh; display:flex; flex-direction:column;">
+  <dc-import name="SiteHeader" active="" mode="solid" hint-size="100%,84px"></dc-import>
+
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin); flex:1;">
+    <div style="max-width:var(--layout-max); margin:0 auto; display:grid; grid-template-columns:5fr 7fr; gap:var(--space-3xl); align-items:start;">
+
+      <!-- LEFT: prominent contact -->
+      <div>
+        <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>צור קשר</span></div>
+        <h1 style="font-family:var(--font-serif); font-size:clamp(34px, 4.5vw, 60px); line-height:1.15; font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 0 var(--space-lg); text-wrap:balance;">בואו נבנה את הדגם הבא שלכם.</h1>
+        <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:var(--color-text-secondary); margin:0 0 var(--space-2xl); max-width:42ch;">השאירו פרטים ונחזור אליכם תוך יום עסקים עם הצעת מחיר ראשונית ולוח זמנים. מעדיפים לדבר? אנחנו זמינים.</p>
+
+        <div style="display:flex; flex-direction:column; gap:var(--space-lg);">
+          <div style="border-top:1px solid var(--border-strong); padding-top:var(--space-md);">
+            <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.16em; text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:10px;">טלפון</div>
+            <a href="tel:036000000" style="font-family:var(--font-heading); font-size:clamp(26px, 2.6vw, 34px); font-weight:var(--weight-bold); color:var(--color-text-primary); text-decoration:none; letter-spacing:0.02em; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">03‑600‑0000</a>
+          </div>
+          <div style="border-top:1px solid var(--border-strong); padding-top:var(--space-md);">
+            <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.16em; text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:10px;">אימייל</div>
+            <a href="mailto:studio@print3d.co.il" style="font-family:var(--font-heading); font-size:clamp(22px, 2.2vw, 28px); font-weight:var(--weight-medium); color:var(--color-text-primary); text-decoration:none; transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent);">studio@print3d.co.il</a>
+          </div>
+          <div style="border-top:1px solid var(--border-strong); padding-top:var(--space-md);">
+            <div style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.16em; text-transform:uppercase; color:var(--color-text-secondary); margin-bottom:10px;">סטודיו</div>
+            <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); color:var(--color-text-primary); margin:0; line-height:1.6;">המלאכה 12, תל אביב‑יפו</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: form -->
+      <div style="background:var(--color-bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:var(--space-2xl); box-shadow:var(--shadow-subtle);">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height:360px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:var(--space-md);">
+            <div style="font-family:var(--font-serif); font-size:36px; color:var(--color-accent);">תודה.</div>
+            <h2 style="font-family:var(--font-heading); font-size:var(--text-h2-size); font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0;">הפנייה נשלחה בהצלחה.</h2>
+            <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:var(--color-text-secondary); margin:0; max-width:40ch;">נחזור אליכם תוך יום עסקים. בינתיים, מוזמנים לעיין בתיק העבודות שלנו.</p>
+            <div style="margin-top:var(--space-sm);"><dc-import name="GlassButton" variant="secondary" size="md" href="Portfolio.dc.html" hint-size="auto,48px">לתיק העבודות</dc-import></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submit }}" style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-lg);">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.02em; text-transform:uppercase; color:var(--color-text-secondary);">שם מלא</label>
+              <input required placeholder="הקלידו שם" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; font-family:var(--font-body); font-size:var(--text-body-size); color:var(--color-text-primary); outline:none; transition:border-color var(--duration-fast) var(--ease-default);" style-focus="border-bottom-color:var(--color-accent);">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.02em; text-transform:uppercase; color:var(--color-text-secondary);">טלפון</label>
+              <input required type="tel" placeholder="050‑0000000" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; font-family:var(--font-body); font-size:var(--text-body-size); color:var(--color-text-primary); outline:none; transition:border-color var(--duration-fast) var(--ease-default);" style-focus="border-bottom-color:var(--color-accent);">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.02em; text-transform:uppercase; color:var(--color-text-secondary);">אימייל</label>
+              <input required type="email" placeholder="name@studio.co.il" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; font-family:var(--font-body); font-size:var(--text-body-size); color:var(--color-text-primary); outline:none; transition:border-color var(--duration-fast) var(--ease-default);" style-focus="border-bottom-color:var(--color-accent);">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.02em; text-transform:uppercase; color:var(--color-text-secondary);">סוג פרויקט</label>
+              <input placeholder="מגורים / עירוני / מכר" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; font-family:var(--font-body); font-size:var(--text-body-size); color:var(--color-text-primary); outline:none; transition:border-color var(--duration-fast) var(--ease-default);" style-focus="border-bottom-color:var(--color-accent);">
+            </div>
+            <div style="grid-column:1 / -1; display:flex; flex-direction:column; gap:6px;">
+              <label style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.02em; text-transform:uppercase; color:var(--color-text-secondary);">הודעה</label>
+              <textarea rows="3" placeholder="ספרו לנו על הפרויקט — קנה מידה, לוח זמנים, מטרת הדגם" style="width:100%; background:transparent; border:none; border-bottom:1px solid var(--border-strong); padding:10px 0; font-family:var(--font-body); font-size:var(--text-body-size); line-height:1.6; color:var(--color-text-primary); outline:none; resize:vertical; transition:border-color var(--duration-fast) var(--ease-default);" style-focus="border-bottom-color:var(--color-accent);"></textarea>
+            </div>
+            <div style="grid-column:1 / -1; margin-top:var(--space-sm);">
+              <button type="submit" style="position:relative; overflow:hidden; isolation:isolate; display:inline-flex; align-items:center; justify-content:center; padding:19px 46px; font-family:var(--font-body); font-size:14px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; background:rgba(44,123,229,0.58); color:#ffffff; border:none; border-radius:999px; cursor:pointer; -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%); box-shadow:inset 0 1.5px 1.5px rgba(255,255,255,0.6), inset 0 -3px 8px rgba(120,180,255,0.35), inset 0 0 0 1px rgba(160,200,255,0.45), 0 12px 32px rgba(10,40,90,0.45), 0 3px 8px rgba(8,24,55,0.3); transform:translateY(0) scale(1); transition:transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s cubic-bezier(0.16,1,0.3,1), background 0.3s ease;" style-hover="transform:translateY(-2px) scale(1.035); background:rgba(58,140,242,0.72); box-shadow:inset 0 1.5px 2px rgba(255,255,255,0.75), inset 0 -3px 10px rgba(120,180,255,0.45), inset 0 0 0 1px rgba(180,210,255,0.6), 0 18px 42px rgba(10,40,90,0.5), 0 5px 12px rgba(8,24,55,0.32);">שליחת פנייה</button>
+            </div>
+          </form>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,auto"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { submitted: false };
+  renderVals() {
+    return {
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      submit: (e) => { e.preventDefault(); this.setState({ submitted: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

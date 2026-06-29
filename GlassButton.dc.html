@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+  <style>
+    @keyframes p3dGlassSheen {
+      0%   { transform: translateX(-260%) skewX(-18deg); }
+      55%  { transform: translateX(420%)  skewX(-18deg); }
+      100% { transform: translateX(420%)  skewX(-18deg); }
+    }
+  </style>
+</helmet>
+<a href="{{ href }}" style="{{ rootStyle }}" onMouseEnter="{{ onEnter }}" onMouseLeave="{{ onLeave }}" onMouseDown="{{ onDown }}" onMouseUp="{{ onUp }}">
+  <span aria-hidden="true" style="{{ glareStyle }}"></span>
+  <span aria-hidden="true" style="{{ sheenStyle }}"></span>
+  <span style="{{ labelStyle }}">{{ children }}</span>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:240,&quot;height&quot;:72},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;primary&quot;,&quot;secondary&quot;],&quot;default&quot;:&quot;primary&quot;,&quot;tsType&quot;:&quot;'primary'|'secondary'&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sm&quot;,&quot;md&quot;,&quot;lg&quot;],&quot;default&quot;:&quot;lg&quot;,&quot;tsType&quot;:&quot;'sm'|'md'|'lg'&quot;},&quot;href&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;children&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;React.ReactNode&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const size = this.props.size || 'md';
+    const variant = this.props.variant || 'secondary';
+    const pad = { sm: '12px 26px', md: '15px 34px', lg: '19px 46px' }[size] || '15px 34px';
+    const fontSize = size === 'lg' ? '14px' : '13px';
+
+    const isPrimary = variant === 'primary';
+
+    // Blue-tinted glass: stronger blue for primary, subtle clear-blue for secondary
+    const bg = isPrimary ? 'rgba(44,123,229,0.58)' : 'rgba(120,170,240,0.12)';
+    const bgHover = isPrimary ? 'rgba(58,140,242,0.72)' : 'rgba(120,170,240,0.22)';
+    const textColor = isPrimary ? '#ffffff' : 'var(--color-text-primary)';
+    const blur = isPrimary ? 'blur(20px) saturate(180%)' : 'blur(16px) saturate(160%)';
+
+    const shadowRest = isPrimary
+      ? 'inset 0 1.5px 1.5px rgba(255,255,255,0.6), inset 0 -3px 8px rgba(120,180,255,0.35), inset 0 0 0 1px rgba(160,200,255,0.45), 0 12px 32px rgba(10,40,90,0.45), 0 3px 8px rgba(8,24,55,0.3)'
+      : 'inset 0 1px 1px rgba(200,225,255,0.5), inset 0 -1.5px 3px rgba(120,170,240,0.14), inset 0 0 0 1px rgba(150,190,250,0.22), 0 10px 28px rgba(8,24,55,0.4)';
+    const shadowHover = isPrimary
+      ? 'inset 0 1.5px 2px rgba(255,255,255,0.75), inset 0 -3px 10px rgba(120,180,255,0.45), inset 0 0 0 1px rgba(180,210,255,0.6), 0 18px 42px rgba(10,40,90,0.5), 0 5px 12px rgba(8,24,55,0.32)'
+      : 'inset 0 1px 1.5px rgba(210,230,255,0.65), inset 0 -1.5px 3px rgba(120,170,240,0.2), inset 0 0 0 1px rgba(160,200,250,0.32), 0 16px 38px rgba(8,24,55,0.45)';
+
+    const rootStyle = {
+      position: 'relative',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: pad,
+      borderRadius: '999px',
+      border: 'none',
+      overflow: 'hidden',
+      isolation: 'isolate',
+      background: bg,
+      color: textColor,
+      WebkitBackdropFilter: blur,
+      backdropFilter: blur,
+      boxShadow: shadowRest,
+      textDecoration: 'none',
+      cursor: 'pointer',
+      willChange: 'transform',
+      transform: 'translateY(0) scale(1)',
+      transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
+    };
+
+    // top specular glare — bright crescent along the upper rim
+    const glareStyle = {
+      position: 'absolute',
+      inset: '0',
+      borderRadius: 'inherit',
+      pointerEvents: 'none',
+      background: 'radial-gradient(120% 80% at 28% -10%, rgba(225,240,255,' + (isPrimary ? '0.7' : '0.45') + ') 0%, rgba(225,240,255,0) 55%)',
+      zIndex: 1,
+    };
+
+    // travelling sheen band
+    const sheenStyle = {
+      position: 'absolute',
+      top: '0',
+      bottom: '0',
+      left: '0',
+      width: '45%',
+      pointerEvents: 'none',
+      background: 'linear-gradient(100deg, rgba(235,245,255,0) 0%, rgba(235,245,255,' + (isPrimary ? '0.6' : '0.45') + ') 50%, rgba(235,245,255,0) 100%)',
+      filter: 'blur(3px)',
+      transform: 'translateX(-260%) skewX(-18deg)',
+      animation: 'p3dGlassSheen 5.5s cubic-bezier(0.16,1,0.3,1) infinite',
+      zIndex: 2,
+    };
+
+    const labelStyle = {
+      position: 'relative',
+      zIndex: 3,
+      fontFamily: 'var(--font-body)',
+      fontSize: fontSize,
+      fontWeight: 500,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      whiteSpace: 'nowrap',
+    };
+
+    const onEnter = (e) => {
+      const el = e.currentTarget;
+      el.style.transform = 'translateY(-2px) scale(1.035)';
+      el.style.boxShadow = shadowHover;
+      el.style.background = bgHover;
+    };
+    const onLeave = (e) => {
+      const el = e.currentTarget;
+      el.style.transform = 'translateY(0) scale(1)';
+      el.style.boxShadow = shadowRest;
+      el.style.background = bg;
+    };
+    const onDown = (e) => { e.currentTarget.style.transform = 'translateY(0) scale(0.965)'; };
+    const onUp = (e) => { e.currentTarget.style.transform = 'translateY(-2px) scale(1.035)'; };
+
+    return {
+      href: this.props.href || '#',
+      children: this.props.children,
+      rootStyle, glareStyle, sheenStyle, labelStyle,
+      onEnter, onLeave, onDown, onUp,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/colors.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/typography.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/radius-elevation.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/tokens/motion.css">
+<link rel="stylesheet" href="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/styles.css">
+<script src="_ds/print3d-design-system-e18502aa-1ded-4285-91ad-77e18ba30256/_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; }
+  body { background:var(--color-bg-primary); color:var(--color-text-primary); }
+</style>
+</helmet>
+<div dir="rtl" style="font-family:var(--font-body); background:var(--color-bg-primary); min-height:100vh;">
+  <dc-import name="SiteHeader" active="blog" mode="solid" hint-size="100%,84px"></dc-import>
+
+  <!-- HEADER -->
+  <section style="background:var(--color-bg-primary); padding:var(--space-3xl) var(--layout-margin) var(--space-2xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto; display:grid; grid-template-columns:7fr 5fr; gap:var(--space-3xl); align-items:end;">
+      <div>
+        <div style="margin-bottom:var(--space-md);"><span style="display:inline-flex; align-items:center; gap:16px; font-family:var(--font-body); font-size:var(--text-caption-size); font-weight:var(--weight-medium); letter-spacing:0.2em; text-transform:uppercase; color:var(--color-accent);"><span style="width:32px; height:1px; background:currentColor; opacity:0.7;"></span>בלוג ומאמרים</span></div>
+        <h1 style="font-family:var(--font-heading); font-size:clamp(40px, 5vw, 72px); line-height:1.1; letter-spacing:-0.01em; font-weight:var(--weight-black); color:var(--color-text-primary); margin:0; text-wrap:balance;">על מודלים, חומר ואור.</h1>
+      </div>
+      <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.7; color:var(--color-text-secondary); margin:0;">מחשבות, מגמות וטכנולוגיה מעולם הדגמים האדריכליים וההדפסה בתלת‑ממד — מהסטודיו ומהעולם.</p>
+    </div>
+  </section>
+
+  <!-- FEATURED ARTICLE -->
+  <section style="background:var(--color-bg-primary); padding:0 var(--layout-margin) var(--space-3xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <a href="Article.dc.html" style="display:grid; grid-template-columns:7fr 5fr; gap:var(--space-2xl); align-items:center; text-decoration:none; border-top:1px solid var(--border-subtle); padding-top:var(--space-xl);">
+        <div style="aspect-ratio:16 / 10; overflow:hidden; border-radius:var(--radius-md); order:2;">
+          <div role="img" aria-label="{{ featured.title }}" style="{{ featured.imgStyle }}" style-hover="transform:scale(1.03); filter:grayscale(0%) brightness(1);"></div>
+        </div>
+        <div style="order:1;">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:var(--space-md);">
+            <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.14em; text-transform:uppercase; color:var(--color-accent);">{{ featured.category }}</span>
+            <span style="width:4px; height:4px; border-radius:50%; background:var(--color-text-secondary);"></span>
+            <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.06em; color:var(--color-text-secondary);">{{ featured.read }}</span>
+          </div>
+          <h2 style="font-family:var(--font-serif); font-size:clamp(28px, 3.4vw, 46px); line-height:1.22; font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 0 var(--space-md); text-wrap:balance;">{{ featured.title }}</h2>
+          <p style="font-family:var(--font-body); font-size:var(--text-body-lg-size); line-height:1.75; color:var(--color-text-secondary); margin:0 0 var(--space-md); max-width:50ch;">{{ featured.excerpt }}</p>
+          <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent); transition:color var(--duration-fast) var(--ease-default);" style-hover="color:var(--color-accent-hover);">קריאת המאמר ←</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ARTICLE GRID -->
+  <section style="background:var(--color-bg-primary); padding:0 var(--layout-margin) var(--space-3xl);">
+    <div style="max-width:var(--layout-max); margin:0 auto;">
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-xl) var(--space-lg);">
+        <sc-for list="{{ articles }}" as="art">
+          <a href="Article.dc.html" style="display:block; text-decoration:none; border-top:1px solid var(--border-subtle); padding-top:var(--space-md);">
+            <div style="aspect-ratio:4 / 3; overflow:hidden; border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+              <div role="img" aria-label="{{ art.title }}" style="{{ art.imgStyle }}" style-hover="transform:scale(1.04); filter:grayscale(0%) brightness(1);"></div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+              <span style="font-family:var(--font-body); font-size:var(--text-caption-size); letter-spacing:0.14em; text-transform:uppercase; color:var(--color-accent);">{{ art.category }}</span>
+              <span style="width:4px; height:4px; border-radius:50%; background:var(--color-text-secondary);"></span>
+              <span style="font-family:var(--font-body); font-size:var(--text-caption-size); color:var(--color-text-secondary);">{{ art.read }}</span>
+            </div>
+            <h3 style="font-family:var(--font-heading); font-size:var(--text-h3-size); line-height:1.35; font-weight:var(--weight-bold); color:var(--color-text-primary); margin:0 0 10px; text-wrap:balance;">{{ art.title }}</h3>
+            <p style="font-family:var(--font-body); font-size:var(--text-body-size); line-height:1.65; color:var(--color-text-secondary); margin:0; max-width:40ch;">{{ art.excerpt }}</p>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,auto"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  imgStyle(url) {
+    return "width:100%; height:100%; background-image:url('" + url + "'); background-size:cover; background-position:center; filter:grayscale(25%) brightness(0.9); transition:transform var(--duration-slow) var(--ease-default), filter var(--duration-base) var(--ease-default);";
+  }
+  renderVals() {
+    const featured = {
+      image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1400&q=80',
+      category: 'נקודת מבט',
+      read: '7 דקות קריאה',
+      title: 'למה מודלים פיזיים שורדים — ומשגשגים — בעידן ה‑VR',
+      excerpt: 'רינדורים ומציאות מדומה הבטיחו להחליף את המודל הפיזי. במקום זה, הם דווקא הדגישו את ערכו. מבט על מה שמסך לעולם לא יוכל לתת ללקוח שעומד מול דגם אמיתי.',
+    };
+    featured.imgStyle = this.imgStyle(featured.image);
+    const articles = [
+        { image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=900&q=80', category: 'מגמות', read: '5 דקות', title: 'מגמות בבניית מודלים אדריכליים לקראת 2027', excerpt: 'בין מינימליזם חומרי לדגמים היברידיים — לאן הולכת בניית המודלים בעולם.' },
+        { image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=900&q=80', category: 'טכנולוגיה', read: '6 דקות', title: 'רזולוציה וחומרים: קפיצת המדרגה בהדפסת תלת‑ממד', excerpt: 'שרף, אבקה ופילמנט — כיצד דיוק ההדפסה משנה את מה שאפשר לבנות בקנה מידה.' },
+        { image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80', category: 'מקצוע', read: '8 דקות', title: 'איך משרדים בינלאומיים משתמשים במודל במצגת ללקוח', excerpt: 'מ‑Foster ועד Zaha Hadid — המודל הפיזי כרגע השיא של פגישת הלקוח.' },
+        { image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80', category: 'אומנות', read: '4 דקות', title: 'אור במודל: תאורה משולבת ככלי סיפור', excerpt: 'איך נקודת אור אחת הופכת דגם סטטי לסצנה שמספרת את הפרויקט.' },
+        { image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80', category: 'תהליך', read: '6 דקות', title: 'מהשרטוט למודל: שרשרת הייצור בסטודיו', excerpt: 'חיתוך לייזר, הרכבה ידנית וגימור — מסע של פרויקט דרך הסטודיו.' },
+        { image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80', category: 'נדל״ן', read: '5 דקות', title: 'המודל ככלי מכירה: מה רוכשים באמת קונים', excerpt: 'מדוע דירת מכר עם מודל פיזי מוכרת מהר יותר — ובמחיר גבוה יותר.' },
+    ].map((a) => ({ ...a, imgStyle: this.imgStyle(a.image) }));
+    return { featured, articles };
+  }
+}
+</script>
+</body>
+</html>
