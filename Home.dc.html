@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -122,7 +124,12 @@
 </helmet>
 <!-- VIDEO INTRO SPLASH — hook_to_the_right plays fullscreen for 2s, then fades to reveal page -->
 <div id="p3d-splash" style="position:fixed; inset:0; z-index:9999; background:#0E0E0F; overflow:hidden; pointer-events:all; opacity:1; transition:opacity 0.7s ease;">
-  <video id="p3d-splash-video" src="uploads/hook_to_the_right_dark.mp4" autoplay muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(1.2);"></video>
+  <iframe id="p3d-splash-video"
+    src="https://player.cloudinary.com/embed/?cloud_name=dla9noz31&public_id=hook_to_the_right_kyxrh6&autoplay=true&muted=true&controls=false&loop=false"
+    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+    allowfullscreen frameborder="0"
+    style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:177.78vh; height:100vh; min-width:100%; min-height:56.25vw; border:0; pointer-events:none;">
+  </iframe>
   <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.35) 100%);"></div>
   <!-- Logo top-right, matches its header position -->
   <div style="position:absolute; top:18px; right:var(--layout-margin, 40px); animation:p3dFade 0.5s ease both;">
@@ -136,7 +143,7 @@
 
   <!-- HERO -->
   <section class="p3d-hero-section" style="position:relative; min-height:94vh; display:flex; align-items:flex-end; overflow:hidden; margin-top:-136px; background:#0E0E0F;">
-    <video class="p3d-hero-video" src="uploads/hoot_to_the_left_dark.mp4" muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; filter:grayscale(6%) brightness(1.2) contrast(1.02); animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
+    <video class="p3d-hero-video" src="uploads/hoot_to_the_left.mp4" muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; animation:p3dZoom 1.6s cubic-bezier(0.16,1,0.3,1) both;"></video>
     <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(14,14,15,0.06) 0%, rgba(14,14,15,0.02) 30%, rgba(14,14,15,0.28) 72%, rgba(14,14,15,0.78) 100%);"></div>
     <div style="position:absolute; inset:0; background:linear-gradient(270deg, rgba(14,14,15,0.55) 0%, rgba(14,14,15,0.38) 26%, rgba(14,14,15,0.15) 50%, rgba(14,14,15,0) 72%);"></div>
     <!-- Floating credential card — hidden on < 1024px via CSS -->
@@ -257,7 +264,7 @@ class Component extends DCLogic {
   componentDidMount() {
     // Start splash video immediately
     const splashVideo = document.getElementById('p3d-splash-video');
-    if (splashVideo) {
+    if (splashVideo && typeof splashVideo.play === 'function') {
       splashVideo.muted = true;
       const sp = splashVideo.play(); if (sp && sp.catch) sp.catch(() => {});
     }
@@ -267,14 +274,14 @@ class Component extends DCLogic {
       if (hero) { hero.muted = true; const p = hero.play(); if (p && p.catch) p.catch(() => {}); }
     };
 
-    // After 2s: start hero video and fade out splash simultaneously
+    // After hook_to_the_right finishes (~3.8s): start hero video and fade out splash
     const splash = document.getElementById('p3d-splash');
     if (splash) {
       setTimeout(() => {
         startHeroVideo();
         splash.style.opacity = '0';
         setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
-      }, 2000);
+      }, 3800);
     } else {
       // No splash (e.g. in preview) — start hero immediately
       startHeroVideo();
