@@ -102,10 +102,11 @@ export const ARTICLES = {
   ],
 } as const;
 
-export const BROCHURE = {
-  heading: "הורידו את הברושור המלא שלנו",
-  line: "קטלוג פרויקטים, גימורים ומעמדי תצוגה — PDF",
-  cta: "הורדת ברושור",
+export const CALLBACK_CTA = {
+  textPre: "הפכו את הפרויקט שלכם לחוויה ",
+  textHighlight: "מוחשית ויוקרתית",
+  textPost: " שמרשימה כבר מהרגע הראשון",
+  button: "השאירו פרטים עכשיו",
 } as const;
 
 export const FAQ = {
