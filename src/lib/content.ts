@@ -103,10 +103,9 @@ export const ARTICLES = {
 } as const;
 
 export const CALLBACK_CTA = {
-  textPre: "הפכו את הפרויקט שלכם לחוויה ",
-  textHighlight: "מוחשית ויוקרתית",
-  textPost: " שמרשימה כבר מהרגע הראשון",
-  button: "השאירו פרטים עכשיו",
+  title: "הצטרפו לרשימת החברות הגדולות בארץ",
+  subtitle: "לקוחות קונים כשהם מצליחים לדמיין.",
+  button: "השאירו פרטים",
 } as const;
 
 export const FAQ = {

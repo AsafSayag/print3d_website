@@ -502,82 +502,121 @@ body {
 }
 
 /* ============================================================
-   Luxury CTA card — brand navy + gold sheen
+   Immersive CTA — background video + grid + particles + noise
    ============================================================ */
-.lux-card {
+.cta-immersive {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-radius: 28px;
-  border: 1px solid rgba(199, 165, 102, 0.3);
-  background:
-    radial-gradient(
-      130% 150% at 14% 12%,
-      rgba(199, 165, 102, 0.22),
-      transparent 52%
-    ),
-    radial-gradient(
-      120% 160% at 100% 100%,
-      rgba(110, 147, 184, 0.14),
-      transparent 55%
-    ),
-    linear-gradient(140deg, #16294a 0%, #0d1a2e 55%, #0a1424 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 0 50px rgba(199, 165, 102, 0.06),
-    0 34px 80px -34px rgba(0, 0, 0, 0.8);
-  transition:
-    transform 0.4s var(--ease-brand),
-    box-shadow 0.4s var(--ease-brand),
-    border-color 0.4s var(--ease-brand);
+  background: var(--navy-950);
 }
-/* fine gold hairline highlight along the top edge */
-.lux-card::after {
-  content: "";
-  position: absolute;
-  inset-inline: 12%;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(214, 188, 133, 0.7),
-    transparent
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-/* subtle specular sheen that sweeps once on hover */
-.lux-card::before {
-  content: "";
+.cta-layer {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    115deg,
-    transparent 42%,
-    rgba(214, 188, 133, 0.14) 50%,
-    transparent 58%
-  );
-  transform: translateX(-120%);
-  transition: transform 0.9s var(--ease-brand);
   pointer-events: none;
 }
-.lux-card > * {
-  position: relative;
-  z-index: 2;
+/* gradient overlay for depth + legibility */
+.cta-gradient {
+  background:
+    radial-gradient(90% 70% at 50% 34%, transparent, rgba(7, 13, 23, 0.55) 78%),
+    linear-gradient(
+      180deg,
+      rgba(7, 13, 23, 0.62) 0%,
+      rgba(7, 13, 23, 0.34) 42%,
+      rgba(7, 13, 23, 0.9) 100%
+    );
 }
-@media (hover: hover) {
-  .lux-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(214, 188, 133, 0.5);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      inset 0 0 60px rgba(199, 165, 102, 0.1),
-      0 42px 90px -34px rgba(0, 0, 0, 0.9);
+/* fine engineering grid, faded toward the edges */
+.cta-grid {
+  background-image:
+    linear-gradient(rgba(166, 195, 220, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(166, 195, 220, 0.11) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(115% 85% at 50% 42%, black, transparent 72%);
+  mask-image: radial-gradient(115% 85% at 50% 42%, black, transparent 72%);
+}
+/* film-grain noise */
+.cta-noise {
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* floating particles */
+.cta-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(214, 188, 133, 0.7);
+  box-shadow: 0 0 6px rgba(214, 188, 133, 0.5);
+  animation: cta-particle-rise linear infinite;
+}
+@keyframes cta-particle-rise {
+  0% {
+    transform: translateY(30px) scale(0.8);
+    opacity: 0;
   }
-  .lux-card:hover::before {
-    transform: translateX(120%);
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-90px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* iOS glass card */
+.cta-glass {
+  position: relative;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 34px 80px -34px rgba(0, 0, 0, 0.75);
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .cta-glass {
+    background: rgba(11, 21, 38, 0.72);
+  }
+}
+
+/* connector beam from card down to the floating building */
+.cta-connector {
+  width: 1px;
+  height: clamp(38px, 7vh, 88px);
+  background: linear-gradient(
+    to bottom,
+    rgba(214, 188, 133, 0.65),
+    rgba(214, 188, 133, 0)
+  );
+}
+
+/* floating "3D building" */
+.cta-building {
+  animation: cta-float 6.5s ease-in-out infinite;
+}
+@keyframes cta-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-particle,
+  .cta-building {
+    animation: none !important;
   }
 }
 
