@@ -16,6 +16,9 @@ export const HERO = {
   src: "/gindi_project/gindi_hero.webp",
 };
 
+/** Design 1 uses a dedicated street-level shot as its full-bleed hero. */
+export const DESIGN_ONE_HERO = "/gindi_project/design_1_hero.webp";
+
 export type SpecRow = {
   label: string;
   value?: string;
@@ -57,7 +60,7 @@ export const GALLERY_IMAGES = [
   "/gindi_project/IMG_0943.webp",
   "/gindi_project/IMG_0944.webp",
   "/gindi_project/IMG_0945.webp",
-  "/gindi_project/IMG_0946.webp",
+  DESIGN_ONE_HERO,
 ];
 
 /** Design 2 (product-page layout) shows the hero first, then every gallery shot. */

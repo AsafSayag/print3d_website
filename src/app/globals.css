@@ -162,6 +162,15 @@ body {
   padding-inline: var(--gutter);
 }
 
+/* Wider variant — used by the Design 2 product layout so the two halves fill
+   more of the viewport on large screens instead of sitting in a narrow column. */
+.container-x-wide {
+  width: 100%;
+  max-width: 1560px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
 .section {
   padding-block: clamp(4.5rem, 9vw, 8rem);
 }
@@ -579,6 +588,21 @@ body {
   .lux-card:hover::before {
     transform: translateX(120%);
   }
+}
+
+/* ============================================================
+   Lightbox
+   ============================================================ */
+@keyframes lb-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.lb-fade {
+  animation: lb-in 0.22s var(--ease-brand);
 }
 
 /* ============================================================
