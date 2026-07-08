@@ -502,6 +502,90 @@ body {
 }
 
 /* ============================================================
+   Portfolio — ambient surface + premium project cards
+   ============================================================ */
+/* Navy surface with a cool steel glow above and a faint gold wash below */
+.portfolio-ambient {
+  background:
+    radial-gradient(
+      90% 55% at 82% 0%,
+      rgba(110, 147, 184, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      70% 45% at 12% 100%,
+      rgba(199, 165, 102, 0.07),
+      transparent 60%
+    ),
+    var(--navy-950);
+}
+
+.portfolio-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px -20px rgba(0, 0, 0, 0.65);
+  transition:
+    transform 0.5s var(--ease-brand),
+    border-color 0.5s var(--ease-brand),
+    box-shadow 0.5s var(--ease-brand);
+}
+@media (hover: hover) {
+  .portfolio-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(214, 188, 133, 0.45);
+    box-shadow:
+      0 34px 64px -26px rgba(0, 0, 0, 0.9),
+      0 14px 44px -14px rgba(199, 165, 102, 0.28);
+  }
+}
+
+/* Specular sweep — a soft light band crosses the image once on hover */
+.portfolio-card-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 65%
+  );
+  transform: translateX(-135%);
+  transition: transform 1s var(--ease-brand);
+}
+@media (hover: hover) {
+  .portfolio-card:hover .portfolio-card-sheen {
+    transform: translateX(135%);
+  }
+}
+
+/* Thin gold rule above the caption — grows to full width on hover */
+.portfolio-card-line {
+  width: 2.25rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to inline-end,
+    var(--gold-500),
+    color-mix(in srgb, var(--gold-500) 12%, transparent)
+  );
+  transition: width 0.6s var(--ease-brand);
+}
+@media (hover: hover) {
+  .portfolio-card:hover .portfolio-card-line {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-card,
+  .portfolio-card-sheen,
+  .portfolio-card-line {
+    transition: none !important;
+  }
+}
+
+/* ============================================================
    Immersive CTA — background video + grid + particles + noise
    ============================================================ */
 .cta-immersive {
