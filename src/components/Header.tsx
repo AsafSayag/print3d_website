@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
+import { WhatsAppButton } from "./ui/WhatsAppButton";
 import { NAV_ITEMS } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
@@ -98,38 +99,43 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
-          <GlassButton
-            href="#contact"
-            variant="primary"
-            className="!py-2.5 !px-5 !text-[15px]"
-          >
-            {HERO_COPY.primaryCta}
-          </GlassButton>
-        </div>
+        {/* End cluster (left under RTL): WhatsApp + CTA (desktop) + hamburger */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <WhatsAppButton />
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
-          aria-expanded={open}
-          aria-controls="mobile-drawer"
-          onClick={() => setOpen((v) => !v)}
-          className="lg:hidden inline-flex flex-col justify-center gap-[5px] w-11 h-11 items-center"
-        >
-          <span
-            className="block h-[2px] w-6 bg-white transition-transform duration-300"
-            style={{ transform: open ? "translateY(7px) rotate(45deg)" : "none" }}
-          />
-          <span
-            className="block h-[2px] w-6 bg-white transition-opacity duration-300"
-            style={{ opacity: open ? 0 : 1 }}
-          />
-          <span
-            className="block h-[2px] w-6 bg-white transition-transform duration-300"
-            style={{ transform: open ? "translateY(-7px) rotate(-45deg)" : "none" }}
-          />
-        </button>
+          <div className="hidden lg:block">
+            <GlassButton
+              href="#contact"
+              variant="primary"
+              className="!py-2.5 !px-5 !text-[15px]"
+            >
+              {HERO_COPY.primaryCta}
+            </GlassButton>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
+            aria-expanded={open}
+            aria-controls="mobile-drawer"
+            onClick={() => setOpen((v) => !v)}
+            className="lg:hidden inline-flex flex-col justify-center gap-[5px] w-11 h-11 items-center"
+          >
+            <span
+              className="block h-[2px] w-6 bg-white transition-transform duration-300"
+              style={{ transform: open ? "translateY(7px) rotate(45deg)" : "none" }}
+            />
+            <span
+              className="block h-[2px] w-6 bg-white transition-opacity duration-300"
+              style={{ opacity: open ? 0 : 1 }}
+            />
+            <span
+              className="block h-[2px] w-6 bg-white transition-transform duration-300"
+              style={{ transform: open ? "translateY(-7px) rotate(-45deg)" : "none" }}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer */}

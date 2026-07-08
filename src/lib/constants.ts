@@ -77,7 +77,7 @@ export const SEQUENCE = {
   framePathMobile: (i: number) =>
     `/sequence-mobile/frame_${String(i).padStart(3, "0")}.webp`,
   /** Scroll "cost" of the pinned sequence, in viewport heights. */
-  scrollHeightVh: 360,
+  scrollHeightVh: 240,
   /** Per-rAF easing toward the target frame. */
   smoothing: 0.15,
   /**
@@ -88,8 +88,9 @@ export const SEQUENCE = {
   /**
    * Fraction of scroll at the end that dwells on the final frame, so the
    * completed building stays on screen for an extra beat before releasing.
+   * Kept small so the hand-off to the next section feels immediate.
    */
-  endHold: 0.16,
+  endHold: 0.06,
   /** Frames eagerly loaded before the rest stream in the background. */
   eagerCount: 20,
 } as const;

@@ -17,7 +17,6 @@ export function Hero() {
   const [mode, setMode] = useState<Mode>("loading");
   // Content (logo/text/buttons) only enters once this is true.
   const [revealed, setRevealed] = useState(false);
-  const [frozen, setFrozen] = useState(false);
 
   // Decide device profile once mounted.
   useEffect(() => {
@@ -49,10 +48,9 @@ export function Hero() {
       startedRef.current = true;
     };
 
-    // Freeze on the current frame and hold it with a slow ken-burns.
+    // Freeze on the current frame — pause and hold it, perfectly static.
     const freeze = () => {
       if (!video.paused) video.pause();
-      setFrozen(true);
     };
 
     // Pause a hair BEFORE the natural end so the browser never repaints the
@@ -109,11 +107,9 @@ export function Hero() {
             ref={videoRef}
             className="h-full w-full object-cover"
             style={{
-              transform: frozen
-                ? "translateZ(0) scale(1.05)"
-                : "translateZ(0) scale(1)",
-              transition: frozen ? "transform 20s linear" : "none",
-              willChange: "transform",
+              // Held perfectly still once the video freezes on its last frame —
+              // no ken-burns zoom, so there is no drift/jitter at the hand-off.
+              transform: "translateZ(0)",
               backfaceVisibility: "hidden",
             }}
             muted
