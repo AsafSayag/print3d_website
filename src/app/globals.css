@@ -1,26 +1,385 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Print3D — Design tokens
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette */
+  --navy-950: #070d17;
+  --navy-900: #0b1526;
+  --navy-800: #12233b;
+  --steel-500: #6e93b8;
+  --steel-300: #a6c3dc;
+  --ice-050: #f4f7fa;
+  --white: #ffffff;
+  --ink-950: #0a0c0f;
+  --gold-500: #c7a566;
+  --gold-400: #d6bc85;
+  --gold-700: #8f7340;
+
+  /* Semantic */
+  --bg: var(--white);
+  --fg: var(--ink-950);
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Layout */
+  --container: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
 }
 
+/* Expose tokens to Tailwind v4 utilities */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-steel-500: var(--steel-500);
+  --color-steel-300: var(--steel-300);
+  --color-ice-050: var(--ice-050);
+  --color-ink-950: var(--ink-950);
+  --color-gold-500: var(--gold-500);
+  --color-gold-400: var(--gold-400);
+  --color-gold-700: var(--gold-700);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-num: var(--font-num);
+
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   Base
+   ============================================================ */
+* {
+  min-width: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--gold-500) 35%, transparent);
+  color: var(--ink-950);
+}
+
+/* Numbers, scales, phone, email — must not visually reverse under RTL */
+[dir="ltr"],
+.num {
+  font-family: var(--font-num), var(--font-body), sans-serif;
+  font-variant-numeric: tabular-nums lining-nums;
+  unicode-bidi: isolate;
+}
+
+/* ============================================================
+   Typography scale
+   ============================================================ */
+.font-display {
+  font-family: var(--font-display), serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.h1 {
+  font-family: var(--font-display), serif;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  font-size: clamp(2.25rem, 5.2vw, 3.5rem); /* 36 → 56 */
+}
+.h2 {
+  font-family: var(--font-display), serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem); /* 28 → 40 */
+}
+.h3 {
+  font-family: var(--font-display), serif;
+  font-weight: 500;
+  line-height: 1.25;
+  font-size: clamp(1.25rem, 2vw, 1.5rem); /* 20 → 24 */
+}
+.caption {
+  font-size: 0.875rem; /* 14 */
+  line-height: 1.5;
+}
+.eyebrow {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+}
+
+/* Thin gold accent line under section headings */
+.heading-accent {
+  position: relative;
+  display: inline-block;
+  padding-block-end: 0.75rem;
+}
+.heading-accent::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: 0;
+  width: 3.25rem;
+  height: 2px;
+  background: linear-gradient(
+    to inline-end,
+    var(--gold-500),
+    color-mix(in srgb, var(--gold-500) 0%, transparent)
+  );
+}
+.heading-accent--center::after {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  background: var(--gold-500);
+}
+
+/* ============================================================
+   Layout helpers
+   ============================================================ */
+.container-x {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+/* Section surfaces */
+.surface-navy-950 {
+  background: var(--navy-950);
+  color: var(--white);
+}
+.surface-navy-900 {
+  background: var(--navy-900);
+  color: var(--white);
+}
+.surface-ice {
+  background: var(--ice-050);
+  color: var(--ink-950);
+}
+.surface-white {
+  background: var(--white);
+  color: var(--ink-950);
+}
+
+/* ============================================================
+   Liquid Glass buttons
+   ============================================================ */
+.glass-btn {
+  --_bg: rgba(255, 255, 255, 0.1);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: var(--_bg);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 32px rgba(7, 13, 23, 0.35);
+  transition:
+    transform 0.35s var(--ease-brand),
+    box-shadow 0.35s var(--ease-brand),
+    background 0.35s var(--ease-brand);
+}
+
+.glass-btn--primary {
+  --_bg: linear-gradient(
+    135deg,
+    rgba(199, 165, 102, 0.85),
+    rgba(169, 138, 78, 0.75)
+  );
+  border-color: rgba(214, 188, 133, 0.5);
+}
+
+/* Specular sweep — crosses once on hover */
+.glass-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--ease-brand);
+}
+
+@media (hover: hover) {
+  .glass-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+  .glass-btn:hover::after {
+    transform: translateX(120%);
+  }
+}
+.glass-btn:active {
+  transform: scale(0.97);
+}
+
+/* On light backgrounds the secondary variant flips to ink */
+.on-light .glass-btn:not(.glass-btn--primary) {
+  --_bg: rgba(10, 21, 38, 0.06);
+  border-color: rgba(10, 21, 38, 0.18);
+  color: var(--ink-950);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 8px 24px rgba(10, 21, 38, 0.08);
+}
+
+/* Fallback when backdrop-filter is unsupported */
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .glass-btn {
+    background: var(--navy-800);
+  }
+  .glass-btn--primary {
+    background: var(--gold-700);
+  }
+  .on-light .glass-btn:not(.glass-btn--primary) {
+    background: var(--ice-050);
+  }
+}
+
+/* ============================================================
+   Focus & accessibility
+   ============================================================ */
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--steel-300);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: -3.5rem;
+  z-index: 100;
+  background: var(--navy-950);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  transition: transform 0.2s var(--ease-brand);
+}
+.skip-link:focus {
+  transform: translateY(4rem);
+}
+
+/* ============================================================
+   Hero scroll hint
+   ============================================================ */
+@keyframes hint-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+.hint-dot {
+  animation: hint-bounce 1.6s var(--ease-brand) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hint-dot {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Client logo marquee
+   ============================================================ */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 60s linear infinite;
+}
+.marquee-track:hover .marquee {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Two copies sit side by side; shift by exactly one copy. */
+    transform: translateX(-50%);
+  }
+}
+
+.logo-chip {
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition:
+    filter 0.4s var(--ease-brand),
+    opacity 0.4s var(--ease-brand),
+    color 0.4s var(--ease-brand);
+  white-space: nowrap;
+}
+.logo-chip:hover {
+  filter: grayscale(0);
+  opacity: 1;
+  color: var(--steel-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   Motion preferences
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
