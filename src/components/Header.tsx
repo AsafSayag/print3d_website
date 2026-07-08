@@ -11,14 +11,31 @@ const SCROLL_THRESHOLD = 80;
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
 
+  // rAF-driven: tracks the scrolled state and the active section (scroll-spy).
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let raf = 0;
+    let frame = 0;
+    const ids = NAV_ITEMS.map((n) => n.href.slice(1));
+
+    const tick = () => {
+      if (frame++ % 5 === 0) {
+        setScrolled(window.scrollY > SCROLL_THRESHOLD);
+        const line = window.innerHeight * 0.35;
+        let current: string | null = null;
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= line) current = id;
+        }
+        setActive(current);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Lock body scroll while the mobile drawer is open.
@@ -33,15 +50,26 @@ export function Header() {
     <header
       className="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
       style={{
-        background: scrolled ? "rgba(7,13,23,0.85)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px) saturate(140%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(16px) saturate(140%)" : "none",
+        background: scrolled ? "rgba(7,13,23,0.9)" : "transparent",
+        backdropFilter: scrolled ? "blur(18px) saturate(150%)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(18px) saturate(150%)" : "none",
         borderBottom: scrolled
-          ? "1px solid rgba(255,255,255,0.08)"
+          ? "1px solid rgba(199,165,102,0.22)"
           : "1px solid transparent",
+        boxShadow: scrolled ? "0 8px 30px rgba(7,13,23,0.35)" : "none",
       }}
     >
-      <div className="container-x flex items-center justify-between gap-6 h-[72px] md:h-20">
+      {/* Persistent top scrim so the navbar stays defined over the hero */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-full transition-opacity duration-500"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(7,13,23,0.55), rgba(7,13,23,0))",
+          opacity: scrolled ? 0 : 1,
+        }}
+      />
+      <div className="container-x relative flex items-center justify-between gap-6 h-[72px] md:h-20">
         <Logo variant="light" size={24} />
 
         {/* Desktop nav — centered */}
@@ -53,7 +81,10 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white transition-colors"
+              aria-current={
+                active === item.href.slice(1) ? "page" : undefined
+              }
+              className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white aria-[current=page]:text-white transition-colors"
             >
               {item.label}
             </a>

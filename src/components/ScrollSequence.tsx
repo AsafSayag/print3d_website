@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { SEQUENCE } from "@/lib/constants";
 import { SEQUENCE_EYEBROW, SEQUENCE_STAGES } from "@/lib/content";
 
-const FRAME_W = 1120;
-const FRAME_H = 626;
+const FRAME_W = 1600;
+const FRAME_H = 894;
 const ASPECT = `${FRAME_W} / ${FRAME_H}`;
 const LAST = SEQUENCE.totalFrames; // 1-based last file number
 
@@ -195,8 +195,22 @@ export function ScrollSequence() {
       const rect = outer.getBoundingClientRect();
       const vh = window.innerHeight;
       const scrollable = outer.offsetHeight - vh;
-      const progress =
+      const rawProgress =
         scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+
+      // Scrub curve:
+      //  • ease-out over the active region → fast at the start, slowing down as
+      //    the building takes shape in the later frames.
+      //  • a hold at the very end → the last scroll stretch dwells on the final
+      //    frame so the complete building stays on screen before releasing.
+      const hold = SEQUENCE.endHold;
+      let progress: number;
+      if (rawProgress >= 1 - hold) {
+        progress = 1;
+      } else {
+        const t = rawProgress / (1 - hold); // 0..1 over the active region
+        progress = 1 - Math.pow(1 - t, SEQUENCE.easeExp);
+      }
 
       const target = progress * (SEQUENCE.totalFrames - 1);
       // Ease toward target; snap when extremely close to avoid idle churn.
@@ -265,7 +279,10 @@ export function ScrollSequence() {
           className="sticky top-0 flex flex-col items-center justify-center gap-8 overflow-hidden"
           style={{ height: "100svh" }}
         >
-          <p className="eyebrow text-[color:var(--steel-300)]">
+          <p
+            className="eyebrow text-[color:var(--steel-300)]"
+            style={{ fontSize: "1rem", letterSpacing: "0.12em" }}
+          >
             {SEQUENCE_EYEBROW}
           </p>
 
@@ -284,12 +301,12 @@ export function ScrollSequence() {
           </SequenceFrame>
 
           {/* Stage text (cross-fades by scroll progress) */}
-          <div className="h-7 relative w-full text-center">
+          <div className="h-9 relative w-full text-center">
             {SEQUENCE_STAGES.map((st, i) => (
               <span
                 key={i}
-                className="absolute inset-x-0 text-white/70 transition-opacity duration-500"
-                style={{ opacity: stage === i ? 1 : 0 }}
+                className="absolute inset-x-0 text-white/75 transition-opacity duration-500"
+                style={{ opacity: stage === i ? 1 : 0, fontSize: "1.3rem" }}
               >
                 {st.text}
               </span>

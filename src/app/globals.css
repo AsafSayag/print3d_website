@@ -89,29 +89,29 @@ body {
    Typography scale
    ============================================================ */
 .font-display {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-display), sans-serif;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
 .h1 {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-display), sans-serif;
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: -0.015em;
   font-size: clamp(2.25rem, 5.2vw, 3.5rem); /* 36 → 56 */
 }
 .h2 {
-  font-family: var(--font-display), serif;
+  font-family: var(--font-display), sans-serif;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.01em;
   font-size: clamp(1.75rem, 3.6vw, 2.5rem); /* 28 → 40 */
 }
 .h3 {
-  font-family: var(--font-display), serif;
-  font-weight: 500;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
   line-height: 1.25;
   font-size: clamp(1.25rem, 2vw, 1.5rem); /* 20 → 24 */
 }
@@ -301,6 +301,37 @@ body {
 }
 .skip-link:focus {
   transform: translateY(4rem);
+}
+
+/* ============================================================
+   Navbar links — animated gold underline (hover + active)
+   ============================================================ */
+.nav-link {
+  position: relative;
+  padding-block: 6px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--gold-700),
+    var(--gold-400),
+    var(--gold-700)
+  );
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s var(--ease-brand);
+}
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after {
+  transform: scaleX(1);
 }
 
 /* ============================================================

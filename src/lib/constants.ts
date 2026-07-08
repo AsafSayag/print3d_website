@@ -53,6 +53,10 @@ export const MOTION = {
 export const HERO = {
   /** Source duration is 5.04s; 1.45x → ≈3.5s runtime. */
   playbackRate: 1.45,
+  /** Content enters this long after the site loads (independent of the video). */
+  revealDelayMs: 500,
+  /** Pause this many seconds before the natural end to avoid the EOS flash. */
+  freezeLeadSec: 0.12,
   /** Fallback: if the video has not started within this window, reveal anyway. */
   videoTimeoutMs: 2500,
   /** Mobile breakpoint below which the hero shows a static poster (no video). */
@@ -67,9 +71,19 @@ export const SEQUENCE = {
   framePathMobile: (i: number) =>
     `/sequence-mobile/frame_${String(i).padStart(3, "0")}.webp`,
   /** Scroll "cost" of the pinned sequence, in viewport heights. */
-  scrollHeightVh: 320,
+  scrollHeightVh: 360,
   /** Per-rAF easing toward the target frame. */
   smoothing: 0.15,
+  /**
+   * Ease-out exponent for the scrub. >1 makes the start fast and the finish
+   * slow (the building forms gradually toward the end).
+   */
+  easeExp: 2.4,
+  /**
+   * Fraction of scroll at the end that dwells on the final frame, so the
+   * completed building stays on screen for an extra beat before releasing.
+   */
+  endHold: 0.16,
   /** Frames eagerly loaded before the rest stream in the background. */
   eagerCount: 20,
 } as const;

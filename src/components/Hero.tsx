@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { GlassButton } from "./ui/GlassButton";
-import { Logo } from "./ui/Logo";
 import { HERO, MOTION } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
@@ -49,33 +48,49 @@ export function Hero() {
     const onPlaying = () => {
       startedRef.current = true;
     };
-    const onEnded = () => {
-      setFrozen(true); // hold last frame + slow ken-burns
-      setRevealed(true);
+
+    // Freeze on the current frame and hold it with a slow ken-burns.
+    const freeze = () => {
+      if (!video.paused) video.pause();
+      setFrozen(true);
     };
+
+    // Pause a hair BEFORE the natural end so the browser never repaints the
+    // end-of-stream frame — that repaint is what caused the flicker.
+    const onTimeUpdate = () => {
+      if (
+        video.duration &&
+        video.currentTime >= video.duration - HERO.freezeLeadSec
+      ) {
+        video.removeEventListener("timeupdate", onTimeUpdate);
+        freeze();
+      }
+    };
+
     const tryPlay = () => {
       video.playbackRate = HERO.playbackRate;
-      video.play().catch(() => {
-        // Autoplay blocked → reveal over poster.
-        setRevealed(true);
-      });
+      video.play().catch(() => {});
     };
 
     video.addEventListener("playing", onPlaying);
-    video.addEventListener("ended", onEnded);
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("ended", freeze); // safety net
     video.addEventListener("loadeddata", tryPlay);
     if (video.readyState >= 2) tryPlay();
 
-    // Fallback: if the video never starts, don't hold the page hostage.
-    const timeout = window.setTimeout(() => {
-      if (!startedRef.current) setRevealed(true);
-    }, HERO.videoTimeoutMs);
+    // Reveal the content shortly after entering the site — independent of the
+    // video, which keeps playing behind it.
+    const revealTimer = window.setTimeout(
+      () => setRevealed(true),
+      HERO.revealDelayMs,
+    );
 
     return () => {
       video.removeEventListener("playing", onPlaying);
-      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("ended", freeze);
       video.removeEventListener("loadeddata", tryPlay);
-      window.clearTimeout(timeout);
+      window.clearTimeout(revealTimer);
     };
   }, [mode]);
 
@@ -94,8 +109,12 @@ export function Hero() {
             ref={videoRef}
             className="h-full w-full object-cover"
             style={{
-              transform: frozen ? "scale(1.05)" : "scale(1)",
+              transform: frozen
+                ? "translateZ(0) scale(1.05)"
+                : "translateZ(0) scale(1)",
               transition: frozen ? "transform 20s linear" : "none",
+              willChange: "transform",
+              backfaceVisibility: "hidden",
             }}
             muted
             playsInline
@@ -160,27 +179,19 @@ function HeroContent({
 
   return (
     <div className="flex flex-col items-center gap-6 max-w-4xl">
-      <div style={item(0)} className="mb-1">
-        <Logo variant="light" size={58} />
-      </div>
-
-      <p style={item(1)} className="eyebrow text-[color:var(--steel-300)]">
-        {HERO_COPY.eyebrow}
-      </p>
-
-      <h1 style={item(2)} className="h1 text-white max-w-3xl text-balance">
+      <h1 style={item(0)} className="h1 text-white max-w-3xl text-balance">
         {HERO_COPY.h1}
       </h1>
 
       <p
-        style={item(3)}
+        style={item(1)}
         className="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed"
       >
         {HERO_COPY.subtitle}
       </p>
 
       <div
-        style={item(4)}
+        style={item(2)}
         className="flex flex-wrap items-center justify-center gap-4 mt-3"
       >
         <GlassButton href="#contact" variant="primary">

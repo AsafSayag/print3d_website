@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import { Frank_Ruhl_Libre, Assistant, Montserrat } from "next/font/google";
+import { Open_Sans, Assistant, Montserrat } from "next/font/google";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
-/* Display serif — heritage & craft */
-const frankRuhl = Frank_Ruhl_Libre({
+/* Display — Open Sans Bold for all headings */
+const openSans = Open_Sans({
   variable: "--font-display",
   subsets: ["hebrew", "latin"],
-  weight: ["500", "700"],
+  weight: ["600", "700"],
   display: "swap",
   preload: true,
-  adjustFontFallback: true,
 });
 
 /* Body & UI */
@@ -61,7 +60,7 @@ export default function RootLayout({
     <html
       lang="he"
       dir="rtl"
-      className={`${frankRuhl.variable} ${assistant.variable} ${montserrat.variable} h-full`}
+      className={`${openSans.variable} ${assistant.variable} ${montserrat.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <JsonLd />
