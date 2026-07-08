@@ -126,6 +126,15 @@ body {
   letter-spacing: 0.14em;
 }
 
+/* Hero H1 — shrink on small screens so the headline stays on one line */
+@media (max-width: 639px) {
+  .hero-h1 {
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+}
+
 /* Thin gold accent line under section headings */
 .heading-accent {
   position: relative;

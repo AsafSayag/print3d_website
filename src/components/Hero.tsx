@@ -175,21 +175,21 @@ function HeroContent({
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 max-w-4xl mt-8 md:mt-10">
-      <h1 style={item(0)} className="h1 text-white max-w-3xl text-balance">
+    <div className="flex flex-col items-center gap-6 max-w-4xl mt-18 md:mt-22">
+      <h1 style={item(0)} className="h1 hero-h1 text-white max-w-3xl text-balance">
         {HERO_COPY.h1}
       </h1>
 
       <p
         style={item(1)}
-        className="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed"
+        className="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
       >
         {HERO_COPY.subtitle}
       </p>
 
       <div
         style={item(2)}
-        className="flex flex-wrap items-center justify-center gap-4 mt-32 md:mt-40"
+        className="flex flex-wrap items-center justify-center gap-4 mt-26 md:mt-34"
       >
         <GlassButton href="#contact" variant="primary">
           {HERO_COPY.primaryCta}
