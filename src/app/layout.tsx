@@ -60,6 +60,7 @@ export default function RootLayout({
     <html
       lang="he"
       dir="rtl"
+      data-scroll-behavior="smooth"
       className={`${openSans.variable} ${assistant.variable} ${montserrat.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
