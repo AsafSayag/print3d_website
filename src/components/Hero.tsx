@@ -175,7 +175,7 @@ function HeroContent({
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 max-w-4xl">
+    <div className="flex flex-col items-center gap-6 max-w-4xl mt-8 md:mt-10">
       <h1 style={item(0)} className="h1 text-white max-w-3xl text-balance">
         {HERO_COPY.h1}
       </h1>
@@ -189,7 +189,7 @@ function HeroContent({
 
       <div
         style={item(2)}
-        className="flex flex-wrap items-center justify-center gap-4 mt-20 md:mt-28"
+        className="flex flex-wrap items-center justify-center gap-4 mt-32 md:mt-40"
       >
         <GlassButton href="#contact" variant="primary">
           {HERO_COPY.primaryCta}
