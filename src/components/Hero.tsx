@@ -189,7 +189,7 @@ function HeroContent({
 
       <div
         style={item(2)}
-        className="flex flex-wrap items-center justify-center gap-4 mt-10 md:mt-14"
+        className="flex flex-wrap items-center justify-center gap-4 mt-20 md:mt-28"
       >
         <GlassButton href="#contact" variant="primary">
           {HERO_COPY.primaryCta}
