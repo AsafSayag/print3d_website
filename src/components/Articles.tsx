@@ -5,7 +5,7 @@ import { Reveal } from "./ui/Reveal";
 
 // Real model photos, shown in a uniform navy monochrome (duotone) treatment.
 const ARTICLE_IMAGES = [
-  "/projects/neve-gan.jpg",
+  "/projects/neve-gan.webp",
   "/projects/gindi-bait-bapark.jpg",
   "/projects/preshkovsky-tabaa.jpg",
   "/projects/tzavta-shapir.jpg",

@@ -1,6 +1,7 @@
 import { CALLBACK_CTA } from "@/lib/content";
 import { GlassButton } from "./ui/GlassButton";
 import { Reveal } from "./ui/Reveal";
+import { DeferredVideo } from "./ui/DeferredVideo";
 
 // Deterministic particle field (avoids SSR/CSR hydration mismatch).
 const PARTICLES = [
@@ -29,20 +30,16 @@ export function CallbackCta() {
       className="cta-immersive"
       aria-label="הציגו את הפרויקט כאילו הוא כבר נבנה"
     >
-      {/* Background video (drone around building) */}
-      <video
+      {/* Background video (drone around building) — bytes fetched only when
+          the section nears the viewport; the poster paints until then. */}
+      <DeferredVideo
         className="cta-layer h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
         poster="/videos/cta-poster.jpg"
-        aria-hidden="true"
-      >
-        <source src="/videos/cta-loop.webm" type="video/webm" />
-        <source src="/videos/cta-loop.mp4" type="video/mp4" />
-      </video>
+        sources={[
+          { src: "/videos/cta-loop.webm", type: "video/webm" },
+          { src: "/videos/cta-loop.mp4", type: "video/mp4" },
+        ]}
+      />
 
       {/* Overlays */}
       <div className="cta-layer cta-gradient" />

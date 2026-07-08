@@ -5,10 +5,10 @@ import { CountUp } from "./ui/CountUp";
 
 // Six real models from the Print3D archive, with their scales.
 const PROJECTS = [
-  { src: "/projects/neve-gan.jpg", title: "נווה גן", scale: "1:75", span: "row-span-2" },
+  { src: "/projects/neve-gan.webp", title: "נווה גן", scale: "1:75", span: "row-span-2" },
   { src: "/projects/gindi-bait-bapark.jpg", title: "גינדי החזקות · בית בפארק", scale: "1:100", span: "" },
   { src: "/projects/shikun-binui-or-yam.jpg", title: "שיכון ובינוי · אור ים", scale: "1:200", span: "" },
-  { src: "/projects/gindi-tlv.png", title: "גינדי TLV", scale: "1:200", span: "" },
+  { src: "/projects/gindi-tlv.webp", title: "גינדי TLV", scale: "1:200", span: "" },
   { src: "/projects/tzavta-shapir.jpg", title: "צוותא · שפיר", scale: "1:150", span: "" },
   { src: "/projects/preshkovsky-tabaa.jpg", title: "פרשקובסקי · מודל תב״ע", scale: "1:500", span: "" },
 ];
@@ -77,15 +77,17 @@ export function Portfolio() {
                 <div className="portfolio-card-sheen" aria-hidden />
                 <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
                   <div className="portfolio-card-line" aria-hidden />
-                  <div className="mt-3 flex items-end justify-between gap-2">
-                    <span className="text-white font-display text-base md:text-lg leading-tight transition-transform duration-500 ease-[var(--ease-brand)] group-hover:-translate-y-0.5">
-                      {p.title}
-                    </span>
+                  {/* Mobile: badge stacked above the title (long titles wrap
+                      badly beside it); sm+: side by side as before. */}
+                  <div className="mt-3 flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <span
-                      className="num text-[color:var(--gold-400)] text-sm shrink-0 bg-black/30 backdrop-blur px-2 py-0.5 rounded-full border border-white/10 transition-colors duration-500 group-hover:border-[color:var(--gold-700)]"
+                      className="num sm:order-last text-[color:var(--gold-400)] text-sm shrink-0 bg-black/30 backdrop-blur px-2 py-0.5 rounded-full border border-white/10 transition-colors duration-500 group-hover:border-[color:var(--gold-700)]"
                       dir="ltr"
                     >
                       {p.scale}
+                    </span>
+                    <span className="text-white font-display text-base md:text-lg leading-tight transition-transform duration-500 ease-[var(--ease-brand)] group-hover:-translate-y-0.5">
+                      {p.title}
                     </span>
                   </div>
                 </div>

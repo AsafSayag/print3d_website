@@ -6,7 +6,7 @@ import { Reveal } from "./ui/Reveal";
 // Real model photos from the Print3D portfolio, matched to each service.
 const SERVICE_IMAGES = [
   { src: "/projects/gindi-bait-bapark.jpg", alt: "מודל שיווקי למשרד מכירות — גינדי החזקות, בית בפארק" },
-  { src: "/projects/neve-gan.jpg", alt: "מודל מגדל מגורים מואר — נווה גן" },
+  { src: "/projects/neve-gan.webp", alt: "מודל מגדל מגורים מואר — נווה גן" },
   { src: "/projects/preshkovsky-tabaa.jpg", alt: "מודל תב״ע עירוני — פרשקובסקי" },
   { src: "/projects/tzavta-shapir.jpg", alt: "מעמד תצוגה ממותג — צוותא, שפיר" },
 ];

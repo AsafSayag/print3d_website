@@ -14,6 +14,12 @@ export const CONTACT = {
   addressCity: "תל אביב",
   domain: "print3d.ltd",
   siteUrl: "https://www.print3d.ltd",
+  /**
+   * TODO: set the business WhatsApp number in international format
+   * (e.g. "972501234567") to activate the floating WhatsApp button.
+   * While empty, the button scrolls to the contact form instead.
+   */
+  whatsappNumber: "",
 } as const;
 
 /** Brand palette — mirrors the CSS variables declared in globals.css. */

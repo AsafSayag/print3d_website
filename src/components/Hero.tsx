@@ -130,6 +130,7 @@ export function Hero() {
             src="/videos/hero-poster-mobile.jpg"
             alt=""
             aria-hidden="true"
+            fetchPriority="high"
             className="h-full w-full object-cover"
           />
         )}

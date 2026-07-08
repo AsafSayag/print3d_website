@@ -46,6 +46,20 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: CONTACT.siteUrl,
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Print3D — מודלים אדריכליים פיזיים לפרויקטי נדל״ן",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.jpg"],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: CONTACT.siteUrl },
