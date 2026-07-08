@@ -1,6 +1,15 @@
+import Image from "next/image";
 import { ARTICLES } from "@/lib/content";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
+
+// Real model photos, shown in a uniform navy monochrome (duotone) treatment.
+const ARTICLE_IMAGES = [
+  "/projects/neve-gan.jpg",
+  "/projects/gindi-bait-bapark.jpg",
+  "/projects/preshkovsky-tabaa.jpg",
+  "/projects/tzavta-shapir.jpg",
+];
 
 export function Articles() {
   return (
@@ -25,20 +34,33 @@ export function Articles() {
                 href="#articles"
                 className="group flex h-full flex-col rounded-2xl overflow-hidden bg-[color:var(--ice-050)] border border-black/5 transition-transform duration-300 hover:-translate-y-1"
               >
-                <div
-                  className="aspect-[16/10] relative overflow-hidden"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, var(--navy-800), var(--navy-950))",
-                  }}
-                >
-                  <div className="absolute inset-0 opacity-25 [background-image:radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:14px_14px]" />
-                  <span className="absolute bottom-3 start-4 text-white/40 font-[var(--font-num)] text-4xl font-bold" dir="ltr">
+                <div className="aspect-[16/10] relative overflow-hidden bg-[color:var(--navy-900)]">
+                  <Image
+                    src={ARTICLE_IMAGES[i % ARTICLE_IMAGES.length]}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover grayscale transition-transform duration-500 group-hover:scale-[1.05]"
+                  />
+                  {/* Navy duotone tint for a uniform, non-colourful look */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(155deg, rgba(7,13,23,0.55), rgba(18,35,59,0.8))",
+                      mixBlendMode: "multiply",
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                  <span
+                    className="absolute bottom-3 start-4 num text-white/55 text-4xl font-bold"
+                    dir="ltr"
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
                 <div className="p-5 flex flex-col gap-3 flex-1">
-                  <h3 className="font-[var(--font-display)] text-lg leading-snug text-[color:var(--ink-950)] group-hover:text-[color:var(--gold-700)] transition-colors">
+                  <h3 className="font-display text-lg leading-snug text-[color:var(--ink-950)] group-hover:text-[color:var(--gold-700)] transition-colors">
                     {article.title}
                   </h3>
                   <span className="caption text-[color:var(--ink-950)]/50 mt-auto">

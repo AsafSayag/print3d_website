@@ -32,7 +32,7 @@ export function Faq() {
                     onClick={() => setOpen(isOpen ? null : i)}
                     className="w-full flex items-center justify-between gap-4 py-5 text-start"
                   >
-                    <span className="font-[var(--font-display)] text-lg md:text-xl text-[color:var(--ink-950)]">
+                    <span className="font-display text-lg md:text-xl text-[color:var(--ink-950)]">
                       {item.q}
                     </span>
                     <span

@@ -50,22 +50,29 @@ export function Header() {
     <header
       className="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
       style={{
-        background: scrolled ? "rgba(7,13,23,0.9)" : "transparent",
-        backdropFilter: scrolled ? "blur(18px) saturate(150%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(18px) saturate(150%)" : "none",
+        background: scrolled ? "rgba(7,13,23,0.9)" : "rgba(7,13,23,0.28)",
+        backdropFilter: scrolled
+          ? "blur(18px) saturate(150%)"
+          : "blur(10px) saturate(130%)",
+        WebkitBackdropFilter: scrolled
+          ? "blur(18px) saturate(150%)"
+          : "blur(10px) saturate(130%)",
         borderBottom: scrolled
           ? "1px solid rgba(199,165,102,0.22)"
-          : "1px solid transparent",
-        boxShadow: scrolled ? "0 8px 30px rgba(7,13,23,0.35)" : "none",
+          : "1px solid rgba(255,255,255,0.1)",
+        boxShadow: scrolled
+          ? "0 8px 30px rgba(7,13,23,0.35)"
+          : "0 6px 24px rgba(7,13,23,0.25)",
       }}
     >
       {/* Persistent top scrim so the navbar stays defined over the hero */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-full transition-opacity duration-500"
+        className="pointer-events-none absolute inset-x-0 top-0 transition-opacity duration-500"
         style={{
+          height: "180%",
           background:
-            "linear-gradient(to bottom, rgba(7,13,23,0.55), rgba(7,13,23,0))",
+            "linear-gradient(to bottom, rgba(7,13,23,0.72), rgba(7,13,23,0))",
           opacity: scrolled ? 0 : 1,
         }}
       />

@@ -50,7 +50,7 @@ export function WhoFor() {
                 >
                   <path d={ICONS[i]} />
                 </svg>
-                <span className="text-white font-[var(--font-display)] text-lg leading-snug">
+                <span className="text-white font-display text-lg leading-snug">
                   {item}
                 </span>
               </div>

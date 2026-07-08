@@ -33,27 +33,27 @@ export const SEQUENCE_STAGES = [
 ] as const;
 export const SEQUENCE_EYEBROW = "כך נבנה מודל";
 
-export const CLIENT_LOGOS = [
-  "גינדי החזקות",
-  "שיכון ובינוי",
-  "אשדר",
-  "אפריקה ישראל מגורים",
-  "אלקטרה בנייה",
-  "י.ח. דמרי",
-  "אקרו",
-  "מצלאוי",
-  "בוני התיכון",
-  "אאורה",
-  'קרסו נדל"ן',
-  "ישראל קנדה",
-  "אזורים",
-  "פרשקובסקי",
-  "נתנאל גרופ",
-  "לוינשטין נכסים",
-  "אלמוגים",
-  "צרפתי שמעון",
-] as const;
-export const CLIENTS_HEADING = "מהימנים על ידי היזמים המובילים בישראל";
+export type ClientLogo = { src: string; alt: string };
+
+export const CLIENT_LOGOS: ClientLogo[] = [
+  { src: "/clients/gindi-holdings.webp", alt: "גינדי החזקות" },
+  { src: "/clients/shikun-binui.webp", alt: "שיכון ובינוי" },
+  { src: "/clients/ashdar.webp", alt: "אשדר" },
+  { src: "/clients/afrika-israel.webp", alt: "אפריקה ישראל" },
+  { src: "/clients/electra-magurim.webp", alt: "אלקטרה מגורים" },
+  { src: "/clients/canada-israel.webp", alt: "קנדה ישראל" },
+  { src: "/clients/azorim.webp", alt: "אזורים" },
+  { src: "/clients/gindi-investments.webp", alt: "גינדי השקעות" },
+  { src: "/clients/elad-magurim.webp", alt: "אלעד מגורים" },
+  { src: "/clients/tzemach-hammerman.webp", alt: "צמח המרמן" },
+  { src: "/clients/bsr.webp", alt: "BSR" },
+  { src: "/clients/rothstein.webp", alt: "רוטשטיין" },
+  { src: "/clients/shapir.webp", alt: "שפיר" },
+  { src: "/clients/hagag.webp", alt: "חג'ג'" },
+  { src: "/clients/guy-doron-levi.webp", alt: "גיא ודורון לוי" },
+  { src: "/clients/avisror.webp", alt: "אביסרור" },
+];
+export const CLIENTS_HEADING = "היזמים המובילים בישראל בוחרים בנו";
 
 export const WHY = {
   heading: "למה print3d.ltd",

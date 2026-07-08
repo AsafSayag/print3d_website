@@ -38,7 +38,7 @@ export function Portfolio() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-2">
-                <span className="text-white font-[var(--font-display)] text-base md:text-lg leading-tight">
+                <span className="text-white font-display text-base md:text-lg leading-tight">
                   {p.title}
                 </span>
                 <span

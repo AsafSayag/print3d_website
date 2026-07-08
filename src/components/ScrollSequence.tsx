@@ -276,41 +276,62 @@ export function ScrollSequence() {
       >
         {/* Pinned viewport */}
         <div
-          className="sticky top-0 flex flex-col items-center justify-center gap-8 overflow-hidden"
+          className="sticky top-0 relative overflow-hidden"
           style={{ height: "100svh" }}
         >
-          <p
-            className="eyebrow text-[color:var(--steel-300)]"
-            style={{ fontSize: "1rem", letterSpacing: "0.12em" }}
+          {/* Caption — a heading anchored top-right, clear of the model */}
+          <div
+            className="absolute inset-x-0 container-x text-start z-10 pointer-events-none"
+            style={{ top: "clamp(4.5rem, 13vh, 9rem)" }}
           >
-            {SEQUENCE_EYEBROW}
-          </p>
+            <p
+              className="mb-2 font-semibold text-[color:var(--gold-500)]"
+              style={{ fontSize: "0.875rem", letterSpacing: "0.28em" }}
+            >
+              {SEQUENCE_EYEBROW}
+            </p>
+            {/* Stage text (cross-fades by scroll progress) */}
+            <div
+              className="relative"
+              style={{ height: "clamp(2.5rem, 6vw, 3.5rem)" }}
+            >
+              {SEQUENCE_STAGES.map((st, i) => (
+                <span
+                  key={i}
+                  className="absolute text-white transition-opacity duration-500"
+                  style={{
+                    insetInlineStart: 0,
+                    top: 0,
+                    opacity: stage === i ? 1 : 0,
+                    fontFamily: "var(--font-display), sans-serif",
+                    fontSize: "clamp(1.6rem, 3.8vw, 2.6rem)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.1,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {st.text}
+                </span>
+              ))}
+            </div>
+          </div>
 
-          <SequenceFrame>
-            <canvas
-              ref={canvasRef}
-              className="h-full w-full block"
-              style={{ opacity: ready ? 1 : 0, transition: "opacity 0.4s ease" }}
-              aria-hidden="true"
-            />
-            {!ready && (
-              <div className="absolute inset-0 grid place-items-center">
-                <span className="caption text-white/40">טוען…</span>
-              </div>
-            )}
-          </SequenceFrame>
-
-          {/* Stage text (cross-fades by scroll progress) */}
-          <div className="h-9 relative w-full text-center">
-            {SEQUENCE_STAGES.map((st, i) => (
-              <span
-                key={i}
-                className="absolute inset-x-0 text-white/75 transition-opacity duration-500"
-                style={{ opacity: stage === i ? 1 : 0, fontSize: "1.3rem" }}
-              >
-                {st.text}
-              </span>
-            ))}
+          {/* Model — centred in the viewport */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <SequenceFrame>
+              <canvas
+                ref={canvasRef}
+                className="h-full w-full block"
+                style={{ opacity: ready ? 1 : 0, transition: "opacity 0.4s ease" }}
+                aria-hidden="true"
+              />
+              {!ready && (
+                <div className="absolute inset-0 grid place-items-center">
+                  <span className="caption text-white/40">טוען…</span>
+                </div>
+              )}
+            </SequenceFrame>
           </div>
         </div>
       </div>

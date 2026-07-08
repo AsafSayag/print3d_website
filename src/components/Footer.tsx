@@ -53,7 +53,7 @@ export function Footer() {
 
           {/* Column 4 — CTA */}
           <div>
-            <h3 className="font-[var(--font-display)] text-lg text-white mb-4">
+            <h3 className="font-display text-lg text-white mb-4">
               {FOOTER.ctaTitle}
             </h3>
             <GlassButton href="#contact" variant="primary">
@@ -82,7 +82,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <h3 className="font-[var(--font-display)] text-lg text-white mb-4">
+      <h3 className="font-display text-lg text-white mb-4">
         {title}
       </h3>
       <ul className="space-y-2.5">{children}</ul>

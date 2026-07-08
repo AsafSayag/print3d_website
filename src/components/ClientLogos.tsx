@@ -1,41 +1,125 @@
-import { CLIENT_LOGOS, CLIENTS_HEADING } from "@/lib/content";
-import { Reveal } from "./ui/Reveal";
+"use client";
 
+import { useEffect, useRef } from "react";
+import { CLIENT_LOGOS, CLIENTS_HEADING } from "@/lib/content";
+
+const AUTO_SPEED = 0.5; // px per frame
+const RESUME_DELAY = 1600; // ms of quiet before auto-scroll resumes
+
+/**
+ * Client-logo marquee. Auto-scrolls on its own, but the user can also scroll or
+ * drag it horizontally — auto-scroll pauses during interaction and resumes.
+ * The list is duplicated twice so scrollLeft can wrap seamlessly both ways.
+ * The scroller runs LTR to keep scrollLeft behaviour consistent across browsers.
+ */
 export function ClientLogos() {
-  // Duplicate the list so the marquee can loop seamlessly (-50% shift).
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pauseUntil = useRef(0);
+  const drag = useRef<{ active: boolean; startX: number; startLeft: number }>({
+    active: false,
+    startX: 0,
+    startLeft: 0,
+  });
+
   const loop = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
+  const count = CLIENT_LOGOS.length;
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const track = trackRef.current;
+    if (!scroller || !track) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    const now = () => performance.now();
+    const pause = () => (pauseUntil.current = now() + RESUME_DELAY);
+    const half = () => track.scrollWidth / 2;
+
+    const wrap = () => {
+      const h = half();
+      if (h <= 0) return;
+      if (scroller.scrollLeft >= h) scroller.scrollLeft -= h;
+      else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
+    };
+
+    const tick = () => {
+      if (now() >= pauseUntil.current && !drag.current.active) {
+        scroller.scrollLeft += AUTO_SPEED;
+      }
+      wrap();
+      raf = requestAnimationFrame(tick);
+    };
+
+    // Pause on genuine user input only. (Do NOT listen to the "scroll" event —
+    // the auto-scroll itself fires it, which would pause the auto-scroll.)
+    const onWheel = () => pause();
+
+    // Pointer drag-to-scroll (mouse).
+    const onPointerDown = (e: PointerEvent) => {
+      drag.current = {
+        active: true,
+        startX: e.clientX,
+        startLeft: scroller.scrollLeft,
+      };
+      pause();
+      scroller.setPointerCapture(e.pointerId);
+      scroller.classList.add("is-dragging");
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!drag.current.active) return;
+      scroller.scrollLeft = drag.current.startLeft - (e.clientX - drag.current.startX);
+    };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!drag.current.active) return;
+      drag.current.active = false;
+      pause();
+      try {
+        scroller.releasePointerCapture(e.pointerId);
+      } catch {}
+      scroller.classList.remove("is-dragging");
+    };
+
+    scroller.addEventListener("wheel", onWheel, { passive: true });
+    scroller.addEventListener("touchstart", pause, { passive: true });
+    scroller.addEventListener("pointerdown", onPointerDown);
+    scroller.addEventListener("pointermove", onPointerMove);
+    scroller.addEventListener("pointerup", onPointerUp);
+    scroller.addEventListener("pointercancel", onPointerUp);
+
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      scroller.removeEventListener("wheel", onWheel);
+      scroller.removeEventListener("touchstart", pause);
+      scroller.removeEventListener("pointerdown", onPointerDown);
+      scroller.removeEventListener("pointermove", onPointerMove);
+      scroller.removeEventListener("pointerup", onPointerUp);
+      scroller.removeEventListener("pointercancel", onPointerUp);
+    };
+  }, []);
 
   return (
-    <section id="clients" className="surface-white section" aria-label="לקוחות">
-      <div className="container-x">
-        <Reveal>
-          <h2 className="h3 text-center text-[color:var(--ink-950)]/80 font-normal mb-12">
-            {CLIENTS_HEADING}
-          </h2>
-        </Reveal>
-      </div>
+    <section id="clients" className="framer-logos-section" aria-label="לקוחות">
+      <p className="framer-logos-subtitle">{CLIENTS_HEADING}</p>
 
-      <div
-        className="marquee-track relative overflow-hidden"
-        style={{
-          maskImage:
-            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-          WebkitMaskImage:
-            "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-        }}
-      >
-        <ul className="marquee items-center gap-12 px-6" dir="ltr">
-          {loop.map((name, i) => (
-            <li
-              key={i}
-              aria-hidden={i >= CLIENT_LOGOS.length}
-              className="logo-chip font-num text-[color:var(--ink-950)] font-semibold text-lg md:text-xl"
-              dir="rtl"
-            >
-              {name}
-            </li>
-          ))}
-        </ul>
+      <div className="framer-marquee-container">
+        <div className="framer-scroller" ref={scrollerRef} dir="ltr">
+          <div className="framer-marquee-track" ref={trackRef}>
+            {loop.map((logo, i) => (
+              <div className="framer-logo-box" key={i}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logo.src}
+                  alt={i < count ? logo.alt : ""}
+                  aria-hidden={i >= count}
+                  loading="lazy"
+                  draggable={false}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
