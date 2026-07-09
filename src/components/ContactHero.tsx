@@ -46,12 +46,13 @@ export function ContactHero({ eyebrow, title, description, breadcrumbs }: Props)
       <div className="cta-layer cta-grid" />
       <div className="cta-layer cta-noise" />
       {/* Extra scrim — the headline sits directly on the video (no glass card),
-          so it needs a stronger, reading-side gradient to stay legible. */}
+          so it needs a reading-side gradient to stay legible. Kept light so the
+          drone footage reads clearly behind the text. */}
       <div
         className="cta-layer"
         style={{
           background:
-            "linear-gradient(180deg, rgba(7,13,23,0.9) 0%, rgba(7,13,23,0.62) 42%, rgba(7,13,23,0.9) 100%), linear-gradient(270deg, rgba(7,13,23,0.72) 0%, rgba(7,13,23,0.15) 62%)",
+            "linear-gradient(180deg, rgba(7,13,23,0.55) 0%, rgba(7,13,23,0.18) 45%, rgba(7,13,23,0.6) 100%), linear-gradient(270deg, rgba(7,13,23,0.5) 0%, rgba(7,13,23,0.05) 60%)",
         }}
       />
 
@@ -73,8 +74,12 @@ export function ContactHero({ eyebrow, title, description, breadcrumbs }: Props)
         ))}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 container-x">
+      {/* Content — a soft text-shadow keeps the headline legible over the
+          brighter video without darkening the footage itself. */}
+      <div
+        className="relative z-10 container-x"
+        style={{ textShadow: "0 2px 22px rgba(7,13,23,0.95), 0 1px 6px rgba(7,13,23,0.9), 0 0 3px rgba(7,13,23,0.75)" }}
+      >
         <Reveal className="mb-6 md:mb-8">
           <Breadcrumbs items={breadcrumbs} />
         </Reveal>
