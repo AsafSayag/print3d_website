@@ -2,8 +2,8 @@ import { CONTACT } from "@/lib/constants";
 import { FAQ } from "@/lib/content";
 
 /**
- * Structured data for SEO: LocalBusiness (which extends Organization)
- * plus a FAQPage built from the on-page questions.
+ * Site-wide structured data: LocalBusiness (which extends Organization).
+ * Emitted in the root layout, so it applies to every page.
  */
 export function JsonLd() {
   const business = {
@@ -24,6 +24,19 @@ export function JsonLd() {
     areaServed: "IL",
   };
 
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(business) }}
+    />
+  );
+}
+
+/**
+ * FAQPage structured data. Rendered only on the homepage, where the matching
+ * questions are actually displayed — required for Google's FAQ rich results.
+ */
+export function FaqJsonLd() {
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -35,15 +48,9 @@ export function JsonLd() {
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(business) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
+    />
   );
 }

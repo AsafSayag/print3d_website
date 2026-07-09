@@ -714,6 +714,172 @@ body {
 }
 
 /* ============================================================
+   Legal Center — premium document surfaces
+   ============================================================ */
+/* Dark architectural hero shared by legal + utility pages */
+.legal-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      120% 90% at 82% 0%,
+      rgba(110, 147, 184, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      80% 60% at 8% 100%,
+      rgba(199, 165, 102, 0.06),
+      transparent 60%
+    ),
+    var(--navy-950);
+  color: var(--white);
+}
+/* Fine engineering grid, faded toward the edges — the architectural signature */
+.legal-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(166, 195, 220, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(166, 195, 220, 0.08) 1px, transparent 1px);
+  background-size: 54px 54px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, black, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, black, transparent 78%);
+}
+
+/* Readable, well-spaced legal prose */
+.legal-prose {
+  max-width: 68ch;
+}
+.legal-prose p {
+  margin-block: 0 1.15em;
+  color: color-mix(in srgb, var(--ink-950) 86%, transparent);
+}
+.legal-prose > *:last-child {
+  margin-block-end: 0;
+}
+.legal-prose strong {
+  font-weight: 600;
+  color: var(--ink-950);
+}
+.legal-prose ul {
+  margin-block: 0 1.15em;
+  list-style: none;
+  padding: 0;
+}
+.legal-prose li {
+  position: relative;
+  padding-inline-start: 1.4rem;
+  margin-block-end: 0.6em;
+}
+.legal-prose li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  background: var(--gold-500);
+}
+.legal-prose a {
+  color: var(--gold-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-prose a:hover {
+  color: var(--gold-500);
+}
+
+/* Table-of-contents active state (desktop scroll-spy) */
+.toc-link {
+  position: relative;
+  display: block;
+  padding: 0.4rem 0 0.4rem 0.9rem;
+  color: color-mix(in srgb, var(--ink-950) 55%, transparent);
+  border-inline-start: 2px solid color-mix(in srgb, var(--ink-950) 10%, transparent);
+  transition:
+    color 0.3s var(--ease-brand),
+    border-color 0.3s var(--ease-brand);
+  line-height: 1.4;
+}
+.toc-link:hover {
+  color: var(--ink-950);
+}
+.toc-link[aria-current="true"] {
+  color: var(--ink-950);
+  font-weight: 600;
+  border-inline-start-color: var(--gold-500);
+}
+
+/* Fade + rise entrance for utility pages (404 / success) */
+@keyframes legal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.legal-rise {
+  animation: legal-rise 0.7s var(--ease-brand) both;
+}
+
+/* Animated success check — stroke draws in */
+@keyframes check-ring {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes check-mark {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.success-ring {
+  stroke-dasharray: 172;
+  stroke-dashoffset: 172;
+  animation: check-ring 0.7s var(--ease-brand) 0.15s forwards;
+}
+.success-mark {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: check-mark 0.4s var(--ease-brand) 0.75s forwards;
+}
+
+/* Oversized 404 numeral */
+.error-code {
+  font-family: var(--font-num), var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-size: clamp(6rem, 22vw, 13rem);
+  background: linear-gradient(
+    180deg,
+    var(--white) 0%,
+    var(--steel-300) 55%,
+    color-mix(in srgb, var(--steel-500) 70%, transparent) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .success-ring,
+  .success-mark {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ============================================================
    Motion preferences
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {

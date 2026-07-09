@@ -11,10 +11,12 @@ import { Articles } from "@/components/Articles";
 import { Faq } from "@/components/Faq";
 import { ContactCta } from "@/components/ContactCta";
 import { Footer } from "@/components/Footer";
+import { FaqJsonLd } from "@/components/JsonLd";
 
 export default function Home() {
   return (
     <>
+      <FaqJsonLd />
       <a href="#main" className="skip-link">
         דלגו לתוכן הראשי
       </a>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { useReducedMotion } from "framer-motion";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { WhatsAppButton } from "./ui/WhatsAppButton";
@@ -15,6 +16,13 @@ export function Header() {
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+
+  // On the homepage the nav uses in-page hash anchors (with scroll-spy); from any
+  // other route those same targets are reached by prefixing the homepage path, so
+  // the header stays functional site-wide without changing homepage behaviour.
+  const toHome = (hash: string) => (onHome ? hash : `/${hash}`);
 
   // rAF-driven: tracks the scrolled state and the active section (scroll-spy).
   useEffect(() => {
@@ -48,6 +56,7 @@ export function Header() {
   }, [open]);
 
   return (
+    <>
     <header
       className="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
       style={{
@@ -88,9 +97,9 @@ export function Header() {
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={toHome(item.href)}
               aria-current={
-                active === item.href.slice(1) ? "page" : undefined
+                onHome && active === item.href.slice(1) ? "page" : undefined
               }
               className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white aria-[current=page]:text-white transition-colors"
             >
@@ -101,11 +110,11 @@ export function Header() {
 
         {/* End cluster (left under RTL): WhatsApp + CTA (desktop) + hamburger */}
         <div className="flex items-center gap-2 md:gap-3">
-          <WhatsAppButton />
+          <WhatsAppButton contactHref={toHome("#contact")} />
 
           <div className="hidden lg:block">
             <GlassButton
-              href="#contact"
+              href={toHome("#contact")}
               variant="primary"
               className="!py-2.5 !px-5 !text-[15px]"
             >
@@ -137,46 +146,67 @@ export function Header() {
           </button>
         </div>
       </div>
-
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-drawer"
-            className="lg:hidden fixed inset-0 top-[72px] z-40"
-            initial={reduce ? undefined : { opacity: 0 }}
-            animate={reduce ? undefined : { opacity: 1 }}
-            exit={reduce ? undefined : { opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ background: "rgba(7,13,23,0.97)", backdropFilter: "blur(12px)" }}
-          >
-            <nav
-              aria-label="ניווט ראשי"
-              className="container-x flex flex-col gap-1 pt-8"
-            >
-              {NAV_ITEMS.map((item, i) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="h1-serif text-2xl text-white/90 py-3 border-b border-white/10"
-                  initial={reduce ? undefined : { opacity: 0, y: 12 }}
-                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * i, duration: 0.35 }}
-                  style={{ fontFamily: "var(--font-display), serif" }}
-                >
-                  {item.label}
-                </motion.a>
-              ))}
-              <div className="pt-6">
-                <GlassButton href="#contact" variant="primary" onClick={() => setOpen(false)}>
-                  {HERO_COPY.primaryCta}
-                </GlassButton>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
+
+      {/* Mobile drawer — rendered OUTSIDE <header> so its fixed positioning is
+          viewport-relative (inside the header, whose backdrop-filter makes it
+          the containing block, the drawer collapsed to zero height).
+
+          Kept permanently mounted and toggled purely via CSS. An AnimatePresence
+          version left the panel mounted at opacity 0 after closing, where — now
+          that it spans the full viewport — it silently blocked every tap on the
+          page. pointer-events:none + delayed visibility make "closed" inert. */}
+      <div
+        id="mobile-drawer"
+        className="lg:hidden fixed inset-x-0 top-[72px] bottom-0 z-40"
+        aria-hidden={!open}
+        style={{
+          // Frosted glass: a strong dark tint obscures the hero even where
+          // backdrop-filter is unavailable, while the blur adds the premium
+          // frost on devices that support it.
+          background: "rgba(9, 16, 28, 0.9)",
+          backdropFilter: "blur(28px) saturate(140%)",
+          WebkitBackdropFilter: "blur(28px) saturate(140%)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          visibility: open ? "visible" : "hidden",
+          transition: reduce
+            ? "none"
+            : `opacity 0.3s var(--ease-brand), visibility 0s linear ${open ? "0s" : "0.3s"}`,
+        }}
+      >
+        <nav
+          aria-label="ניווט ראשי"
+          className="container-x flex flex-col gap-1 pt-8"
+        >
+          {NAV_ITEMS.map((item, i) => (
+            <a
+              key={item.href}
+              href={toHome(item.href)}
+              onClick={() => setOpen(false)}
+              tabIndex={open ? 0 : -1}
+              className="text-2xl text-white/90 py-3 border-b border-white/10"
+              style={{
+                fontFamily: "var(--font-display), serif",
+                opacity: open ? 1 : 0,
+                transform: open ? "none" : "translateY(12px)",
+                transition: reduce
+                  ? "none"
+                  : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * i + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * i + 0.05 : 0}s`,
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+          <div className="pt-6">
+            <GlassButton href={toHome("#contact")} variant="primary" onClick={() => setOpen(false)}>
+              {HERO_COPY.primaryCta}
+            </GlassButton>
+          </div>
+        </nav>
+      </div>
+    </>
   );
 }

@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 import { FOOTER } from "@/lib/content";
+import { LEGAL_LINKS } from "@/lib/legal";
 
 export function Footer() {
   return (
@@ -62,11 +64,22 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-white/50">
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-white/50">
           <span dir="ltr">{FOOTER.copyright}</span>
-          <a href="#" className="hover:text-white/80 transition-colors">
-            {FOOTER.a11yLink}
-          </a>
+          <nav aria-label="קישורים משפטיים">
+            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="hover:text-white/80 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

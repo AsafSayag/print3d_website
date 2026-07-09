@@ -5,11 +5,18 @@ import { CONTACT } from "@/lib/constants";
  * While CONTACT.whatsappNumber is empty it links to the contact form; once a
  * number is set it opens a WhatsApp chat directly.
  */
-export function WhatsAppButton({ className }: { className?: string }) {
+export function WhatsAppButton({
+  className,
+  contactHref = "#contact",
+}: {
+  className?: string;
+  /** Fallback target used while no WhatsApp number is configured. */
+  contactHref?: string;
+}) {
   const hasNumber = CONTACT.whatsappNumber.length > 0;
   const href = hasNumber
     ? `https://wa.me/${CONTACT.whatsappNumber}`
-    : "#contact";
+    : contactHref;
 
   return (
     <a
