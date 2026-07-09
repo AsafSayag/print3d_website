@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { GlassButton } from "./ui/GlassButton";
-import { HERO, MOTION } from "@/lib/constants";
+import { HERO, MOTION, CONTACT } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
 type Mode = "loading" | "video" | "poster";
@@ -191,7 +191,7 @@ function HeroContent({
         style={item(2)}
         className="flex flex-wrap items-center justify-center gap-4 mt-26 md:mt-34"
       >
-        <GlassButton href="#contact" variant="primary">
+        <GlassButton href={CONTACT.contactPath} variant="primary">
           {HERO_COPY.primaryCta}
         </GlassButton>
         <GlassButton href="#portfolio" variant="secondary">

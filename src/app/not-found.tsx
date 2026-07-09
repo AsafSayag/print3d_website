@@ -41,7 +41,7 @@ export default function NotFound() {
             <GlassButton href="/" variant="primary">
               חזרה לעמוד הבית
             </GlassButton>
-            <GlassButton href="/#contact" variant="secondary">
+            <GlassButton href="/contact" variant="secondary">
               צור קשר
             </GlassButton>
           </div>

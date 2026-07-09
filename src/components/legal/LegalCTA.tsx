@@ -18,7 +18,7 @@ export function LegalCTA() {
         </Reveal>
         <Reveal delay={0.1}>
           <div className="mt-8 flex justify-center">
-            <GlassButton href="/#contact" variant="primary">
+            <GlassButton href="/contact" variant="primary">
               {LEGAL_CTA.button}
             </GlassButton>
           </div>

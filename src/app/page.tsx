@@ -6,6 +6,7 @@ import { CallbackCta } from "@/components/CallbackCta";
 import { WhySection } from "@/components/WhySection";
 import { Services } from "@/components/Services";
 import { Portfolio } from "@/components/Portfolio";
+import { ContactBand } from "@/components/ContactBand";
 import { WhoFor } from "@/components/WhoFor";
 import { Articles } from "@/components/Articles";
 import { Faq } from "@/components/Faq";
@@ -29,6 +30,7 @@ export default function Home() {
         <WhySection />
         <Services />
         <Portfolio />
+        <ContactBand />
         <WhoFor />
         <Articles />
         <Faq />

@@ -51,6 +51,14 @@ export function Footer() {
                 {item.label}
               </FooterLink>
             ))}
+            <li>
+              <Link
+                href={CONTACT.contactPath}
+                className="text-white/65 hover:text-white text-sm transition-colors"
+              >
+                צור קשר
+              </Link>
+            </li>
           </FooterColumn>
 
           {/* Column 4 — CTA */}
@@ -58,7 +66,7 @@ export function Footer() {
             <h3 className="font-display text-lg text-white mb-4">
               {FOOTER.ctaTitle}
             </h3>
-            <GlassButton href="#contact" variant="primary">
+            <GlassButton href={CONTACT.contactPath} variant="primary">
               {FOOTER.ctaButton}
             </GlassButton>
           </div>

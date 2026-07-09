@@ -144,6 +144,37 @@ export const CONTACT_CTA = {
   success: "תודה! נחזור אליכם תוך יום עסקים.",
 } as const;
 
+export const HOME_CONTACT_BAND = {
+  eyebrow: "מוכנים להתחיל?",
+  title: "בואו נבנה את המודל הבא שלכם",
+  text: "ספרו לנו על הפרויקט ונחזור אליכם עם הצעה מסודרת תוך יום עסקים.",
+  button: "צור קשר",
+} as const;
+
+export const CONTACT_PAGE = {
+  eyebrow: "צור קשר",
+  title: "בואו נדבר על הפרויקט הבא שלכם",
+  subtitle:
+    "צוות Print3D כאן כדי ללוות אתכם משלב הרעיון ועד המודל שעומד במשרד המכירות. השאירו פרטים ונחזור אליכם עם הצעה מסודרת תוך יום עסקים.",
+  detailsTitle: "פרטי החברה",
+  detailsSubtitle: "נשמח לענות על כל שאלה — בטלפון, במייל או פנים אל פנים.",
+  formTitle: "השאירו פרטים",
+  formSubtitle: "מלאו את הטופס ונחזור אליכם בהקדם.",
+  labels: {
+    company: "שם החברה",
+    address: "כתובת",
+    phone: "טלפון",
+    email: 'דוא"ל',
+  },
+  companyName: "Print3D — מודלים אדריכליים",
+  map: {
+    eyebrow: "המשרד שלנו",
+    title: "איך מגיעים אלינו",
+    subtitle: "הסטודיו והייצור שלנו ממוקמים בדרך בן צבי 84, תל אביב.",
+    button: "פתחו ב-Google Maps",
+  },
+} as const;
+
 export const FOOTER = {
   tagline: "מודלים אדריכליים — ייצור מתקדם וגימור יד אומן",
   columns: {

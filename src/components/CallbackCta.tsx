@@ -1,4 +1,5 @@
 import { CALLBACK_CTA } from "@/lib/content";
+import { CONTACT } from "@/lib/constants";
 import { GlassButton } from "./ui/GlassButton";
 import { Reveal } from "./ui/Reveal";
 import { DeferredVideo } from "./ui/DeferredVideo";
@@ -75,7 +76,7 @@ export function CallbackCta() {
               {CALLBACK_CTA.subtitle}
             </p>
             <div className="mt-9 flex justify-center">
-              <GlassButton href="#contact" variant="primary">
+              <GlassButton href={CONTACT.contactPath} variant="primary">
                 {CALLBACK_CTA.button}
               </GlassButton>
             </div>

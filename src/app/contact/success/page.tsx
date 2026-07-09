@@ -73,7 +73,7 @@ export default function ContactSuccessPage() {
             <GlassButton href="/" variant="primary">
               חזרה לעמוד הבית
             </GlassButton>
-            <GlassButton href="/#contact" variant="secondary">
+            <GlassButton href="/contact" variant="secondary">
               צור קשר
             </GlassButton>
           </div>

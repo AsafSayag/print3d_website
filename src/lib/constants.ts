@@ -14,6 +14,13 @@ export const CONTACT = {
   addressCity: "תל אביב",
   domain: "print3d.ltd",
   siteUrl: "https://www.print3d.ltd",
+  /** Canonical destination for every contact / get-a-quote CTA across the site. */
+  contactPath: "/contact",
+  /** Google Maps — search link (opens the app/site) and embeddable iframe URL. */
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=%D7%93%D7%A8%D7%9A%20%D7%91%D7%9F%20%D7%A6%D7%91%D7%99%2084%20%D7%AA%D7%9C%20%D7%90%D7%91%D7%99%D7%91",
+  mapsEmbedUrl:
+    "https://www.google.com/maps?q=%D7%93%D7%A8%D7%9A%20%D7%91%D7%9F%20%D7%A6%D7%91%D7%99%2084%20%D7%AA%D7%9C%20%D7%90%D7%91%D7%99%D7%91&output=embed",
   /**
    * TODO: set the business WhatsApp number in international format
    * (e.g. "972501234567") to activate the floating WhatsApp button.

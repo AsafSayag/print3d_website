@@ -6,7 +6,7 @@ import { useReducedMotion } from "framer-motion";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { WhatsAppButton } from "./ui/WhatsAppButton";
-import { NAV_ITEMS } from "@/lib/constants";
+import { NAV_ITEMS, CONTACT } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
 const SCROLL_THRESHOLD = 80;
@@ -106,15 +106,22 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <a
+            href={CONTACT.contactPath}
+            aria-current={pathname === CONTACT.contactPath ? "page" : undefined}
+            className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white aria-[current=page]:text-white transition-colors"
+          >
+            צור קשר
+          </a>
         </nav>
 
         {/* End cluster (left under RTL): WhatsApp + CTA (desktop) + hamburger */}
         <div className="flex items-center gap-2 md:gap-3">
-          <WhatsAppButton contactHref={toHome("#contact")} />
+          <WhatsAppButton contactHref={CONTACT.contactPath} />
 
           <div className="hidden lg:block">
             <GlassButton
-              href={toHome("#contact")}
+              href={CONTACT.contactPath}
               variant="primary"
               className="!py-2.5 !px-5 !text-[15px]"
             >
@@ -200,8 +207,25 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <a
+            href={CONTACT.contactPath}
+            onClick={() => setOpen(false)}
+            tabIndex={open ? 0 : -1}
+            aria-current={pathname === CONTACT.contactPath ? "page" : undefined}
+            className="text-2xl text-white/90 py-3 border-b border-white/10"
+            style={{
+              fontFamily: "var(--font-display), serif",
+              opacity: open ? 1 : 0,
+              transform: open ? "none" : "translateY(12px)",
+              transition: reduce
+                ? "none"
+                : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s`,
+            }}
+          >
+            צור קשר
+          </a>
           <div className="pt-6">
-            <GlassButton href={toHome("#contact")} variant="primary" onClick={() => setOpen(false)}>
+            <GlassButton href={CONTACT.contactPath} variant="primary" onClick={() => setOpen(false)}>
               {HERO_COPY.primaryCta}
             </GlassButton>
           </div>
