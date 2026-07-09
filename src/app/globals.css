@@ -194,6 +194,47 @@ body {
 }
 
 /* ============================================================
+   Mobile "show all" reveal — trims long grids on phones (projects,
+   articles) while keeping the desktop layout untouched. Pure CSS via a
+   visually-hidden checkbox toggled by a <label> button. No JS.
+   ============================================================ */
+.more-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+/* Items collapsed on small screens until the toggle is checked */
+.collapse-sm {
+  display: none;
+}
+.more-btn-wrap {
+  display: flex;
+}
+@media (min-width: 640px) {
+  .collapse-sm {
+    display: block;
+  }
+  .more-btn-wrap {
+    display: none;
+  }
+}
+/* Toggle on: reveal the collapsed items and hide the button (mobile only —
+   harmless on desktop where these are already block / hidden). */
+.more-toggle:checked ~ .collapse-host .collapse-sm {
+  display: block;
+}
+.more-toggle:checked ~ .more-btn-wrap {
+  display: none;
+}
+/* Keyboard focus ring on the label button */
+.more-toggle:focus-visible ~ .more-btn-wrap .more-btn {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+
+/* ============================================================
    Liquid Glass buttons
    ============================================================ */
 .glass-btn {
@@ -893,4 +934,282 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* ============================================================
+   Floating WhatsApp button — physical bottom-right, all pages
+   ============================================================ */
+.wa-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 55;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  background: #25d366;
+  box-shadow: 0 10px 26px -6px rgba(37, 211, 102, 0.5),
+    0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+}
+.wa-fab:hover {
+  transform: scale(1.07);
+  box-shadow: 0 14px 32px -6px rgba(37, 211, 102, 0.6),
+    0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.wa-fab:active {
+  transform: scale(0.95);
+}
+.wa-fab:focus-visible {
+  outline: 3px solid var(--gold-400);
+  outline-offset: 3px;
+}
+/* Soft expanding ring */
+.wa-fab-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #25d366;
+  opacity: 0.55;
+  z-index: -1;
+  animation: wa-pulse 2.4s var(--ease-brand) infinite;
+}
+@keyframes wa-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab-pulse {
+    animation: none;
+  }
+}
+html.a11y-motion .wa-fab-pulse {
+  animation: none !important;
+}
+
+@media (min-width: 640px) {
+  .wa-fab {
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+
+/* ============================================================
+   Accessibility widget — Hebrew floating menu + user preference modes
+   ============================================================ */
+/* User-toggled "stop animations" (same effect as prefers-reduced-motion) */
+html.a11y-motion *,
+html.a11y-motion *::before,
+html.a11y-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+html.a11y-motion {
+  scroll-behavior: auto !important;
+}
+
+/* Highlight links — underline + focusable outline, skips buttons/logo */
+html.a11y-links a:not(.a11y-fab):not(.glass-btn) {
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  text-decoration-thickness: 2px !important;
+}
+
+/* High contrast — boost content contrast without touching the fixed header
+   or the widget itself (filter on those would break sticky positioning). */
+html.a11y-contrast main,
+html.a11y-contrast footer {
+  filter: contrast(1.28) saturate(1.06);
+}
+
+/* --- Floating widget --- */
+.a11y-widget {
+  position: fixed;
+  left: 1rem; /* physical bottom-left regardless of RTL */
+  bottom: 1rem;
+  width: max-content; /* shrink to the FAB so the panel anchors correctly */
+  z-index: 60;
+}
+.a11y-fab {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  color: var(--navy-950);
+  background: linear-gradient(160deg, var(--gold-400), var(--gold-500));
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.55);
+  transition: transform 0.25s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+}
+.a11y-fab:hover {
+  transform: scale(1.06);
+  box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.6);
+}
+.a11y-fab:focus-visible {
+  outline: 3px solid var(--navy-950);
+  outline-offset: 2px;
+}
+.a11y-panel {
+  position: absolute;
+  inset-block-end: 4rem;
+  left: 0;
+  width: 17rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background: var(--navy-900);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.75);
+  color: var(--white);
+  animation: a11y-pop 0.2s var(--ease-brand) both;
+}
+@keyframes a11y-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+html.a11y-motion .a11y-panel {
+  animation: none !important;
+}
+.a11y-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.4rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.a11y-close {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.75);
+  transition: background 0.2s, color 0.2s;
+}
+.a11y-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.a11y-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.6rem 0.4rem;
+  border-radius: 0.6rem;
+  text-align: start;
+}
+.a11y-toggle-row {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.a11y-toggle-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.a11y-label {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+.a11y-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.a11y-step {
+  min-width: 2.1rem;
+  height: 2.1rem;
+  padding: 0 0.4rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  color: var(--navy-950);
+  background: var(--gold-400);
+  transition: background 0.2s, opacity 0.2s;
+}
+.a11y-step:hover:not(:disabled) {
+  background: var(--gold-500);
+}
+.a11y-step:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.a11y-step-val {
+  min-width: 2.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.a11y-switch {
+  position: relative;
+  width: 2.6rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.a11y-switch.is-on {
+  background: var(--gold-500);
+}
+.a11y-knob {
+  position: absolute;
+  top: 0.2rem;
+  inset-inline-start: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  background: #fff;
+  transition: transform 0.2s var(--ease-brand);
+}
+.a11y-switch.is-on .a11y-knob {
+  transform: translateX(-1.1rem);
+}
+.a11y-toggle-row:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+.a11y-panel-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.a11y-reset {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.2s, opacity 0.2s;
+}
+.a11y-reset:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+.a11y-reset:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.a11y-statement {
+  font-size: 0.85rem;
+  color: var(--gold-400);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

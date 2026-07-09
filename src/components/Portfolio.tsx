@@ -60,9 +60,21 @@ export function Portfolio() {
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 auto-rows-[220px] md:auto-rows-[260px] gap-4 mt-12 md:mt-16">
+        {/* Mobile shows the first 3 projects; the rest reveal on tap (pure-CSS
+            toggle). Desktop always shows the full grid — see .collapse-sm. */}
+        <input
+          type="checkbox"
+          id="portfolio-more"
+          className="more-toggle"
+          aria-label="הצגת כל הפרויקטים"
+        />
+        <div className="collapse-host grid grid-cols-2 lg:grid-cols-3 auto-rows-[220px] md:auto-rows-[260px] gap-4 mt-12 md:mt-16">
           {PROJECTS.map((p, i) => (
-            <Reveal key={p.src} index={i % 3} className={p.span}>
+            <Reveal
+              key={p.src}
+              index={i % 3}
+              className={`${p.span} ${i >= 3 ? "collapse-sm" : ""}`}
+            >
               {/* Hover transforms live on this inner card — Reveal owns the
                   element's inline transform, so the two must not share a node. */}
               <div className="portfolio-card group relative h-full overflow-hidden rounded-2xl">
@@ -94,6 +106,17 @@ export function Portfolio() {
               </div>
             </Reveal>
           ))}
+        </div>
+
+        {/* Mobile-only "view full gallery" button */}
+        <div className="more-btn-wrap mt-8 justify-center">
+          <label
+            htmlFor="portfolio-more"
+            className="more-btn cursor-pointer inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
+          >
+            לכל תיק העבודות
+            <span aria-hidden="true">←</span>
+          </label>
         </div>
       </div>
     </section>

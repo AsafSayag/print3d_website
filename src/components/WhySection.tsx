@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { WHY } from "@/lib/content";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
@@ -8,7 +9,23 @@ export function WhySection() {
       <div className="container-x">
         <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
           <div className="lg:col-span-5">
-            <SectionHeading eyebrow="השיטה" title={WHY.heading} tone="light" />
+            <SectionHeading title={WHY.heading} tone="light" />
+
+            {/* Small showroom photo — sits quietly under the heading */}
+            <Reveal delay={0.1} className="mt-8">
+              <figure className="group relative w-full max-w-xs overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.8)]">
+                <div className="relative aspect-square">
+                  <Image
+                    src="/why-print3d.jpg"
+                    alt="חלל תצוגה עם מודל אדריכלי מואר של מגדל — מעשה ידי Print3D"
+                    fill
+                    sizes="(max-width: 1024px) 80vw, 320px"
+                    className="object-cover transition-transform duration-[900ms] ease-[var(--ease-brand)] group-hover:scale-[1.05]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-950)]/70 via-transparent to-transparent" />
+                </div>
+              </figure>
+            </Reveal>
           </div>
           <div className="lg:col-span-7">
             <Reveal>

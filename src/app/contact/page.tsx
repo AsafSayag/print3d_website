@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
-import { LegalHero } from "@/components/legal/LegalHero";
+import { ContactHero } from "@/components/ContactHero";
 import { LegalJsonLd } from "@/components/legal/LegalJsonLd";
 import type { Crumb } from "@/components/legal/Breadcrumbs";
 import { LeadForm } from "@/components/ui/LeadForm";
@@ -37,12 +37,11 @@ export default function ContactPage() {
       </a>
       <Header />
       <main id="main" className="flex-1">
-        <LegalHero
+        <ContactHero
           eyebrow={CONTACT_PAGE.eyebrow}
           title={CONTACT_PAGE.title}
           description={CONTACT_PAGE.subtitle}
           breadcrumbs={breadcrumbs}
-          showUpdated={false}
         />
 
         {/* Details + form */}
@@ -52,8 +51,19 @@ export default function ContactPage() {
         >
           <div className="container-x">
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-14 items-start">
-              {/* Company details */}
+              {/* Lead form in a dark card — shown first */}
               <Reveal>
+                <div className="surface-navy-950 rounded-3xl p-6 sm:p-9 shadow-[0_30px_70px_-40px_rgba(10,21,38,0.55)]">
+                  <h2 className="h3 text-white">{CONTACT_PAGE.formTitle}</h2>
+                  <p className="text-white/60 mt-2 mb-7">
+                    {CONTACT_PAGE.formSubtitle}
+                  </p>
+                  <LeadForm />
+                </div>
+              </Reveal>
+
+              {/* Company details */}
+              <Reveal delay={0.08}>
                 <div>
                   <h2 className="h2 heading-accent text-[color:var(--ink-950)]">
                     {CONTACT_PAGE.detailsTitle}
@@ -90,17 +100,6 @@ export default function ContactPage() {
                       ltr
                     />
                   </ul>
-                </div>
-              </Reveal>
-
-              {/* Lead form in a dark card */}
-              <Reveal delay={0.08}>
-                <div className="surface-navy-950 rounded-3xl p-6 sm:p-9 shadow-[0_30px_70px_-40px_rgba(10,21,38,0.55)]">
-                  <h2 className="h3 text-white">{CONTACT_PAGE.formTitle}</h2>
-                  <p className="text-white/60 mt-2 mb-7">
-                    {CONTACT_PAGE.formSubtitle}
-                  </p>
-                  <LeadForm />
                 </div>
               </Reveal>
             </div>

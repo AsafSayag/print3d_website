@@ -99,16 +99,16 @@ export function LeadForm() {
         className="sm:col-span-2"
       />
       <div className="sm:col-span-2">
-        <label htmlFor="lead-project" className="block mb-2 text-sm text-white/70">
+        <label htmlFor="lead-project" className="block mb-2 text-sm font-semibold text-white/85">
           {CONTACT_CTA.fields.project}{" "}
-          <span className="text-white/40">(רשות)</span>
+          <span className="font-normal text-white/40">(רשות)</span>
         </label>
         <textarea
           id="lead-project"
           value={values.project}
           onChange={update("project")}
           rows={3}
-          className="w-full rounded-xl bg-white/[0.04] border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:border-[color:var(--steel-300)] outline-none transition-colors"
+          className="w-full rounded-xl bg-white/[0.06] border border-white/20 px-4 py-3.5 text-white placeholder-white/30 outline-none transition-all duration-200 focus:border-[color:var(--gold-400)] focus:bg-white/[0.09] focus:ring-2 focus:ring-[color:var(--gold-500)]/30"
         />
       </div>
 
@@ -139,7 +139,7 @@ function Field({
   const id = `field-${label}`;
   return (
     <div className={className}>
-      <label htmlFor={id} className="block mb-2 text-sm text-white/70">
+      <label htmlFor={id} className="block mb-2 text-sm font-semibold text-white/85">
         {label}
       </label>
       <input
@@ -147,10 +147,10 @@ function Field({
         dir={dir}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-err` : undefined}
-        className={`w-full rounded-xl bg-white/[0.04] border px-4 py-3 text-white placeholder-white/30 outline-none transition-colors ${
+        className={`w-full rounded-xl bg-white/[0.06] border px-4 py-3.5 text-white placeholder-white/30 outline-none transition-all duration-200 ${
           error
-            ? "border-red-400/70"
-            : "border-white/15 focus:border-[color:var(--steel-300)]"
+            ? "border-red-400/70 focus:ring-2 focus:ring-red-400/30"
+            : "border-white/20 focus:border-[color:var(--gold-400)] focus:bg-white/[0.09] focus:ring-2 focus:ring-[color:var(--gold-500)]/30"
         }`}
         {...rest}
       />

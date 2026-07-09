@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Open_Sans, Assistant, Montserrat } from "next/font/google";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
+import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import "./globals.css";
 
 /* Display — Open Sans Bold for all headings */
@@ -79,6 +81,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <JsonLd />
         {children}
+        <FloatingWhatsApp />
+        <AccessibilityWidget />
       </body>
     </html>
   );
