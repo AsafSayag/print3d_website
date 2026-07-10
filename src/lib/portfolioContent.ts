@@ -41,6 +41,18 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     },
   },
   {
+    id: "beit-hakerem",
+    title: "בית הכרם",
+    client: "אלעד ישראל מגורים",
+    scale: "1:1000",
+    type: "urban",
+    image: "/projects/beit-hakerem.jpg",
+    video: {
+      mp4: "/videos/projects/beit-hakerem.mp4",
+      webm: "/videos/projects/beit-hakerem.webm",
+    },
+  },
+  {
     id: "neve-gan",
     title: "נווה גן",
     client: "אלעד מגורים",
@@ -98,8 +110,6 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 
 export const PORTFOLIO_SHOWCASE = {
   eyebrow: "תיק עבודות · פרויקטים נבחרים",
-  videoNote: "תצוגה מקדימה · בקרוב סרטון פרויקט",
-  videoLabel: "מהשטח · סרטון פרויקט",
 } as const;
 
 export const PORTFOLIO_FILTERS = {

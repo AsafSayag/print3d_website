@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { DeferredVideo } from "@/components/ui/DeferredVideo";
@@ -10,29 +10,78 @@ import {
   PROJECT_TYPE_LABELS,
 } from "@/lib/portfolioContent";
 
+/** Auto-advance interval (ms) for the showcase carousel. */
+const AUTOPLAY_MS = 6000;
+
 /**
- * Wide, full-bleed showcase carousel — one project fills the screen at a
- * time. Native scroll-snap (no library) drives both touch/drag and the
- * prev/next controls; a thin gold rule tracks progress the same way the
- * portfolio card's hover rule grows on the homepage.
+ * Wide, full-bleed showcase carousel — one project fills the screen at a time.
+ * A CSS `transform` drives the slide position (not native scroll) so it behaves
+ * identically in every browser and under RTL, where `scrollLeft` conventions
+ * are inconsistent. It auto-advances every 4s, can be dragged/swiped manually,
+ * and has prev/next controls on each side. Auto-play pauses while the pointer is
+ * on the carousel, while dragging, and is disabled under reduced-motion.
  */
 export function ProjectShowcase() {
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(0);
-  const total = PORTFOLIO_PROJECTS.length;
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
 
-  const goTo = (i: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const clamped = (i + total) % total;
-    track.scrollTo({ left: clamped * track.clientWidth, behavior: "smooth" });
+  const [active, setActive] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [dragPx, setDragPx] = useState(0);
+  // Read once at mount; only gates autoplay behaviour, never the rendered
+  // markup, so there is no hydration mismatch.
+  const [reduce] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  const total = PORTFOLIO_PROJECTS.length;
+  const next = () => setActive((a) => (a + 1) % total);
+  const prev = () => setActive((a) => (a - 1 + total) % total);
+
+  // Auto-advance every AUTOPLAY_MS. Re-arming on `active` means any manual
+  // navigation (button, drag or swipe) resets the timer, so the slide the user
+  // just picked gets its full dwell before the next auto step. Only an in-flight
+  // drag pauses it (so it never fights the user); disabled under reduced-motion.
+  useEffect(() => {
+    if (dragging || reduce) return;
+    const id = window.setTimeout(next, AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, dragging, reduce, total]);
+
+  // --- Manual drag / swipe ---
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return; // left button / touch / pen only
+    draggingRef.current = true;
+    setDragging(true);
+    startXRef.current = e.clientX;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
   };
 
-  const onScroll = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const i = Math.round(track.scrollLeft / track.clientWidth);
-    setActive(Math.min(total - 1, Math.max(0, i)));
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    setDragPx(e.clientX - startXRef.current);
+  };
+
+  const endDrag = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setDragging(false);
+    const dx = e.clientX - startXRef.current;
+    setDragPx(0);
+    const w = viewportRef.current?.clientWidth ?? 1;
+    const threshold = Math.min(120, w * 0.18);
+    // LTR viewport: dragging right reveals the previous slide, left the next.
+    if (dx > threshold) prev();
+    else if (dx < -threshold) next();
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {}
   };
 
   return (
@@ -50,88 +99,103 @@ export function ProjectShowcase() {
       </div>
 
       <div className="relative mt-8 md:mt-10">
+        {/* Viewport — forced LTR so the transform math is unambiguous; each
+            slide restores dir=rtl for its Hebrew content. */}
         <div
-          ref={trackRef}
-          onScroll={onScroll}
-          className="flex w-full overflow-x-auto snap-x snap-mandatory scroll-smooth"
-          style={{ scrollbarWidth: "none" }}
+          ref={viewportRef}
+          dir="ltr"
+          className="overflow-hidden select-none"
+          style={{ touchAction: "pan-y", cursor: dragging ? "grabbing" : "grab" }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
         >
-          {PORTFOLIO_PROJECTS.map((p, i) => (
-            <div
-              key={p.id}
-              className="relative w-full shrink-0 snap-center h-[70vh] min-h-[460px] md:h-[82svh] md:min-h-[560px]"
-            >
-              {p.video ? (
-                <DeferredVideo
-                  className="absolute inset-0 h-full w-full object-cover"
-                  poster={p.image}
-                  sources={[
-                    { src: p.video.webm, type: "video/webm" },
-                    { src: p.video.mp4, type: "video/mp4" },
-                  ]}
-                />
-              ) : (
-                <Image
-                  src={p.image}
-                  alt={`${p.title} · מודל אדריכלי בקנה מידה ${p.scale}`}
-                  fill
-                  priority={i === 0}
-                  sizes="100vw"
-                  className="object-cover"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
+          <div
+            className="flex"
+            style={{
+              // The track is a block-level flex container: its own width equals
+              // one viewport (children overflow it), so translateX(-100%) moves
+              // exactly one slide. Drag offset is added in px.
+              transform: `translateX(calc(${-active * 100}% + ${dragPx}px))`,
+              transition:
+                dragging || reduce ? "none" : "transform 0.6s var(--ease-brand)",
+              willChange: "transform",
+            }}
+          >
+            {PORTFOLIO_PROJECTS.map((p, i) => (
+              <div
+                key={p.id}
+                dir="rtl"
+                className="relative w-full shrink-0 h-[70vh] min-h-[460px] md:h-[82svh] md:min-h-[560px]"
+              >
+                {p.video ? (
+                  <DeferredVideo
+                    className="absolute inset-0 h-full w-full object-cover"
+                    poster={p.image}
+                    sources={[
+                      { src: p.video.webm, type: "video/webm" },
+                      { src: p.video.mp4, type: "video/mp4" },
+                    ]}
+                  />
+                ) : (
+                  <Image
+                    src={p.image}
+                    alt={`${p.title} · מודל אדריכלי בקנה מידה ${p.scale}`}
+                    fill
+                    priority={i === 0}
+                    sizes="100vw"
+                    className="object-cover pointer-events-none"
+                    draggable={false}
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
 
-              {/* Decorative "future video" marker — only on stills still
-                  waiting for real footage; real videos need no play glyph. */}
-              {!p.video && (
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 grid place-items-center pointer-events-none"
-                >
-                  <span className="glass-btn !w-16 !h-16 !p-0 !rounded-full opacity-70">
-                    <svg viewBox="0 0 24 24" className="w-6 h-6 -me-0.5" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </div>
-              )}
-
-              <div className="absolute inset-x-0 top-0 container-x pt-6 md:pt-8">
-                <span className="caption text-[color:var(--steel-300)]">
-                  {p.video ? PORTFOLIO_SHOWCASE.videoLabel : PORTFOLIO_SHOWCASE.videoNote}
-                </span>
-              </div>
-
-              <div className="absolute inset-x-0 bottom-0 container-x pb-10 md:pb-14">
-                <span className="eyebrow text-[color:var(--gold-400)]">
-                  {PROJECT_TYPE_LABELS[p.type]}
-                </span>
-                <h2 className="h1 text-white mt-3 max-w-3xl text-balance">
-                  {p.title}
-                </h2>
-                <div className="mt-4 flex flex-wrap items-center gap-4">
-                  <span className="text-white/75 text-base md:text-lg">
-                    {p.client}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-white/30" aria-hidden />
-                  <span
-                    className="num text-[color:var(--gold-400)] text-sm bg-black/30 backdrop-blur px-2.5 py-1 rounded-full border border-white/10"
-                    dir="ltr"
+                {/* Decorative "future video" marker — only on stills still
+                    waiting for real footage; real videos need no play glyph. */}
+                {!p.video && (
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 grid place-items-center pointer-events-none"
                   >
-                    {p.scale}
+                    <span className="glass-btn !w-16 !h-16 !p-0 !rounded-full opacity-70">
+                      <svg viewBox="0 0 24 24" className="w-6 h-6 -me-0.5" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </div>
+                )}
+
+                <div className="absolute inset-x-0 bottom-0 container-x pb-10 md:pb-14">
+                  <span className="eyebrow text-[color:var(--gold-400)]">
+                    {PROJECT_TYPE_LABELS[p.type]}
                   </span>
+                  <h2 className="h1 text-white mt-3 max-w-3xl text-balance">
+                    {p.title}
+                  </h2>
+                  <div className="mt-4 flex flex-wrap items-center gap-4">
+                    <span className="text-white/75 text-base md:text-lg">
+                      {p.client}
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-white/30" aria-hidden />
+                    <span
+                      className="num text-[color:var(--gold-400)] text-sm bg-black/30 backdrop-blur px-2.5 py-1 rounded-full border border-white/10"
+                      dir="ltr"
+                    >
+                      {p.scale}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Prev / next controls */}
+        {/* Prev / next controls — one on each side */}
         <button
           type="button"
           aria-label="הפרויקט הקודם"
-          onClick={() => goTo(active - 1)}
+          onClick={prev}
           className="glass-btn !w-11 !h-11 !p-0 !rounded-full absolute start-4 md:start-8 top-1/2 -translate-y-1/2 z-10"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -141,7 +205,7 @@ export function ProjectShowcase() {
         <button
           type="button"
           aria-label="הפרויקט הבא"
-          onClick={() => goTo(active + 1)}
+          onClick={next}
           className="glass-btn !w-11 !h-11 !p-0 !rounded-full absolute end-4 md:end-8 top-1/2 -translate-y-1/2 z-10"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
