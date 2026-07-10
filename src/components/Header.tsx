@@ -22,13 +22,19 @@ export function Header() {
   // On the homepage the nav uses in-page hash anchors (with scroll-spy); from any
   // other route those same targets are reached by prefixing the homepage path, so
   // the header stays functional site-wide without changing homepage behaviour.
+  // Items whose href is a real path (e.g. "/portfolio") link there directly.
   const toHome = (hash: string) => (onHome ? hash : `/${hash}`);
+  const navHref = (href: string) => (href.startsWith("#") ? toHome(href) : href);
+  const isNavCurrent = (href: string) =>
+    href.startsWith("#") ? onHome && active === href.slice(1) : pathname === href;
 
   // rAF-driven: tracks the scrolled state and the active section (scroll-spy).
   useEffect(() => {
     let raf = 0;
     let frame = 0;
-    const ids = NAV_ITEMS.map((n) => n.href.slice(1));
+    const ids = NAV_ITEMS.filter((n) => n.href.startsWith("#")).map((n) =>
+      n.href.slice(1),
+    );
 
     const tick = () => {
       if (frame++ % 5 === 0) {
@@ -97,10 +103,8 @@ export function Header() {
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
-              href={toHome(item.href)}
-              aria-current={
-                onHome && active === item.href.slice(1) ? "page" : undefined
-              }
+              href={navHref(item.href)}
+              aria-current={isNavCurrent(item.href) ? "page" : undefined}
               className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white aria-[current=page]:text-white transition-colors"
             >
               {item.label}
@@ -191,7 +195,8 @@ export function Header() {
           {NAV_ITEMS.map((item, i) => (
             <a
               key={item.href}
-              href={toHome(item.href)}
+              href={navHref(item.href)}
+              aria-current={isNavCurrent(item.href) ? "page" : undefined}
               onClick={() => setOpen(false)}
               tabIndex={open ? 0 : -1}
               className="text-2xl text-white/90 py-3 border-b border-white/10"

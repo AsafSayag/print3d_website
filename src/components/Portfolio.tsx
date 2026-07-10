@@ -2,6 +2,7 @@ import Image from "next/image";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
 import { CountUp } from "./ui/CountUp";
+import { GlassButton } from "./ui/GlassButton";
 
 // Six real models from the Print3D archive, with their scales.
 const PROJECTS = [
@@ -30,6 +31,11 @@ export function Portfolio() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
           <div className="max-w-2xl">
             <SectionHeading eyebrow="תיק עבודות" title="פרויקטים נבחרים" tone="light" />
+            <Reveal index={2} className="lg:hidden mt-6">
+              <GlassButton href="/portfolio" variant="primary">
+                לכל הפרויקטים
+              </GlassButton>
+            </Reveal>
             <Reveal index={2}>
               <p className="mt-5 text-[color:var(--steel-300)] text-base md:text-lg leading-relaxed">
                 מעל 15 שנות ניסיון ולמעלה מ־200 פרויקטים מוגמרים — ממגדלי יוקרה
@@ -40,6 +46,11 @@ export function Portfolio() {
           </div>
 
           <Reveal index={3} className="shrink-0">
+            <div className="hidden lg:block mb-6">
+              <GlassButton href="/portfolio" variant="primary">
+                לכל הפרויקטים
+              </GlassButton>
+            </div>
             <div className="flex items-stretch gap-8 lg:gap-10">
               {STATS.map((s, i) => (
                 <div

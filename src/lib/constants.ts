@@ -48,7 +48,7 @@ export const COLORS = {
 export const NAV_ITEMS = [
   { label: "שירותים", href: "#services" },
   { label: "תהליך", href: "#process" },
-  { label: "תיק עבודות", href: "#portfolio" },
+  { label: "תיק עבודות", href: "/portfolio" },
   { label: "לקוחות", href: "#clients" },
   { label: "אודות", href: "#about" },
   { label: "בלוג", href: "#articles" },
