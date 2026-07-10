@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
+import { DeferredVideo } from "@/components/ui/DeferredVideo";
 import {
   PORTFOLIO_PROJECTS,
   PORTFOLIO_SHOWCASE,
@@ -60,31 +61,45 @@ export function ProjectShowcase() {
               key={p.id}
               className="relative w-full shrink-0 snap-center h-[70vh] min-h-[460px] md:h-[82svh] md:min-h-[560px]"
             >
-              <Image
-                src={p.image}
-                alt={`${p.title} · מודל אדריכלי בקנה מידה ${p.scale}`}
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                className="object-cover"
-              />
+              {p.video ? (
+                <DeferredVideo
+                  className="absolute inset-0 h-full w-full object-cover"
+                  poster={p.image}
+                  sources={[
+                    { src: p.video.webm, type: "video/webm" },
+                    { src: p.video.mp4, type: "video/mp4" },
+                  ]}
+                />
+              ) : (
+                <Image
+                  src={p.image}
+                  alt={`${p.title} · מודל אדריכלי בקנה מידה ${p.scale}`}
+                  fill
+                  priority={i === 0}
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
 
-              {/* Decorative "future video" marker — center play glyph */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 grid place-items-center pointer-events-none"
-              >
-                <span className="glass-btn !w-16 !h-16 !p-0 !rounded-full opacity-70">
-                  <svg viewBox="0 0 24 24" className="w-6 h-6 -me-0.5" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </div>
+              {/* Decorative "future video" marker — only on stills still
+                  waiting for real footage; real videos need no play glyph. */}
+              {!p.video && (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 grid place-items-center pointer-events-none"
+                >
+                  <span className="glass-btn !w-16 !h-16 !p-0 !rounded-full opacity-70">
+                    <svg viewBox="0 0 24 24" className="w-6 h-6 -me-0.5" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </div>
+              )}
 
               <div className="absolute inset-x-0 top-0 container-x pt-6 md:pt-8">
                 <span className="caption text-[color:var(--steel-300)]">
-                  {PORTFOLIO_SHOWCASE.videoNote}
+                  {p.video ? PORTFOLIO_SHOWCASE.videoLabel : PORTFOLIO_SHOWCASE.videoNote}
                 </span>
               </div>
 

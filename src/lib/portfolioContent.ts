@@ -21,10 +21,25 @@ export type Project = {
   scale: string;
   type: ProjectType;
   image: string;
+  /** Real footage — when present, the showcase carousel plays this instead of
+   * the static image (lazy-loaded, muted, looping; `image` doubles as poster). */
+  video?: { mp4: string; webm: string };
 };
 
-/** Six real models from the Print3D archive — same source as Portfolio.tsx. */
+/** Real models from the Print3D archive — same source as Portfolio.tsx. */
 export const PORTFOLIO_PROJECTS: Project[] = [
+  {
+    id: "levinstein",
+    title: "מגדלי לוינשטיין",
+    client: "לוינשטיין הנדסה",
+    scale: "1:75",
+    type: "residential",
+    image: "/projects/levinstein.jpg",
+    video: {
+      mp4: "/videos/projects/levinstein.mp4",
+      webm: "/videos/projects/levinstein.webm",
+    },
+  },
   {
     id: "neve-gan",
     title: "נווה גן",
@@ -84,6 +99,7 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 export const PORTFOLIO_SHOWCASE = {
   eyebrow: "תיק עבודות · פרויקטים נבחרים",
   videoNote: "תצוגה מקדימה · בקרוב סרטון פרויקט",
+  videoLabel: "מהשטח · סרטון פרויקט",
 } as const;
 
 export const PORTFOLIO_FILTERS = {
