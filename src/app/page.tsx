@@ -32,8 +32,8 @@ export default function Home() {
         <Portfolio />
         <ContactBand />
         <WhoFor />
-        <Articles />
         <Faq />
+        <Articles />
         <ContactCta />
       </main>
       <Footer />

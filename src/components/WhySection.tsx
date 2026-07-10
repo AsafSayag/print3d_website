@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { WHY } from "@/lib/content";
-import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
 
 export function WhySection() {
@@ -9,9 +8,58 @@ export function WhySection() {
       <div className="container-x">
         <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
           <div className="lg:col-span-5">
-            <SectionHeading title={WHY.heading} tone="light" />
+            {/* Deep-gold heading in a slim architectural frame — corner marks
+                (not a full box) keep it feeling precise and understated
+                rather than like a badge or button. */}
+            <Reveal>
+              <div className="relative inline-block px-7 py-5 sm:px-8 sm:py-6">
+                <span
+                  aria-hidden="true"
+                  className="absolute top-0 start-0 h-3.5 w-3.5 border-t border-s"
+                  style={{ borderColor: "color-mix(in srgb, var(--gold-500) 65%, transparent)" }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute top-0 end-0 h-3.5 w-3.5 border-t border-e"
+                  style={{ borderColor: "color-mix(in srgb, var(--gold-500) 65%, transparent)" }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-0 start-0 h-3.5 w-3.5 border-b border-s"
+                  style={{ borderColor: "color-mix(in srgb, var(--gold-500) 65%, transparent)" }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-0 end-0 h-3.5 w-3.5 border-b border-e"
+                  style={{ borderColor: "color-mix(in srgb, var(--gold-500) 65%, transparent)" }}
+                />
+                {/* Soft glow behind the text, contained to the frame */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 -z-10"
+                  style={{
+                    background:
+                      "radial-gradient(85% 120% at 50% 50%, color-mix(in srgb, var(--gold-500) 9%, transparent), transparent 70%)",
+                  }}
+                />
+                <h2
+                  className="h2"
+                  style={{
+                    background:
+                      "linear-gradient(120deg, var(--gold-700) 0%, var(--gold-400) 48%, var(--gold-700) 100%)",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  {WHY.heading}
+                </h2>
+              </div>
+            </Reveal>
 
-            {/* Small showroom photo — sits quietly under the heading */}
+            {/* Small showroom photo — sits quietly under the heading, on
+                every breakpoint. */}
             <Reveal delay={0.1} className="mt-8">
               <figure className="group relative w-full max-w-xs overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.8)]">
                 <div className="relative aspect-square">
@@ -36,22 +84,29 @@ export function WhySection() {
           </div>
         </div>
 
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-16">
+        {/* Editorial numbered list — a thin gold hairline and a faint serif
+            numeral stand in for the earlier boxed "feature card" pattern,
+            reading as considered typography rather than a generic UI tile. */}
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 mt-20">
           {WHY.cards.map((card, i) => (
             <Reveal as="li" index={i} key={card.n}>
-              <article
-                className="h-full rounded-2xl p-6 bg-white/[0.03] border border-white/10
-                           transition-transform duration-300 hover:-translate-y-1"
-              >
+              <article className="group relative pt-7">
+                {/* Touch devices can't hover, so the gold reveal would never
+                    show — mobile carries a permanent, subtle gold tint
+                    instead; sm+ reverts to the white idle state + hover reveal. */}
                 <span
-                  className="num block text-[color:var(--gold-500)] font-bold mb-4"
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-px bg-[color:var(--gold-500)]/30 sm:bg-white/15 transition-colors duration-700 sm:group-hover:bg-[color:var(--gold-500)]/70"
+                />
+                <span
+                  className="block font-display text-[color:var(--gold-500)]/50 sm:text-white/20 transition-colors duration-700 sm:group-hover:text-[color:var(--gold-500)]"
                   dir="ltr"
-                  style={{ fontSize: "1.75rem" }}
+                  style={{ fontSize: "2.75rem", fontWeight: 300, letterSpacing: "-0.02em" }}
                 >
                   {String(card.n).padStart(2, "0")}
                 </span>
-                <h3 className="h3 mb-2 text-white">{card.title}</h3>
-                <p className="text-white/65 text-base leading-relaxed">
+                <h3 className="h3 mt-4 mb-2 text-white text-lg">{card.title}</h3>
+                <p className="text-white/60 text-[15px] leading-relaxed">
                   {card.text}
                 </p>
               </article>

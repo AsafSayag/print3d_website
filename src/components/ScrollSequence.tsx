@@ -136,8 +136,10 @@ export function ScrollSequence() {
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
+    // isMobile is a dep because the frame's aspect ratio (and thus the canvas
+    // CSS size) changes when it settles on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced, ready]);
+  }, [reduced, ready, isMobile]);
 
   // ---- Draw helper: nearest loaded frame, cover-fit ----
   function drawFrame(index: number, force = false) {
@@ -167,6 +169,9 @@ export function ScrollSequence() {
     if (!img) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    // Highest-quality resampling — keeps frames crisp at the larger display size.
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
     const cw = canvas.width;
     const ch = canvas.height;
@@ -253,7 +258,7 @@ export function ScrollSequence() {
         className="surface-navy-950 section"
         aria-label="כך נבנה מודל"
       >
-        <SequenceFrame>
+        <SequenceFrame mobile={isMobile}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={framePath(LAST, isMobile)}
@@ -317,9 +322,17 @@ export function ScrollSequence() {
             </div>
           </div>
 
-          {/* Model — centred in the viewport */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <SequenceFrame>
+          {/* Model — centred in the space below the caption. The top padding
+              mirrors the caption's height + offset, so however large the frame
+              grows it can never slide underneath the text. */}
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              paddingTop: "clamp(10rem, calc(13vh + 6rem), 15rem)",
+              paddingBottom: "clamp(1rem, 3vh, 2rem)",
+            }}
+          >
+            <SequenceFrame mobile={isMobile}>
               <canvas
                 ref={canvasRef}
                 className="h-full w-full block"
@@ -340,13 +353,26 @@ export function ScrollSequence() {
 }
 
 /** The centered, framed "museum object" square that holds the sequence. */
-function SequenceFrame({ children }: { children: React.ReactNode }) {
+function SequenceFrame({
+  children,
+  mobile = false,
+}: {
+  children: React.ReactNode;
+  mobile?: boolean;
+}) {
   return (
     <div
       className="relative w-full mx-auto"
       style={{
-        maxWidth: "min(720px, 86vw)",
-        aspectRatio: ASPECT,
+        // Desktop: as large as the viewport allows — capped by width AND by the
+        // height remaining below the caption (so the two never collide).
+        // Mobile: near full-bleed; a 3:2 frame (vs the source 16:9) cover-crops
+        // only the empty background at the sides, so the model itself renders
+        // ~35% larger while the tower stays fully in frame.
+        maxWidth: mobile
+          ? "94vw"
+          : "min(1150px, 92vw, calc((100svh - clamp(11rem, 13vh + 7rem, 16rem)) * 1.7))",
+        aspectRatio: mobile ? "3 / 2" : ASPECT,
         borderRadius: "16px",
         border: "1px solid rgba(255,255,255,0.08)",
         boxShadow:
