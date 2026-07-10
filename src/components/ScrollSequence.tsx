@@ -39,9 +39,15 @@ export function ScrollSequence() {
   const stageRef = useRef(0);
 
   // Detect device + motion preference (client only → avoids SSR fallback flash).
+  // Tracked live (not just at mount) so resizing a desktop window down to a
+  // phone width — or rotating a tablet — switches to the mobile frame size.
   useEffect(() => {
-    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   const scrollVh = isMobile
@@ -366,13 +372,15 @@ function SequenceFrame({
       style={{
         // Desktop: as large as the viewport allows — capped by width AND by the
         // height remaining below the caption (so the two never collide).
-        // Mobile: near full-bleed; a 3:2 frame (vs the source 16:9) cover-crops
-        // only the empty background at the sides, so the model itself renders
-        // ~35% larger while the tower stays fully in frame.
+        // Mobile: full-bleed width and a tall 3:4 frame (vs the source 16:9).
+        // Cover-fit scales the landscape frame to fill the height, cropping only
+        // the empty background at the sides while the whole tower stays fully in
+        // frame — so the model renders far larger, using the ample vertical space
+        // that the old 3:2 frame left empty.
         maxWidth: mobile
-          ? "94vw"
+          ? "96vw"
           : "min(1150px, 92vw, calc((100svh - clamp(11rem, 13vh + 7rem, 16rem)) * 1.7))",
-        aspectRatio: mobile ? "3 / 2" : ASPECT,
+        aspectRatio: mobile ? "3 / 4" : ASPECT,
         borderRadius: "16px",
         border: "1px solid rgba(255,255,255,0.08)",
         boxShadow:
