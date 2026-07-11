@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { PORTFOLIO_HIGHLIGHTS, PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
@@ -92,6 +93,13 @@ export function ProjectHighlights() {
                     {p.client}
                   </span>
                 </div>
+                {p.href && (
+                  <Link
+                    href={p.href}
+                    aria-label={`${p.title} — לצפייה בעמוד הפרויקט`}
+                    className="absolute inset-0 z-10 rounded-2xl ring-[color:var(--gold-400)]/0 transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
+                  />
+                )}
               </div>
             </Reveal>
           </div>

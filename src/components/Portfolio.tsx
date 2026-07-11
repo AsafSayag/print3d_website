@@ -1,12 +1,27 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
 import { CountUp } from "./ui/CountUp";
 import { GlassButton } from "./ui/GlassButton";
 
-// Six real models from the Print3D archive, with their scales.
-const PROJECTS = [
+// Real models from the Print3D archive, with their scales.
+// `href` marks a project that links through to its own case-study page.
+const PROJECTS: {
+  src: string;
+  title: string;
+  scale: string;
+  span: string;
+  href?: string;
+}[] = [
   { src: "/projects/neve-gan.webp", title: "נווה גן", scale: "1:75", span: "row-span-2" },
+  {
+    src: "/projects/gindi_kfar_azar.webp",
+    title: 'גינדי כפר אז"ר',
+    scale: "1:100",
+    span: "",
+    href: "/projects/gindi-kfar-azar",
+  },
   { src: "/projects/gindi-bait-bapark.jpg", title: "גינדי החזקות · בית בפארק", scale: "1:100", span: "" },
   { src: "/projects/shikun-binui-or-yam.jpg", title: "שיכון ובינוי · אור ים", scale: "1:200", span: "" },
   { src: "/projects/gindi-tlv.webp", title: "גינדי TLV", scale: "1:200", span: "" },
@@ -114,6 +129,13 @@ export function Portfolio() {
                     </span>
                   </div>
                 </div>
+                {p.href && (
+                  <Link
+                    href={p.href}
+                    aria-label={`${p.title} — לצפייה בעמוד הפרויקט`}
+                    className="absolute inset-0 z-10 rounded-2xl ring-[color:var(--gold-400)]/0 transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
+                  />
+                )}
               </div>
             </Reveal>
           ))}
