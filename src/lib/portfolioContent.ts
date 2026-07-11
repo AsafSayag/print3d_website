@@ -24,6 +24,8 @@ export type Project = {
   /** Real footage — when present, the showcase carousel plays this instead of
    * the static image (lazy-loaded, muted, looping; `image` doubles as poster). */
   video?: { mp4: string; webm: string };
+  /** When present, the project card links through to its own case-study page. */
+  href?: string;
 };
 
 /** Real models from the Print3D archive — same source as Portfolio.tsx. */
@@ -99,6 +101,15 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:500",
     type: "urban",
     image: "/projects/preshkovsky-tabaa.jpg",
+  },
+  {
+    id: "gindi-kfar-azar",
+    title: 'גינדי כפר אז"ר',
+    client: "גינדי",
+    scale: "1:100",
+    type: "residential",
+    image: "/videos/projects/gindi-kfar-azar.webp",
+    href: "/projects/gindi-kfar-azar",
   },
 ];
 

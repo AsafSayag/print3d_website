@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { DeferredVideo } from "@/components/ui/DeferredVideo";
 import {
@@ -100,6 +101,12 @@ export function ProjectShowcase() {
   // --- Manual drag / swipe ---
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0) return; // left button / touch / pen only
+    // Don't start dragging if clicking on a link or button
+    const target = e.target as HTMLElement;
+    const nativeTarget = (e.nativeEvent?.target as HTMLElement) || target;
+    // Check both direct tag and ancestors
+    if (nativeTarget.tagName === "A" || nativeTarget.tagName === "BUTTON") return;
+    if (nativeTarget.closest("a, button")) return;
     draggingRef.current = true;
     setDragging(true);
     startXRef.current = e.clientX;
@@ -243,6 +250,16 @@ export function ProjectShowcase() {
                       {p.scale}
                     </span>
                   </div>
+                  {p.href && (
+                    <Link
+                      href={p.href}
+                      draggable={false}
+                      className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 font-display text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold-400)]"
+                    >
+                      לצפייה בעמוד הפרויקט
+                      <span aria-hidden="true">←</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
