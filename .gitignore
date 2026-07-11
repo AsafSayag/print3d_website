@@ -43,3 +43,8 @@ next-env.d.ts
 
 .venv
 .venv/
+
+.envrc
+
+.direnv
+.direnv/
