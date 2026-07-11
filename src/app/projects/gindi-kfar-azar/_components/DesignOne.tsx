@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { Logo } from "@/components/ui/Logo";
-import { CONTACT } from "@/lib/constants";
+import { Footer } from "@/components/Footer";
 import { SpecSheet } from "./SpecSheet";
 import { ScrollHint } from "./ScrollHint";
 import { Gallery } from "./Gallery";
@@ -83,25 +82,7 @@ export function DesignOne() {
         </div>
       </section>
 
-      {/* Minimal contact footer — no anchor links to homepage sections */}
-      <footer className="surface-navy-950 border-t border-white/8">
-        <div className="container-x py-12 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Logo variant="light" size={22} />
-          <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/75">
-            <li>
-              <a href={CONTACT.phoneHref} className="hover:text-white transition-colors" dir="ltr">
-                {CONTACT.phone}
-              </a>
-            </li>
-            <li>
-              <a href={CONTACT.emailHref} className="hover:text-white transition-colors" dir="ltr">
-                {CONTACT.email}
-              </a>
-            </li>
-            <li className="text-white/60">{CONTACT.address}</li>
-          </ul>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
