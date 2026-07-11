@@ -11,13 +11,13 @@ import {
 } from "@/lib/portfolioContent";
 
 /** Auto-advance interval (ms) for the showcase carousel. */
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 9000;
 
 /**
  * Wide, full-bleed showcase carousel — one project fills the screen at a time.
  * A CSS `transform` drives the slide position (not native scroll) so it behaves
  * identically in every browser and under RTL, where `scrollLeft` conventions
- * are inconsistent. It auto-advances every 6s, can be dragged/swiped manually,
+ * are inconsistent. It auto-advances every 9s, can be dragged/swiped manually,
  * and has prev/next controls on each side. Auto-play pauses only during an
  * in-flight drag and is disabled under reduced-motion.
  */
