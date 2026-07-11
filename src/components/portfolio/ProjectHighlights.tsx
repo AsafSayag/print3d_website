@@ -19,7 +19,11 @@ export function ProjectHighlights() {
     if (!track) return;
     const card = track.firstElementChild as HTMLElement | null;
     const step = card ? card.getBoundingClientRect().width + 16 : track.clientWidth * 0.4;
-    track.scrollBy({ left: dir * step, behavior: "smooth" });
+    // Under RTL the scroller's forward direction is negative scrollLeft, so a
+    // positive nudge from 0 clamps and the "next" button does nothing — flip
+    // the sign to match the document direction.
+    const rtl = getComputedStyle(track).direction === "rtl";
+    track.scrollBy({ left: dir * step * (rtl ? -1 : 1), behavior: "smooth" });
   };
 
   return (

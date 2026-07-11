@@ -17,9 +17,9 @@ const AUTOPLAY_MS = 6000;
  * Wide, full-bleed showcase carousel — one project fills the screen at a time.
  * A CSS `transform` drives the slide position (not native scroll) so it behaves
  * identically in every browser and under RTL, where `scrollLeft` conventions
- * are inconsistent. It auto-advances every 4s, can be dragged/swiped manually,
- * and has prev/next controls on each side. Auto-play pauses while the pointer is
- * on the carousel, while dragging, and is disabled under reduced-motion.
+ * are inconsistent. It auto-advances every 6s, can be dragged/swiped manually,
+ * and has prev/next controls on each side. Auto-play pauses only during an
+ * in-flight drag and is disabled under reduced-motion.
  */
 export function ProjectShowcase() {
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -51,6 +51,51 @@ export function ProjectShowcase() {
     return () => window.clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, dragging, reduce, total]);
+
+  // --- Video choreography ---
+  // All slides sit side-by-side, so DeferredVideo's vertical proximity check
+  // considers every slide "near the viewport" and starts every clip at once.
+  // Left alone, a video slide would arrive mid-loop instead of at its opening
+  // frame, and hidden clips would burn CPU. Two measures fix this:
+  //  1. Whenever `active` changes, restart the active slide's video from 0 and
+  //     pause all the others.
+  //  2. A capture-phase `play` listener catches clips that DeferredVideo
+  //     autoplays after their lazy load and pauses any that aren't active.
+  const activeRef = useRef(active);
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+
+  const slideIndexOf = (vid: HTMLVideoElement) =>
+    Number(vid.closest("[data-slide]")?.getAttribute("data-slide") ?? -1);
+
+  useEffect(() => {
+    const vp = viewportRef.current;
+    if (!vp) return;
+    const onPlay = (e: Event) => {
+      const vid = e.target;
+      if (!(vid instanceof HTMLVideoElement)) return;
+      if (slideIndexOf(vid) !== activeRef.current) vid.pause();
+    };
+    // `play` does not bubble — listen in the capture phase.
+    vp.addEventListener("play", onPlay, true);
+    return () => vp.removeEventListener("play", onPlay, true);
+  }, []);
+
+  useEffect(() => {
+    const vp = viewportRef.current;
+    if (!vp) return;
+    vp.querySelectorAll("video").forEach((vid) => {
+      if (slideIndexOf(vid) === active) {
+        try {
+          vid.currentTime = 0;
+        } catch {}
+        vid.play().catch(() => {});
+      } else {
+        vid.pause();
+      }
+    });
+  }, [active]);
 
   // --- Manual drag / swipe ---
   const onPointerDown = (e: React.PointerEvent) => {
@@ -84,6 +129,18 @@ export function ProjectShowcase() {
     } catch {}
   };
 
+  // A cancelled gesture (incoming call, browser takes over the pointer…) can
+  // report clientX=0, which would read as a huge drag — just snap back.
+  const abortDrag = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setDragging(false);
+    setDragPx(0);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {}
+  };
+
   return (
     <section
       id="showcase"
@@ -109,7 +166,7 @@ export function ProjectShowcase() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
-          onPointerCancel={endDrag}
+          onPointerCancel={abortDrag}
         >
           <div
             className="flex"
@@ -127,6 +184,7 @@ export function ProjectShowcase() {
               <div
                 key={p.id}
                 dir="rtl"
+                data-slide={i}
                 className="relative w-full shrink-0 h-[70vh] min-h-[460px] md:h-[82svh] md:min-h-[560px]"
               >
                 {p.video ? (
