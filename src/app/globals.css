@@ -365,6 +365,46 @@ body {
 }
 
 /* ============================================================
+   Hero slideshow — Ken Burns crossfade (Gindi Design 1)
+   ============================================================ */
+@keyframes kb-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  6.67%,
+  20% {
+    opacity: 1;
+  }
+  26.67% {
+    opacity: 0;
+  }
+}
+@keyframes kb-pan {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+  26.67% {
+    transform: scale(1.06) translate(-1.2%, -1%);
+  }
+}
+.kb-slide {
+  animation:
+    kb-fade 15s linear infinite backwards,
+    kb-pan 15s var(--ease-brand) infinite backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kb-slide {
+    animation: none;
+    opacity: 0;
+  }
+  .kb-slide:first-child {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
    Client logo marquee — Framer-style framed grid (dark)
    ============================================================ */
 .framer-logos-section {

@@ -63,5 +63,12 @@ export const GALLERY_IMAGES = [
   DESIGN_ONE_HERO,
 ];
 
+/** Design 1 hero cycles through all project photos, starting with the street shot. */
+export const DESIGN_ONE_HERO_SLIDES = [
+  DESIGN_ONE_HERO,
+  HERO.src,
+  ...GALLERY_IMAGES.slice(0, 3),
+];
+
 /** Design 2 (product-page layout) shows the hero first, then every gallery shot. */
 export const ALL_IMAGES = [HERO.src, ...GALLERY_IMAGES];
