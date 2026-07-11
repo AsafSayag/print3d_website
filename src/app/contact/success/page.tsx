@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
 import { GlassButton } from "@/components/ui/GlassButton";
 
 export const metadata: Metadata = {
@@ -79,6 +80,7 @@ export default function ContactSuccessPage() {
           </div>
         </div>
       </main>
+      <Faq />
       <Footer />
     </>
   );

@@ -10,8 +10,8 @@ export const IMAGE_ALT =
   'מודל אדריכלי בקנה מידה 1:100 של פרויקט מגורים גינדי בכפר אז"ר — הדפסת תלת מימד וחיתוך לייזר';
 
 export const HERO = {
-  eyebrow: "מודל אדריכלי · לקוח גינדי",
-  title: 'מודל אדריכלי — פרויקט גינדי, כפר אז"ר',
+  eyebrow: "",
+  title: 'גינדי, כפר אז"ר',
   scale: "1:100",
   src: "/gindi_kfar_azar_project/gindi_hero.webp",
 };

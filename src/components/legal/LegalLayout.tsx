@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
 import { LegalHero } from "./LegalHero";
 import { LegalSection } from "./LegalSection";
 import { LegalTableOfContents } from "./LegalTableOfContents";
@@ -76,6 +77,7 @@ export function LegalLayout({ doc }: { doc: LegalDoc }) {
         </div>
 
         <LegalCTA />
+        <Faq />
       </main>
       <Footer />
     </>

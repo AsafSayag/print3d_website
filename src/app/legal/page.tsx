@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
 import { LegalHero } from "@/components/legal/LegalHero";
 import { LegalCTA } from "@/components/legal/LegalCTA";
 import { LegalJsonLd } from "@/components/legal/LegalJsonLd";
@@ -78,6 +79,7 @@ export default function LegalHubPage() {
         </div>
 
         <LegalCTA />
+        <Faq />
       </main>
       <Footer />
     </>
