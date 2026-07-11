@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
 import { SpecSheet } from "./SpecSheet";
 import { ScrollHint } from "./ScrollHint";
 import { Gallery } from "./Gallery";
@@ -46,15 +47,12 @@ export function DesignOne() {
           <p className="eyebrow text-[color:var(--steel-300)] mb-3">
             {HERO.eyebrow}
           </p>
-          <h1 className="h1 heading-accent heading-accent--center max-w-3xl">
+          <h1
+            className="h1 heading-accent heading-accent--center max-w-3xl font-bold"
+            style={{ fontSize: "clamp(2.75rem, 6.5vw, 4.75rem)" }}
+          >
             {HERO.title}
           </h1>
-          <span
-            className="num mt-4 inline-flex w-fit items-center rounded-full border border-white/20 bg-black/30 px-3 py-1 text-sm backdrop-blur"
-            dir="ltr"
-          >
-            {HERO.scale}
-          </span>
         </div>
         <ScrollHint />
       </section>
@@ -81,6 +79,8 @@ export function DesignOne() {
           <AboutProject about={ABOUT} />
         </div>
       </section>
+
+      <Faq />
 
       <Footer />
     </main>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
 import { IMAGE_ALT, HERO, SPECS, ABOUT, ALL_IMAGES } from "../content";
@@ -184,6 +185,8 @@ export function DesignTwo() {
           onIndexChange={setLightbox}
         />
       )}
+
+      <Faq />
 
       <Footer />
     </main>
