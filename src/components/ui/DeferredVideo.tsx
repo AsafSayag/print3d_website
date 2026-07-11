@@ -8,6 +8,8 @@ type Props = {
   sources: Source[];
   poster: string;
   className?: string;
+  /** Delay (ms) between the video becoming ready and its first play() call. */
+  playDelayMs?: number;
 };
 
 /**
@@ -20,7 +22,7 @@ type Props = {
  * the full file immediately; we call play() ourselves after attaching the
  * sources.
  */
-export function DeferredVideo({ sources, poster, className }: Props) {
+export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [load, setLoad] = useState(false);
 
@@ -51,8 +53,12 @@ export function DeferredVideo({ sources, poster, className }: Props) {
     const el = ref.current;
     if (!el) return;
     el.load();
+    if (playDelayMs > 0) {
+      const t = setTimeout(() => el.play().catch(() => {}), playDelayMs);
+      return () => clearTimeout(t);
+    }
     el.play().catch(() => {});
-  }, [load]);
+  }, [load, playDelayMs]);
 
   return (
     <video

@@ -32,23 +32,22 @@ export function PortfolioHero() {
     >
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
-        poster="/videos/cta-poster.jpg"
+        poster="/videos/portfolio-hero-poster.jpg"
         sources={[
-          { src: "/videos/cta-loop.webm", type: "video/webm" },
-          { src: "/videos/cta-loop.mp4", type: "video/mp4" },
+          { src: "/videos/portfolio-hero-loop.webm", type: "video/webm" },
+          { src: "/videos/portfolio-hero-loop.mp4", type: "video/mp4" },
         ]}
       />
 
-      <div className="cta-layer cta-gradient" />
-      <div className="cta-layer cta-grid" />
-      <div className="cta-layer cta-noise" />
       <div
         className="cta-layer"
         style={{
           background:
-            "linear-gradient(180deg, rgba(7,13,23,0.55) 0%, rgba(7,13,23,0.18) 45%, rgba(7,13,23,0.6) 100%), linear-gradient(270deg, rgba(7,13,23,0.5) 0%, rgba(7,13,23,0.05) 60%)",
+            "radial-gradient(90% 70% at 50% 34%, rgba(255,255,255,0.15), transparent 78%), linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 42%, rgba(255,255,255,0.28) 100%)",
         }}
       />
+      <div className="cta-layer cta-grid" />
+      <div className="cta-layer cta-noise" />
 
       <div className="cta-layer overflow-hidden" aria-hidden="true">
         {PARTICLES.map((p, i) => (
@@ -69,23 +68,23 @@ export function PortfolioHero() {
 
       <div
         className="relative z-10 container-x"
-        style={{ textShadow: "0 2px 22px rgba(7,13,23,0.95), 0 1px 6px rgba(7,13,23,0.9), 0 0 3px rgba(7,13,23,0.75)" }}
+        style={{ textShadow: "0 2px 22px rgba(255,255,255,0.85), 0 1px 6px rgba(255,255,255,0.8), 0 0 3px rgba(255,255,255,0.6)" }}
       >
-        <Reveal className="mb-6 md:mb-8">
-          <Breadcrumbs items={breadcrumbs} />
+        <Reveal className="mb-6 md:mb-8 font-bold">
+          <Breadcrumbs items={breadcrumbs} tone="dark" />
         </Reveal>
         <Reveal delay={0.06}>
-          <p className="eyebrow text-[color:var(--steel-300)] mb-4">
+          <p className="eyebrow text-[color:var(--navy-800)] mb-4 font-bold">
             {PORTFOLIO_HERO.eyebrow}
           </p>
         </Reveal>
         <Reveal delay={0.12}>
-          <h1 className="h1 heading-accent max-w-3xl text-white">
+          <h1 className="h1 heading-accent max-w-3xl text-[color:var(--ink-950)]">
             {PORTFOLIO_HERO.title}
           </h1>
         </Reveal>
         <Reveal delay={0.18}>
-          <p className="mt-6 text-lg text-white/75 max-w-2xl leading-relaxed">
+          <p className="mt-6 text-lg text-[color:var(--ink-950)]/75 max-w-2xl leading-relaxed font-bold">
             {PORTFOLIO_HERO.subtitle}
           </p>
         </Reveal>
