@@ -37,7 +37,11 @@ export function ScrollSequence() {
 
   const [isMobile, setIsMobile] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [ready, setReady] = useState(false); // first frame painted
+  const [ready, setReady] = useState(false); // first frame painted (internal)
+  // True only once the core buffer of frames is fully downloaded AND decoded
+  // (img.decode() resolved). Until then a loading overlay masks the canvas so
+  // the user never sees a cold, stuttering first scrub.
+  const [isSequenceReady, setIsSequenceReady] = useState(false);
   const [stage, setStage] = useState(0);
   const stageRef = useRef(0);
 
@@ -125,10 +129,13 @@ export function ScrollSequence() {
       window.removeEventListener("scroll", start);
       io?.disconnect();
       void (async () => {
-        // 1) Warm-up buffer — the first frames, loaded in parallel and
-        //    pre-decoded, so the START of the sequence is ready and smooth the
-        //    moment the user scrolls to it.
+        // 1) Warm-up buffer — the first frames, loaded in parallel AND fully
+        //    decoded (each img.decode() is awaited inside loadFrame). Only once
+        //    every buffer frame has resolved its decode do we mark the sequence
+        //    ready and lift the loading overlay, so the first scrub is smooth
+        //    (no runtime decode cost mid-scroll).
         await loadRange(0, buffer, 6, true);
+        if (!cancelled) setIsSequenceReady(true);
         // 2) Remaining frames stream in progressively in the background.
         await loadRange(buffer, SEQUENCE.totalFrames, 4, false);
       })();
@@ -162,11 +169,18 @@ export function ScrollSequence() {
     // accelerants above fire it sooner the moment the user heads for the section.
     const startTimer = window.setTimeout(start, SEQUENCE.preloadDelayMs);
 
+    // Safety net: never leave the loading overlay up indefinitely if the network
+    // stalls mid-buffer — reveal after a hard cap regardless of decode progress.
+    const revealSafety = window.setTimeout(() => {
+      if (!cancelled) setIsSequenceReady(true);
+    }, 8000);
+
     return () => {
       cancelled = true;
       io?.disconnect();
       window.removeEventListener("scroll", start);
       window.clearTimeout(startTimer);
+      window.clearTimeout(revealSafety);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, isMobile]);
@@ -458,14 +472,51 @@ export function ScrollSequence() {
               <canvas
                 ref={canvasRef}
                 className="h-full w-full block"
-                style={{ opacity: ready ? 1 : 0, transition: "opacity 0.4s ease" }}
+                style={{
+                  opacity: isSequenceReady ? 1 : 0,
+                  transition: "opacity 0.5s ease",
+                }}
                 aria-hidden="true"
               />
-              {!ready && (
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="caption text-white/40">טוען…</span>
+              {/* Loading overlay — masks the canvas until the core frame buffer
+                  is hot (downloaded + decoded). Fades out smoothly once ready so
+                  the user only ever sees a fully-decoded, non-stuttering scrub. */}
+              <div
+                className="absolute inset-0 grid place-items-center"
+                aria-hidden="true"
+                style={{
+                  background: "#05090f",
+                  opacity: isSequenceReady ? 0 : 1,
+                  visibility: isSequenceReady ? "hidden" : "visible",
+                  pointerEvents: isSequenceReady ? "none" : "auto",
+                  transition: `opacity 0.5s ease, visibility 0s linear ${
+                    isSequenceReady ? "0.5s" : "0s"
+                  }`,
+                }}
+              >
+                <style>{"@keyframes seqSpin{to{transform:rotate(360deg)}}"}</style>
+                <div className="flex flex-col items-center gap-4">
+                  <span
+                    style={{
+                      width: 34,
+                      height: 34,
+                      borderRadius: "50%",
+                      border: "2px solid rgba(255,255,255,0.14)",
+                      borderTopColor: "var(--gold-500)",
+                      animation: "seqSpin 0.9s linear infinite",
+                    }}
+                  />
+                  <span
+                    className="caption"
+                    style={{
+                      color: "rgba(255,255,255,0.5)",
+                      letterSpacing: "0.12em",
+                    }}
+                  >
+                    טוען…
+                  </span>
                 </div>
-              )}
+              </div>
             </SequenceFrame>
           </div>
         </div>
