@@ -43,13 +43,52 @@ export function ClientLogos() {
       else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
     };
 
+    // Highlight the logo currently nearest the horizontal centre — the same
+    // treatment hover gives, but driven by position so it works on touch too.
+    // As the marquee moves, the centred tile lights up and hands the highlight
+    // to the next one as it takes the centre. Throttled (every 8th frame) and
+    // computed from live rects so it tracks both auto-scroll and user drags.
+    let activeBox: HTMLElement | null = null;
+    const updateCenter = () => {
+      const r = scroller.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      let best: HTMLElement | null = null;
+      let bestDist = Infinity;
+      for (const child of track.children) {
+        const box = child as HTMLElement;
+        const b = box.getBoundingClientRect();
+        const d = Math.abs(b.left + b.width / 2 - cx);
+        if (d < bestDist) {
+          bestDist = d;
+          best = box;
+        }
+      }
+      if (best && best !== activeBox) {
+        activeBox?.classList.remove("is-active");
+        best.classList.add("is-active");
+        activeBox = best;
+      }
+    };
+
+    // Fractional carry: mobile browsers (notably iOS Safari) round scrollLeft to
+    // whole pixels, so `scrollLeft += 0.5` was silently discarded every frame and
+    // the marquee never advanced on touch devices. Accumulate the sub-pixel step
+    // and only ever apply whole-pixel deltas, so it moves on every platform.
+    let carry = 0;
+    let frame = 0;
     let active = false;
     const tick = () => {
       if (!active) return;
       if (now() >= pauseUntil.current && !drag.current.active) {
-        scroller.scrollLeft += AUTO_SPEED;
+        carry += AUTO_SPEED;
+        const whole = Math.trunc(carry);
+        if (whole !== 0) {
+          scroller.scrollLeft += whole;
+          carry -= whole;
+        }
       }
       wrap();
+      if ((frame++ & 7) === 0) updateCenter();
       raf = requestAnimationFrame(tick);
     };
     const startLoop = () => {
@@ -112,12 +151,16 @@ export function ClientLogos() {
         { rootMargin: "100px 0px" },
       );
       io.observe(scroller);
-    } else {
-      startLoop();
     }
+    // Start immediately as a fallback. On real devices the observer corrects
+    // this within a frame — pausing the loop if the marquee is actually
+    // off-screen — but this guarantees it runs in environments where the
+    // IntersectionObserver never fires (e.g. the headless preview).
+    startLoop();
 
     return () => {
       stopLoop();
+      activeBox?.classList.remove("is-active");
       io?.disconnect();
       scroller.removeEventListener("wheel", onWheel);
       scroller.removeEventListener("touchstart", pause);
