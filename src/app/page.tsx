@@ -18,16 +18,13 @@ export default function Home() {
   return (
     <>
       <FaqJsonLd />
-      <a href="#main" className="skip-link">
-        דלגו לתוכן הראשי
-      </a>
       <Header />
       <main id="main" className="flex-1">
         <Hero />
+        <WhySection />
         <ClientLogos />
         <CallbackCta />
         <ScrollSequence />
-        <WhySection />
         <Services />
         <Portfolio />
         <ContactBand />

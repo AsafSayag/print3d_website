@@ -40,9 +40,6 @@ export function LegalLayout({ doc }: { doc: LegalDoc }) {
         path={doc.path}
         breadcrumbs={breadcrumbs}
       />
-      <a href="#main" className="skip-link">
-        דלגו לתוכן הראשי
-      </a>
       <Header />
       <main id="main" className="flex-1">
         <LegalHero

@@ -114,6 +114,8 @@ export function Hero() {
               // no ken-burns zoom, so there is no drift/jitter at the hand-off.
               transform: "translateZ(0)",
               backfaceVisibility: "hidden",
+              // Lift the footage a touch — the raw frames read a little too dark.
+              filter: "brightness(1.1)",
             }}
             muted
             playsInline
@@ -131,6 +133,7 @@ export function Hero() {
             aria-hidden="true"
             fetchPriority="high"
             className="h-full w-full object-cover"
+            style={{ filter: "brightness(1.1)" }}
           />
         )}
       </div>
