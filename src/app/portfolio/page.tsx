@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
+import { PortfolioIntro } from "@/components/portfolio/PortfolioIntro";
 import { ProjectShowcase } from "@/components/portfolio/ProjectShowcase";
 import { ProjectFilterGrid } from "@/components/portfolio/ProjectFilterGrid";
 import { PortfolioCta } from "@/components/portfolio/PortfolioCta";
@@ -35,6 +36,7 @@ export default function PortfolioPage() {
       <Header />
       <main id="main" className="flex-1">
         <PortfolioHero />
+        <PortfolioIntro />
         <ProjectShowcase />
         <ProjectFilterGrid />
         <PortfolioCta />

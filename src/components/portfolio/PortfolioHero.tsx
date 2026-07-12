@@ -66,28 +66,34 @@ export function PortfolioHero() {
         ))}
       </div>
 
-      <div
-        className="relative z-10 container-x"
-        style={{ textShadow: "0 2px 22px rgba(255,255,255,0.85), 0 1px 6px rgba(255,255,255,0.8), 0 0 3px rgba(255,255,255,0.6)" }}
-      >
+      <div className="relative z-10 container-x">
         <Reveal className="mb-6 md:mb-8 font-bold">
-          <Breadcrumbs items={breadcrumbs} tone="dark" />
+          <div style={{ textShadow: "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)" }}>
+            <Breadcrumbs items={breadcrumbs} tone="dark" />
+          </div>
         </Reveal>
-        <Reveal delay={0.06}>
-          <p className="eyebrow text-[color:var(--navy-800)] mb-4 font-bold">
-            {PORTFOLIO_HERO.eyebrow}
-          </p>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <h1 className="h1 heading-accent max-w-3xl text-[color:var(--ink-950)]">
-            {PORTFOLIO_HERO.title}
-          </h1>
-        </Reveal>
-        <Reveal delay={0.18}>
-          <p className="mt-6 text-lg text-[color:var(--ink-950)]/75 max-w-2xl leading-relaxed font-bold">
-            {PORTFOLIO_HERO.subtitle}
-          </p>
-        </Reveal>
+
+        {/* Eyebrow + title stay on the banner in solid black, lifted for
+            legibility by a strong white halo over the bright footage. The
+            descriptive copy is lifted off the banner into its own glass frame
+            below it (see PortfolioIntro). */}
+        <div
+          style={{
+            textShadow:
+              "0 0 3px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,0.95), 0 2px 28px rgba(255,255,255,0.9)",
+          }}
+        >
+          <Reveal delay={0.06}>
+            <p className="eyebrow text-black mb-4 font-bold">
+              {PORTFOLIO_HERO.eyebrow}
+            </p>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <h1 className="h1 heading-accent max-w-3xl text-black">
+              {PORTFOLIO_HERO.title}
+            </h1>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

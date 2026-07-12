@@ -568,7 +568,8 @@ body {
   -webkit-user-drag: none;
   pointer-events: none; /* drags fall through to the scroller */
 }
-.framer-logo-box:hover {
+.framer-logo-box:hover,
+.framer-logo-box.is-active {
   transform: translateY(-4px);
   background: linear-gradient(
     160deg,
@@ -581,9 +582,29 @@ body {
     inset 0 -1px 1px rgba(0, 0, 0, 0.25),
     0 30px 60px -24px rgba(0, 0, 0, 0.95);
 }
-.framer-logo-box:hover img {
+.framer-logo-box:hover img,
+.framer-logo-box.is-active img {
   opacity: 1;
   filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.25));
+}
+
+/* Centre highlight — a scroll-position effect (the logo currently passing the
+   middle of the marquee). Deliberately stronger than hover: a warm gold halo
+   and a slightly larger lift so the "now featured" logo clearly glows, then
+   hands the glow to the next tile as it takes the centre. */
+.framer-logo-box.is-active {
+  transform: translateY(-4px) scale(1.06);
+  border-color: rgba(214, 188, 133, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 1px rgba(214, 188, 133, 0.35),
+    0 10px 30px -6px rgba(199, 165, 102, 0.5),
+    0 26px 60px -22px rgba(199, 165, 102, 0.45),
+    0 30px 60px -24px rgba(0, 0, 0, 0.95);
+}
+.framer-logo-box.is-active img {
+  opacity: 1;
+  filter: drop-shadow(0 0 14px rgba(214, 188, 133, 0.65)) brightness(1.12);
 }
 
 @media (max-width: 640px) {
@@ -598,6 +619,31 @@ body {
   }
   .framer-marquee-track {
     gap: 16px;
+  }
+}
+
+/* ============================================================
+   Portfolio hero — frosted-glass heading panel
+   Keeps the black heading copy crisp and legible over the bright
+   drone footage instead of relying on a white text glow.
+   ============================================================ */
+.portfolio-hero-glass {
+  display: inline-block;
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.75rem);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 30px 70px -30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .portfolio-hero-glass {
+    background: rgba(255, 255, 255, 0.88);
   }
 }
 

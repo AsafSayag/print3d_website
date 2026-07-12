@@ -159,6 +159,9 @@ export function ProjectShowcase() {
           <p className="eyebrow text-[color:var(--steel-300)] text-2xl md:text-3xl">
             {PORTFOLIO_SHOWCASE.eyebrow}
           </p>
+          <p className="mt-3 text-white text-base md:text-lg max-w-2xl leading-relaxed">
+            {PORTFOLIO_SHOWCASE.note}
+          </p>
         </Reveal>
       </div>
 
