@@ -134,21 +134,9 @@ export function ScrollSequence() {
       })();
     };
 
-    // Warm the buffer as soon as the page is interactive/idle — independent of
-    // scroll — because this section appears early and is a headline visual, so
-    // its start must be ready before the user reaches it. Only the buffer loads
-    // eagerly (not all 121 frames); the remainder trickle in afterwards.
-    let usedRIC = false;
-    let idleHandle: number;
-    if (typeof window.requestIdleCallback === "function") {
-      usedRIC = true;
-      idleHandle = window.requestIdleCallback(start, { timeout: 1200 });
-    } else {
-      idleHandle = window.setTimeout(start, 600);
-    }
-
-    // Accelerants: if the user scrolls or the section nears before idle fires,
-    // start immediately so nothing is ever waiting on the idle callback.
+    // Safety-net accelerants (kept): a scroll or the section nearing the
+    // viewport also triggers the load, in case the mount kickoff below is ever
+    // prevented. The staged buffer-then-progressive strategy itself is unchanged.
     let io: IntersectionObserver | null = null;
     const outer = outerRef.current;
     if (outer && "IntersectionObserver" in window) {
@@ -162,15 +150,16 @@ export function ScrollSequence() {
     }
     window.addEventListener("scroll", start, { passive: true, once: true });
 
+    // Begin preloading immediately on mount — every frame starts downloading
+    // into the browser cache right away via the existing new Image() loader
+    // (warm buffer first, then the rest streaming progressively), without
+    // waiting for scroll or idle.
+    start();
+
     return () => {
       cancelled = true;
       io?.disconnect();
       window.removeEventListener("scroll", start);
-      if (usedRIC && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleHandle);
-      } else {
-        window.clearTimeout(idleHandle);
-      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, isMobile]);
