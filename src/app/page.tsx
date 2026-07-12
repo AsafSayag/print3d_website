@@ -24,9 +24,9 @@ export default function Home() {
       <Header />
       <main id="main" className="flex-1">
         <Hero />
-        <ScrollSequence />
-        <ClientLogos />
         <CallbackCta />
+        <ClientLogos />
+        <ScrollSequence />
         <WhySection />
         <Services />
         <Portfolio />

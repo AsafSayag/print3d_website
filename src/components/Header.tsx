@@ -28,29 +28,53 @@ export function Header() {
   const isNavCurrent = (href: string) =>
     href.startsWith("#") ? onHome && active === href.slice(1) : pathname === href;
 
-  // rAF-driven: tracks the scrolled state and the active section (scroll-spy).
+  // Active-section highlight via a SINGLE IntersectionObserver — no
+  // getBoundingClientRect on scroll frames at all. Each in-page nav target is
+  // observed against a thin detection line at 35% of the viewport height (the
+  // same line the old scroll handler compared against); the observer fires only
+  // when a section crosses that line, never per frame. The section crossing the
+  // line is the active one; during the small gaps between sections the last
+  // active section is kept (matching the old "last section past the line").
   useEffect(() => {
-    let raf = 0;
-    let frame = 0;
+    if (typeof IntersectionObserver === "undefined") return;
     const ids = NAV_ITEMS.filter((n) => n.href.startsWith("#")).map((n) =>
       n.href.slice(1),
     );
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
 
-    const tick = () => {
-      if (frame++ % 5 === 0) {
-        setScrolled(window.scrollY > SCROLL_THRESHOLD);
-        const line = window.innerHeight * 0.35;
-        let current: string | null = null;
-        for (const id of ids) {
-          const el = document.getElementById(id);
-          if (el && el.getBoundingClientRect().top <= line) current = id;
+    const intersecting = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) intersecting.add(e.target.id);
+          else intersecting.delete(e.target.id);
         }
-        setActive(current);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+        // The deepest (last in nav order) section crossing the line wins. If
+        // none currently cross it (a gap between sections), keep the last one.
+        let current: string | null = null;
+        for (const id of ids) if (intersecting.has(id)) current = id;
+        if (current !== null) setActive(current);
+      },
+      // Collapse the root to a ~0-height band at 35% from the top: inset the top
+      // by 35% and the bottom by 65%.
+      { rootMargin: "-35% 0px -65% 0px", threshold: 0 },
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  // Scrolled state (past the threshold) from a passive scroll listener that
+  // reads ONLY window.scrollY — a scroll-position read, not a layout query, so
+  // it never calls getBoundingClientRect or forces reflow. setState bails out
+  // when the boolean is unchanged, so this only re-renders on the transition.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Lock body scroll while the mobile drawer is open.

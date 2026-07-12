@@ -66,8 +66,10 @@ export const MOTION = {
 export const HERO = {
   /** Source duration is 5.04s; 1.45x → ≈3.5s runtime. */
   playbackRate: 1.45,
-  /** Content enters this long after the site loads (independent of the video). */
-  revealDelayMs: 500,
+  /** Content enters this long after the site loads (independent of the video).
+      Kept short so the headline + primary CTA appear promptly over the playing
+      video (which remains the cinematic layer) rather than being withheld. */
+  revealDelayMs: 175,
   /** Pause this many seconds before the natural end to avoid the EOS flash. */
   freezeLeadSec: 0.12,
   /** Fallback: if the video has not started within this window, reveal anyway. */
@@ -98,6 +100,13 @@ export const SEQUENCE = {
    * Kept small so the hand-off to the next section feels immediate.
    */
   endHold: 0.06,
-  /** Frames eagerly loaded before the rest stream in the background. */
-  eagerCount: 20,
+  /** Size of the warm-up buffer: these first frames are loaded in parallel and
+      pre-decoded as soon as the page is interactive, so the START of the
+      sequence is always smooth on the user's first scroll. The remaining frames
+      then stream in progressively in the background. */
+  eagerCount: 30,
+  /** Delay (ms) before the frame preload begins on the first visit, so the hero
+      video gets the connection to itself instead of competing with ~4MB of
+      frames. A scroll toward the section starts the preload sooner regardless. */
+  preloadDelayMs: 1800,
 } as const;

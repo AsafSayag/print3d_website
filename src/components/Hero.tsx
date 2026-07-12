@@ -13,28 +13,31 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const startedRef = useRef(false);
 
-  const [isMobile, setIsMobile] = useState(false);
   const [mode, setMode] = useState<Mode>("loading");
   // Content (logo/text/buttons) only enters once this is true.
   const [revealed, setRevealed] = useState(false);
 
-  // Decide device profile once mounted.
+  // Decide device profile AND the resulting mode in a single pass, so the
+  // `<video>` only ever mounts once the device is confirmed to be desktop.
+  //
+  // Splitting these into two effects meant the mode effect ran once on mount
+  // with the default (desktop) assumption, briefly mounting the video on mobile
+  // too — and because it is `preload="auto"`, the browser eagerly fetched the
+  // full ~1.6MB file before the device-detection effect could switch to the
+  // poster. That download was pure waste on every mobile visit. Deciding both
+  // together keeps `mode` at "loading" (poster only) until the real device is
+  // known, so mobile never touches the video. Desktop behaviour is unchanged.
   useEffect(() => {
-    const mq = window.matchMedia(
+    const mobile = window.matchMedia(
       `(max-width: ${HERO.mobileMaxWidth - 1}px), (pointer: coarse)`,
-    );
-    setIsMobile(mq.matches);
-  }, []);
-
-  // Mobile or reduced-motion → static poster, content immediately.
-  useEffect(() => {
-    if (isMobile || reduce) {
+    ).matches;
+    if (mobile || reduce) {
       setMode("poster");
       setRevealed(true);
     } else {
       setMode("video");
     }
-  }, [isMobile, reduce]);
+  }, [reduce]);
 
   // Desktop video choreography.
   useEffect(() => {
@@ -187,8 +190,12 @@ function HeroContent({
         {HERO_COPY.subtitle}
       </p>
 
+      {/* Primary CTA is brought forward to reveal with the subtitle — one beat
+          after the headline (index 1, not last) — so the main action appears
+          promptly. The single-beat cascade (headline → subtitle + CTAs) keeps
+          the choreographed feel. */}
       <div
-        style={item(2)}
+        style={item(1)}
         className="flex flex-wrap items-center justify-center gap-4 mt-26 md:mt-34"
       >
         <GlassButton href={CONTACT.contactPath} variant="primary">
