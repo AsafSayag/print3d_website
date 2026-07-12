@@ -43,12 +43,24 @@ export function ClientLogos() {
       else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
     };
 
+    let active = false;
     const tick = () => {
+      if (!active) return;
       if (now() >= pauseUntil.current && !drag.current.active) {
         scroller.scrollLeft += AUTO_SPEED;
       }
       wrap();
       raf = requestAnimationFrame(tick);
+    };
+    const startLoop = () => {
+      if (active) return;
+      active = true;
+      raf = requestAnimationFrame(tick);
+    };
+    const stopLoop = () => {
+      active = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
     };
 
     // Pause on genuine user input only. (Do NOT listen to the "scroll" event —
@@ -87,9 +99,26 @@ export function ClientLogos() {
     scroller.addEventListener("pointerup", onPointerUp);
     scroller.addEventListener("pointercancel", onPointerUp);
 
-    raf = requestAnimationFrame(tick);
+    // Only run the auto-scroll rAF while the marquee is actually on screen. It
+    // sits below the pinned ScrollSequence, so without this it would keep
+    // spending a frame every tick while the user scrubs the sequence above it.
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) startLoop();
+          else stopLoop();
+        },
+        { rootMargin: "100px 0px" },
+      );
+      io.observe(scroller);
+    } else {
+      startLoop();
+    }
+
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
+      io?.disconnect();
       scroller.removeEventListener("wheel", onWheel);
       scroller.removeEventListener("touchstart", pause);
       scroller.removeEventListener("pointerdown", onPointerDown);

@@ -31,6 +31,9 @@ export function ScrollSequence() {
   const drawnRef = useRef(-1); // last drawn integer frame
   const rafRef = useRef<number | null>(null);
   const readyRef = useRef(false); // guards the one-time reveal
+  // Cached scroll geometry — measured on mount/resize, read (never re-measured)
+  // inside the per-frame scrub tick to avoid forced synchronous layout.
+  const layoutRef = useRef({ elemTop: 0, scrollable: 0 });
 
   const [isMobile, setIsMobile] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -62,12 +65,14 @@ export function ScrollSequence() {
 
     let cancelled = false;
 
-    const loadFrame = (index: number) =>
+    // Load one frame. When `decode` is set, the image is fully decoded before it
+    // is marked ready, so the scroll loop never pays the decode cost mid-scrub.
+    const loadFrame = (index: number, decode = false) =>
       new Promise<void>((resolve) => {
         if (cancelled || loadedRef.current[index]) return resolve();
         const img = new Image();
         img.decoding = "async";
-        img.onload = () => {
+        const commit = () => {
           if (cancelled) return resolve();
           imagesRef.current[index] = img;
           loadedRef.current[index] = true;
@@ -77,50 +82,95 @@ export function ScrollSequence() {
           }
           resolve();
         };
+        img.onload = () => {
+          if (cancelled) return resolve();
+          if (decode && typeof img.decode === "function") {
+            img.decode().then(commit, commit);
+          } else {
+            commit();
+          }
+        };
         img.onerror = () => resolve();
         img.src = framePath(index + 1, isMobile);
       });
 
-    const loadAll = async () => {
-      // Eager: first N frames in order so the start is instantly smooth.
-      const eager = Math.min(SEQUENCE.eagerCount, SEQUENCE.totalFrames);
-      for (let i = 0; i < eager; i++) await loadFrame(i);
-      // Background: the remainder in order.
-      for (let i = eager; i < SEQUENCE.totalFrames && !cancelled; i++) {
-        await loadFrame(i);
-      }
+    // Load [from, to) with a bounded pool of parallel workers pulling from a
+    // shared cursor. This replaces the old one-at-a-time await chain (which,
+    // over a real network, left the section stalling on frame 0 because frames
+    // arrived serially), while staying progressive — frames stream in steadily
+    // rather than in a single blocking burst.
+    const loadRange = async (
+      from: number,
+      to: number,
+      concurrency: number,
+      decode = false,
+    ) => {
+      let cursor = from;
+      const worker = async () => {
+        while (cursor < to && !cancelled) {
+          await loadFrame(cursor++, decode);
+        }
+      };
+      await Promise.all(
+        Array.from({ length: Math.max(1, Math.min(concurrency, to - from)) }, worker),
+      );
     };
 
-    // Start loading as the module approaches the viewport, with a safety
-    // fallback that guarantees loading even if the observer never fires.
+    const buffer = Math.min(SEQUENCE.eagerCount, SEQUENCE.totalFrames);
+
     let started = false;
-    const begin = () => {
+    const start = () => {
       if (started || cancelled) return;
       started = true;
-      loadAll();
+      window.removeEventListener("scroll", start);
+      io?.disconnect();
+      void (async () => {
+        // 1) Warm-up buffer — the first frames, loaded in parallel and
+        //    pre-decoded, so the START of the sequence is ready and smooth the
+        //    moment the user scrolls to it.
+        await loadRange(0, buffer, 6, true);
+        // 2) Remaining frames stream in progressively in the background.
+        await loadRange(buffer, SEQUENCE.totalFrames, 4, false);
+      })();
     };
 
-    const outer = outerRef.current;
+    // Warm the buffer as soon as the page is interactive/idle — independent of
+    // scroll — because this section appears early and is a headline visual, so
+    // its start must be ready before the user reaches it. Only the buffer loads
+    // eagerly (not all 121 frames); the remainder trickle in afterwards.
+    let usedRIC = false;
+    let idleHandle: number;
+    if (typeof window.requestIdleCallback === "function") {
+      usedRIC = true;
+      idleHandle = window.requestIdleCallback(start, { timeout: 1200 });
+    } else {
+      idleHandle = window.setTimeout(start, 600);
+    }
+
+    // Accelerants: if the user scrolls or the section nears before idle fires,
+    // start immediately so nothing is ever waiting on the idle callback.
     let io: IntersectionObserver | null = null;
+    const outer = outerRef.current;
     if (outer && "IntersectionObserver" in window) {
       io = new IntersectionObserver(
         (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            io?.disconnect();
-            begin();
-          }
+          if (entries.some((e) => e.isIntersecting)) start();
         },
-        { rootMargin: "150% 0px" },
+        { rootMargin: "200% 0px" },
       );
       io.observe(outer);
     }
-    // Fallback: begin loading shortly after mount regardless of the observer.
-    const fallback = window.setTimeout(begin, 800);
+    window.addEventListener("scroll", start, { passive: true, once: true });
 
     return () => {
       cancelled = true;
       io?.disconnect();
-      window.clearTimeout(fallback);
+      window.removeEventListener("scroll", start);
+      if (usedRIC && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleHandle);
+      } else {
+        window.clearTimeout(idleHandle);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, isMobile]);
@@ -132,8 +182,22 @@ export function ScrollSequence() {
     if (!canvas) return;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      // Never size the canvas backing store larger than the source frames.
+      // Upscaling beyond the source resolution adds per-frame compositing cost
+      // (the GPU/compositor has to paint an oversized surface every frame) for
+      // ZERO quality gain — the frame can't show more detail than its source.
+      // On a high-DPR display this had grown the canvas to ~2277px from a 1600px
+      // source, dropping the scrub to ~39fps whenever compositing fell back to
+      // software. Capping to the source keeps it crisp and composite-cheap.
+      const srcW = isMobile ? 1080 : FRAME_W;
+      const srcH = isMobile ? 604 : FRAME_H;
+      const rawDpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.max(
+        1,
+        Math.min(rawDpr, srcW / rect.width, srcH / rect.height),
+      );
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
       drawnRef.current = -1; // force redraw at new size
@@ -202,12 +266,30 @@ export function ScrollSequence() {
     const outer = outerRef.current;
     if (!outer) return;
 
-    const tick = () => {
+    let active = false;
+
+    // Measure the scroll geometry ONCE here (and on resize) instead of every
+    // frame. `getBoundingClientRect()` and `offsetHeight` both force a synchronous
+    // layout; doing them inside the rAF tick meant a full reflow every frame
+    // (layout thrashing) that competed with the scroll compositor and dropped the
+    // scrub's frame rate. We cache the element's document-absolute top and the
+    // scrollable distance; the per-frame path then reads only `window.scrollY`,
+    // which returns the current scroll offset without triggering layout.
+    const measure = () => {
       const rect = outer.getBoundingClientRect();
       const vh = window.innerHeight;
-      const scrollable = outer.offsetHeight - vh;
+      layoutRef.current.elemTop = rect.top + window.scrollY;
+      layoutRef.current.scrollable = outer.offsetHeight - vh;
+    };
+
+    const tick = () => {
+      if (!active) return;
+      const { elemTop, scrollable } = layoutRef.current;
+      // Equivalent to getBoundingClientRect().top, but derived from the cached
+      // absolute top and the (non-reflowing) scroll position — no forced layout.
+      const rectTop = elemTop - window.scrollY;
       const rawProgress =
-        scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+        scrollable > 0 ? clamp(-rectTop / scrollable, 0, 1) : 0;
 
       // Scrub curve:
       //  • ease-out over the active region → fast at the start, slowing down as
@@ -249,9 +331,47 @@ export function ScrollSequence() {
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
+    const startLoop = () => {
+      if (active) return;
+      // Refresh the cached geometry when the section (re)enters view — cheap,
+      // happens at most once per visibility change, and catches any layout shift
+      // that occurred while the loop was parked.
+      measure();
+      active = true;
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    const stopLoop = () => {
+      active = false;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+
+    // The scrub only needs to run while the pinned section is on (or near) the
+    // screen. Off-screen it would keep easing + drawing every frame for nothing
+    // and steal main-thread time from whatever the user is actually viewing.
+    // A 50% margin starts it just before entry so there is no cold-start jump.
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) startLoop();
+          else stopLoop();
+        },
+        { rootMargin: "50% 0px" },
+      );
+      io.observe(outer);
+    } else {
+      startLoop();
+    }
+
+    // Re-measure only on resize (viewport or layout changes) — never per frame.
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
+
+    return () => {
+      stopLoop();
+      io?.disconnect();
+      window.removeEventListener("resize", measure);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
