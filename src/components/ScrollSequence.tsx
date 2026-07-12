@@ -20,11 +20,32 @@ function framePath(fileNum: number, mobile: boolean) {
     : SEQUENCE.framePathDesktop(fileNum);
 }
 
+/**
+ * Frame skipping — render only every Nth source frame to roughly halve the
+ * runtime decode + canvas-paint work during a scrub. The animation still spans
+ * the EXACT same scroll distance; the scrub simply maps progress across fewer,
+ * evenly-spaced frames, so it feels identical but triggers ~half the image
+ * swaps. 121 source frames, step 2 → ~61 active frames.
+ */
+const FRAME_STEP = 2;
+/** 1-based source file numbers actually used, evenly spaced across the sequence. */
+const FRAMES: number[] = (() => {
+  const list: number[] = [];
+  for (let f = 1; f <= SEQUENCE.totalFrames; f += FRAME_STEP) list.push(f);
+  // Always finish on the final source frame so the completed building is shown.
+  if (list[list.length - 1] !== SEQUENCE.totalFrames) {
+    list.push(SEQUENCE.totalFrames);
+  }
+  return list;
+})();
+/** Active frame count — replaces SEQUENCE.totalFrames throughout this component. */
+const ACTIVE_COUNT = FRAMES.length;
+
 export function ScrollSequence() {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Loaded frame images, indexed 0..TOTAL-1 (file number = index + 1).
+  // Loaded frame images, indexed 0..ACTIVE_COUNT-1 (source file = FRAMES[index]).
   const imagesRef = useRef<(HTMLImageElement | undefined)[]>([]);
   const loadedRef = useRef<boolean[]>([]);
   const currentRef = useRef(0); // smoothed float frame
@@ -64,8 +85,8 @@ export function ScrollSequence() {
   // ---- Frame loading (staged) ----
   useEffect(() => {
     if (reduced) return; // reduced-motion uses a static <img>, no canvas
-    imagesRef.current = new Array(SEQUENCE.totalFrames);
-    loadedRef.current = new Array(SEQUENCE.totalFrames).fill(false);
+    imagesRef.current = new Array(ACTIVE_COUNT);
+    loadedRef.current = new Array(ACTIVE_COUNT).fill(false);
 
     let cancelled = false;
 
@@ -95,7 +116,7 @@ export function ScrollSequence() {
           }
         };
         img.onerror = () => resolve();
-        img.src = framePath(index + 1, isMobile);
+        img.src = framePath(FRAMES[index], isMobile);
       });
 
     // Load [from, to) with a bounded pool of parallel workers pulling from a
@@ -120,7 +141,7 @@ export function ScrollSequence() {
       );
     };
 
-    const buffer = Math.min(SEQUENCE.eagerCount, SEQUENCE.totalFrames);
+    const buffer = Math.min(SEQUENCE.eagerCount, ACTIVE_COUNT);
 
     let started = false;
     const start = () => {
@@ -137,7 +158,7 @@ export function ScrollSequence() {
         await loadRange(0, buffer, 6, true);
         if (!cancelled) setIsSequenceReady(true);
         // 2) Remaining frames stream in progressively in the background.
-        await loadRange(buffer, SEQUENCE.totalFrames, 4, false);
+        await loadRange(buffer, ACTIVE_COUNT, 4, false);
       })();
     };
 
@@ -231,7 +252,7 @@ export function ScrollSequence() {
     let use = index;
     if (!loadedRef.current[use]) {
       let found = -1;
-      for (let d = 1; d < SEQUENCE.totalFrames; d++) {
+      for (let d = 1; d < ACTIVE_COUNT; d++) {
         if (loadedRef.current[index - d]) {
           found = index - d;
           break;
@@ -315,7 +336,7 @@ export function ScrollSequence() {
         progress = 1 - Math.pow(1 - t, SEQUENCE.easeExp);
       }
 
-      const target = progress * (SEQUENCE.totalFrames - 1);
+      const target = progress * (ACTIVE_COUNT - 1);
       // Ease toward target; snap when extremely close to avoid idle churn.
       const cur = currentRef.current;
       const next =
