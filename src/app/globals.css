@@ -515,6 +515,11 @@ body {
   width: max-content;
   gap: 20px;
   padding-inline: 10px;
+  /* Vertical breathing room so the centred/hovered tile — which lifts
+     (translateY -4px) and scales (1.06) — is never clipped at the top by the
+     scroller's overflow-y: hidden. Without this the scroller is exactly one
+     tile tall, so the active tile's raised top edge (and its border) gets cut. */
+  padding-block: 18px;
 }
 
 /* Dark iOS "liquid glass" tiles holding uniform white logos */

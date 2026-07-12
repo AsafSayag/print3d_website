@@ -187,7 +187,17 @@ function HeroContent({
       </h1>
 
       <p
-        style={item(1)}
+        style={{
+          ...item(1),
+          border: "1px solid rgba(255,255,255,0.4)",
+          background: "rgba(255,255,255,0.16)",
+          backdropFilter: "blur(10px) saturate(140%)",
+          WebkitBackdropFilter: "blur(10px) saturate(140%)",
+          borderRadius: "16px",
+          padding: "0.6rem 1.4rem",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.5), 0 10px 30px -12px rgba(7,13,23,0.35)",
+        }}
         className="text-black font-bold text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
       >
         {HERO_COPY.subtitle}
