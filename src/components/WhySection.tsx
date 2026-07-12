@@ -82,13 +82,14 @@ export function WhySection() {
           </div>
           <div className="lg:col-span-7">
             <Reveal>
-              {/* The long copy is collapsed by default (mobile + desktop) behind
-                  a small-but-prominent gold "מידע נוסף" toggle. */}
+              {/* On mobile (<768px) the long copy is collapsed behind a
+                  small-but-prominent gold "מידע נוסף" toggle; from tablet/desktop
+                  up the toggle is hidden and the paragraph is always shown. */}
               <button
                 type="button"
                 onClick={() => setShowMore((v) => !v)}
                 aria-expanded={showMore}
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+                className="md:hidden inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
                 style={{
                   border:
                     "1px solid color-mix(in srgb, var(--gold-500) 55%, transparent)",
@@ -112,14 +113,14 @@ export function WhySection() {
                 </svg>
               </button>
 
-              {showMore && (
-                <p
-                  className="mt-6 text-white/75 text-lg leading-[1.85] text-pretty"
-                  style={{ animation: "whyFade 0.4s var(--ease-brand) both" }}
-                >
-                  {WHY.paragraph}
-                </p>
-              )}
+              <p
+                className={`${
+                  showMore ? "block" : "hidden"
+                } md:block mt-6 md:mt-0 text-white/75 text-lg leading-[1.85] text-pretty`}
+                style={{ animation: "whyFade 0.4s var(--ease-brand) both" }}
+              >
+                {WHY.paragraph}
+              </p>
               <style>{"@keyframes whyFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}"}</style>
             </Reveal>
           </div>

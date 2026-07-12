@@ -31,9 +31,9 @@ export const CONTACT = {
 
 /** Brand palette — mirrors the CSS variables declared in globals.css. */
 export const COLORS = {
-  navy950: "#070D17",
-  navy900: "#0B1526",
-  navy800: "#12233B",
+  navy950: "#0E1A2C",
+  navy900: "#15263D",
+  navy800: "#1D3350",
   steel500: "#6E93B8",
   steel300: "#A6C3DC",
   ice050: "#F4F7FA",

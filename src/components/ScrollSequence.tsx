@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { SEQUENCE } from "@/lib/constants";
 import { SEQUENCE_EYEBROW, SEQUENCE_STAGES } from "@/lib/content";
 
-// Source frame dimensions (desktop). Frames were optimized down to 1280px wide;
-// these must match so the canvas caps its backing store at the real source size
-// (never upscaling → keeps the composite cheap and the image crisp).
-const FRAME_W = 1280;
-const FRAME_H = 715;
+// Source frame dimensions (desktop). Frames are encoded at the full 1920px
+// source width; these must match so the canvas caps its backing store at the
+// real source size (never upscaling → keeps the composite cheap and crisp).
+const FRAME_W = 1920;
+const FRAME_H = 1073;
 const ASPECT = `${FRAME_W} / ${FRAME_H}`;
 const LAST = SEQUENCE.totalFrames; // 1-based last file number
 
@@ -225,8 +225,8 @@ export function ScrollSequence() {
       // On a high-DPR display this had grown the canvas to ~2277px from a 1600px
       // source, dropping the scrub to ~39fps whenever compositing fell back to
       // software. Capping to the source keeps it crisp and composite-cheap.
-      const srcW = isMobile ? 1080 : FRAME_W;
-      const srcH = isMobile ? 604 : FRAME_H;
+      const srcW = isMobile ? 1440 : FRAME_W;
+      const srcH = isMobile ? 805 : FRAME_H;
       const rawDpr = Math.min(window.devicePixelRatio || 1, 2);
       const dpr = Math.max(
         1,
