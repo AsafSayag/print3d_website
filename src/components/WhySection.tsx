@@ -1,8 +1,13 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { WHY } from "@/lib/content";
 import { Reveal } from "./ui/Reveal";
 
 export function WhySection() {
+  const [showMore, setShowMore] = useState(false);
+
   return (
     <section id="about" className="surface-navy-950 section" aria-label={WHY.heading}>
       <div className="container-x">
@@ -77,9 +82,46 @@ export function WhySection() {
           </div>
           <div className="lg:col-span-7">
             <Reveal>
-              <p className="text-white/75 text-lg leading-[1.85] text-pretty">
+              {/* On mobile (<768px) the long copy is collapsed behind a
+                  small-but-prominent gold "מידע נוסף" toggle; from tablet/desktop
+                  up the toggle is hidden and the paragraph is always shown. */}
+              <button
+                type="button"
+                onClick={() => setShowMore((v) => !v)}
+                aria-expanded={showMore}
+                className="md:hidden inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+                style={{
+                  border:
+                    "1px solid color-mix(in srgb, var(--gold-500) 55%, transparent)",
+                  background: "color-mix(in srgb, var(--gold-500) 10%, transparent)",
+                  color: "var(--gold-400)",
+                }}
+              >
+                {showMore ? "הצג פחות" : "מידע נוסף"}
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-300"
+                  style={{ transform: showMore ? "rotate(180deg)" : "none" }}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+
+              <p
+                className={`${
+                  showMore ? "block" : "hidden"
+                } md:block mt-6 md:mt-0 text-white/75 text-lg leading-[1.85] text-pretty`}
+                style={{ animation: "whyFade 0.4s var(--ease-brand) both" }}
+              >
                 {WHY.paragraph}
               </p>
+              <style>{"@keyframes whyFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}"}</style>
             </Reveal>
           </div>
         </div>

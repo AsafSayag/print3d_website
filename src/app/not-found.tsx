@@ -11,9 +11,6 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-      <a href="#main" className="skip-link">
-        דלגו לתוכן הראשי
-      </a>
       <Header />
       <main
         id="main"

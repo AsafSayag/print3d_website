@@ -114,6 +114,8 @@ export function Hero() {
               // no ken-burns zoom, so there is no drift/jitter at the hand-off.
               transform: "translateZ(0)",
               backfaceVisibility: "hidden",
+              // Lift the footage — the raw frames read too dark.
+              filter: "brightness(1.22) contrast(1.02)",
             }}
             muted
             playsInline
@@ -131,6 +133,7 @@ export function Hero() {
             aria-hidden="true"
             fetchPriority="high"
             className="h-full w-full object-cover"
+            style={{ filter: "brightness(1.22) contrast(1.02)" }}
           />
         )}
       </div>
@@ -140,8 +143,8 @@ export function Hero() {
         className="absolute inset-0 transition-opacity duration-700"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 30%, rgba(7,13,23,0.25), rgba(7,13,23,0.75) 70%, rgba(7,13,23,0.92))",
-          opacity: revealed ? 1 : 0.55,
+            "radial-gradient(120% 90% at 50% 30%, rgba(7,13,23,0.12), rgba(7,13,23,0.5) 70%, rgba(7,13,23,0.72))",
+          opacity: revealed ? 1 : 0.5,
         }}
       />
 

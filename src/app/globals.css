@@ -4,10 +4,11 @@
    Print3D — Design tokens
    ============================================================ */
 :root {
-  /* Brand palette */
-  --navy-950: #070d17;
-  --navy-900: #0b1526;
-  --navy-800: #12233b;
+  /* Brand palette — navy surfaces lifted from near-black so the dark sections
+     across the homepage read as deep navy rather than black. */
+  --navy-950: #0e1a2c;
+  --navy-900: #15263d;
+  --navy-800: #1d3350;
   --steel-500: #6e93b8;
   --steel-300: #a6c3dc;
   --ice-050: #f4f7fa;
