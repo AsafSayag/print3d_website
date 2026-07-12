@@ -10,10 +10,27 @@ import { GlassButton } from "@/components/ui/GlassButton";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
 import { getBlogArticle, blogArticleSlugs } from "../content";
+import { ArticleBody } from "../_components/ArticleBody";
 
 type Params = Promise<{ slug: string }>;
 
 const findArticle = (slug: string) => getBlogArticle(slug);
+
+function ArticleCta() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <GlassButton href={CONTACT.contactPath} variant="primary">
+        דברו איתנו
+      </GlassButton>
+      <Link
+        href="/blog"
+        className="text-[color:var(--gold-700)] font-semibold hover:underline underline-offset-4"
+      >
+        לכל המאמרים ←
+      </Link>
+    </div>
+  );
+}
 
 export function generateStaticParams() {
   return blogArticleSlugs().map((slug) => ({ slug }));
@@ -27,12 +44,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = findArticle(slug);
   if (!article) return {};
+  const leadBlock = article.body?.find((block) => block.type === "lead");
   return buildPageMeta({
     title: article.title,
-    description: `${article.title} — המאמר המלא יעלה בקרוב לבלוג של Print3D.`,
+    description: leadBlock?.text ?? `${article.title} — המאמר המלא יעלה בקרוב לבלוג של Print3D.`,
     path: `/blog/${slug}`,
     // Placeholder pages stay out of the index until the content lands.
-    index: false,
+    index: Boolean(article.body),
   });
 }
 
@@ -47,6 +65,14 @@ export default async function ArticlePage({ params }: { params: Params }) {
     { label: article.title },
   ];
 
+  const leadIndex = article.body?.findIndex((block) => block.type === "lead") ?? -1;
+  const leadBlock =
+    leadIndex >= 0 ? (article.body![leadIndex] as { type: "lead"; text: string }) : undefined;
+  const leadText = leadBlock?.text ?? "";
+  const restBlocks = article.body
+    ? article.body.filter((_, i) => i !== leadIndex)
+    : [];
+
   return (
     <>
       <LegalJsonLd
@@ -60,65 +86,74 @@ export default async function ArticlePage({ params }: { params: Params }) {
       </a>
       <Header />
       <main id="main" className="flex-1">
-        {/* Duotone hero, matching the blog rows */}
-        <section className="relative flex min-h-[55dvh] items-end overflow-hidden bg-[color:var(--navy-950)] pt-[72px] md:pt-20">
-          <Image
-            src={article.image}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover grayscale"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(155deg, rgba(7,13,23,0.55), rgba(18,35,59,0.8))",
-              mixBlendMode: "multiply",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.85)] via-transparent to-transparent" />
-          <div className="container-x relative z-10 pb-12 pt-20">
+        {/* Clear header: back link, plain h1, meta */}
+        <section className="surface-white pb-8 pt-[104px] md:pt-32">
+          <div className="container-x">
             <Link
               href="/blog"
-              className="caption text-[color:var(--gold-400)] hover:underline underline-offset-4"
+              className="caption text-[color:var(--gold-700)] hover:underline underline-offset-4"
             >
               → חזרה לבלוג
             </Link>
-            <h1 className="mt-4 max-w-[46rem] font-display text-3xl font-bold leading-snug text-white md:text-4xl">
+            <h1 className="mt-4 max-w-[46rem] font-display text-3xl font-bold leading-snug text-[color:var(--ink-950)] md:text-4xl">
               {article.title}
             </h1>
-            <span className="caption mt-3 block text-white/70">
+            <span className="caption mt-3 block text-[color:var(--ink-950)]/60">
               {article.readingTime}
             </span>
           </div>
         </section>
 
-        {/* Coming-soon placeholder until the article content is written */}
-        <section className="surface-white section">
-          <div className="container-x max-w-2xl text-center">
-            <span className="eyebrow text-[color:var(--gold-700)]">בקרוב</span>
-            <h2 className="h3 mt-2 text-[color:var(--ink-950)]">
-              המאמר בדרך אלינו
-            </h2>
-            <p className="mt-4 text-[color:var(--ink-950)]/70 leading-relaxed">
-              אנחנו עובדים על התוכן הזה ממש עכשיו. בינתיים, אפשר לחזור לבלוג
-              ולעיין בשאר המאמרים — או לדבר איתנו ישירות על הפרויקט שלכם.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <GlassButton href={CONTACT.contactPath} variant="primary">
-                דברו איתנו
-              </GlassButton>
-              <Link
-                href="/blog"
-                className="text-[color:var(--gold-700)] font-semibold hover:underline underline-offset-4"
-              >
-                לכל המאמרים ←
-              </Link>
-            </div>
+        {/* Wide, clean hero image */}
+        <div className="container-x">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg md:aspect-[21/9]">
+            <Image
+              src={article.image}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
           </div>
-        </section>
+        </div>
+
+        {article.body ? (
+          <section className="surface-white section">
+            <div className="container-x">
+              <div className="mx-auto max-w-[42rem]">
+                <h2 className="font-display text-2xl font-bold leading-snug text-[color:var(--ink-950)] md:text-3xl">
+                  {leadText}
+                </h2>
+                <hr className="mt-8 border-[color:var(--ink-950)]/10" />
+              </div>
+              <ArticleBody blocks={restBlocks} />
+              <div className="mx-auto mt-16 max-w-[42rem] border-t border-[color:var(--ink-950)]/10 pt-10">
+                <ArticleCta />
+              </div>
+            </div>
+          </section>
+        ) : (
+          /* Coming-soon placeholder until the article content is written */
+          <section className="surface-white section">
+            <div className="container-x max-w-2xl text-center">
+              <hr className="mb-8 border-[color:var(--ink-950)]/10" />
+              <span className="eyebrow text-[color:var(--gold-700)]">
+                בקרוב
+              </span>
+              <h2 className="h3 mt-2 text-[color:var(--ink-950)]">
+                המאמר בדרך אלינו
+              </h2>
+              <p className="mt-4 text-[color:var(--ink-950)]/70 leading-relaxed">
+                אנחנו עובדים על התוכן הזה ממש עכשיו. בינתיים, אפשר לחזור לבלוג
+                ולעיין בשאר המאמרים — או לדבר איתנו ישירות על הפרויקט שלכם.
+              </p>
+              <div className="mt-8">
+                <ArticleCta />
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>
