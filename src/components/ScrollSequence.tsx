@@ -444,41 +444,72 @@ export function ScrollSequence() {
           className="sticky top-0 relative overflow-hidden"
           style={{ height: "100svh" }}
         >
-          {/* Caption — a heading anchored top-right, clear of the model */}
+          {/* Caption — desktop: a heading anchored top-right, clear of the model.
+              Mobile: the same copy inside a light bordered "chip" so it reads as
+              its own element above the model rather than floating on top of it. */}
           <div
-            className="absolute inset-x-0 container-x text-start z-10 pointer-events-none"
-            style={{ top: "clamp(4.5rem, 13vh, 9rem)" }}
+            className={`absolute inset-x-0 z-10 pointer-events-none ${
+              isMobile ? "" : "container-x text-start"
+            }`}
+            style={{
+              top: isMobile
+                ? "clamp(2.5rem, 7vh, 4rem)"
+                : "clamp(4.5rem, 13vh, 9rem)",
+            }}
           >
-            <p
-              className="mb-2 font-semibold text-[color:var(--gold-500)]"
-              style={{ fontSize: "0.875rem", letterSpacing: "0.28em" }}
-            >
-              {SEQUENCE_EYEBROW}
-            </p>
-            {/* Stage text (cross-fades by scroll progress) */}
             <div
-              className="relative"
-              style={{ height: "clamp(2.5rem, 6vw, 3.5rem)" }}
+              className={isMobile ? "mx-auto text-center" : ""}
+              style={
+                isMobile
+                  ? {
+                      width: "min(86vw, 22rem)",
+                      padding: "0.85rem 1.1rem 1rem",
+                      borderRadius: "16px",
+                      border: "1px solid rgba(255,255,255,0.16)",
+                      background: "rgba(9,15,26,0.55)",
+                      backdropFilter: "blur(10px) saturate(140%)",
+                      WebkitBackdropFilter: "blur(10px) saturate(140%)",
+                      boxShadow: "0 14px 34px -16px rgba(0,0,0,0.7)",
+                    }
+                  : undefined
+              }
             >
-              {SEQUENCE_STAGES.map((st, i) => (
-                <span
-                  key={i}
-                  className="absolute text-white transition-opacity duration-500"
-                  style={{
-                    insetInlineStart: 0,
-                    top: 0,
-                    opacity: stage === i ? 1 : 0,
-                    fontFamily: "var(--font-display), sans-serif",
-                    fontSize: "clamp(1.6rem, 3.8vw, 2.6rem)",
-                    fontWeight: 700,
-                    letterSpacing: "-0.01em",
-                    lineHeight: 1.1,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {st.text}
-                </span>
-              ))}
+              <p
+                className="mb-2 font-semibold text-[color:var(--gold-500)]"
+                style={{ fontSize: "0.875rem", letterSpacing: "0.28em" }}
+              >
+                {SEQUENCE_EYEBROW}
+              </p>
+              {/* Stage text (cross-fades by scroll progress) */}
+              <div
+                className="relative"
+                style={{
+                  height: isMobile ? "2.25rem" : "clamp(2.5rem, 6vw, 3.5rem)",
+                }}
+              >
+                {SEQUENCE_STAGES.map((st, i) => (
+                  <span
+                    key={i}
+                    className="absolute text-white transition-opacity duration-500"
+                    style={{
+                      insetInlineStart: 0,
+                      insetInlineEnd: isMobile ? 0 : undefined,
+                      top: 0,
+                      opacity: stage === i ? 1 : 0,
+                      fontFamily: "var(--font-display), sans-serif",
+                      fontSize: isMobile
+                        ? "1.4rem"
+                        : "clamp(1.6rem, 3.8vw, 2.6rem)",
+                      fontWeight: 700,
+                      letterSpacing: "-0.01em",
+                      lineHeight: 1.1,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {st.text}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -488,8 +519,12 @@ export function ScrollSequence() {
           <div
             className="absolute inset-0 flex items-center justify-center"
             style={{
-              paddingTop: "clamp(10rem, calc(13vh + 6rem), 15rem)",
-              paddingBottom: "clamp(1rem, 3vh, 2rem)",
+              paddingTop: isMobile
+                ? "clamp(8.5rem, calc(7vh + 6rem), 12rem)"
+                : "clamp(10rem, calc(13vh + 6rem), 15rem)",
+              paddingBottom: isMobile
+                ? "clamp(2rem, 6vh, 4rem)"
+                : "clamp(1rem, 3vh, 2rem)",
             }}
           >
             <SequenceFrame mobile={isMobile}>
@@ -569,9 +604,9 @@ function SequenceFrame({
         // frame — so the model renders far larger, using the ample vertical space
         // that the old 3:2 frame left empty.
         maxWidth: mobile
-          ? "96vw"
+          ? "min(78vw, 20rem)"
           : "min(1150px, 92vw, calc((100svh - clamp(11rem, 13vh + 7rem, 16rem)) * 1.7))",
-        aspectRatio: mobile ? "3 / 4" : ASPECT,
+        aspectRatio: mobile ? "4 / 5" : ASPECT,
         borderRadius: "16px",
         border: "1px solid rgba(255,255,255,0.08)",
         boxShadow:

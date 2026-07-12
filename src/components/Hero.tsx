@@ -188,7 +188,7 @@ function HeroContent({
 
       <p
         style={item(1)}
-        className="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
+        className="text-black font-bold text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
       >
         {HERO_COPY.subtitle}
       </p>
