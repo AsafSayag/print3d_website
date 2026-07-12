@@ -95,10 +95,30 @@ export const ARTICLES = {
   heading: "מאמרים אחרונים",
   allLink: "לכל המאמרים",
   items: [
-    { title: 'כל מה שיזם נדל"ן צריך לדעת לפני הזמנת מודל אדריכלי', readingTime: "6 דקות קריאה" },
-    { title: "כמה עולה מודל אדריכלי? מדריך תמחור 2026", readingTime: "8 דקות קריאה" },
-    { title: "מודל אדריכלי מול הדמיה דיגיטלית", readingTime: "5 דקות קריאה" },
-    { title: "עבודת יד מול ייצור אוטומטי", readingTime: "4 דקות קריאה" },
+    {
+      slug: "ordering-architectural-model-guide",
+      title: 'כל מה שיזם נדל"ן צריך לדעת לפני הזמנת מודל אדריכלי',
+      readingTime: "6 דקות קריאה",
+      image: "/projects/neve-gan.webp",
+    },
+    {
+      slug: "architectural-model-pricing-2026",
+      title: "כמה עולה מודל אדריכלי? מדריך תמחור 2026",
+      readingTime: "8 דקות קריאה",
+      image: "/projects/gindi-bait-bapark.jpg",
+    },
+    {
+      slug: "physical-model-vs-digital-render",
+      title: "מודל אדריכלי מול הדמיה דיגיטלית",
+      readingTime: "5 דקות קריאה",
+      image: "/projects/preshkovsky-tabaa.jpg",
+    },
+    {
+      slug: "handmade-vs-automated-production",
+      title: "עבודת יד מול ייצור אוטומטי",
+      readingTime: "4 דקות קריאה",
+      image: "/projects/tzavta-shapir.jpg",
+    },
   ],
 } as const;
 
