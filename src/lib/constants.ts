@@ -105,4 +105,8 @@ export const SEQUENCE = {
       sequence is always smooth on the user's first scroll. The remaining frames
       then stream in progressively in the background. */
   eagerCount: 30,
+  /** Delay (ms) before the frame preload begins on the first visit, so the hero
+      video gets the connection to itself instead of competing with ~4MB of
+      frames. A scroll toward the section starts the preload sooner regardless. */
+  preloadDelayMs: 1800,
 } as const;

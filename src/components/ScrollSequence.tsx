@@ -134,9 +134,14 @@ export function ScrollSequence() {
       })();
     };
 
-    // Safety-net accelerants (kept): a scroll or the section nearing the
-    // viewport also triggers the load, in case the mount kickoff below is ever
-    // prevented. The staged buffer-then-progressive strategy itself is unchanged.
+    // Head-start accelerants: the FIRST scroll (the user heading down toward the
+    // section, a full viewport before they reach it) starts the preload right
+    // away, and — as a backup — the section actually scrolling into view does
+    // too. The negative bottom margin is deliberate: this section is 240vh tall,
+    // so with a 0 margin its top edge merely *touching* the viewport bottom at
+    // mount already counts as "intersecting" and would fire instantly, defeating
+    // the delay. Requiring it to be ~20% into view means the observer only fires
+    // on real approach, never at mount.
     let io: IntersectionObserver | null = null;
     const outer = outerRef.current;
     if (outer && "IntersectionObserver" in window) {
@@ -144,22 +149,24 @@ export function ScrollSequence() {
         (entries) => {
           if (entries.some((e) => e.isIntersecting)) start();
         },
-        { rootMargin: "200% 0px" },
+        { rootMargin: "0px 0px -20% 0px" },
       );
       io.observe(outer);
     }
     window.addEventListener("scroll", start, { passive: true, once: true });
 
-    // Begin preloading immediately on mount — every frame starts downloading
-    // into the browser cache right away via the existing new Image() loader
-    // (warm buffer first, then the rest streaming progressively), without
-    // waiting for scroll or idle.
-    start();
+    // Deferred fallback: if the user just watches the hero without scrolling,
+    // hold the frame preload for a beat so the hero's ~1.6MB video gets the
+    // connection to itself first — otherwise the ~4MB of frames download
+    // alongside it, choke the pipe, and stutter both on the first visit. The
+    // accelerants above fire it sooner the moment the user heads for the section.
+    const startTimer = window.setTimeout(start, SEQUENCE.preloadDelayMs);
 
     return () => {
       cancelled = true;
       io?.disconnect();
       window.removeEventListener("scroll", start);
+      window.clearTimeout(startTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, isMobile]);
