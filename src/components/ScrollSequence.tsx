@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { SEQUENCE } from "@/lib/constants";
 import { SEQUENCE_EYEBROW, SEQUENCE_STAGES } from "@/lib/content";
 
-const FRAME_W = 1600;
-const FRAME_H = 894;
+// Source frame dimensions (desktop). Frames were optimized down to 1280px wide;
+// these must match so the canvas caps its backing store at the real source size
+// (never upscaling → keeps the composite cheap and the image crisp).
+const FRAME_W = 1280;
+const FRAME_H = 715;
 const ASPECT = `${FRAME_W} / ${FRAME_H}`;
 const LAST = SEQUENCE.totalFrames; // 1-based last file number
 
