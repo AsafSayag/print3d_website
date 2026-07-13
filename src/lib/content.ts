@@ -195,6 +195,24 @@ export const CONTACT_PAGE = {
   },
 } as const;
 
+/**
+ * About page — structural micro-copy only (eyebrows / short titles).
+ * All body copy is reused verbatim from the existing site exports
+ * (WHY, SERVICES, WHO_FOR, STATS, CONTACT_CTA, CLIENT_LOGOS).
+ */
+export const ABOUT = {
+  hero: {
+    eyebrow: "אודות",
+    title: "מודלים אדריכליים, כבר יותר מ-15 שנה",
+    description: HERO_COPY.subtitle,
+  },
+  story: { eyebrow: "הסיפור שלנו" },
+  values: { eyebrow: "הבידול שלנו", title: "מה שמייחד מודל של Print3D" },
+  services: { eyebrow: "מה אנחנו עושים" },
+  audience: { eyebrow: "עבור מי" },
+  lead: { eyebrow: "בואו נתחיל" },
+} as const;
+
 export const FOOTER = {
   tagline: "מודלים אדריכליים — ייצור מתקדם וגימור יד אומן",
   columns: {

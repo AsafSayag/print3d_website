@@ -50,7 +50,7 @@ export const NAV_ITEMS = [
   { label: "תהליך", href: "#process" },
   { label: "תיק עבודות", href: "/portfolio" },
   { label: "לקוחות", href: "#clients" },
-  { label: "אודות", href: "#about" },
+  { label: "אודות", href: "/about" },
   { label: "בלוג", href: "/blog" },
 ] as const;
 
