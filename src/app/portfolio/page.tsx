@@ -14,14 +14,14 @@ import { buildPageMeta } from "@/lib/pageMeta";
 import { PORTFOLIO_HERO } from "@/lib/portfolioContent";
 
 export const metadata: Metadata = buildPageMeta({
-  title: "תיק עבודות",
+  title: "קטלוג",
   description: PORTFOLIO_HERO.subtitle,
   path: "/portfolio",
 });
 
 const breadcrumbs: Crumb[] = [
   { label: "בית", href: "/" },
-  { label: "תיק עבודות" },
+  { label: "קטלוג" },
 ];
 
 export default function PortfolioPage() {

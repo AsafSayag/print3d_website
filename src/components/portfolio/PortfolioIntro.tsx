@@ -23,7 +23,7 @@ export function PortfolioIntro() {
               <GlassButton
                 href={CONTACT.contactPath}
                 variant="primary"
-                className="!px-9 !py-4 !text-lg shadow-[0_18px_50px_-16px_rgba(199,165,102,0.65)]"
+                className="!px-9 !py-4 !text-lg shadow-[0_18px_50px_-16px_rgba(62, 121, 159,0.65)]"
               >
                 {PORTFOLIO_CTA.button}
                 <svg

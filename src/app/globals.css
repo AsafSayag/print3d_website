@@ -14,9 +14,13 @@
   --ice-050: #f4f7fa;
   --white: #ffffff;
   --ink-950: #0a0c0f;
-  --gold-500: #c7a566;
-  --gold-400: #d6bc85;
-  --gold-700: #8f7340;
+  /* Brand accent — was warm gold, now a deep royal blue. The three stops keep
+     the same light→dark relationship so every existing var() reference still
+     reads: 400 = brightest (glows/icons on dark), 500 = main accent
+     (buttons/underlines), 700 = deepest (eyebrows on light surfaces). */
+  --gold-500: #3e799f;
+  --gold-400: #5f9ac0;
+  --gold-700: #2d5a78;
 
   /* Semantic */
   --bg: var(--white);
@@ -162,6 +166,16 @@ body {
   background: var(--gold-500);
 }
 
+/* "פרויקטים נבחרים" (home portfolio) module: its accent reads as a silvery
+   white instead of the brand blue — only the CTA keeps the blue. */
+.portfolio-ambient .heading-accent::after {
+  background: linear-gradient(
+    to inline-end,
+    #d9e2ec,
+    color-mix(in srgb, #d9e2ec 0%, transparent)
+  );
+}
+
 /* ============================================================
    Layout helpers
    ============================================================ */
@@ -280,10 +294,16 @@ body {
 .glass-btn--primary {
   --_bg: linear-gradient(
     135deg,
-    rgba(199, 165, 102, 0.85),
-    rgba(169, 138, 78, 0.75)
+    rgba(62, 121, 159, 0.95),
+    rgba(45, 90, 120, 0.9)
   );
-  border-color: rgba(214, 188, 133, 0.5);
+  /* Deep-blue fill can blend into dark/blue backgrounds, so a bright, clearly
+     defined border + soft halo make the primary CTA pop off any surface. */
+  border-color: rgba(140, 188, 214, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 1px rgba(95, 154, 192, 0.4),
+    0 8px 28px rgba(20, 52, 72, 0.5);
 }
 
 /* Specular sweep — crosses once on hover */
@@ -599,17 +619,17 @@ body {
    hands the glow to the next tile as it takes the centre. */
 .framer-logo-box.is-active {
   transform: translateY(-4px) scale(1.06);
-  border-color: rgba(214, 188, 133, 0.55);
+  border-color: rgba(95, 154, 192, 0.55);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 0 0 1px rgba(214, 188, 133, 0.35),
-    0 10px 30px -6px rgba(199, 165, 102, 0.5),
-    0 26px 60px -22px rgba(199, 165, 102, 0.45),
+    0 0 0 1px rgba(95, 154, 192, 0.35),
+    0 10px 30px -6px rgba(62, 121, 159, 0.5),
+    0 26px 60px -22px rgba(62, 121, 159, 0.45),
     0 30px 60px -24px rgba(0, 0, 0, 0.95);
 }
 .framer-logo-box.is-active img {
   opacity: 1;
-  filter: drop-shadow(0 0 14px rgba(214, 188, 133, 0.65)) brightness(1.12);
+  filter: drop-shadow(0 0 14px rgba(95, 154, 192, 0.65)) brightness(1.12);
 }
 
 @media (max-width: 640px) {
@@ -665,7 +685,7 @@ body {
     ),
     radial-gradient(
       70% 45% at 12% 100%,
-      rgba(199, 165, 102, 0.07),
+      rgba(62, 121, 159, 0.07),
       transparent 60%
     ),
     var(--navy-950);
@@ -682,10 +702,10 @@ body {
 @media (hover: hover) {
   .portfolio-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(214, 188, 133, 0.45);
+    border-color: rgba(95, 154, 192, 0.45);
     box-shadow:
       0 34px 64px -26px rgba(0, 0, 0, 0.9),
-      0 14px 44px -14px rgba(199, 165, 102, 0.28);
+      0 14px 44px -14px rgba(62, 121, 159, 0.28);
   }
 }
 
@@ -782,8 +802,8 @@ body {
 .cta-particle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(214, 188, 133, 0.7);
-  box-shadow: 0 0 6px rgba(214, 188, 133, 0.5);
+  background: rgba(95, 154, 192, 0.7);
+  box-shadow: 0 0 6px rgba(95, 154, 192, 0.5);
   animation: cta-particle-rise linear infinite;
 }
 @keyframes cta-particle-rise {
@@ -829,8 +849,8 @@ body {
   height: clamp(38px, 7vh, 88px);
   background: linear-gradient(
     to bottom,
-    rgba(214, 188, 133, 0.65),
-    rgba(214, 188, 133, 0)
+    rgba(95, 154, 192, 0.65),
+    rgba(95, 154, 192, 0)
   );
 }
 
@@ -871,7 +891,7 @@ body {
     ),
     radial-gradient(
       80% 60% at 8% 100%,
-      rgba(199, 165, 102, 0.06),
+      rgba(62, 121, 159, 0.06),
       transparent 60%
     ),
     var(--navy-950);

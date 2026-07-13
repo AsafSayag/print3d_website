@@ -39,13 +39,13 @@ export function Portfolio() {
     <section
       id="portfolio"
       className="portfolio-ambient section text-white"
-      aria-label="תיק עבודות"
+      aria-label="קטלוג"
     >
       <div className="container-x">
         {/* Heading + subtitle on the start side, animated stats on the end side */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
           <div className="max-w-2xl">
-            <SectionHeading eyebrow="תיק עבודות" title="פרויקטים נבחרים" tone="light" />
+            <SectionHeading eyebrow="קטלוג" title="פרויקטים נבחרים" tone="light" />
             <Reveal index={2} className="lg:hidden mt-6">
               <GlassButton href="/portfolio" variant="primary">
                 לכל הפרויקטים
@@ -74,7 +74,7 @@ export function Portfolio() {
                     i > 0 ? "ps-8 lg:ps-10 border-s border-white/10" : ""
                   }
                 >
-                  <div className="font-display text-4xl md:text-5xl text-[color:var(--gold-400)]">
+                  <div className="font-display text-4xl md:text-5xl text-[#d9e2ec]">
                     <CountUp end={s.end} suffix="+" />
                   </div>
                   <div className="mt-1.5 text-sm text-[color:var(--steel-300)]">
@@ -119,7 +119,7 @@ export function Portfolio() {
                       badly beside it); sm+: side by side as before. */}
                   <div className="mt-3 flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <span
-                      className="num sm:order-last text-[color:var(--gold-400)] text-sm shrink-0 bg-black/30 backdrop-blur px-2 py-0.5 rounded-full border border-white/10 transition-colors duration-500 group-hover:border-[color:var(--gold-700)]"
+                      className="num sm:order-last text-[#d9e2ec] text-sm shrink-0 bg-black/30 backdrop-blur px-2 py-0.5 rounded-full border border-white/10 transition-colors duration-500 group-hover:border-[#d9e2ec]/70"
                       dir="ltr"
                     >
                       {p.scale}
@@ -133,7 +133,7 @@ export function Portfolio() {
                   <Link
                     href={p.href}
                     aria-label={`${p.title} — לצפייה בעמוד הפרויקט`}
-                    className="absolute inset-0 z-10 rounded-2xl ring-[color:var(--gold-400)]/0 transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
+                    className="absolute inset-0 z-10 rounded-2xl ring-[#d9e2ec]/0 transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
                   />
                 )}
               </div>
@@ -147,7 +147,7 @@ export function Portfolio() {
             htmlFor="portfolio-more"
             className="more-btn cursor-pointer inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
           >
-            לכל תיק העבודות
+            לכל הקטלוג
             <span aria-hidden="true">←</span>
           </label>
         </div>

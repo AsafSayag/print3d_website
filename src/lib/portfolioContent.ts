@@ -6,7 +6,7 @@
  */
 
 export const PORTFOLIO_HERO = {
-  eyebrow: "תיק עבודות",
+  eyebrow: "קטלוג",
   title: "כל פרויקט הוא סיפור שהופך למודל",
   subtitle:
     "מבחר מהמודלים האדריכליים וההדמיות התלת־ממדיות שליווינו — ממגדלי יוקרה ושכונות שלמות ועד תוכניות עירוניות, בקנה מידה שמאפשר לראות את הפרויקט לפני שהוא נבנה.",
@@ -120,7 +120,7 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 };
 
 export const PORTFOLIO_SHOWCASE = {
-  eyebrow: "תיק עבודות · פרויקטים נבחרים",
+  eyebrow: "קטלוג · פרויקטים נבחרים",
   note: "באתר מוצגים חלק גדול מהפרויקטים שהחברה עשתה, אך לא כולם.",
 } as const;
 
@@ -142,6 +142,6 @@ export const PORTFOLIO_CTA = {
 } as const;
 
 export const PORTFOLIO_HIGHLIGHTS = {
-  eyebrow: "עוד מהתיק שלנו",
+  eyebrow: "עוד מהקטלוג שלנו",
   title: "פרויקטים נוספים שמדברים בעד עצמם",
 } as const;

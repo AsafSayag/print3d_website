@@ -216,7 +216,7 @@ function HeroContent({
         <GlassButton href={CONTACT.contactPath} variant="primary">
           {HERO_COPY.primaryCta}
         </GlassButton>
-        <GlassButton href="#portfolio" variant="secondary">
+        <GlassButton href="/portfolio" variant="secondary">
           {HERO_COPY.secondaryCta}
         </GlassButton>
       </div>

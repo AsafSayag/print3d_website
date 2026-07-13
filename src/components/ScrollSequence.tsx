@@ -517,7 +517,7 @@ export function ScrollSequence() {
               mirrors the caption's height + offset, so however large the frame
               grows it can never slide underneath the text. */}
           <div
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 sm:gap-5"
             style={{
               paddingTop: isMobile
                 ? "clamp(8.5rem, calc(7vh + 6rem), 12rem)"
@@ -527,6 +527,45 @@ export function ScrollSequence() {
                 : "clamp(1rem, 3vh, 2rem)",
             }}
           >
+            {/* Floating scroll hint — sits directly ABOVE the model; gently
+                bobs, then retreats once the model is complete (last stage). */}
+            <div
+              aria-hidden="true"
+              className="seq-scroll-hint-wrap pointer-events-none z-20 flex justify-center px-4 transition-opacity duration-700"
+              style={{ opacity: stage === SEQUENCE_STAGES.length - 1 ? 0 : 1 }}
+            >
+              <span
+                className="seq-scroll-hint inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold text-white"
+                style={{
+                  borderColor: "rgba(255,255,255,0.22)",
+                  background: "rgba(9,15,26,0.5)",
+                  backdropFilter: "blur(10px) saturate(140%)",
+                  WebkitBackdropFilter: "blur(10px) saturate(140%)",
+                  boxShadow: "0 12px 30px -14px rgba(0,0,0,0.7)",
+                }}
+              >
+                גלילה למטה תבנה את הפרויקט
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ color: "var(--gold-400)" }}
+                >
+                  <path d="M12 5v14M6 13l6 6 6-6" />
+                </svg>
+              </span>
+              <style>
+                {
+                  "@keyframes seqBob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}.seq-scroll-hint{animation:seqBob 1.8s var(--ease-brand) infinite}@media (prefers-reduced-motion: reduce){.seq-scroll-hint{animation:none}}"
+                }
+              </style>
+            </div>
+
             <SequenceFrame mobile={isMobile}>
               <canvas
                 ref={canvasRef}

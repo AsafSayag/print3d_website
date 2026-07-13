@@ -37,10 +37,19 @@ export function JsonLd() {
  * questions are actually displayed — required for Google's FAQ rich results.
  */
 export function FaqJsonLd() {
+  return <FaqPageJsonLd items={FAQ.items} />;
+}
+
+/** FAQPage structured data for an arbitrary question set (e.g. the /faq page). */
+export function FaqPageJsonLd({
+  items,
+}: {
+  items: readonly { q: string; a: string }[];
+}) {
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: FAQ.items.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.q,
       acceptedAnswer: { "@type": "Answer", text: item.a },

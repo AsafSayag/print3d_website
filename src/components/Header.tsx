@@ -98,7 +98,7 @@ export function Header() {
           ? "blur(18px) saturate(150%)"
           : "blur(10px) saturate(130%)",
         borderBottom: scrolled
-          ? "1px solid rgba(199,165,102,0.22)"
+          ? "1px solid rgba(62, 121, 159,0.22)"
           : "1px solid rgba(255,255,255,0.1)",
         boxShadow: scrolled
           ? "0 8px 30px rgba(7,13,23,0.35)"
@@ -117,7 +117,7 @@ export function Header() {
         }}
       />
       <div className="container-x relative flex items-center justify-between gap-6 h-[72px] md:h-20">
-        <Logo variant="light" size={24} />
+        <Logo variant="light" size={27} />
 
         {/* Desktop nav — centered */}
         <nav
