@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { ContactHero } from "@/components/ContactHero";
+import { BrightHero } from "@/components/BrightHero";
+import { HERO_VIDEO } from "@/lib/heroVideo";
 import { ClientLogos } from "@/components/ClientLogos";
 import { LeadForm } from "@/components/ui/LeadForm";
 import { Reveal } from "@/components/ui/Reveal";
@@ -42,11 +43,12 @@ export default function AboutPage() {
       />
       <Header />
       <main id="main" className="flex-1">
-        <ContactHero
+        <BrightHero
           eyebrow={ABOUT.hero.eyebrow}
           title={ABOUT.hero.title}
           description={ABOUT.hero.description}
           breadcrumbs={breadcrumbs}
+          video={HERO_VIDEO}
         />
 
         {/* ── Story + stats ─────────────────────────────────────────── */}

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
-import { PortfolioHero } from "@/components/portfolio/PortfolioHero";
+import { BrightHero } from "@/components/BrightHero";
+import { HERO_VIDEO } from "@/lib/heroVideo";
 import { PortfolioIntro } from "@/components/portfolio/PortfolioIntro";
 import { ProjectShowcase } from "@/components/portfolio/ProjectShowcase";
 import { ProjectFilterGrid } from "@/components/portfolio/ProjectFilterGrid";
@@ -35,7 +36,13 @@ export default function PortfolioPage() {
       />
       <Header />
       <main id="main" className="flex-1">
-        <PortfolioHero />
+        <BrightHero
+          eyebrow={PORTFOLIO_HERO.eyebrow}
+          title={PORTFOLIO_HERO.title}
+          breadcrumbs={breadcrumbs}
+          video={HERO_VIDEO}
+          singleLineTitle
+        />
         <PortfolioIntro />
         <ProjectShowcase />
         <ProjectFilterGrid />
