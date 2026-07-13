@@ -57,12 +57,37 @@ export function Hero() {
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
           Top-aligned so the headline sits just beneath the navbar rather than
           floating in the vertical centre. */}
-      <div className="relative z-10 h-full container-x flex flex-col items-center justify-start text-center pt-32 md:pt-28">
+      <div className="relative z-10 h-full container-x flex flex-col items-center justify-start text-center pt-24 md:pt-28">
         <HeroContent revealed={revealed} reduce={!!reduce} />
       </div>
 
       {/* Scroll hint */}
       <AnimatedScrollHint revealed={revealed} reduce={!!reduce} />
+    </section>
+  );
+}
+
+/* Standalone band directly beneath the hero — carries the copy that used to
+   float over the showroom photo, now read as its own statement on solid
+   ground. */
+export function HeroTagline() {
+  return (
+    <section
+      className="hero-tagline text-white py-10 md:py-14"
+      aria-label={HERO_COPY.subtitle}
+    >
+      {/* Decorative layers — a fine engineering grid + soft glows, faded at the
+          edges so the copy stays the focus. */}
+      <span aria-hidden="true" className="hero-tagline__grid" />
+      <span aria-hidden="true" className="hero-tagline__glow" />
+
+      <div className="container-x relative flex justify-center text-center">
+        {/* Same glass pill as the hero H1 — a translucent dark card with a
+            hairline border, blur and soft shadow. */}
+        <p className="hero-tagline__copy text-white font-bold text-lg md:text-xl max-w-2xl leading-relaxed text-balance">
+          {HERO_COPY.subtitle}
+        </p>
+      </div>
     </section>
   );
 }
@@ -90,30 +115,26 @@ function HeroContent({
 
   return (
     <>
-      {/* Headline + subtitle group — anchored to the top, beneath the navbar. */}
-      <div className="flex flex-col items-center gap-6 max-w-4xl">
-        <h1 style={item(0)} className="h1 hero-h1 text-white max-w-3xl text-balance">
-          {HERO_COPY.h1}
-        </h1>
-
-        <p
+      {/* Headline — anchored to the top, beneath the navbar. */}
+      <div className="flex flex-col items-center">
+        <h1
           style={{
-            ...item(1),
+            ...item(0),
             border: "1px solid rgba(255,255,255,0.28)",
             background: "rgba(7,13,23,0.32)",
             backdropFilter: "blur(10px) saturate(140%)",
             WebkitBackdropFilter: "blur(10px) saturate(140%)",
             borderRadius: "16px",
-            padding: "0.6rem 1.4rem",
+            padding: "0.5rem 1.1rem",
             textShadow:
               "0 2px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95)",
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
           }}
-          className="text-white font-bold text-[1.3rem] md:text-xl max-w-2xl leading-relaxed mt-[15vh] md:mt-[20vh]"
+          className="h1 hero-h1 text-white whitespace-nowrap"
         >
-          {HERO_COPY.subtitle}
-        </p>
+          {HERO_COPY.h1}
+        </h1>
       </div>
 
       {/* CTAs are anchored low in the hero — fully visible on entry, but sitting
