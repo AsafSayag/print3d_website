@@ -14,14 +14,17 @@ export type Crumb = {
 export function Breadcrumbs({
   items,
   tone = "light",
+  className = "text-sm",
 }: {
   items: Crumb[];
   /** "light" (default) for dark hero backgrounds, "dark" for bright ones. */
   tone?: "light" | "dark";
+  /** Overrides the default text size / weight. */
+  className?: string;
 }) {
   const isDark = tone === "dark";
   return (
-    <nav aria-label="נתיב ניווט" className="text-sm">
+    <nav aria-label="נתיב ניווט" className={className}>
       <ol
         className={
           isDark

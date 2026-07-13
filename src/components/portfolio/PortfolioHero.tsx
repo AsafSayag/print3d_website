@@ -67,9 +67,13 @@ export function PortfolioHero() {
       </div>
 
       <div className="relative z-10 container-x">
-        <Reveal className="mb-6 md:mb-8 font-bold">
+        <Reveal className="mb-6 md:mb-8">
           <div style={{ textShadow: "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)" }}>
-            <Breadcrumbs items={breadcrumbs} tone="dark" />
+            <Breadcrumbs
+              items={breadcrumbs}
+              tone="dark"
+              className="text-lg sm:text-xl font-bold"
+            />
           </div>
         </Reveal>
 
@@ -84,12 +88,22 @@ export function PortfolioHero() {
           }}
         >
           <Reveal delay={0.06}>
-            <p className="eyebrow text-black mb-4 font-bold">
+            <p
+              className="eyebrow text-black mb-4 font-bold"
+              style={{ fontSize: "clamp(1.05rem, 2.6vw, 1.5rem)", letterSpacing: "0.16em" }}
+            >
               {PORTFOLIO_HERO.eyebrow}
             </p>
           </Reveal>
           <Reveal delay={0.12}>
-            <h1 className="h1 heading-accent max-w-3xl text-black">
+            <h1
+              className="heading-accent max-w-none text-black font-display font-bold whitespace-nowrap"
+              style={{
+                fontSize: "clamp(1.15rem, 5.3vw, 3.5rem)",
+                lineHeight: 1.12,
+                letterSpacing: "-0.015em",
+              }}
+            >
               {PORTFOLIO_HERO.title}
             </h1>
           </Reveal>

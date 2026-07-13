@@ -117,7 +117,7 @@ export function Header() {
         }}
       />
       <div className="container-x relative flex items-center justify-between gap-6 h-[72px] md:h-20">
-        <Logo variant="light" size={27} />
+        <Logo size={34} />
 
         {/* Desktop nav — centered */}
         <nav

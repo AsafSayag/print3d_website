@@ -535,7 +535,7 @@ export function ScrollSequence() {
               style={{ opacity: stage === SEQUENCE_STAGES.length - 1 ? 0 : 1 }}
             >
               <span
-                className="seq-scroll-hint inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold text-white"
+                className="seq-scroll-hint inline-flex items-center gap-2.5 rounded-full border px-6 py-3 text-base sm:text-lg font-semibold text-white"
                 style={{
                   borderColor: "rgba(255,255,255,0.22)",
                   background: "rgba(9,15,26,0.5)",
@@ -547,8 +547,8 @@ export function ScrollSequence() {
                 גלילה למטה תבנה את הפרויקט
                 <svg
                   viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
+                  width="20"
+                  height="20"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"

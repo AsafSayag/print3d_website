@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { SpecSheet } from "./SpecSheet";
-import { ScrollHint } from "./ScrollHint";
+import { HeroSlider } from "./HeroSlider";
 import { Gallery } from "./Gallery";
 import { AboutProject } from "./AboutProject";
 import {
@@ -21,41 +20,13 @@ import {
 export function DesignOne() {
   return (
     <main>
-      {/* Hero — fills the viewport so only it (plus the headline) shows on entry;
-          the second section sits just past the fold. Anchored to the bottom so the
-          street-level foreground of the shot stays visible. */}
-      <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-[color:var(--navy-950)]">
-        {DESIGN_ONE_HERO_SLIDES.map((src, i) => (
-          <div
-            key={src}
-            className="kb-slide absolute inset-0"
-            style={{ animationDelay: `${i * 3}s` }}
-          >
-            <Image
-              src={src}
-              alt={IMAGE_ALT}
-              fill
-              priority={i === 0}
-              loading={i === 0 ? undefined : "eager"}
-              sizes="100vw"
-              className="object-cover object-[center_55%]"
-            />
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.92)] via-[rgba(7,13,23,0.32)] to-[rgba(7,13,23,0.12)]" />
-        <div className="container-x relative h-full flex flex-col items-center justify-center text-center text-white">
-          <p className="eyebrow text-[color:var(--steel-300)] mb-3">
-            {HERO.eyebrow}
-          </p>
-          <h1
-            className="h1 heading-accent heading-accent--center max-w-3xl font-bold"
-            style={{ fontSize: "clamp(2.75rem, 6.5vw, 4.75rem)" }}
-          >
-            {HERO.title}
-          </h1>
-        </div>
-        <ScrollHint />
-      </section>
+      {/* Hero — full-bleed image slider with manual arrows + auto-advance. */}
+      <HeroSlider
+        slides={DESIGN_ONE_HERO_SLIDES}
+        alt={IMAGE_ALT}
+        eyebrow={HERO.eyebrow}
+        title={HERO.title}
+      />
 
       {/* Spec sheet */}
       <section className="section surface-white">

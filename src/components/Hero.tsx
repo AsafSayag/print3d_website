@@ -211,12 +211,20 @@ function HeroContent({
           the choreographed feel. */}
       <div
         style={item(1)}
-        className="flex flex-wrap items-center justify-center gap-4 mt-26 md:mt-34"
+        className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 mt-40 md:mt-56"
       >
-        <GlassButton href={CONTACT.contactPath} variant="primary">
+        <GlassButton
+          href={CONTACT.contactPath}
+          variant="primary"
+          className="!px-9 !py-4 !text-lg"
+        >
           {HERO_COPY.primaryCta}
         </GlassButton>
-        <GlassButton href="/portfolio" variant="secondary">
+        <GlassButton
+          href="/portfolio"
+          variant="secondary"
+          className="!px-9 !py-4 !text-lg"
+        >
           {HERO_COPY.secondaryCta}
         </GlassButton>
       </div>
