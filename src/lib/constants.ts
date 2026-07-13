@@ -39,18 +39,18 @@ export const COLORS = {
   ice050: "#F4F7FA",
   white: "#FFFFFF",
   ink950: "#0A0C0F",
-  gold500: "#C7A566",
-  gold400: "#D6BC85",
-  gold700: "#8F7340",
+  gold500: "#3E799F",
+  gold400: "#5F9AC0",
+  gold700: "#2D5A78",
 } as const;
 
 /** Header navigation, right-to-left order (first item sits right-most). */
 export const NAV_ITEMS = [
   { label: "שירותים", href: "#services" },
   { label: "תהליך", href: "#process" },
-  { label: "תיק עבודות", href: "/portfolio" },
+  { label: "קטלוג", href: "/portfolio" },
   { label: "לקוחות", href: "#clients" },
-  { label: "אודות", href: "#about" },
+  { label: "אודות", href: "/about" },
   { label: "בלוג", href: "/blog" },
 ] as const;
 

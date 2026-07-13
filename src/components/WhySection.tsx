@@ -47,19 +47,7 @@ export function WhySection() {
                       "radial-gradient(85% 120% at 50% 50%, color-mix(in srgb, var(--gold-500) 9%, transparent), transparent 70%)",
                   }}
                 />
-                <h2
-                  className="h2"
-                  style={{
-                    background:
-                      "linear-gradient(120deg, var(--gold-700) 0%, var(--gold-400) 48%, var(--gold-700) 100%)",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {WHY.heading}
-                </h2>
+                <h2 className="h2 text-white">{WHY.heading}</h2>
               </div>
             </Reveal>
 

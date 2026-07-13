@@ -18,6 +18,19 @@ type Props = {
   title: string;
   description: string;
   breadcrumbs: Crumb[];
+  /** Override the background video (defaults to the shared drone-loop). */
+  video?: {
+    poster: string;
+    sources: { src: string; type: string }[];
+  };
+};
+
+const DEFAULT_VIDEO = {
+  poster: "/videos/cta-poster.jpg",
+  sources: [
+    { src: "/videos/cta-loop.webm", type: "video/webm" },
+    { src: "/videos/cta-loop.mp4", type: "video/mp4" },
+  ],
 };
 
 /**
@@ -25,7 +38,13 @@ type Props = {
  * background + overlays from the homepage CTA, with gentle staggered reveals
  * for the breadcrumbs, eyebrow, headline and description.
  */
-export function ContactHero({ eyebrow, title, description, breadcrumbs }: Props) {
+export function ContactHero({
+  eyebrow,
+  title,
+  description,
+  breadcrumbs,
+  video = DEFAULT_VIDEO,
+}: Props) {
   return (
     <section
       className="cta-immersive pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-36 md:pb-24"
@@ -34,11 +53,8 @@ export function ContactHero({ eyebrow, title, description, breadcrumbs }: Props)
       {/* Background video (same drone loop as the homepage CTA) */}
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
-        poster="/videos/cta-poster.jpg"
-        sources={[
-          { src: "/videos/cta-loop.webm", type: "video/webm" },
-          { src: "/videos/cta-loop.mp4", type: "video/mp4" },
-        ]}
+        poster={video.poster}
+        sources={video.sources}
       />
 
       {/* Overlays for depth + legibility */}

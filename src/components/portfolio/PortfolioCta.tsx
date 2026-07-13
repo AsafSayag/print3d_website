@@ -19,7 +19,7 @@ export function PortfolioCta() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(70% 60% at 15% 15%, rgba(199,165,102,0.09), transparent 60%), radial-gradient(60% 50% at 85% 85%, rgba(110,147,184,0.1), transparent 60%)",
+            "radial-gradient(70% 60% at 15% 15%, rgba(62, 121, 159,0.09), transparent 60%), radial-gradient(60% 50% at 85% 85%, rgba(110,147,184,0.1), transparent 60%)",
         }}
         aria-hidden
       />

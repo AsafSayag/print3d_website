@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { FAQ } from "@/lib/content";
 import { SectionHeading } from "./ui/SectionHeading";
@@ -66,9 +67,15 @@ export function Faq() {
           })}
         </ul>
 
-        <p className="text-center caption text-[color:var(--ink-950)]/50 mt-8">
-          {FAQ.more}
-        </p>
+        <div className="text-center mt-8">
+          <Link
+            href="/faq"
+            className="inline-flex items-center gap-1.5 font-semibold text-[color:var(--gold-700)] hover:text-[color:var(--gold-500)] transition-colors"
+          >
+            {FAQ.more}
+            <span aria-hidden="true">←</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

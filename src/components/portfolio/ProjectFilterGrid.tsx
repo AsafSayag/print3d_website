@@ -8,15 +8,11 @@ import { Reveal } from "@/components/ui/Reveal";
 import {
   PORTFOLIO_FILTERS,
   PORTFOLIO_PROJECTS,
-  PROJECT_TYPE_LABELS,
-  type ProjectType,
 } from "@/lib/portfolioContent";
 
 const ALL = "all" as const;
 
-const BRANDS = Array.from(new Set(PORTFOLIO_PROJECTS.map((p) => p.client)));
 const SCALES = Array.from(new Set(PORTFOLIO_PROJECTS.map((p) => p.scale)));
-const TYPES = Object.entries(PROJECT_TYPE_LABELS) as [ProjectType, string][];
 
 function Select({
   label,
@@ -67,30 +63,19 @@ function Select({
  * portfolio-card visual language as the homepage.
  */
 export function ProjectFilterGrid() {
-  const [brand, setBrand] = useState<string>(ALL);
   const [scale, setScale] = useState<string>(ALL);
-  const [type, setType] = useState<string>(ALL);
 
-  const isAll = brand === ALL && scale === ALL && type === ALL;
+  const isAll = scale === ALL;
 
   const filtered = useMemo(
     () =>
-      PORTFOLIO_PROJECTS.filter(
-        (p) =>
-          (brand === ALL || p.client === brand) &&
-          (scale === ALL || p.scale === scale) &&
-          (type === ALL || p.type === type),
-      ),
-    [brand, scale, type],
+      PORTFOLIO_PROJECTS.filter((p) => scale === ALL || p.scale === scale),
+    [scale],
   );
 
-  const resetAll = () => {
-    setBrand(ALL);
-    setScale(ALL);
-    setType(ALL);
-  };
+  const resetAll = () => setScale(ALL);
 
-  const filterKey = `${brand}|${scale}|${type}`;
+  const filterKey = scale;
 
   return (
     <section id="filters" className="surface-ice section" aria-label={PORTFOLIO_FILTERS.title}>
@@ -112,22 +97,10 @@ export function ProjectFilterGrid() {
           </button>
 
           <Select
-            label={PORTFOLIO_FILTERS.brandLabel}
-            value={brand}
-            onChange={setBrand}
-            options={BRANDS.map((b) => ({ value: b, label: b }))}
-          />
-          <Select
             label={PORTFOLIO_FILTERS.scaleLabel}
             value={scale}
             onChange={setScale}
             options={SCALES.map((s) => ({ value: s, label: s }))}
-          />
-          <Select
-            label={PORTFOLIO_FILTERS.typeLabel}
-            value={type}
-            onChange={setType}
-            options={TYPES.map(([value, label]) => ({ value, label }))}
           />
         </Reveal>
 

@@ -12,7 +12,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Column 1 — brand + contact */}
           <div className="lg:col-span-1">
-            <Logo variant="light" size={28} />
+            <Logo size={52} withSubtitle />
             <p className="text-white/75 text-sm mt-4 leading-relaxed max-w-xs">
               {FOOTER.tagline}
             </p>

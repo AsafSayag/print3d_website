@@ -15,34 +15,71 @@ export function PortfolioIntro() {
     <section className="portfolio-ambient" aria-label={PORTFOLIO_HERO.eyebrow}>
       <div className="container-x pt-8 md:pt-12 pb-2">
         <Reveal>
-          <div className="portfolio-hero-glass max-w-3xl">
-            <p className="text-black text-lg leading-relaxed font-medium">
-              {PORTFOLIO_HERO.subtitle}
-            </p>
-            <div className="mt-7">
-              <GlassButton
-                href={CONTACT.contactPath}
-                variant="primary"
-                className="!px-9 !py-4 !text-lg shadow-[0_18px_50px_-16px_rgba(199,165,102,0.65)]"
-              >
-                {PORTFOLIO_CTA.button}
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M19 12H5M11 18l-6-6 6-6" />
-                </svg>
-              </GlassButton>
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-10">
+            <div className="portfolio-hero-glass max-w-3xl lg:flex-1">
+              <p className="text-black text-lg leading-relaxed font-medium">
+                {PORTFOLIO_HERO.subtitle}
+              </p>
+              {/* Mobile / tablet: the CTA stays inside the glass frame. */}
+              <div className="mt-7 lg:hidden">
+                <Cta />
+              </div>
             </div>
+
+            {/* Desktop: the CTA sits OUTSIDE the frame, to its left. */}
+            <div className="hidden lg:block shrink-0">
+              <Cta />
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Mobile: a scroll cue keeps the projects carousel below the fold on
+            entry, so it's discovered on a small scroll rather than competing
+            with the hero. */}
+        <Reveal delay={0.1}>
+          <div className="lg:hidden mt-10 mb-1 flex flex-col items-center gap-2 text-white/55">
+            <span className="text-sm font-semibold tracking-wide">
+              גללו לצפייה בפרויקטים
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-5 w-5 animate-bounce text-[color:var(--gold-400)]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
           </div>
         </Reveal>
       </div>
     </section>
+  );
+}
+
+function Cta() {
+  return (
+    <GlassButton
+      href={CONTACT.contactPath}
+      variant="primary"
+      className="cta-glow !px-9 !py-4 !text-lg"
+    >
+      {PORTFOLIO_CTA.button}
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M19 12H5M11 18l-6-6 6-6" />
+      </svg>
+    </GlassButton>
   );
 }
