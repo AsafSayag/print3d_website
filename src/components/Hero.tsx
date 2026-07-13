@@ -189,16 +189,18 @@ function HeroContent({
       <p
         style={{
           ...item(1),
-          border: "1px solid rgba(255,255,255,0.4)",
-          background: "rgba(255,255,255,0.16)",
+          border: "1px solid rgba(255,255,255,0.28)",
+          background: "rgba(7,13,23,0.32)",
           backdropFilter: "blur(10px) saturate(140%)",
           WebkitBackdropFilter: "blur(10px) saturate(140%)",
           borderRadius: "16px",
           padding: "0.6rem 1.4rem",
+          textShadow:
+            "0 2px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95)",
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.5), 0 10px 30px -12px rgba(7,13,23,0.35)",
+            "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
         }}
-        className="text-black font-bold text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
+        className="text-white font-bold text-lg md:text-xl max-w-2xl leading-relaxed -mt-3"
       >
         {HERO_COPY.subtitle}
       </p>
