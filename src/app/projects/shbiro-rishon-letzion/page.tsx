@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 export default function ShbiroRishonLetzionPage() {
   return (
     <div className="relative">
-      {/* Fully transparent navbar over the hero — this page only. */}
-      <Header transparent />
+      <Header />
       <ProjectView />
     </div>
   );

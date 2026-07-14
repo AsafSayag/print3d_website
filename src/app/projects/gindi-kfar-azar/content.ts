@@ -19,8 +19,8 @@ export const HERO = {
 /** Dedicated street-level shot used as the page's full-bleed hero. */
 export const FULL_BLEED_HERO = "/gindi_kfar_azar_project/design_1_hero.webp";
 
-/** Background image for the מפרט טכני section (reuses the full-bleed hero shot). */
-export const SPEC_BG = FULL_BLEED_HERO;
+/** Dedicated background image for the מפרט טכני section. */
+export const SPEC_BG = "/gindi_kfar_azar_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;

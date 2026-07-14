@@ -54,9 +54,6 @@ export const SPECS: SpecRow[] = [
 ];
 
 export const GALLERY_IMAGES = [
-  "/shbiro_rishon_letzion_project/IMG_01.webp",
-  "/shbiro_rishon_letzion_project/IMG_02.webp",
-  "/shbiro_rishon_letzion_project/IMG_03.webp",
   "/shbiro_rishon_letzion_project/IMG_04.webp",
   "/shbiro_rishon_letzion_project/IMG_05.webp",
   "/shbiro_rishon_letzion_project/IMG_06.webp",

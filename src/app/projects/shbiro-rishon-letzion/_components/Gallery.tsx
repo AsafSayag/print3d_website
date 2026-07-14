@@ -4,30 +4,26 @@ import { useState } from "react";
 import Image from "next/image";
 import { Lightbox } from "./Lightbox";
 
-/**
- * Editorial gallery grid. Landscape tiles in a responsive grid; each opens the
- * shared full-screen lightbox on click.
- */
 export function Gallery({ images, alt }: { images: string[]; alt: string }) {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {images.map((src, i) => (
           <button
             type="button"
             key={src}
             onClick={() => setLightbox(i)}
             aria-label={`הגדלת תמונה ${i + 1}`}
-            className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/5 focus-visible:outline-none"
+            className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-[color:var(--navy-800)]/10 focus-visible:outline-none"
           >
             <Image
               src={src}
               alt={alt}
               fill
-              sizes="(max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 ease-[var(--ease-brand)] group-hover:scale-[1.05]"
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-cover transition-transform duration-500 ease-[var(--ease-brand)] group-hover:scale-[1.04]"
             />
             {/* Hover affordance — subtle scrim + zoom glyph */}
             <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

@@ -24,15 +24,9 @@ export function ProjectView() {
       <TechnicalSpec />
 
       {/* Gallery */}
-      <section className="section surface-navy-950">
+      <section className="section surface-ice">
         <div className="container-x">
-          <p className="eyebrow text-[color:var(--steel-300)] mb-3">GALLERY</p>
-          <h2
-            className="font-display font-bold leading-[1.05] mb-10 text-white"
-            style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}
-          >
-            תמונות המודל
-          </h2>
+          <h2 className="h2 heading-accent mb-10">תמונות המודל</h2>
           <Gallery images={GALLERY_IMAGES} alt={IMAGE_ALT} />
         </div>
       </section>

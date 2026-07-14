@@ -53,10 +53,13 @@ below rather than blocking. The three asset inputs map into `content.ts`
 6. **The hero image** — the "leader"/cover shot (first paint + catalog
    thumbnail). → `HERO.src`. And the **full-bleed hero** — the dramatic opening
    shot. → `FULL_BLEED_HERO`.
-7. **The background image for מפרט טכני** — the photo behind the glass spec
-   panel. → `SPEC_BG`. If the Builder doesn't call one out, reuse
-   `FULL_BLEED_HERO` (this is what `gindi`/`dafna`/`sela` do). `shbiro` uses a
-   dedicated `bg_placeholder.webp`.
+7. **The background image for מפרט טכני** — every project gets its own
+   dedicated `bg_placeholder.webp`, distinct from `HERO.src`/`FULL_BLEED_HERO`
+   (this is now the convention across all four projects). → `SPEC_BG`. If the
+   Builder doesn't call one out explicitly, copy `FULL_BLEED_HERO` (or
+   `HERO.src` if there's no full-bleed shot) into a new `bg_placeholder.webp`
+   file as a starting point — never point `SPEC_BG` directly at another
+   role's file path.
 8. **Full מפרט טכני content** for every `SPECS` row — see below.
 
 ## Image fallback — only if the Builder cannot supply paths
@@ -70,7 +73,9 @@ fallback source (existing repo assets, stock/generated placeholders) first.
 - **`FULL_BLEED_HERO`** — landscape, ~1920px+, the most dramatic/atmospheric
   shot; distinct from `HERO.src`.
 - **`SPEC_BG`** — a moody, mostly-uniform shot that reads well heavily darkened
-  behind text (or just reuse `FULL_BLEED_HERO`).
+  behind text; saved as its own `bg_placeholder.webp` file (copy from
+  `FULL_BLEED_HERO`/`HERO.src` if nothing dedicated is supplied — but always as
+  a real, separate file on disk, not just a reused path).
 - **Gallery images** — same model, varied angles, consistent lighting, ~1200px+.
 
 ## Rule: every image joins the hero loop
@@ -95,7 +100,10 @@ export const HERO_SLIDES = [
    `public/<slug_with_underscores>_project/`:
    - Hero → `<name>_hero.webp`
    - Full-bleed hero → `design_1_hero.webp`
-   - Everything else → `IMG_01.webp`, `IMG_02.webp`, … (sequential)
+   - מפרט טכני background → `bg_placeholder.webp` (its own dedicated file —
+     every project has one; copy from the full-bleed hero if no separate shot
+     was supplied)
+   - Everything else → `IMG_01.webp`, `IMG_02.webp`, … (sequential, no gaps)
 2. **Catalog thumbnail.** Resize the hero to ~800px wide →
    `public/projects/<slug>.webp` (`cwebp -q 82 -resize 800 0 …`).
 3. **Create `src/app/projects/<slug>/`:**
@@ -125,6 +133,12 @@ export const HERO_SLIDES = [
    - New card appears on `/portfolio` and the homepage `#portfolio` section and
      links to `/projects/<slug>`.
    - No console errors, no 404s on any `/<slug>_project/*.webp` (incl. `SPEC_BG`).
+   - Every path referenced in `content.ts` (`HERO.src`, `FULL_BLEED_HERO`,
+     `SPEC_BG`, every `GALLERY_IMAGES` entry) resolves to a real file in
+     `public/<slug>_project/`, and every file in that folder is referenced by
+     `content.ts` — no orphans, no dangling references. If images were added
+     or removed by hand outside this flow, re-check this before trusting the
+     page.
 
 ## Spec sheet (מפרט טכני) — expected rows
 

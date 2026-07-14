@@ -17,11 +17,8 @@ export const HERO = {
   src: "/sela_baitar_hadera_project/sela_hero.webp",
 };
 
-/** Dedicated wide masterplan shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO = "/sela_baitar_hadera_project/design_1_hero.webp";
-
-/** Background image for the מפרט טכני section (reuses the full-bleed hero shot). */
-export const SPEC_BG = FULL_BLEED_HERO;
+/** Dedicated background image for the מפרט טכני section. */
+export const SPEC_BG = "/sela_baitar_hadera_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -63,36 +60,16 @@ export const ABOUT = {
 export const GALLERY_IMAGES = [
   "/sela_baitar_hadera_project/IMG_01.webp",
   "/sela_baitar_hadera_project/IMG_02.webp",
-  "/sela_baitar_hadera_project/IMG_03.webp",
-  "/sela_baitar_hadera_project/IMG_04.webp",
-  "/sela_baitar_hadera_project/IMG_05.webp",
-  "/sela_baitar_hadera_project/IMG_06.webp",
-  "/sela_baitar_hadera_project/IMG_07.webp",
-  "/sela_baitar_hadera_project/IMG_08.webp",
-  "/sela_baitar_hadera_project/IMG_09.webp",
-  "/sela_baitar_hadera_project/IMG_10.webp",
-  "/sela_baitar_hadera_project/IMG_11.webp",
   "/sela_baitar_hadera_project/IMG_12.webp",
-  "/sela_baitar_hadera_project/IMG_13.webp",
   "/sela_baitar_hadera_project/IMG_14.webp",
-  "/sela_baitar_hadera_project/IMG_15.webp",
   "/sela_baitar_hadera_project/IMG_16.webp",
   "/sela_baitar_hadera_project/IMG_17.webp",
-  "/sela_baitar_hadera_project/IMG_18.webp",
   "/sela_baitar_hadera_project/IMG_19.webp",
   "/sela_baitar_hadera_project/IMG_20.webp",
-  "/sela_baitar_hadera_project/IMG_21.webp",
-  "/sela_baitar_hadera_project/IMG_22.webp",
-  "/sela_baitar_hadera_project/IMG_23.webp",
-  "/sela_baitar_hadera_project/IMG_24.webp",
-  "/sela_baitar_hadera_project/IMG_25.webp",
-  HERO.src,
-  FULL_BLEED_HERO,
 ];
 
-/** Hero slider cycles through every project photo, starting with the full-bleed shot. */
+/** Hero slider cycles through every project photo, starting with the hero shot. */
 export const HERO_SLIDES = [
-  FULL_BLEED_HERO,
   HERO.src,
-  ...GALLERY_IMAGES.filter((src) => src !== FULL_BLEED_HERO && src !== HERO.src),
+  ...GALLERY_IMAGES.filter((src) => src !== HERO.src),
 ];
