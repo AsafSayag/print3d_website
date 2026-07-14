@@ -1,17 +1,10 @@
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
-import { SpecSheet } from "./SpecSheet";
+import { TechnicalSpec } from "./TechnicalSpec";
 import { HeroSlider } from "./HeroSlider";
 import { Gallery } from "./Gallery";
 import { AboutProject } from "./AboutProject";
-import {
-  IMAGE_ALT,
-  HERO,
-  HERO_SLIDES,
-  SPECS,
-  ABOUT,
-  GALLERY_IMAGES,
-} from "../content";
+import { IMAGE_ALT, HERO, HERO_SLIDES, ABOUT, GALLERY_IMAGES } from "../content";
 
 /**
  * The project page layout: full-bleed hero, spec sheet, image gallery and an
@@ -28,13 +21,8 @@ export function DesignOne() {
         title={HERO.title}
       />
 
-      {/* Spec sheet */}
-      <section className="section surface-white">
-        <div className="container-x max-w-4xl">
-          <h2 className="h2 heading-accent mb-10">מפרט המודל</h2>
-          <SpecSheet rows={SPECS} />
-        </div>
-      </section>
+      {/* מפרט טכני — dark, full-bleed section with a frosted-glass spec panel. */}
+      <TechnicalSpec />
 
       {/* Gallery */}
       <section className="section surface-ice">

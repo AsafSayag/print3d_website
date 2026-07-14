@@ -41,6 +41,13 @@ const PROJECTS: {
     span: "",
     href: "/projects/sela-baitar-hadera",
   },
+  {
+    src: "/projects/shbiro-rishon-letzion.webp",
+    title: "שבירו, ראשון לציון",
+    scale: "1:200",
+    span: "",
+    href: "/projects/shbiro-rishon-letzion",
+  },
 ];
 
 const STATS = [

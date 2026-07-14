@@ -20,6 +20,9 @@ export const HERO = {
 /** Dedicated wide masterplan shot used as the page's full-bleed hero. */
 export const FULL_BLEED_HERO = "/sela_baitar_hadera_project/design_1_hero.webp";
 
+/** Background image for the מפרט טכני section (reuses the full-bleed hero shot). */
+export const SPEC_BG = FULL_BLEED_HERO;
+
 export type SpecRow = {
   label: string;
   value?: string;

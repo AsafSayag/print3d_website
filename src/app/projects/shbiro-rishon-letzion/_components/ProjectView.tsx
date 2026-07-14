@@ -1,0 +1,45 @@
+import { Footer } from "@/components/Footer";
+import { Faq } from "@/components/Faq";
+import { HeroSlider } from "./HeroSlider";
+import { TechnicalSpec } from "./TechnicalSpec";
+import { Gallery } from "./Gallery";
+import { IMAGE_ALT, HERO, HERO_SLIDES, GALLERY_IMAGES } from "../content";
+
+/**
+ * Page layout for שבירו · ראשון לציון:
+ * hero slider → dark מפרט טכני block → editorial gallery → FAQ → footer.
+ */
+export function ProjectView() {
+  return (
+    <main>
+      {/* Hero — full-bleed image slider with manual arrows + auto-advance. */}
+      <HeroSlider
+        slides={HERO_SLIDES}
+        alt={IMAGE_ALT}
+        eyebrow={HERO.eyebrow}
+        title={HERO.title}
+      />
+
+      {/* מפרט טכני — full-bleed dark section over the model photo. */}
+      <TechnicalSpec />
+
+      {/* Gallery */}
+      <section className="section surface-navy-950">
+        <div className="container-x">
+          <p className="eyebrow text-[color:var(--steel-300)] mb-3">GALLERY</p>
+          <h2
+            className="font-display font-bold leading-[1.05] mb-10 text-white"
+            style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}
+          >
+            תמונות המודל
+          </h2>
+          <Gallery images={GALLERY_IMAGES} alt={IMAGE_ALT} />
+        </div>
+      </section>
+
+      <Faq />
+
+      <Footer />
+    </main>
+  );
+}
