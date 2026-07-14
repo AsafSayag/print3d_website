@@ -120,6 +120,15 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     image: "/projects/dafna-tidhar.webp",
     href: "/projects/dafna-tidhar",
   },
+  {
+    id: "sela-baitar-hadera",
+    title: "סלע ביתר · חדרה",
+    client: "סלע ביתר",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/sela-baitar-hadera.webp",
+    href: "/projects/sela-baitar-hadera",
+  },
 ];
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {

@@ -34,6 +34,13 @@ const PROJECTS: {
     span: "",
     href: "/projects/dafna-tidhar",
   },
+  {
+    src: "/projects/sela-baitar-hadera.webp",
+    title: "סלע ביתר · חדרה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/sela-baitar-hadera",
+  },
 ];
 
 const STATS = [
