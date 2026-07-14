@@ -90,12 +90,17 @@ function HeroContent({
 
   return (
     <>
-      {/* Headline + subtitle group — anchored to the top, beneath the navbar. */}
+      {/* Headline — anchored to the top, beneath the navbar. */}
       <div className="flex flex-col items-center gap-6 max-w-4xl">
         <h1 style={item(0)} className="h1 hero-h1 text-white max-w-3xl text-balance">
           {HERO_COPY.h1}
         </h1>
+      </div>
 
+      {/* Subtitle + CTAs group — anchored at the bottom with proper spacing.
+          Subtitle is a glass frame positioned just above the buttons. */}
+      <div className="absolute inset-x-0 bottom-32 sm:bottom-36 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-6">
+        {/* Subtitle in glass frame */}
         <p
           style={{
             ...item(1),
@@ -110,31 +115,27 @@ function HeroContent({
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
           }}
-          className="text-white font-bold text-[1.3rem] md:text-xl max-w-2xl leading-relaxed mt-[15vh] md:mt-[20vh]"
+          className="text-white font-bold text-[1.1rem] sm:text-[1.2rem] md:text-xl max-w-2xl leading-relaxed text-center"
         >
           {HERO_COPY.subtitle}
         </p>
-      </div>
 
-      {/* CTAs are anchored low in the hero — fully visible on entry, but sitting
-          near the bottom so the showroom image reads first. Absolutely placed
-          against the (relative) content layer, above the scroll hint. */}
-      <div className="absolute inset-x-0 bottom-24 z-10 flex justify-center px-4">
+        {/* CTAs — positioned just below subtitle */}
         <div
           style={item(1)}
-          className="flex flex-wrap items-center justify-center gap-4 sm:gap-5"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
             href={CONTACT.contactPath}
             variant="primary"
-            className="!px-9 !py-4 !text-lg"
+            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
           >
             {HERO_COPY.primaryCta}
           </GlassButton>
           <GlassButton
             href="/portfolio"
             variant="secondary"
-            className="!px-9 !py-4 !text-lg"
+            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
           >
             {HERO_COPY.secondaryCta}
           </GlassButton>

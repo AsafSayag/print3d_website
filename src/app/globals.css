@@ -77,6 +77,25 @@ body {
   overflow-x: clip;
 }
 
+/* ============================================================
+   Animations — Fade in sections on entrance
+   ============================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section fade-in with Intersection Observer support */
+.section-fade-in {
+  animation: fadeInUp 0.8s var(--ease-brand) both;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--gold-500) 35%, transparent);
   color: var(--ink-950);
