@@ -11,13 +11,17 @@ import { HERO_COPY } from "@/lib/content";
 
 const SCROLL_THRESHOLD = 80;
 
-export function Header() {
+export function Header({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const pathname = usePathname();
   const onHome = pathname === "/";
+
+  // On the transparent variant (used by a single project page) the bar never
+  // tints or re-tints on scroll — it stays fully see-through over the hero.
+  const isScrolled = transparent ? false : scrolled;
 
   // On the homepage the nav uses in-page hash anchors (with scroll-spy); from any
   // other route those same targets are reached by prefixing the homepage path, so
@@ -90,32 +94,47 @@ export function Header() {
     <header
       className="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
       style={{
-        background: scrolled ? "rgba(7,13,23,0.9)" : "rgba(7,13,23,0.28)",
-        backdropFilter: scrolled
-          ? "blur(18px) saturate(150%)"
-          : "blur(10px) saturate(130%)",
-        WebkitBackdropFilter: scrolled
-          ? "blur(18px) saturate(150%)"
-          : "blur(10px) saturate(130%)",
-        borderBottom: scrolled
-          ? "1px solid rgba(62, 121, 159,0.22)"
-          : "1px solid rgba(255,255,255,0.1)",
-        boxShadow: scrolled
-          ? "0 8px 30px rgba(7,13,23,0.35)"
-          : "0 6px 24px rgba(7,13,23,0.25)",
+        background: transparent
+          ? "transparent"
+          : isScrolled
+            ? "rgba(7,13,23,0.9)"
+            : "rgba(7,13,23,0.28)",
+        backdropFilter: transparent
+          ? "none"
+          : isScrolled
+            ? "blur(18px) saturate(150%)"
+            : "blur(10px) saturate(130%)",
+        WebkitBackdropFilter: transparent
+          ? "none"
+          : isScrolled
+            ? "blur(18px) saturate(150%)"
+            : "blur(10px) saturate(130%)",
+        borderBottom: transparent
+          ? "none"
+          : isScrolled
+            ? "1px solid rgba(62, 121, 159,0.22)"
+            : "1px solid rgba(255,255,255,0.1)",
+        boxShadow: transparent
+          ? "none"
+          : isScrolled
+            ? "0 8px 30px rgba(7,13,23,0.35)"
+            : "0 6px 24px rgba(7,13,23,0.25)",
       }}
     >
-      {/* Persistent top scrim so the navbar stays defined over the hero */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 transition-opacity duration-500"
-        style={{
-          height: "180%",
-          background:
-            "linear-gradient(to bottom, rgba(7,13,23,0.72), rgba(7,13,23,0))",
-          opacity: scrolled ? 0 : 1,
-        }}
-      />
+      {/* Persistent top scrim so the navbar stays defined over the hero.
+          Skipped entirely on the transparent variant. */}
+      {!transparent && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 transition-opacity duration-500"
+          style={{
+            height: "180%",
+            background:
+              "linear-gradient(to bottom, rgba(7,13,23,0.72), rgba(7,13,23,0))",
+            opacity: isScrolled ? 0 : 1,
+          }}
+        />
+      )}
       <div className="container-x relative flex items-center justify-between gap-6 h-[72px] md:h-20">
         <Logo size={34} />
 

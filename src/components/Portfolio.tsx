@@ -27,6 +27,27 @@ const PROJECTS: {
   { src: "/projects/gindi-tlv.webp", title: "גינדי TLV", scale: "1:200", span: "" },
   { src: "/projects/tzavta-shapir.jpg", title: "צוותא · שפיר", scale: "1:150", span: "" },
   { src: "/projects/preshkovsky-tabaa.jpg", title: "פרשקובסקי · מודל תב״ע", scale: "1:500", span: "" },
+  {
+    src: "/projects/dafna-tidhar.webp",
+    title: "תדהר דפנה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/dafna-tidhar",
+  },
+  {
+    src: "/projects/sela-baitar-hadera.webp",
+    title: "סלע ביתר · חדרה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/sela-baitar-hadera",
+  },
+  {
+    src: "/projects/shbiro-rishon-letzion.webp",
+    title: "שבירו, ראשון לציון",
+    scale: "1:200",
+    span: "",
+    href: "/projects/shbiro-rishon-letzion",
+  },
 ];
 
 const STATS = [

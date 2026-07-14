@@ -16,8 +16,11 @@ export const HERO = {
   src: "/gindi_kfar_azar_project/gindi_hero.webp",
 };
 
-/** Design 1 uses a dedicated street-level shot as its full-bleed hero. */
-export const DESIGN_ONE_HERO = "/gindi_kfar_azar_project/design_1_hero.webp";
+/** Dedicated street-level shot used as the page's full-bleed hero. */
+export const FULL_BLEED_HERO = "/gindi_kfar_azar_project/design_1_hero.webp";
+
+/** Dedicated background image for the מפרט טכני section. */
+export const SPEC_BG = "/gindi_kfar_azar_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -60,15 +63,12 @@ export const GALLERY_IMAGES = [
   "/gindi_kfar_azar_project/IMG_0943.webp",
   "/gindi_kfar_azar_project/IMG_0944.webp",
   "/gindi_kfar_azar_project/IMG_0945.webp",
-  DESIGN_ONE_HERO,
+  FULL_BLEED_HERO,
 ];
 
-/** Design 1 hero cycles through all project photos, starting with the street shot. */
-export const DESIGN_ONE_HERO_SLIDES = [
-  DESIGN_ONE_HERO,
+/** Hero slider cycles through all project photos, starting with the street shot. */
+export const HERO_SLIDES = [
+  FULL_BLEED_HERO,
   HERO.src,
   ...GALLERY_IMAGES.slice(0, 3),
 ];
-
-/** Design 2 (product-page layout) shows the hero first, then every gallery shot. */
-export const ALL_IMAGES = [HERO.src, ...GALLERY_IMAGES];

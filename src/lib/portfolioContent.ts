@@ -111,6 +111,33 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     image: "/videos/projects/gindi-kfar-azar.webp",
     href: "/projects/gindi-kfar-azar",
   },
+  {
+    id: "dafna-tidhar",
+    title: "תדהר דפנה",
+    client: "תדהר",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/dafna-tidhar.webp",
+    href: "/projects/dafna-tidhar",
+  },
+  {
+    id: "sela-baitar-hadera",
+    title: "סלע ביתר · חדרה",
+    client: "סלע ביתר",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/sela-baitar-hadera.webp",
+    href: "/projects/sela-baitar-hadera",
+  },
+  {
+    id: "shbiro-rishon-letzion",
+    title: "שבירו, ראשון לציון",
+    client: "שבירו",
+    scale: "1:200",
+    type: "urban",
+    image: "/projects/shbiro-rishon-letzion.webp",
+    href: "/projects/shbiro-rishon-letzion",
+  },
 ];
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
