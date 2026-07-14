@@ -17,7 +17,7 @@ import {
  * The project page layout: full-bleed hero, spec sheet, image gallery and an
  * about accordion.
  */
-export function DesignOne() {
+export function ProjectView() {
   return (
     <main>
       {/* Hero — full-bleed image slider with manual arrows + auto-advance. */}

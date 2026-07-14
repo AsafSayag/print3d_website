@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
-import { DesignOne } from "./_components/DesignOne";
+import { ProjectView } from "./_components/ProjectView";
 import { SEO_TITLE_TAG, IMAGE_ALT } from "./content";
 
 export const metadata: Metadata = {
@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: IMAGE_ALT,
 };
 
-export default function GindiKfarAzarPage() {
+export default function DafnaTidharPage() {
   return (
     <div className="relative">
       <Header />
-      <DesignOne />
+      <ProjectView />
     </div>
   );
 }

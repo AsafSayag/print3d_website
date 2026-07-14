@@ -111,6 +111,15 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     image: "/videos/projects/gindi-kfar-azar.webp",
     href: "/projects/gindi-kfar-azar",
   },
+  {
+    id: "dafna-tidhar",
+    title: "תדהר דפנה",
+    client: "תדהר",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/dafna-tidhar.webp",
+    href: "/projects/dafna-tidhar",
+  },
 ];
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
