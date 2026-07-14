@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { GlassButton } from "./ui/GlassButton";
+import { HeroVideo } from "./ui/HeroVideo";
 import { HERO, MOTION, CONTACT } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
@@ -25,23 +26,21 @@ export function Hero() {
 
   return (
     <section
-      className="relative w-full overflow-hidden surface-navy-950"
-      style={{ height: "100svh", minHeight: "600px" }}
+      // The hero takes the exact aspect ratio of its background video — the
+      // vertical cut on mobile, the landscape cut on desktop — so the footage
+      // fills edge to edge with no crop and no letterbox bars, and the PRINT3D
+      // logo in the frame stays fully visible the whole way through.
+      className="relative w-full overflow-hidden surface-navy-950 aspect-[4/5] md:aspect-[1914/1080]"
       aria-label="מודלים אדריכליים פיזיים לפרויקטי נדל״ן"
     >
-      {/* Background layer: a single high-quality still of the models showroom. */}
+      {/* Background layer: the models-showroom video — landscape on desktop,
+          vertical on mobile. Poster paints instantly for LCP. */}
       <div className="absolute inset-0">
-        <picture>
-          <source srcSet="/hero-hall.webp" type="image/webp" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/hero-hall.jpg"
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-            className="h-full w-full object-cover"
-          />
-        </picture>
+        {/* Mobile: vertical cut fills the portrait screen (object-cover).
+            Desktop: landscape cut shown in full so the whole frame + the
+            PRINT3D logo stay visible (object-contain); the navy section
+            background fills any letterbox. */}
+        <HeroVideo className="h-full w-full object-cover" />
       </div>
 
       {/* Scrim — deepens once content is revealed for legibility */}
@@ -115,8 +114,13 @@ function HeroContent({
 
   return (
     <>
-      {/* Headline — anchored to the top, beneath the navbar. */}
-      <div className="flex flex-col items-center">
+      {/* CTAs are the in-flow anchor of this bottom group, so they keep their
+          original position on every breakpoint. The heading (former subtitle,
+          now the H1) sits ABOVE the buttons on desktop (normal flow) but is
+          pulled BELOW them on mobile via `absolute top-full`, so it no longer
+          covers the video/logo there. */}
+      <div className="absolute inset-x-0 bottom-32 sm:bottom-36 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-6">
+        {/* Heading in glass frame */}
         <h1
           style={{
             ...item(0),
@@ -131,31 +135,27 @@ function HeroContent({
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
           }}
-          className="h1 hero-h1 text-white whitespace-nowrap"
+          className="absolute top-full inset-x-4 mx-auto mt-4 md:static md:inset-x-auto md:mt-0 text-white font-bold text-[1.1rem] sm:text-[1.2rem] md:text-xl max-w-2xl leading-relaxed text-center"
         >
-          {HERO_COPY.h1}
+          {HERO_COPY.subtitle}
         </h1>
-      </div>
 
-      {/* CTAs are anchored low in the hero — fully visible on entry, but sitting
-          near the bottom so the showroom image reads first. Absolutely placed
-          against the (relative) content layer, above the scroll hint. */}
-      <div className="absolute inset-x-0 bottom-24 z-10 flex justify-center px-4">
+        {/* CTAs — positioned just below subtitle */}
         <div
           style={item(1)}
-          className="flex flex-wrap items-center justify-center gap-4 sm:gap-5"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
             href={CONTACT.contactPath}
             variant="primary"
-            className="!px-9 !py-4 !text-lg"
+            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
           >
             {HERO_COPY.primaryCta}
           </GlassButton>
           <GlassButton
             href="/portfolio"
             variant="secondary"
-            className="!px-9 !py-4 !text-lg"
+            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
           >
             {HERO_COPY.secondaryCta}
           </GlassButton>
@@ -175,7 +175,7 @@ function AnimatedScrollHint({
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-x-0 bottom-7 z-10 flex justify-center"
+      className="absolute inset-x-0 bottom-7 z-10 hidden md:flex justify-center"
       style={{
         opacity: revealed ? 1 : 0,
         transition: `opacity 0.6s var(--ease-brand) ${reduce ? 0 : 0.4}s`,
