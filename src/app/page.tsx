@@ -1,5 +1,5 @@
 import { Header } from "@/components/Header";
-import { Hero, HeroTagline } from "@/components/Hero";
+import { Hero } from "@/components/Hero";
 import { ScrollSequence } from "@/components/ScrollSequence";
 import { ClientLogos } from "@/components/ClientLogos";
 import { CallbackCta } from "@/components/CallbackCta";
@@ -21,7 +21,6 @@ export default function Home() {
       <Header />
       <main id="main" className="flex-1">
         <Hero />
-        <HeroTagline />
         <WhySection />
         <ClientLogos />
         <CallbackCta />

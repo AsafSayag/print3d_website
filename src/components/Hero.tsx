@@ -56,37 +56,12 @@ export function Hero() {
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
           Top-aligned so the headline sits just beneath the navbar rather than
           floating in the vertical centre. */}
-      <div className="relative z-10 h-full container-x flex flex-col items-center justify-start text-center pt-24 md:pt-28">
+      <div className="relative z-10 h-full container-x flex flex-col items-center justify-start text-center pt-32 md:pt-28">
         <HeroContent revealed={revealed} reduce={!!reduce} />
       </div>
 
       {/* Scroll hint */}
       <AnimatedScrollHint revealed={revealed} reduce={!!reduce} />
-    </section>
-  );
-}
-
-/* Standalone band directly beneath the hero — carries the copy that used to
-   float over the showroom photo, now read as its own statement on solid
-   ground. */
-export function HeroTagline() {
-  return (
-    <section
-      className="hero-tagline text-white py-10 md:py-14"
-      aria-label={HERO_COPY.subtitle}
-    >
-      {/* Decorative layers — a fine engineering grid + soft glows, faded at the
-          edges so the copy stays the focus. */}
-      <span aria-hidden="true" className="hero-tagline__grid" />
-      <span aria-hidden="true" className="hero-tagline__glow" />
-
-      <div className="container-x relative flex justify-center text-center">
-        {/* Same glass pill as the hero H1 — a translucent dark card with a
-            hairline border, blur and soft shadow. */}
-        <p className="hero-tagline__copy text-white font-bold text-lg md:text-xl max-w-2xl leading-relaxed text-balance">
-          {HERO_COPY.subtitle}
-        </p>
-      </div>
     </section>
   );
 }
@@ -123,13 +98,13 @@ function HeroContent({
         {/* Heading in glass frame */}
         <h1
           style={{
-            ...item(0),
+            ...item(1),
             border: "1px solid rgba(255,255,255,0.28)",
             background: "rgba(7,13,23,0.32)",
             backdropFilter: "blur(10px) saturate(140%)",
             WebkitBackdropFilter: "blur(10px) saturate(140%)",
             borderRadius: "16px",
-            padding: "0.5rem 1.1rem",
+            padding: "0.6rem 1.4rem",
             textShadow:
               "0 2px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95)",
             boxShadow:

@@ -150,12 +150,14 @@ body {
   letter-spacing: 0.14em;
 }
 
-/* Hero H1 — fluid, viewport-driven size so the headline always renders as a
-   single line (see .whitespace-nowrap on the element) instead of wrapping. */
-.hero-h1 {
-  font-size: clamp(1.05rem, 4.4vw, 3.1rem);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+/* Hero H1 — sized up on small screens for presence; allowed to wrap since it
+   no longer fits on a single line at this size. */
+@media (max-width: 639px) {
+  .hero-h1 {
+    font-size: 1.95rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
 }
 
 /* Thin gold accent line under section headings */
@@ -225,82 +227,6 @@ body {
     #d9e2ec,
     color-mix(in srgb, #d9e2ec 0%, transparent)
   );
-}
-
-/* Hero tagline band — soft steel-blue glows over navy, with a hairline that
-   fades in from the hero photo above instead of a hard edge. */
-.hero-tagline {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background:
-    radial-gradient(58% 150% at 15% -30%, rgba(110, 147, 184, 0.2), transparent 62%),
-    radial-gradient(58% 150% at 85% 130%, rgba(62, 121, 159, 0.16), transparent 62%),
-    linear-gradient(180deg, var(--navy-900) 0%, var(--navy-950) 100%);
-}
-/* top + bottom hairlines that fade in from the centre */
-.hero-tagline::before,
-.hero-tagline::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  height: 1px;
-  background: linear-gradient(
-    to inline-end,
-    transparent,
-    rgba(166, 195, 220, 0.4) 50%,
-    transparent
-  );
-}
-.hero-tagline::before {
-  top: 0;
-}
-.hero-tagline::after {
-  bottom: 0;
-  opacity: 0.5;
-}
-
-/* Fine engineering grid, masked to a soft oval so it dissolves at the edges. */
-.hero-tagline__grid {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(166, 195, 220, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(166, 195, 220, 0.08) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: center;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 50%, black, transparent 78%);
-  mask-image: radial-gradient(120% 90% at 50% 50%, black, transparent 78%);
-}
-/* A single wider glow bloom centred behind the copy for depth. */
-.hero-tagline__glow {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    46% 120% at 50% 50%,
-    rgba(95, 154, 192, 0.14),
-    transparent 70%
-  );
-}
-
-/* Copy sits inside the same translucent "glass" pill as the hero H1. */
-.hero-tagline__copy {
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(7, 13, 23, 0.32);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  border-radius: 16px;
-  padding: 0.6rem 1.4rem;
-  text-shadow:
-    0 2px 10px rgba(0, 0, 0, 0.85),
-    0 1px 3px rgba(0, 0, 0, 0.95);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 10px 30px -12px rgba(7, 13, 23, 0.45);
 }
 
 /* ============================================================
