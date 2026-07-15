@@ -65,7 +65,7 @@ export function Portfolio() {
       <div className="container-x">
         {/* Heading + subtitle on the start side, animated stats on the end side */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl max-md:mx-auto max-md:text-center">
             <SectionHeading eyebrow="קטלוג" title="פרויקטים נבחרים" tone="light" />
             <Reveal index={2} className="lg:hidden mt-6">
               <GlassButton href="/portfolio" variant="primary">
@@ -74,7 +74,7 @@ export function Portfolio() {
             </Reveal>
             <Reveal index={2}>
               <p className="mt-5 text-[color:var(--steel-300)] text-base md:text-lg leading-relaxed">
-                מעל 15 שנות ניסיון ולמעלה מ־200 פרויקטים מוגמרים — ממגדלי יוקרה
+                מעל 15 שנות ניסיון ולמעלה מ־200 פרויקטים מוגמרים, ממגדלי יוקרה
                 ושכונות שלמות ועד מודלים תכנוניים, עבור חברות הנדל״ן והאדריכלים
                 המובילים בישראל.
               </p>

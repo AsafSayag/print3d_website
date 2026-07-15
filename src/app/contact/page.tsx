@@ -135,7 +135,7 @@ export default function ContactPage() {
               <div className="mt-8 rounded-3xl overflow-hidden border border-[color:var(--ink-950)]/10 shadow-[0_24px_60px_-40px_rgba(10,21,38,0.5)]">
                 <iframe
                   src={CONTACT.mapsEmbedUrl}
-                  title={`מפת מיקום — ${CONTACT.address}`}
+                  title={`מפת מיקום, ${CONTACT.address}`}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-[360px] md:h-[460px] block"

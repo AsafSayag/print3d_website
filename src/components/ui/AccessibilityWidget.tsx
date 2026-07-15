@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useNearFooter } from "@/lib/useNearFooter";
 
 /** Persisted accessibility preferences. */
 type Prefs = {
@@ -33,6 +34,7 @@ export function AccessibilityWidget() {
   const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const btnRef = useRef<HTMLButtonElement | null>(null);
+  const compact = useNearFooter();
 
   // Load saved preferences once, on mount.
   useEffect(() => {
@@ -181,7 +183,7 @@ export function AccessibilityWidget() {
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label="תפריט נגישות"
-        className="a11y-fab"
+        className={`a11y-fab${compact ? " a11y-fab--compact" : ""}`}
       >
         <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor" aria-hidden="true">
           <circle cx="12" cy="3.6" r="1.9" />

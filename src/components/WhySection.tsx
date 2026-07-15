@@ -12,7 +12,7 @@ export function WhySection() {
     <section id="about" className="surface-navy-950 section" aria-label={WHY.heading}>
       <div className="container-x">
         <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 max-md:text-center">
             {/* Deep-gold heading in a slim architectural frame — corner marks
                 (not a full box) keep it feeling precise and understated
                 rather than like a badge or button. */}
@@ -58,7 +58,7 @@ export function WhySection() {
                 <div className="relative aspect-square">
                   <Image
                     src="/why-print3d.jpg"
-                    alt="חלל תצוגה עם מודל אדריכלי מואר של מגדל — מעשה ידי Print3D"
+                    alt="חלל תצוגה עם מודל אדריכלי מואר של מגדל, מעשה ידי Print3D"
                     fill
                     sizes="(max-width: 1024px) 80vw, 320px"
                     className="object-cover transition-transform duration-[900ms] ease-[var(--ease-brand)] group-hover:scale-[1.05]"
@@ -101,39 +101,53 @@ export function WhySection() {
                 </svg>
               </button>
 
-              <p
+              <div
                 className={`${
                   showMore ? "block" : "hidden"
-                } md:block mt-6 md:mt-0 text-white/75 text-lg leading-[1.85] text-pretty`}
+                } md:block mt-6 md:mt-0 space-y-4`}
                 style={{ animation: "whyFade 0.4s var(--ease-brand) both" }}
               >
-                {WHY.paragraph}
-              </p>
+                {WHY.paragraphs.map((p, i) => (
+                  <p
+                    key={i}
+                    className="text-white/75 text-lg leading-[1.85] text-pretty"
+                  >
+                    {p}
+                  </p>
+                ))}
+              </div>
               <style>{"@keyframes whyFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}"}</style>
             </Reveal>
           </div>
         </div>
 
-        {/* Editorial numbered list — a thin gold hairline and a faint serif
-            numeral stand in for the earlier boxed "feature card" pattern,
+        {/* Editorial list — a thin blue hairline and a glowing arrow (pointing
+            in the RTL reading direction) stand in for the earlier numeral,
             reading as considered typography rather than a generic UI tile. */}
         <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 mt-20">
           {WHY.cards.map((card, i) => (
             <Reveal as="li" index={i} key={card.n}>
               <article className="group relative pt-7">
-                {/* Touch devices can't hover, so the gold reveal would never
-                    show — mobile carries a permanent, subtle gold tint
+                {/* Touch devices can't hover, so the blue reveal would never
+                    show — mobile carries a permanent, subtle blue tint
                     instead; sm+ reverts to the white idle state + hover reveal. */}
                 <span
                   aria-hidden="true"
                   className="absolute inset-x-0 top-0 h-px bg-[color:var(--gold-500)]/30 sm:bg-white/15 transition-colors duration-700 sm:group-hover:bg-[color:var(--gold-500)]/70"
                 />
-                <span
-                  className="block font-display text-[color:var(--gold-500)]/50 sm:text-white/20 transition-colors duration-700 sm:group-hover:text-[color:var(--gold-500)]"
-                  dir="ltr"
-                  style={{ fontSize: "2.75rem", fontWeight: 300, letterSpacing: "-0.02em" }}
-                >
-                  {String(card.n).padStart(2, "0")}
+                <span className="why-arrow" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="34"
+                    height="34"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M19 12H5M11 6l-6 6 6 6" />
+                  </svg>
                 </span>
                 <h3 className="h3 mt-4 mb-2 text-white text-lg">{card.title}</h3>
                 <p className="text-white/60 text-[15px] leading-relaxed">

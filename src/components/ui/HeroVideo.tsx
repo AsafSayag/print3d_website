@@ -16,7 +16,7 @@ const MOBILE_QUERY = "(max-width: 767px)";
 
 const DESKTOP = {
   poster: "/videos/home-hero-poster.jpg",
-  // Desktop loops continuously as an ambient background.
+  // Loops continuously as an ambient background — on every breakpoint.
   loop: true,
   sources: [
     { src: "/videos/home-hero.webm", type: "video/webm" },
@@ -26,9 +26,7 @@ const DESKTOP = {
 
 const MOBILE = {
   poster: "/videos/home-hero-mobile-poster.jpg",
-  // Mobile plays through once and then holds on its final frame (no loop —
-  // a paused <video> keeps painting the last decoded frame after it ends).
-  loop: false,
+  loop: true,
   sources: [
     { src: "/videos/home-hero-mobile.webm", type: "video/webm" },
     { src: "/videos/home-hero-mobile.mp4", type: "video/mp4" },

@@ -31,35 +31,48 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 2 — services */}
-          <FooterColumn title={FOOTER.columns.services.title}>
-            {FOOTER.columns.services.items.map((item) => (
-              <FooterLink key={item} href="#services">
-                {item}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+          {/* Columns 2+3 — services & company. Paired side by side on mobile
+              via this 2-col sub-grid; at md: it becomes `display:contents`,
+              so the wrapper vanishes from the layout tree entirely and
+              services/company rejoin the outer grid as plain direct
+              children — the exact, untouched desktop structure as before. */}
+          <div className="grid grid-cols-2 gap-10 md:contents">
+            <FooterColumn title={FOOTER.columns.services.title}>
+              {FOOTER.columns.services.items.map((item) => (
+                <FooterLink key={item} href="#services">
+                  {item}
+                </FooterLink>
+              ))}
+            </FooterColumn>
 
-          {/* Column 3 — company */}
-          <FooterColumn title={FOOTER.columns.company.title}>
-            {NAV_ITEMS.filter((n) =>
-              (FOOTER.columns.company.items as readonly string[]).includes(
-                n.label,
-              ),
-            ).map((item) => (
-              <FooterLink key={item.href} href={item.href}>
-                {item.label}
-              </FooterLink>
-            ))}
-            <li>
-              <Link
-                href={CONTACT.contactPath}
-                className="text-white/80 hover:text-white text-sm transition-colors"
-              >
-                צור קשר
-              </Link>
-            </li>
-          </FooterColumn>
+            <FooterColumn title={FOOTER.columns.company.title}>
+              {NAV_ITEMS.filter((n) =>
+                (FOOTER.columns.company.items as readonly string[]).includes(
+                  n.label,
+                ),
+              ).map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {item.label}
+                </FooterLink>
+              ))}
+              <li>
+                <Link
+                  href={CONTACT.contactPath}
+                  className="text-white/80 hover:text-white text-sm transition-colors"
+                >
+                  צור קשר
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-white/80 hover:text-white text-sm transition-colors"
+                >
+                  שאלות נפוצות
+                </Link>
+              </li>
+            </FooterColumn>
+          </div>
 
           {/* Column 4 — CTA + small location map */}
           <div>
@@ -75,12 +88,12 @@ export function Footer() {
               href={CONTACT.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`המיקום שלנו — ${CONTACT.address} — פתיחה ב-Google Maps`}
+              aria-label={`המיקום שלנו, ${CONTACT.address}, פתיחה ב־Google Maps`}
               className="group mt-6 block w-56 max-w-full overflow-hidden rounded-xl border border-white/12 bg-white/[0.03] shadow-[0_18px_40px_-30px_rgba(0,0,0,0.8)] transition-colors hover:border-white/25"
             >
               <iframe
                 src={CONTACT.mapsEmbedUrl}
-                title={`מפת מיקום — ${CONTACT.address}`}
+                title={`מפת מיקום, ${CONTACT.address}`}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 tabIndex={-1}
@@ -99,20 +112,34 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-white/70">
-          <span dir="ltr">{FOOTER.copyright}</span>
-          <nav aria-label="קישורים משפטיים">
-            <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              {LEGAL_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+        {/* The accessibility statement gets its own centered spot (both on
+            mobile and desktop) instead of sitting inside the wrapped legal
+            list — on mobile that list's edge otherwise lands right under the
+            floating WhatsApp button and gets partly covered by it. */}
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col items-center gap-4 text-center text-sm text-white/70 sm:grid sm:grid-cols-3 sm:items-center sm:text-start">
+          <span dir="ltr" className="sm:justify-self-start">
+            {FOOTER.copyright}
+          </span>
+          <Link
+            href="/legal/accessibility"
+            className="text-white/70 hover:text-white transition-colors sm:justify-self-center"
+          >
+            {FOOTER.a11yLink}
+          </Link>
+          <nav aria-label="קישורים משפטיים" className="sm:justify-self-end">
+            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
+              {LEGAL_LINKS.filter((link) => link.href !== "/legal/accessibility").map(
+                (link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-white/70 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </nav>
         </div>

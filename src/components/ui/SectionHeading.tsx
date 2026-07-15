@@ -25,8 +25,11 @@ export function SectionHeading({
   return (
     <div
       className={[
-        isCenter ? "text-center" : "",
-        isCenter ? "mx-auto" : "",
+        // Mobile always centers the heading (title, eyebrow and the
+        // accent underline — see the matching media query in globals.css);
+        // the `align` prop only takes effect from md: up.
+        "max-md:text-center max-md:mx-auto",
+        isCenter ? "md:text-center md:mx-auto" : "",
         className ?? "",
       ]
         .filter(Boolean)
