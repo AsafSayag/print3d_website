@@ -1,16 +1,22 @@
+"use client";
+
 import { CONTACT } from "@/lib/constants";
+import { useNearFooter } from "@/lib/useNearFooter";
 
 /**
  * Floating WhatsApp action button, pinned to the physical bottom-right on every
  * page. Uses the recognizable WhatsApp green (the accepted convention for a
  * floating chat bubble) with a soft pulsing ring. While CONTACT.whatsappNumber
  * is empty it routes to the contact form; once set it opens a WhatsApp chat.
+ * Shrinks further once the footer is about to enter view, so it stops
+ * crowding the page end.
  */
 export function FloatingWhatsApp() {
   const hasNumber = CONTACT.whatsappNumber.length > 0;
   const href = hasNumber
     ? `https://wa.me/${CONTACT.whatsappNumber}`
     : CONTACT.contactPath;
+  const compact = useNearFooter();
 
   return (
     <a
@@ -18,7 +24,7 @@ export function FloatingWhatsApp() {
       target={hasNumber ? "_blank" : undefined}
       rel={hasNumber ? "noopener noreferrer" : undefined}
       aria-label="דברו איתנו בוואטסאפ"
-      className="wa-fab"
+      className={`wa-fab${compact ? " wa-fab--compact" : ""}`}
     >
       <span className="wa-fab-pulse" aria-hidden="true" />
       <svg viewBox="0 0 32 32" className="relative h-8 w-8 fill-white" aria-hidden="true">

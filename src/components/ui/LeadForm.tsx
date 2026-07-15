@@ -85,7 +85,10 @@ export function LeadForm() {
         type="tel"
         inputMode="tel"
         autoComplete="tel"
-        dir="ltr"
+        // Browsers default type="tel" inputs to LTR via their own UA
+        // stylesheet even with no dir attribute at all — force RTL to match
+        // how Hebrew is actually typed.
+        dir="rtl"
       />
       <Field
         label={CONTACT_CTA.fields.email}
@@ -95,7 +98,7 @@ export function LeadForm() {
         type="email"
         inputMode="email"
         autoComplete="email"
-        dir="ltr"
+        dir="rtl"
         className="sm:col-span-2"
       />
       <div className="sm:col-span-2">

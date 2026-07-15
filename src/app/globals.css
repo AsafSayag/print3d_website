@@ -1156,15 +1156,27 @@ body {
   background: #25d366;
   box-shadow: 0 10px 26px -6px rgba(37, 211, 102, 0.5),
     0 6px 16px rgba(0, 0, 0, 0.3);
-  transition: transform 0.25s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+  /* Slightly smaller than the box by default; shrinks further once the
+     footer is about to enter view so it stops crowding the page end. */
+  transform: scale(0.88);
+  transition: transform 0.35s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+}
+.wa-fab--compact {
+  transform: scale(0.62);
 }
 .wa-fab:hover {
-  transform: scale(1.07);
+  transform: scale(1.03);
   box-shadow: 0 14px 32px -6px rgba(37, 211, 102, 0.6),
     0 8px 20px rgba(0, 0, 0, 0.35);
 }
+.wa-fab--compact:hover {
+  transform: scale(0.76);
+}
 .wa-fab:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
+}
+.wa-fab--compact:active {
+  transform: scale(0.58);
 }
 .wa-fab:focus-visible {
   outline: 3px solid var(--gold-400);
@@ -1256,11 +1268,20 @@ html.a11y-contrast footer {
   background: linear-gradient(160deg, var(--gold-400), var(--gold-500));
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.55);
-  transition: transform 0.25s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+  /* Slightly smaller than the box by default; shrinks further once the
+     footer is about to enter view so it stops crowding the page end. */
+  transform: scale(0.89);
+  transition: transform 0.35s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+}
+.a11y-fab--compact {
+  transform: scale(0.64);
 }
 .a11y-fab:hover {
-  transform: scale(1.06);
+  transform: scale(1.02);
   box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.6);
+}
+.a11y-fab--compact:hover {
+  transform: scale(0.78);
 }
 .a11y-fab:focus-visible {
   outline: 3px solid var(--navy-950);
@@ -1416,4 +1437,167 @@ html.a11y-motion .a11y-panel {
   color: var(--gold-400);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+
+/* ============================================================
+   WhoFor audience cards — frosted silver glass with a per-card
+   colour accent (--accent as an "R G B" triple) and a subtle sheen.
+   ============================================================ */
+.whofor-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.17),
+    rgba(255, 255, 255, 0.05) 55%,
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 34px -16px rgba(7, 13, 23, 0.65);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  transition:
+    transform 0.5s var(--ease-brand),
+    box-shadow 0.5s var(--ease-brand),
+    border-color 0.5s var(--ease-brand);
+}
+.whofor-card::before {
+  content: "";
+  position: absolute;
+  top: -35%;
+  right: -30%;
+  width: 75%;
+  height: 75%;
+  background: radial-gradient(circle at 70% 30%, rgb(var(--accent) / 0.9), transparent 68%);
+  opacity: 0.3;
+  filter: blur(20px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-brand);
+}
+.whofor-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 55%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.38),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.75s var(--ease-brand);
+  pointer-events: none;
+}
+.whofor-card:hover {
+  transform: translateY(-6px);
+  border-color: rgb(var(--accent) / 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 24px 46px -18px rgba(7, 13, 23, 0.72),
+    0 0 22px -6px rgb(var(--accent) / 0.55);
+}
+.whofor-card:hover::before {
+  opacity: 0.55;
+}
+.whofor-card:hover::after {
+  left: 125%;
+}
+.whofor-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  color: #fff;
+  /* Near-opaque tinted glass — the background photo barely reads through the
+     badge itself (unlike the card body, which stays translucent). */
+  background: linear-gradient(
+    155deg,
+    rgb(var(--accent) / 0.96),
+    rgb(var(--accent) / 0.72)
+  );
+  border: 1px solid rgb(var(--accent) / 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 18px -8px rgb(var(--accent) / 0.65);
+}
+.whofor-badge svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: whoforFloat 6s ease-in-out infinite;
+}
+@keyframes whoforFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whofor-badge svg { animation: none; }
+  .whofor-card,
+  .whofor-card::after { transition: none; }
+}
+
+/* ============================================================
+   "Why Print3D" card marker — a glowing blue arrow (replaces the old
+   01/02/03/04 numeral) pointing in the RTL reading direction.
+   ============================================================ */
+.why-arrow {
+  display: inline-flex;
+  color: var(--gold-400);
+  filter: drop-shadow(0 0 7px rgba(95, 154, 192, 0.55)) drop-shadow(0 0 16px rgba(95, 154, 192, 0.3));
+  animation: whyArrowGlow 3.2s ease-in-out infinite;
+  transition: transform 0.4s var(--ease-brand), filter 0.4s var(--ease-brand);
+  /* Mobile: the arrow points DOWN (cards stack vertically there), rotating
+     the left-pointing SVG -90deg. Desktop resets it to point left, the RTL
+     reading direction, once the cards sit in a horizontal row. */
+  transform: rotate(-90deg);
+}
+.group:hover .why-arrow {
+  transform: rotate(-90deg) translateY(4px);
+  filter: drop-shadow(0 0 10px rgba(95, 154, 192, 0.8)) drop-shadow(0 0 24px rgba(95, 154, 192, 0.5));
+}
+@media (min-width: 768px) {
+  .why-arrow {
+    transform: none;
+  }
+  .group:hover .why-arrow {
+    transform: translateX(-4px);
+  }
+}
+@keyframes whyArrowGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 7px rgba(95, 154, 192, 0.5)) drop-shadow(0 0 14px rgba(95, 154, 192, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 11px rgba(95, 154, 192, 0.85)) drop-shadow(0 0 22px rgba(95, 154, 192, 0.45));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .why-arrow { animation: none; }
+}
+
+/* ============================================================
+   Mobile: every section heading centers (title, eyebrow, and the
+   accent underline), regardless of its desktop alignment. Wins over
+   both .heading-accent::after and .heading-accent--center::after —
+   same specificity, later in source order.
+   ============================================================ */
+@media (max-width: 767px) {
+  .heading-accent::after {
+    inset-inline-start: 50%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    background: var(--gold-500);
+  }
 }

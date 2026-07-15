@@ -35,7 +35,12 @@ export function Hero() {
     >
       {/* Background layer: the models-showroom video — landscape on desktop,
           vertical on mobile. Poster paints instantly for LCP. */}
-      <div className="absolute inset-0">
+      <div
+        className="absolute inset-0"
+        // Lift the footage: it was shot fairly dark, so brighten + gently lift
+        // saturation/contrast on both mobile and desktop.
+        style={{ filter: "brightness(1.18) saturate(1.06) contrast(1.02)" }}
+      >
         {/* Mobile: vertical cut fills the portrait screen (object-cover).
             Desktop: landscape cut shown in full so the whole frame + the
             PRINT3D logo stay visible (object-contain); the navy section
@@ -43,12 +48,13 @@ export function Hero() {
         <HeroVideo className="h-full w-full object-cover" />
       </div>
 
-      {/* Scrim — deepens once content is revealed for legibility */}
+      {/* Scrim — lighter than before so the brighter footage reads through;
+          still deepens a touch once content is revealed for legibility. */}
       <div
         className="absolute inset-0 transition-opacity duration-700"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 30%, rgba(7,13,23,0.12), rgba(7,13,23,0.5) 70%, rgba(7,13,23,0.72))",
+            "radial-gradient(120% 90% at 50% 30%, rgba(7,13,23,0.04), rgba(7,13,23,0.3) 70%, rgba(7,13,23,0.5))",
           opacity: revealed ? 1 : 0.5,
         }}
       />
@@ -123,14 +129,14 @@ function HeroContent({
           <GlassButton
             href={CONTACT.contactPath}
             variant="primary"
-            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
+            className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >
             {HERO_COPY.primaryCta}
           </GlassButton>
           <GlassButton
             href="/portfolio"
             variant="secondary"
-            className="!px-6 sm:!px-8 md:!px-9 !py-3 sm:!py-4 !text-base sm:!text-lg"
+            className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >
             {HERO_COPY.secondaryCta}
           </GlassButton>

@@ -256,6 +256,23 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
             </a>
           ))}
           <a
+            href="/faq"
+            onClick={() => setOpen(false)}
+            tabIndex={open ? 0 : -1}
+            aria-current={pathname === "/faq" ? "page" : undefined}
+            className="text-2xl text-white/90 py-3 border-b border-white/10"
+            style={{
+              fontFamily: "var(--font-display), serif",
+              opacity: open ? 1 : 0,
+              transform: open ? "none" : "translateY(12px)",
+              transition: reduce
+                ? "none"
+                : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s`,
+            }}
+          >
+            שאלות נפוצות
+          </a>
+          <a
             href={CONTACT.contactPath}
             onClick={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
@@ -267,7 +284,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
               transform: open ? "none" : "translateY(12px)",
               transition: reduce
                 ? "none"
-                : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * NAV_ITEMS.length + 0.05 : 0}s`,
+                : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * (NAV_ITEMS.length + 1) + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * (NAV_ITEMS.length + 1) + 0.05 : 0}s`,
             }}
           >
             צור קשר

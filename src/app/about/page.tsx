@@ -23,7 +23,7 @@ import {
 export const metadata: Metadata = buildPageMeta({
   title: ABOUT.hero.eyebrow,
   description:
-    "מי אנחנו ולמה מובילי הנדל״ן בישראל בוחרים ב-Print3D — מודלים אדריכליים ברמת גימור יוצאת דופן, ייצור מתקדם וגימור יד אומן, כבר יותר מ-15 שנה.",
+    "מי אנחנו ולמה מובילי הנדל״ן בישראל בוחרים ב־Print3D: מודלים אדריכליים ברמת גימור יוצאת דופן, ייצור מתקדם וגימור יד אומן, כבר יותר מ־15 שנה.",
   path: "/about",
 });
 
@@ -68,7 +68,7 @@ export default function AboutPage() {
                     <div className="relative aspect-[4/3]">
                       <Image
                         src="/why-print3d.jpg"
-                        alt="חלל תצוגה עם מודל אדריכלי מואר של מגדל — מעשה ידי Print3D"
+                        alt="חלל תצוגה עם מודל אדריכלי מואר של מגדל, מעשה ידי Print3D"
                         fill
                         sizes="(max-width: 1024px) 92vw, 40vw"
                         className="object-cover transition-transform duration-[900ms] ease-[var(--ease-brand)] group-hover:scale-[1.05]"
@@ -81,9 +81,16 @@ export default function AboutPage() {
 
               <div className="lg:col-span-7">
                 <Reveal>
-                  <p className="text-white/75 text-lg leading-[1.85] text-pretty">
-                    {WHY.paragraph}
-                  </p>
+                  <div className="space-y-4">
+                    {WHY.paragraphs.map((p, i) => (
+                      <p
+                        key={i}
+                        className="text-white/75 text-lg leading-[1.85] text-pretty"
+                      >
+                        {p}
+                      </p>
+                    ))}
+                  </div>
                 </Reveal>
               </div>
             </div>
@@ -140,16 +147,19 @@ export default function AboutPage() {
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-px bg-[color:var(--gold-500)]/40 sm:bg-[color:var(--ink-950)]/15 transition-colors duration-700 sm:group-hover:bg-[color:var(--gold-500)]/70"
                     />
-                    <span
-                      className="block font-display text-[color:var(--gold-500)]/70 sm:text-[color:var(--ink-950)]/20 transition-colors duration-700 sm:group-hover:text-[color:var(--gold-500)]"
-                      dir="ltr"
-                      style={{
-                        fontSize: "2.75rem",
-                        fontWeight: 300,
-                        letterSpacing: "-0.02em",
-                      }}
-                    >
-                      {String(card.n).padStart(2, "0")}
+                    <span className="why-arrow" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="34"
+                        height="34"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19 12H5M11 6l-6 6 6 6" />
+                      </svg>
                     </span>
                     <h3 className="h3 mt-4 mb-2 text-[color:var(--ink-950)] text-lg">
                       {card.title}
@@ -182,9 +192,16 @@ export default function AboutPage() {
                 </h2>
               </Reveal>
               <Reveal delay={0.1}>
-                <p className="mt-6 text-white/70 text-lg leading-[1.85] text-pretty">
-                  {SERVICES.paragraph}
-                </p>
+                <div className="mt-6 space-y-4">
+                  {SERVICES.paragraphs.map((p, i) => (
+                    <p
+                      key={i}
+                      className="text-white/70 text-lg leading-[1.85] text-pretty"
+                    >
+                      {p}
+                    </p>
+                  ))}
+                </div>
               </Reveal>
             </div>
 
