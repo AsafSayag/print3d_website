@@ -98,10 +98,28 @@ export const HERO_SLIDES = [
 
 ## Build steps
 
-1. **Convert images.** Every source image → `.webp` via `cwebp -q 82`, into
-   `public/project_pages/<slug_with_underscores>_project/` (all project-page
-   asset folders live under the shared `public/project_pages/` directory, not
-   directly in `public/`):
+1. **Convert AND resize images — never ship a raw camera/phone export.**
+   Source photos routinely arrive at 12–24MP (4000px+ on the long edge);
+   shipped as-is they bloat every page's hero and gallery for no visible
+   quality gain (`next/image`/the browser downsizes on display anyway, but
+   still has to download and decode the oversized original first). Before
+   anything else, check each source image's longest edge:
+   - **If it's over 2000px, resize it down to 2000px on the longest edge**
+     (keep aspect ratio), *then* re-encode to `.webp -quality 82`. One-shot
+     with ImageMagick: `magick <source> -resize '2000x2000>' -quality 82
+     <dest>.webp` (the `>` means "only shrink, never enlarge" — safe to run
+     on every file unconditionally). If the source is already a `.webp`,
+     the same `magick` command works directly on it (it decodes and
+     re-encodes in one step — no need for a separate `dwebp`/`cwebp` pass).
+   - If it's already ≤2000px, `cwebp -q 82` (no resize) is enough.
+   - This 2000px cap applies to **every** role — hero, full-bleed hero,
+     `bg_placeholder`, and every gallery shot — including gallery images
+     even though they also open in the full-screen `Lightbox`; 2000px is
+     still sharp at typical monitor widths and the `Lightbox`'s own
+     `sizes="92vw"` lets `next/image` downsize further per-device anyway.
+   Then, into `public/project_pages/<slug_with_underscores>_project/` (all
+   project-page asset folders live under the shared `public/project_pages/`
+   directory, not directly in `public/`):
    - Hero → `<name>_hero.webp`
    - Full-bleed hero → `design_1_hero.webp`
    - מפרט טכני background → `bg_placeholder.webp` (its own dedicated file —
@@ -109,7 +127,11 @@ export const HERO_SLIDES = [
      was supplied)
    - Everything else → `IMG_01.webp`, `IMG_02.webp`, … (sequential, no gaps)
 2. **Catalog thumbnail.** Resize the hero to ~800px wide →
-   `public/projects/<slug>.webp` (`cwebp -q 82 -resize 800 0 …`).
+   `public/projects/<slug>.webp` (`magick <source> -resize '800x' -quality 82
+   <dest>.webp`, or `cwebp -q 82 -resize 800 0 …` from a non-webp source).
+   This file feeds small grid/card thumbnails on `/portfolio` and the
+   homepage — it must never be left at full source resolution (this has
+   happened before: a project shipped with a 3024×4032, ~2MB "thumbnail").
 3. **Create `src/app/projects/<slug>/`:**
    - `content.ts` — exports `SEO_TITLE_TAG`, `IMAGE_ALT`, `HERO` (with
      `eyebrow`, `title`, `scale`, `src`), `FULL_BLEED_HERO`, **`SPEC_BG`**,
@@ -144,6 +166,11 @@ export const HERO_SLIDES = [
      `content.ts` — no orphans, no dangling references. If images were added
      or removed by hand outside this flow, re-check this before trusting the
      page.
+   - **No oversized images.** Spot-check every file just written with
+     `magick identify -format "%wx%h\n" <file>` (or loop the whole project
+     folder) — nothing should exceed 2000px on its longest edge, and the
+     `public/projects/<slug>.webp` catalog thumbnail should be ~800px wide.
+     Re-run step 1's resize on anything that slipped through.
 
 ## Spec sheet (מפרט טכני) — expected rows
 

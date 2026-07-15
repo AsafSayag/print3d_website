@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { ScrollHint } from "./ScrollHint";
 
 type Props = {
@@ -14,6 +15,10 @@ type Props = {
  * Full-bleed hero image slider for the project page. Crossfades between the
  * project shots automatically, and gives the user manual control via a left
  * and a right arrow (and dots). Any manual interaction pauses the auto-advance.
+ *
+ * `slides` can include the full project gallery (see HERO_SLIDES), so only the
+ * active slide and its two neighbors are ever mounted — otherwise every photo
+ * on the page would load up front instead of on demand.
  */
 export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   const n = slides.length;
@@ -35,21 +40,29 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
     return () => window.clearInterval(t);
   }, [paused, n]);
 
+  const mounted = useMemo(
+    () => new Set([idx, (idx + 1) % n, (idx - 1 + n) % n]),
+    [idx, n],
+  );
+
   return (
     <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-[color:var(--navy-950)]">
-      {slides.map((src, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={src}
-          src={src}
-          alt={i === idx ? alt : ""}
-          aria-hidden={i !== idx}
-          fetchPriority={i === 0 ? "high" : undefined}
-          loading={i === 0 ? "eager" : "lazy"}
-          className="absolute inset-0 h-full w-full object-cover object-[center_55%] transition-opacity duration-[1100ms] ease-[var(--ease-brand)]"
-          style={{ opacity: i === idx ? 1 : 0 }}
-        />
-      ))}
+      {slides.map((src, i) =>
+        mounted.has(i) ? (
+          <Image
+            key={src}
+            src={src}
+            alt={i === idx ? alt : ""}
+            aria-hidden={i !== idx}
+            fill
+            sizes="100vw"
+            priority={i === 0}
+            loading={i === 0 ? undefined : "eager"}
+            className="object-cover object-[center_55%] transition-opacity duration-[1100ms] ease-[var(--ease-brand)]"
+            style={{ opacity: i === idx ? 1 : 0 }}
+          />
+        ) : null,
+      )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.92)] via-[rgba(7,13,23,0.32)] to-[rgba(7,13,23,0.12)]" />
 
