@@ -13,14 +13,14 @@ export const HERO = {
   eyebrow: "",
   title: "תדהר, דפנה",
   scale: "1:100",
-  src: "/dafna_tidhar_project/dafna_hero.webp",
+  src: "/project_pages/dafna_tidhar_project/dafna_hero.webp",
 };
 
 /** Dedicated shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO = "/dafna_tidhar_project/design_1_hero.webp";
+export const FULL_BLEED_HERO = "/project_pages/dafna_tidhar_project/design_1_hero.webp";
 
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG = "/dafna_tidhar_project/bg_placeholder.webp";
+export const SPEC_BG = "/project_pages/dafna_tidhar_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -60,14 +60,14 @@ export const ABOUT = {
 };
 
 export const GALLERY_IMAGES = [
-  "/dafna_tidhar_project/IMG_01.webp",
-  "/dafna_tidhar_project/IMG_03.webp",
-  "/dafna_tidhar_project/IMG_04.webp",
-  "/dafna_tidhar_project/IMG_08.webp",
-  "/dafna_tidhar_project/IMG_09.webp",
-  "/dafna_tidhar_project/IMG_10.webp",
-  "/dafna_tidhar_project/IMG_11.webp",
-  "/dafna_tidhar_project/IMG_12.webp",
+  "/project_pages/dafna_tidhar_project/IMG_01.webp",
+  "/project_pages/dafna_tidhar_project/IMG_03.webp",
+  "/project_pages/dafna_tidhar_project/IMG_04.webp",
+  "/project_pages/dafna_tidhar_project/IMG_08.webp",
+  "/project_pages/dafna_tidhar_project/IMG_09.webp",
+  "/project_pages/dafna_tidhar_project/IMG_10.webp",
+  "/project_pages/dafna_tidhar_project/IMG_11.webp",
+  "/project_pages/dafna_tidhar_project/IMG_12.webp",
   HERO.src,
   FULL_BLEED_HERO,
 ];

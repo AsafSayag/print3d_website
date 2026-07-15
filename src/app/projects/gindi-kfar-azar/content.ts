@@ -13,14 +13,14 @@ export const HERO = {
   eyebrow: "",
   title: 'גינדי, כפר אז"ר',
   scale: "1:100",
-  src: "/gindi_kfar_azar_project/gindi_hero.webp",
+  src: "/project_pages/gindi_kfar_azar_project/gindi_hero.webp",
 };
 
 /** Dedicated street-level shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO = "/gindi_kfar_azar_project/design_1_hero.webp";
+export const FULL_BLEED_HERO = "/project_pages/gindi_kfar_azar_project/design_1_hero.webp";
 
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG = "/gindi_kfar_azar_project/bg_placeholder.webp";
+export const SPEC_BG = "/project_pages/gindi_kfar_azar_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -60,9 +60,9 @@ export const ABOUT = {
 };
 
 export const GALLERY_IMAGES = [
-  "/gindi_kfar_azar_project/IMG_0943.webp",
-  "/gindi_kfar_azar_project/IMG_0944.webp",
-  "/gindi_kfar_azar_project/IMG_0945.webp",
+  "/project_pages/gindi_kfar_azar_project/IMG_0943.webp",
+  "/project_pages/gindi_kfar_azar_project/IMG_0944.webp",
+  "/project_pages/gindi_kfar_azar_project/IMG_0945.webp",
   FULL_BLEED_HERO,
 ];
 

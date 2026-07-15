@@ -48,6 +48,20 @@ const PROJECTS: {
     span: "",
     href: "/projects/shbiro-rishon-letzion",
   },
+  {
+    src: "/projects/levinstein.webp",
+    title: "מגדלי לוינשטיין",
+    scale: "1:75",
+    span: "",
+    href: "/projects/levinstein",
+  },
+  {
+    src: "/projects/beit-hakerem.webp",
+    title: "בית הכרם",
+    scale: "1:1000",
+    span: "",
+    href: "/projects/beit-hakerem",
+  },
 ];
 
 const STATS = [
