@@ -14,11 +14,11 @@ export const HERO = {
   eyebrow: "",
   title: "סלע ביתר, חדרה",
   scale: "1:100",
-  src: "/sela_baitar_hadera_project/sela_hero.webp",
+  src: "/project_pages/sela_baitar_hadera_project/sela_hero.webp",
 };
 
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG = "/sela_baitar_hadera_project/bg_placeholder.webp";
+export const SPEC_BG = "/project_pages/sela_baitar_hadera_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -58,14 +58,14 @@ export const ABOUT = {
 };
 
 export const GALLERY_IMAGES = [
-  "/sela_baitar_hadera_project/IMG_01.webp",
-  "/sela_baitar_hadera_project/IMG_02.webp",
-  "/sela_baitar_hadera_project/IMG_12.webp",
-  "/sela_baitar_hadera_project/IMG_14.webp",
-  "/sela_baitar_hadera_project/IMG_16.webp",
-  "/sela_baitar_hadera_project/IMG_17.webp",
-  "/sela_baitar_hadera_project/IMG_19.webp",
-  "/sela_baitar_hadera_project/IMG_20.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_01.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_02.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_12.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_14.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_16.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_17.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_19.webp",
+  "/project_pages/sela_baitar_hadera_project/IMG_20.webp",
 ];
 
 /** Hero slider cycles through every project photo, starting with the hero shot. */

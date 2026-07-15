@@ -17,11 +17,11 @@ export const HERO = {
   /** Large display line shown centered over the hero slider. */
   title: "שבירו, ראשון לציון",
   scale: "1:200",
-  src: "/shbiro_rishon_letzion_project/shbiro_hero.webp",
+  src: "/project_pages/shbiro_rishon_letzion_project/shbiro_hero.webp",
 };
 
 /** Full-bleed background image for the מפרט טכני section. */
-export const SPEC_BG = "/shbiro_rishon_letzion_project/bg_placeholder.webp";
+export const SPEC_BG = "/project_pages/shbiro_rishon_letzion_project/bg_placeholder.webp";
 
 export type SpecRow = {
   label: string;
@@ -54,13 +54,13 @@ export const SPECS: SpecRow[] = [
 ];
 
 export const GALLERY_IMAGES = [
-  "/shbiro_rishon_letzion_project/IMG_04.webp",
-  "/shbiro_rishon_letzion_project/IMG_05.webp",
-  "/shbiro_rishon_letzion_project/IMG_06.webp",
-  "/shbiro_rishon_letzion_project/IMG_07.webp",
-  "/shbiro_rishon_letzion_project/IMG_08.webp",
-  "/shbiro_rishon_letzion_project/IMG_09.webp",
-  "/shbiro_rishon_letzion_project/IMG_10.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_04.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_05.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_06.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_07.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_08.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_09.webp",
+  "/project_pages/shbiro_rishon_letzion_project/IMG_10.webp",
 ];
 
 /** Hero slider cycles through every project photo, starting with the hero shot. */

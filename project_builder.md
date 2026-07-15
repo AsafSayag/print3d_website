@@ -48,7 +48,9 @@ below rather than blocking. The three asset inputs map into `content.ts`
 3. **Client name** — e.g. `תדהר`.
 4. **Scale** — e.g. `1:100`. → `HERO.scale`
 5. **Image paths** (the carousel + gallery set) — the full set of source images.
-   No fixed count. **Always ask for these first and wait** before touching
+   No fixed count — **5 images is enough** for a full project page (hero +
+   4 gallery shots feeding the carousel); don't ask the Builder for more than
+   they have. **Always ask for these first and wait** before touching
    images. → `GALLERY_IMAGES`, which in turn feeds `HERO_SLIDES`.
 6. **The hero image** — the "leader"/cover shot (first paint + catalog
    thumbnail). → `HERO.src`. And the **full-bleed hero** — the dramatic opening
@@ -97,7 +99,9 @@ export const HERO_SLIDES = [
 ## Build steps
 
 1. **Convert images.** Every source image → `.webp` via `cwebp -q 82`, into
-   `public/<slug_with_underscores>_project/`:
+   `public/project_pages/<slug_with_underscores>_project/` (all project-page
+   asset folders live under the shared `public/project_pages/` directory, not
+   directly in `public/`):
    - Hero → `<name>_hero.webp`
    - Full-bleed hero → `design_1_hero.webp`
    - מפרט טכני background → `bg_placeholder.webp` (its own dedicated file —
@@ -132,10 +136,11 @@ export const HERO_SLIDES = [
    - Gallery grid shows every `GALLERY_IMAGES` photo; lightbox opens/cycles.
    - New card appears on `/portfolio` and the homepage `#portfolio` section and
      links to `/projects/<slug>`.
-   - No console errors, no 404s on any `/<slug>_project/*.webp` (incl. `SPEC_BG`).
+   - No console errors, no 404s on any `/project_pages/<slug>_project/*.webp`
+     (incl. `SPEC_BG`).
    - Every path referenced in `content.ts` (`HERO.src`, `FULL_BLEED_HERO`,
      `SPEC_BG`, every `GALLERY_IMAGES` entry) resolves to a real file in
-     `public/<slug>_project/`, and every file in that folder is referenced by
+     `public/project_pages/<slug>_project/`, and every file in that folder is referenced by
      `content.ts` — no orphans, no dangling references. If images were added
      or removed by hand outside this flow, re-check this before trusting the
      page.

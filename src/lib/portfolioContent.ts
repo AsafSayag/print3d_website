@@ -36,11 +36,12 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     client: "לוינשטיין הנדסה",
     scale: "1:75",
     type: "residential",
-    image: "/projects/levinstein.jpg",
+    image: "/projects/levinstein.webp",
     video: {
       mp4: "/videos/projects/levinstein.mp4",
       webm: "/videos/projects/levinstein.webm",
     },
+    href: "/projects/levinstein",
   },
   {
     id: "beit-hakerem",
@@ -48,11 +49,12 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     client: "אלעד ישראל מגורים",
     scale: "1:1000",
     type: "urban",
-    image: "/projects/beit-hakerem.jpg",
+    image: "/projects/beit-hakerem.webp",
     video: {
       mp4: "/videos/projects/beit-hakerem.mp4",
       webm: "/videos/projects/beit-hakerem.webm",
     },
+    href: "/projects/beit-hakerem",
   },
   {
     id: "neve-gan",
