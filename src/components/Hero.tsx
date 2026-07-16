@@ -65,8 +65,7 @@ export function Hero() {
           royal-blue accent rule. Mobile is untouched: there the heading stays
           in the bottom group (see HeroContent). */}
       <div
-        dir="rtl"
-        className="hidden md:flex flex-col items-stretch text-right absolute z-20 top-[5rem] right-4 lg:top-[6rem] lg:right-8"
+        className="hidden md:flex flex-col items-center absolute z-20 top-[5rem] inset-x-0 lg:top-[6rem]"
         style={{
           opacity: revealed ? 1 : 0,
           transform: revealed || reduce ? "none" : "translateY(-1.75rem)",
@@ -80,28 +79,45 @@ export function Hero() {
             "0 2px 14px rgba(0,0,0,0.9), 0 1px 5px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
         }}
       >
-        {/* H1 (rightmost) and H2 share ONE line and baseline; a single accent
-            rule below connects underneath both. whitespace-nowrap keeps each
-            intact. */}
-        <div className="flex items-baseline gap-5 lg:gap-8">
-          <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
-            {HERO_COPY.h1}
-          </h1>
-          <h2 className="whitespace-nowrap text-white font-semibold text-[clamp(1.1rem,1.7vw,1.6rem)] leading-snug">
-            {HERO_COPY.h2}
-          </h2>
-        </div>
-        {/* One continuous royal-blue accent rule spanning both headings —
-            strong at the right, fading gently at the far left. */}
-        <span
-          aria-hidden="true"
-          className="mt-2 h-[2px] w-full rounded-full"
+        {/* Centred group: H1 (rightmost) + H2 share ONE line and baseline; a
+            single accent rule below connects underneath both. The inner block
+            shrinks to the row width so the rule matches the headings, then the
+            outer flex centres the whole thing. It's wrapped in an especially
+            delicate liquid-glass frame — the same material as the secondary
+            "צפו בקטלוג" button (translucent white fill, hairline border, blur,
+            inset top highlight + soft drop shadow). */}
+        <div
+          dir="rtl"
+          className="flex flex-col items-stretch text-center px-6 py-[4.5px] lg:px-8 lg:py-[8.5px] rounded-[22px]"
           style={{
-            background:
-              "linear-gradient(to left, var(--gold-400) 0%, var(--gold-500) 62%, rgba(95,154,192,0.2) 88%, transparent)",
-            boxShadow: "0 0 12px rgba(95,154,192,0.5)",
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.28)",
+            backdropFilter: "blur(18px) saturate(160%)",
+            WebkitBackdropFilter: "blur(18px) saturate(160%)",
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 32px rgba(7,13,23,0.35)",
           }}
-        />
+        >
+          <div className="flex items-baseline justify-center gap-5 lg:gap-8">
+            <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
+              {HERO_COPY.h1}
+            </h1>
+            <h2 className="whitespace-nowrap text-white font-semibold text-[clamp(1.1rem,1.7vw,1.6rem)] leading-snug">
+              {HERO_COPY.h2}
+            </h2>
+          </div>
+          {/* One continuous royal-blue accent rule spanning both headings —
+              symmetric: strong at the centre, fading gently to both ends. */}
+          <span
+            aria-hidden="true"
+            className="mt-2 h-[2px] w-full rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, var(--gold-500) 18%, var(--gold-400) 50%, var(--gold-500) 82%, transparent)",
+              boxShadow: "0 0 12px rgba(95,154,192,0.5)",
+            }}
+          />
+        </div>
       </div>
 
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
