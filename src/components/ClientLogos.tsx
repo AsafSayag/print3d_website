@@ -22,26 +22,46 @@ export function ClientLogos() {
     startLeft: 0,
   });
 
-  const loop = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
+  // Tripled so there is always a full copy of the list on BOTH sides of the
+  // resting position — that's what lets the marquee be dragged/scrolled
+  // endlessly in either direction (360°) without hitting the scrollLeft=0 or
+  // max-scroll clamp.
+  const loop = [...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS];
   const count = CLIENT_LOGOS.length;
 
   useEffect(() => {
     const scroller = scrollerRef.current;
     const track = trackRef.current;
     if (!scroller || !track) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Reduced motion only disables the auto-advance below — manual
+    // dragging/scrolling in both directions stays available.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let raf = 0;
     const now = () => performance.now();
     const pause = () => (pauseUntil.current = now() + RESUME_DELAY);
-    const half = () => track.scrollWidth / 2;
+    // One copy of the (tripled) track.
+    const seg = () => track.scrollWidth / 3;
 
+    // Keep the scroll position inside the MIDDLE copy — band [seg, 2·seg). When
+    // it drifts past either edge, jump it back by one segment (seamless, since
+    // the copies are identical) so there is always room to move both ways. If a
+    // drag is in progress, shift its anchor by the same amount so the gesture
+    // doesn't jump.
     const wrap = () => {
-      const h = half();
-      if (h <= 0) return;
-      if (scroller.scrollLeft >= h) scroller.scrollLeft -= h;
-      else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
+      const s = seg();
+      if (s <= 0) return;
+      let delta = 0;
+      if (scroller.scrollLeft >= 2 * s) delta = -s;
+      else if (scroller.scrollLeft < s) delta = s;
+      if (delta) {
+        scroller.scrollLeft += delta;
+        if (drag.current.active) drag.current.startLeft += delta;
+      }
     };
+
+    // Start in the middle copy so both directions have a full segment of runway.
+    scroller.scrollLeft = seg();
 
     // Highlight the logo currently nearest the horizontal centre — the same
     // treatment hover gives, but driven by position so it works on touch too.
@@ -79,7 +99,7 @@ export function ClientLogos() {
     let active = false;
     const tick = () => {
       if (!active) return;
-      if (now() >= pauseUntil.current && !drag.current.active) {
+      if (!reduced && now() >= pauseUntil.current && !drag.current.active) {
         carry += AUTO_SPEED;
         const whole = Math.trunc(carry);
         if (whole !== 0) {
