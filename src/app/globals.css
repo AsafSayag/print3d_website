@@ -1656,3 +1656,54 @@ html.a11y-motion .a11y-panel {
     background: var(--gold-500);
   }
 }
+
+/* ============================================================
+   About-page stats — equal-height cards with a subtle glowing
+   silver frame. Values read in the brand blue; labels a lighter
+   steel. The soft silver glow gently pulses (disabled for
+   reduced-motion) so the frame reads as "glowing" but stays subtle.
+   ============================================================ */
+.stat-card {
+  border-radius: 16px;
+  border: 1px solid rgba(214, 226, 236, 0.3);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.02)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 10px 26px -16px rgba(0, 0, 0, 0.6),
+    0 0 18px -6px rgba(214, 226, 236, 0.2);
+  transition:
+    transform 0.5s var(--ease-brand),
+    border-color 0.5s var(--ease-brand),
+    box-shadow 0.5s var(--ease-brand);
+  animation: statCardGlow 4.5s ease-in-out infinite;
+}
+@keyframes statCardGlow {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 10px 26px -16px rgba(0, 0, 0, 0.6),
+      0 0 16px -7px rgba(214, 226, 236, 0.18);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 10px 26px -16px rgba(0, 0, 0, 0.6),
+      0 0 26px -4px rgba(214, 226, 236, 0.36);
+  }
+}
+@media (hover: hover) {
+  .stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214, 226, 236, 0.55);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-card {
+    animation: none;
+  }
+}

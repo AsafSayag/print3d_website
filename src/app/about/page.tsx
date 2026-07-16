@@ -95,28 +95,32 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Stats band */}
-            <ul className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 mt-16 sm:mt-20 border-t border-white/10 pt-12">
+            {/* Stats band — equal-height silver-glass cards. A fixed-height
+                value row (bottom-aligned) makes the big numbers and the shorter
+                text values sit on one baseline, so every label lines up too. */}
+            <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mt-16 sm:mt-20">
               {STATS.map((s, i) => (
                 <Reveal
                   as="li"
                   index={i}
                   key={s.label}
-                  className="text-center sm:text-start"
+                  className="stat-card flex h-full flex-col items-center justify-center gap-2 px-4 py-6 text-center"
                 >
-                  {s.value !== null ? (
-                    <span className="block font-display text-[color:var(--gold-400)] text-4xl sm:text-5xl leading-none">
-                      <CountUp end={s.value} suffix={s.suffix} />
-                    </span>
-                  ) : (
-                    <span
-                      dir="ltr"
-                      className="block font-display text-[color:var(--gold-400)] text-xl sm:text-2xl leading-tight"
-                    >
-                      {s.display}
-                    </span>
-                  )}
-                  <span className="block mt-2 text-white/60 text-sm sm:text-base">
+                  <span className="flex h-12 sm:h-14 items-end justify-center">
+                    {s.value !== null ? (
+                      <span className="font-display text-[color:var(--gold-400)] text-4xl sm:text-5xl leading-none">
+                        <CountUp end={s.value} suffix={s.suffix} />
+                      </span>
+                    ) : (
+                      <span
+                        dir="ltr"
+                        className="font-display text-[color:var(--gold-400)] text-xl sm:text-2xl leading-tight"
+                      >
+                        {s.display}
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-[color:var(--steel-300)] text-sm sm:text-base">
                     {s.label}
                   </span>
                 </Reveal>

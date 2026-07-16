@@ -59,6 +59,37 @@ export function Hero() {
         }}
       />
 
+      {/* Desktop-only heading — enters with a fade + slide from the top-left
+          and rests in the top-left of the hero, over the window area of the
+          video. Mobile is untouched: there the heading stays in the bottom
+          group (see HeroContent) and this copy is hidden. */}
+      <h1
+        // whitespace-nowrap keeps the whole sentence on ONE line; the clamped
+        // font grows on wider screens (bigger than before) while shrinking just
+        // enough on narrower desktops to keep it single-line without overflow.
+        className="hidden md:block absolute z-20 top-24 left-10 lg:top-28 lg:left-16 whitespace-nowrap text-white font-bold text-[clamp(1rem,1.85vw,1.7rem)] leading-snug"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: revealed || reduce ? "none" : "translate(-2.75rem, -1.75rem)",
+          transition: reduce
+            ? "none"
+            : "opacity 0.85s var(--ease-brand) 0.15s, transform 0.95s var(--ease-brand) 0.15s",
+          willChange: "opacity, transform",
+          border: "1px solid rgba(255,255,255,0.22)",
+          background: "rgba(7,13,23,0.34)",
+          backdropFilter: "blur(10px) saturate(140%)",
+          WebkitBackdropFilter: "blur(10px) saturate(140%)",
+          borderRadius: "16px",
+          padding: "0.8rem 1.4rem",
+          textShadow:
+            "0 2px 12px rgba(0,0,0,0.85), 0 1px 4px rgba(0,0,0,0.95)",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.16), 0 16px 40px -18px rgba(7,13,23,0.6)",
+        }}
+      >
+        {HERO_COPY.subtitle}
+      </h1>
+
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
           Top-aligned so the headline sits just beneath the navbar rather than
           floating in the vertical centre. */}
@@ -116,7 +147,7 @@ function HeroContent({
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
           }}
-          className="absolute top-full inset-x-4 mx-auto mt-4 md:static md:inset-x-auto md:mt-0 text-white font-bold text-[1.1rem] sm:text-[1.2rem] md:text-xl max-w-2xl leading-relaxed text-center"
+          className="absolute top-full inset-x-4 mx-auto mt-4 md:hidden text-white font-bold text-[1.1rem] sm:text-[1.2rem] max-w-2xl leading-relaxed text-center"
         >
           {HERO_COPY.subtitle}
         </h1>
