@@ -59,48 +59,49 @@ export function Hero() {
         }}
       />
 
-      {/* Desktop-only heading — enters with a fade + slide from the top-right
-          and rests in the top-RIGHT of the hero, just below the navbar so it
-          never sits on the PRINT3D logo in the footage. Holds the H1 + H2 as a
-          single stacked group at the same height. Mobile is untouched: there
-          the heading stays in the bottom group (see HeroContent). */}
+      {/* Desktop-only heading — a row anchored top-RIGHT just below the navbar:
+          the H1 sits first (rightmost) and the H2 follows immediately after it
+          on the same line, both at the same height, each with its own
+          royal-blue accent rule. Mobile is untouched: there the heading stays
+          in the bottom group (see HeroContent). */}
       <div
         dir="rtl"
-        className="hidden md:flex flex-col items-stretch gap-1.5 absolute z-20 top-[4.5rem] right-4 lg:top-[5.5rem] lg:right-8 text-right"
+        className="hidden md:flex flex-col items-stretch text-right absolute z-20 top-[5rem] right-4 lg:top-[6rem] lg:right-8"
         style={{
           opacity: revealed ? 1 : 0,
-          transform: revealed || reduce ? "none" : "translate(2.75rem, -1.75rem)",
+          transform: revealed || reduce ? "none" : "translateY(-1.75rem)",
           transition: reduce
             ? "none"
             : "opacity 0.85s var(--ease-brand) 0.15s, transform 0.95s var(--ease-brand) 0.15s",
           willChange: "opacity, transform",
-          // Glass panel removed — the copy now sits directly on the footage,
-          // so a strong multi-layer text-shadow carries the legibility.
+          // Glass panel removed — the copy sits directly on the footage, so a
+          // strong multi-layer text-shadow carries the legibility.
           textShadow:
             "0 2px 14px rgba(0,0,0,0.9), 0 1px 5px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
         }}
       >
-        {/* whitespace-nowrap keeps each line intact; the clamped fonts are a
-            touch smaller than the previous single line so the group stays
-            compact in the corner. */}
-        <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.1rem,1.75vw,1.65rem)] leading-snug text-right">
-          {HERO_COPY.h1}
-        </h1>
-        {/* Luxurious accent rule under the main heading — brand royal-blue
-            gradient, anchored at the right (RTL start) and fading to the left,
-            with a soft glow so it reads as a premium underline. */}
+        {/* H1 (rightmost) and H2 share ONE line and baseline; a single accent
+            rule below connects underneath both. whitespace-nowrap keeps each
+            intact. */}
+        <div className="flex items-baseline gap-5 lg:gap-8">
+          <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
+            {HERO_COPY.h1}
+          </h1>
+          <h2 className="whitespace-nowrap text-white font-semibold text-[clamp(1.1rem,1.7vw,1.6rem)] leading-snug">
+            {HERO_COPY.h2}
+          </h2>
+        </div>
+        {/* One continuous royal-blue accent rule spanning both headings —
+            strong at the right, fading gently at the far left. */}
         <span
           aria-hidden="true"
-          className="my-0.5 h-[2px] w-full rounded-full"
+          className="mt-2 h-[2px] w-full rounded-full"
           style={{
             background:
-              "linear-gradient(to left, var(--gold-400) 0%, var(--gold-500) 32%, rgba(95,154,192,0.18) 62%, transparent 82%)",
+              "linear-gradient(to left, var(--gold-400) 0%, var(--gold-500) 62%, rgba(95,154,192,0.2) 88%, transparent)",
             boxShadow: "0 0 12px rgba(95,154,192,0.5)",
           }}
         />
-        <h2 className="whitespace-nowrap text-white/85 font-medium text-[clamp(0.9rem,1.35vw,1.3rem)] leading-snug text-right">
-          {HERO_COPY.h2}
-        </h2>
       </div>
 
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
