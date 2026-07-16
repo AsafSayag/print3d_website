@@ -151,7 +151,7 @@ export function ProjectShowcase() {
   return (
     <section
       id="showcase"
-      className="portfolio-ambient relative overflow-hidden"
+      className="relative overflow-hidden"
       aria-label={PORTFOLIO_SHOWCASE.eyebrow}
     >
       <div className="container-x pt-6 md:pt-8">

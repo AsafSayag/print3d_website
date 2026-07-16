@@ -43,8 +43,14 @@ export default function PortfolioPage() {
           video={HERO_VIDEO}
           singleLineTitle
         />
-        <PortfolioIntro />
-        <ProjectShowcase />
+        {/* Intro + showcase share ONE continuous ambient surface so the
+            background flows seamlessly between them (no per-section gradient
+            reset). A luminous connector bridges the two as a premium hinge. */}
+        <div className="portfolio-ambient">
+          <PortfolioIntro />
+          <div className="portfolio-seam" aria-hidden="true" />
+          <ProjectShowcase />
+        </div>
         <ProjectFilterGrid />
         <PortfolioCta />
         <ProjectHighlights />

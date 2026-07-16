@@ -55,23 +55,25 @@ export function WhoFor() {
           </div>
           <div className="lg:col-span-7">
             <Reveal>
-              {/* Glass frame around the copy — extra insurance for legibility
-                  against the photo, and it echoes the cards' silver-glass look. */}
+              {/* Glass frame around the copy — a denser, more opaque navy fill
+                  with a stronger blur so the text stays bold and readable over
+                  the busy photo on both desktop and mobile. */}
               <div
-                className="rounded-2xl border p-6"
+                className="rounded-2xl border p-6 sm:p-8"
                 style={{
-                  background: "rgba(14,26,44,0.4)",
-                  borderColor: "rgba(255,255,255,0.14)",
-                  backdropFilter: "blur(10px) saturate(140%)",
-                  WebkitBackdropFilter: "blur(10px) saturate(140%)",
+                  background:
+                    "linear-gradient(155deg, rgba(11,20,34,0.74), rgba(11,20,34,0.64))",
+                  borderColor: "rgba(255,255,255,0.22)",
+                  backdropFilter: "blur(18px) saturate(150%)",
+                  WebkitBackdropFilter: "blur(18px) saturate(150%)",
                   boxShadow:
-                    "inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 40px -26px rgba(7,13,23,0.7)",
+                    "inset 0 1px 0 rgba(255,255,255,0.14), 0 26px 55px -24px rgba(7,13,23,0.85)",
                 }}
               >
                 <p className="text-white font-display text-xl sm:text-2xl leading-[1.5] text-balance mb-4">
                   {WHO_FOR.lead}
                 </p>
-                <p className="text-white/85 text-lg leading-[1.85] text-pretty">
+                <p className="text-white/90 text-lg leading-[1.85] text-pretty">
                   {WHO_FOR.paragraph}
                 </p>
               </div>

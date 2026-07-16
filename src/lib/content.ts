@@ -5,7 +5,8 @@
 
 export const HERO_COPY = {
   eyebrow: "מודלים אדריכליים פיזיים · ייצור מתקדם · גימור יד אומן",
-  h1: "מודל אדריכלי פיזי לפרויקטי נדל״ן",
+  h1: "מודלים אדריכליים יוקרתיים",
+  h2: "תכנון וייצור בתלת-ממד ברמת הגימור הגבוהה בישראל",
   subtitle:
     "ייצור מודלים ברמת גימור יוצאת דופן עבור יזמים וחברות שיווק",
   primaryCta: "קבלו הצעת מחיר",
@@ -51,6 +52,11 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { src: "/clients/hagag.webp", alt: "חג'ג'" },
   { src: "/clients/guy-doron-levi.webp", alt: "גיא ודורון לוי" },
   { src: "/clients/avisror.webp", alt: "אביסרור" },
+  { src: "/clients/aura.webp", alt: "AURA" },
+  { src: "/clients/donitz-elad.webp", alt: "דוניץ אלעד" },
+  { src: "/clients/sela-binui.webp", alt: "סלע בינוי" },
+  { src: "/clients/maoz-daniel.webp", alt: "מעוז דניאל" },
+  { src: "/clients/parshkovsky.webp", alt: "פרשקובסקי" },
 ];
 export const CLIENTS_HEADING = "היזמים המובילים בישראל בוחרים בנו";
 

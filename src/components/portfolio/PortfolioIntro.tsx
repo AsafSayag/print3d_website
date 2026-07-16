@@ -12,7 +12,7 @@ import { PORTFOLIO_HERO, PORTFOLIO_CTA } from "@/lib/portfolioContent";
  */
 export function PortfolioIntro() {
   return (
-    <section className="portfolio-ambient" aria-label={PORTFOLIO_HERO.eyebrow}>
+    <section aria-label={PORTFOLIO_HERO.eyebrow}>
       <div className="container-x pt-8 md:pt-12 pb-2">
         <Reveal>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-10">

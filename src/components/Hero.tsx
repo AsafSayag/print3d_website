@@ -59,6 +59,51 @@ export function Hero() {
         }}
       />
 
+      {/* Desktop-only heading — a row anchored top-RIGHT just below the navbar:
+          the H1 sits first (rightmost) and the H2 follows immediately after it
+          on the same line, both at the same height, each with its own
+          royal-blue accent rule. Mobile is untouched: there the heading stays
+          in the bottom group (see HeroContent). */}
+      <div
+        dir="rtl"
+        className="hidden md:flex flex-col items-stretch text-right absolute z-20 top-[5rem] right-4 lg:top-[6rem] lg:right-8"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: revealed || reduce ? "none" : "translateY(-1.75rem)",
+          transition: reduce
+            ? "none"
+            : "opacity 0.85s var(--ease-brand) 0.15s, transform 0.95s var(--ease-brand) 0.15s",
+          willChange: "opacity, transform",
+          // Glass panel removed — the copy sits directly on the footage, so a
+          // strong multi-layer text-shadow carries the legibility.
+          textShadow:
+            "0 2px 14px rgba(0,0,0,0.9), 0 1px 5px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
+        }}
+      >
+        {/* H1 (rightmost) and H2 share ONE line and baseline; a single accent
+            rule below connects underneath both. whitespace-nowrap keeps each
+            intact. */}
+        <div className="flex items-baseline gap-5 lg:gap-8">
+          <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
+            {HERO_COPY.h1}
+          </h1>
+          <h2 className="whitespace-nowrap text-white font-semibold text-[clamp(1.1rem,1.7vw,1.6rem)] leading-snug">
+            {HERO_COPY.h2}
+          </h2>
+        </div>
+        {/* One continuous royal-blue accent rule spanning both headings —
+            strong at the right, fading gently at the far left. */}
+        <span
+          aria-hidden="true"
+          className="mt-2 h-[2px] w-full rounded-full"
+          style={{
+            background:
+              "linear-gradient(to left, var(--gold-400) 0%, var(--gold-500) 62%, rgba(95,154,192,0.2) 88%, transparent)",
+            boxShadow: "0 0 12px rgba(95,154,192,0.5)",
+          }}
+        />
+      </div>
+
       {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
           Top-aligned so the headline sits just beneath the navbar rather than
           floating in the vertical centre. */}
@@ -101,25 +146,35 @@ function HeroContent({
           pulled BELOW them on mobile via `absolute top-full`, so it no longer
           covers the video/logo there. */}
       <div className="absolute inset-x-0 bottom-32 sm:bottom-36 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-6">
-        {/* Heading in glass frame */}
-        <h1
+        {/* Heading group — kept intentionally compact on mobile so it never
+            overwhelms the small screen. Glass panel removed: the copy sits
+            directly on the footage, carried by a strong text-shadow. */}
+        <div
           style={{
             ...item(1),
-            border: "1px solid rgba(255,255,255,0.28)",
-            background: "rgba(7,13,23,0.32)",
-            backdropFilter: "blur(10px) saturate(140%)",
-            WebkitBackdropFilter: "blur(10px) saturate(140%)",
-            borderRadius: "16px",
-            padding: "0.6rem 1.4rem",
             textShadow:
-              "0 2px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.95)",
-            boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 30px -12px rgba(7,13,23,0.45)",
+              "0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
           }}
-          className="absolute top-full inset-x-4 mx-auto mt-4 md:static md:inset-x-auto md:mt-0 text-white font-bold text-[1.1rem] sm:text-[1.2rem] md:text-xl max-w-2xl leading-relaxed text-center"
+          className="absolute top-full inset-x-4 mx-auto mt-4 md:hidden text-white max-w-2xl text-center flex flex-col gap-1"
         >
-          {HERO_COPY.subtitle}
-        </h1>
+          <h1 className="font-bold text-[1.15rem] sm:text-[1.28rem] leading-snug">
+            {HERO_COPY.h1}
+          </h1>
+          {/* Same luxurious accent as desktop, centred to match the mobile
+              centred heading — symmetric brand-blue gradient with a soft glow. */}
+          <span
+            aria-hidden="true"
+            className="mx-auto my-1 h-[2px] w-28 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, var(--gold-500) 28%, var(--gold-400) 50%, var(--gold-500) 72%, transparent)",
+              boxShadow: "0 0 12px rgba(95,154,192,0.5)",
+            }}
+          />
+          <h2 className="font-medium text-[0.92rem] sm:text-[1.02rem] text-white/85 leading-snug">
+            {HERO_COPY.h2}
+          </h2>
+        </div>
 
         {/* CTAs — positioned just below subtitle */}
         <div
