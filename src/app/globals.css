@@ -744,6 +744,61 @@ body {
     var(--navy-950);
 }
 
+/* Luminous connector between the portfolio intro and the showcase. The two
+   now sit on ONE continuous ambient surface (no hard seam); this adds a soft
+   steel-blue glow that bleeds up and down to bind the modules, plus a slim
+   centre-weighted hairline that fades to nothing at both ends — reading as an
+   intentional, premium hinge rather than a plain gap. */
+.portfolio-seam {
+  position: relative;
+  height: clamp(2.5rem, 5.5vw, 4rem);
+  pointer-events: none;
+}
+.portfolio-seam::before {
+  content: "";
+  position: absolute;
+  inset: -40% 0;
+  background: radial-gradient(
+    60% 120% at 50% 50%,
+    rgba(95, 154, 192, 0.14),
+    transparent 72%
+  );
+}
+.portfolio-seam::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(760px, 78%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(150, 196, 222, 0.5) 20%,
+    rgba(214, 232, 244, 0.9) 50%,
+    rgba(150, 196, 222, 0.5) 80%,
+    transparent
+  );
+  box-shadow: 0 0 14px rgba(95, 154, 192, 0.45);
+  animation: portfolioSeamGlow 4.5s var(--ease-brand) infinite;
+}
+@keyframes portfolioSeamGlow {
+  0%,
+  100% {
+    opacity: 0.68;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-seam::after {
+    animation: none;
+    opacity: 0.85;
+  }
+}
+
 .portfolio-card {
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 12px 32px -20px rgba(0, 0, 0, 0.65);
