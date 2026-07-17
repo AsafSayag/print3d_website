@@ -156,7 +156,7 @@ export function BlogEditorial() {
                         </span>
                         <span aria-hidden="true">·</span>
                         <span className="num" dir="ltr">
-                          {article.date}
+                          {article.dateDisplay}
                         </span>
                       </div>
 

@@ -118,24 +118,31 @@ export const ARTICLES = {
   allLink: "לכל המאמרים",
   items: [
     {
-      slug: "ordering-architectural-model-guide",
-      title: 'כל מה שיזם נדל"ן צריך לדעת לפני הזמנת מודל אדריכלי',
-      readingTime: "6 דקות קריאה",
+      slug: "architectural-model-production-process",
+      title: "תהליך ייצור מודל אדריכלי — מהתכנון הראשוני ועד למסירת המודל המוגמר",
+      readingTime: "11 דקות קריאה",
     },
     {
-      slug: "scale-models-real-estate-marketing",
-      title: 'איך מודל פיזי מגדיל מכירות בפרויקט נדל"ן',
-      readingTime: "7 דקות קריאה",
+      slug: "why-architectural-models-still-matter",
+      title: "למה מודל אדריכלי עדיין חיוני גם בעידן ההדמיות התלת־ממדיות?",
+      readingTime: "12 דקות קריאה",
     },
     {
-      slug: "architectural-model-pricing-2026",
-      title: "כמה עולה מודל אדריכלי? מדריך תמחור 2026",
-      readingTime: "8 דקות קריאה",
+      slug: "model-production-time-scale",
+      title: "כמה זמן לוקח לייצר מודל אדריכלי ואיך בוחרים את קנה המידה הנכון?",
+      readingTime: "11 דקות קריאה",
     },
     {
-      slug: "physical-model-vs-digital-render",
-      title: "מודל אדריכלי מול הדמיה דיגיטלית",
-      readingTime: "5 דקות קריאה",
+      slug: "architectural-model-materials",
+      title:
+        "מאילו חומרים מיוצרים מודלים אדריכליים? המדריך המלא לחומרי הגלם ולטכנולוגיות הייצור",
+      readingTime: "12 דקות קריאה",
+    },
+    {
+      slug: "who-needs-architectural-models",
+      title:
+        "למי מיועדים מודלים אדריכליים? המדריך המלא ליזמים, אדריכלים, חברות שיווק ורשויות",
+      readingTime: "9 דקות קריאה",
     },
   ],
 } as const;
