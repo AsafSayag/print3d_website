@@ -1,42 +1,69 @@
 import Image from "next/image";
 import type { ArticleBlock } from "../content";
+import { RichText } from "./RichText";
 
 /**
- * Editorial article body, styled after the Henning Larsen reference layout:
- * a larger lead paragraph, headed sections, an accented pull quote, in-body
- * images with captions, and an optional stats grid.
+ * Editorial article body: headed sections (each with a stable id so the table
+ * of contents can deep-link to it), paragraphs with inline emphasis/links,
+ * ordered/unordered lists, an accented pull quote, and lazy-loaded in-body
+ * images with detailed alt text + captions.
  */
 export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
   return (
     <div className="mx-auto max-w-[42rem]">
       {blocks.map((block, i) => {
         switch (block.type) {
-          case "lead":
-            return (
-              <p
-                key={i}
-                className="font-display text-xl font-medium leading-relaxed text-[color:var(--ink-950)] md:text-2xl"
-              >
-                {block.text}
-              </p>
-            );
           case "heading":
             return (
               <h2
                 key={i}
-                className="mt-12 font-display text-2xl font-bold leading-snug text-[color:var(--ink-950)] md:text-3xl"
+                id={block.id}
+                className="mt-14 scroll-mt-28 font-display text-2xl font-bold leading-snug text-[color:var(--ink-950)] md:text-3xl"
               >
                 {block.text}
               </h2>
+            );
+          case "subheading":
+            return (
+              <h3
+                key={i}
+                className="mt-9 font-display text-lg font-bold leading-snug text-[color:var(--ink-950)] md:text-xl"
+              >
+                {block.text}
+              </h3>
             );
           case "paragraph":
             return (
               <p
                 key={i}
-                className="mt-5 leading-relaxed text-[color:var(--ink-950)]/80"
+                className="mt-5 leading-loose text-[color:var(--ink-950)]/80"
               >
-                {block.text}
+                <RichText text={block.text} />
               </p>
+            );
+          case "list":
+            return block.ordered ? (
+              <ol
+                key={i}
+                className="mt-6 list-decimal space-y-3 pr-6 leading-loose text-[color:var(--ink-950)]/80 marker:font-bold marker:text-[color:var(--gold-700)]"
+              >
+                {block.items.map((it, j) => (
+                  <li key={j} className="pr-1">
+                    <RichText text={it} />
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <ul
+                key={i}
+                className="mt-6 list-disc space-y-3 pr-6 leading-loose text-[color:var(--ink-950)]/80 marker:text-[color:var(--gold-500)]"
+              >
+                {block.items.map((it, j) => (
+                  <li key={j} className="pr-1">
+                    <RichText text={it} />
+                  </li>
+                ))}
+              </ul>
             );
           case "quote":
             return (
@@ -62,6 +89,7 @@ export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
                     src={block.src}
                     alt={block.alt}
                     fill
+                    loading="lazy"
                     sizes="(min-width: 768px) 42rem, 100vw"
                     className="object-cover"
                   />
@@ -72,24 +100,6 @@ export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
                   </figcaption>
                 ) : null}
               </figure>
-            );
-          case "stats":
-            return (
-              <div
-                key={i}
-                className="mt-10 grid grid-cols-1 gap-4 rounded-lg bg-[color:var(--ice-050)] p-6 sm:grid-cols-3"
-              >
-                {block.items.map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <div className="font-display text-lg font-bold text-[color:var(--gold-700)] md:text-xl">
-                      {stat.value}
-                    </div>
-                    <div className="caption mt-1 text-[color:var(--ink-950)]/60">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
             );
           default:
             return null;
