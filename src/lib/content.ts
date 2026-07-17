@@ -118,6 +118,12 @@ export const ARTICLES = {
   allLink: "לכל המאמרים",
   items: [
     {
+      slug: "architectural-model-cost",
+      title:
+        "כמה עולה מודל אדריכלי? מדריך מלא להבנת העלויות והגורמים שמשפיעים על המחיר",
+      readingTime: "11 דקות קריאה",
+    },
+    {
       slug: "architectural-model-production-process",
       title: "תהליך ייצור מודל אדריכלי — מהתכנון הראשוני ועד למסירת המודל המוגמר",
       readingTime: "11 דקות קריאה",
