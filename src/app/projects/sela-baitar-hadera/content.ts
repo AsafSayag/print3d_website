@@ -60,7 +60,6 @@ export const ABOUT = {
 export const GALLERY_IMAGES = [
   "/project_pages/sela_baitar_hadera_project/IMG_01.webp",
   "/project_pages/sela_baitar_hadera_project/IMG_02.webp",
-  "/project_pages/sela_baitar_hadera_project/IMG_12.webp",
   "/project_pages/sela_baitar_hadera_project/IMG_14.webp",
   "/project_pages/sela_baitar_hadera_project/IMG_16.webp",
   "/project_pages/sela_baitar_hadera_project/IMG_17.webp",

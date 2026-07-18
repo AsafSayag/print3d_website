@@ -140,6 +140,33 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     image: "/projects/shbiro-rishon-letzion.webp",
     href: "/projects/shbiro-rishon-letzion",
   },
+  {
+    id: "maoz-daniel-bat-yam",
+    title: "מעוז דניאל, כצנלסון בת ים",
+    client: "מעוז דניאל",
+    scale: "1:75",
+    type: "residential",
+    image: "/projects/maoz-daniel-bat-yam.webp",
+    href: "/projects/maoz-daniel-bat-yam",
+  },
+  {
+    id: "avisror-costa-rica-jerusalem",
+    title: "אביסרור, קוסטה ריקה",
+    client: "אביסרור",
+    scale: "1:150",
+    type: "residential",
+    image: "/projects/avisror-costa-rica-jerusalem.webp",
+    href: "/projects/avisror-costa-rica-jerusalem",
+  },
+  {
+    id: "bonei-binyan-hahagana-raanana",
+    title: "בוני בניין, ההגנה",
+    client: "בוני בניין",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/bonei-binyan-hahagana-raanana.webp",
+    href: "/projects/bonei-binyan-hahagana-raanana",
+  },
 ];
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {

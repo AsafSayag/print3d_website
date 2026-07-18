@@ -62,6 +62,27 @@ const PROJECTS: {
     span: "",
     href: "/projects/beit-hakerem",
   },
+  {
+    src: "/projects/maoz-daniel-bat-yam.webp",
+    title: "מעוז דניאל, כצנלסון בת ים",
+    scale: "1:75",
+    span: "",
+    href: "/projects/maoz-daniel-bat-yam",
+  },
+  {
+    src: "/projects/avisror-costa-rica-jerusalem.webp",
+    title: "אביסרור, קוסטה ריקה",
+    scale: "1:150",
+    span: "",
+    href: "/projects/avisror-costa-rica-jerusalem",
+  },
+  {
+    src: "/projects/bonei-binyan-hahagana-raanana.webp",
+    title: "בוני בניין, ההגנה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/bonei-binyan-hahagana-raanana",
+  },
 ];
 
 const STATS = [
