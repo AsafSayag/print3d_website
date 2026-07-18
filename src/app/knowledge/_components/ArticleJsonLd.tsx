@@ -14,7 +14,7 @@ export function ArticleJsonLd({
   article: BlogArticle;
   breadcrumbs: Crumb[];
 }) {
-  const url = `${CONTACT.siteUrl}/blog/${article.slug}`;
+  const url = `${CONTACT.siteUrl}/knowledge/${article.slug}`;
   const imageUrl = `${CONTACT.siteUrl}${article.image}`;
 
   const articleSchema = {

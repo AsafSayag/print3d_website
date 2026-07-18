@@ -111,7 +111,7 @@ const WHO_NEEDS_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "בנוסף, יזמים רבים משתמשים במודלים לצורך פגישות עם גופים מממנים, ישיבות הנהלה והצגת הפרויקט בפני משקיעים. **מודל איכותי מצליח להעביר מסר ברור יותר מכל תוכנית דו־ממדית.** אפשר לראות דוגמאות ל[מודלים אדריכליים](/#services) שאנחנו מייצרים, או לעיין ב[פרויקטים](/portfolio) שכבר ליווינו.",
+      text: "בנוסף, יזמים רבים משתמשים במודלים לצורך פגישות עם גופים מממנים, ישיבות הנהלה והצגת הפרויקט בפני משקיעים. **מודל איכותי מצליח להעביר מסר ברור יותר מכל תוכנית דו־ממדית.** אפשר לראות דוגמאות ל[מודלים אדריכליים](/#services) שאנחנו מייצרים, או לעיין ב[פרויקטים](/projects) שכבר ליווינו.",
     },
     {
       type: "image",
@@ -253,7 +253,7 @@ const WHO_NEEDS_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -518,7 +518,7 @@ const MATERIALS_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "לכן, אין **״מתכון קבוע״**. כל מודל מתוכנן בהתאם לצרכים הייחודיים של הפרויקט — אפשר להתרשם מכך במגוון ה[פרויקטים](/portfolio) שליווינו.",
+      text: "לכן, אין **״מתכון קבוע״**. כל מודל מתוכנן בהתאם לצרכים הייחודיים של הפרויקט — אפשר להתרשם מכך במגוון ה[פרויקטים](/projects) שליווינו.",
     },
     {
       type: "heading",
@@ -569,7 +569,7 @@ const MATERIALS_ARTICLE: BlogArticle = {
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "תהליך העבודה", href: "/#process" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -797,7 +797,7 @@ const PRODUCTION_TIME_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "ליווי מקצועי כבר בתחילת הדרך מסייע להימנע מטעויות אלו ולבחור את הפתרון המתאים ביותר. אפשר להתרשם מכך במגוון ה[פרויקטים](/portfolio) שליווינו.",
+      text: "ליווי מקצועי כבר בתחילת הדרך מסייע להימנע מטעויות אלו ולבחור את הפתרון המתאים ביותר. אפשר להתרשם מכך במגוון ה[פרויקטים](/projects) שליווינו.",
     },
     {
       type: "heading",
@@ -839,7 +839,7 @@ const PRODUCTION_TIME_ARTICLE: BlogArticle = {
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "תהליך העבודה", href: "/#process" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -1066,7 +1066,7 @@ const WHY_STILL_MATTER_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "תהליך העבודה", href: "/#process" },
     { label: "צור קשר", href: "/contact" },
   ],
@@ -1113,7 +1113,7 @@ const PRODUCTION_PROCESS_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "במאמר זה נציג את השלבים המרכזיים בתהליך הכנת מודל אדריכלי. להרחבה אפשר לעיין ב[מאמרים נוספים](/blog) בבלוג שלנו.",
+      text: "במאמר זה נציג את השלבים המרכזיים בתהליך הכנת מודל אדריכלי. להרחבה אפשר לעיין ב[מאמרים נוספים](/knowledge) בבלוג שלנו.",
     },
     {
       type: "heading",
@@ -1294,7 +1294,7 @@ const PRODUCTION_PROCESS_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "המטרה היא לוודא שהמודל מוכן להצגה ברמה הגבוהה ביותר. אפשר להתרשם מתוצאות התהליך במגוון ה[פרויקטים](/portfolio) שליווינו.",
+      text: "המטרה היא לוודא שהמודל מוכן להצגה ברמה הגבוהה ביותר. אפשר להתרשם מתוצאות התהליך במגוון ה[פרויקטים](/projects) שליווינו.",
     },
     {
       type: "heading",
@@ -1370,8 +1370,8 @@ const PRODUCTION_PROCESS_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "פרויקטים", href: "/portfolio" },
-    { label: "מאמרים נוספים", href: "/blog" },
+    { label: "פרויקטים", href: "/projects" },
+    { label: "מאמרים נוספים", href: "/knowledge" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -1578,7 +1578,7 @@ const MODEL_COST_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "עבור יזמים וחברות נדל״ן, מודל איכותי יכול להיות **כלי שיווקי משמעותי** שמלווה את הפרויקט לאורך זמן — כפי שניתן לראות במגוון ה[פרויקטים](/portfolio) שליווינו.",
+      text: "עבור יזמים וחברות נדל״ן, מודל איכותי יכול להיות **כלי שיווקי משמעותי** שמלווה את הפרויקט לאורך זמן — כפי שניתן לראות במגוון ה[פרויקטים](/projects) שליווינו.",
     },
     { type: "heading", id: "summary", text: "סיכום" },
     {
@@ -1610,7 +1610,7 @@ const MODEL_COST_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "תהליך העבודה", href: "/#process" },
     { label: "צור קשר", href: "/contact" },
   ],
@@ -1874,7 +1874,7 @@ const MARKETING_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "אפשר להתרשם מדוגמאות למודלים כאלו במגוון ה[פרויקטים](/portfolio) שליווינו, וכן לקרוא עוד על [תהליך העבודה](/#process) המלא שמוביל מהתוכנית האדריכלית ועד למודל המוגמר.",
+      text: "אפשר להתרשם מדוגמאות למודלים כאלו במגוון ה[פרויקטים](/projects) שליווינו, וכן לקרוא עוד על [תהליך העבודה](/#process) המלא שמוביל מהתוכנית האדריכלית ועד למודל המוגמר.",
     },
     {
       type: "heading",
@@ -1958,8 +1958,8 @@ const MARKETING_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "איך לבחור חברה לייצור מודלים", href: "/blog/how-to-choose-architectural-model-company" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "איך לבחור חברה לייצור מודלים", href: "/knowledge/how-to-choose-architectural-model-company" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -2253,7 +2253,7 @@ const CHOOSE_COMPANY_ARTICLE: BlogArticle = {
     },
     {
       type: "paragraph",
-      text: "התשובות לשאלות האלו נותנות תמונה ברורה על רמת המקצועיות של החברה, עוד לפני שהתחיל שיתוף הפעולה. אפשר להתרשם ממענה לחלק מהשאלות האלו במגוון ה[פרויקטים](/portfolio) שביצענו וב[תהליך העבודה](/#process) המלא שלנו.",
+      text: "התשובות לשאלות האלו נותנות תמונה ברורה על רמת המקצועיות של החברה, עוד לפני שהתחיל שיתוף הפעולה. אפשר להתרשם ממענה לחלק מהשאלות האלו במגוון ה[פרויקטים](/projects) שביצענו וב[תהליך העבודה](/#process) המלא שלנו.",
     },
     {
       type: "quote",
@@ -2312,8 +2312,8 @@ const CHOOSE_COMPANY_ARTICLE: BlogArticle = {
   ],
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
-    { label: "מודלים לשיווק נדל״ן", href: "/blog/architectural-models-real-estate-marketing" },
-    { label: "פרויקטים", href: "/portfolio" },
+    { label: "מודלים לשיווק נדל״ן", href: "/knowledge/architectural-models-real-estate-marketing" },
+    { label: "פרויקטים", href: "/projects" },
     { label: "צור קשר", href: "/contact" },
   ],
   cta: {
@@ -2322,7 +2322,7 @@ const CHOOSE_COMPANY_ARTICLE: BlogArticle = {
   },
 };
 
-/** Header copy for the /blog index. */
+/** Header copy for the /knowledge index. */
 export const BLOG_2 = {
   eyebrow: "",
   heading: "בלוג, מאמרים ותובנות",

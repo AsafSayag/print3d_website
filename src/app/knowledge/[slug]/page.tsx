@@ -33,7 +33,7 @@ export async function generateMetadata({
   return buildPageMeta({
     title: article.metaTitle,
     description: article.metaDescription,
-    path: `/blog/${slug}`,
+    path: `/knowledge/${slug}`,
   });
 }
 
@@ -44,7 +44,8 @@ export default async function ArticlePage({ params }: { params: Params }) {
 
   const breadcrumbs: Crumb[] = [
     { label: "בית", href: "/" },
-    { label: "בלוג", href: "/blog" },
+    { label: "מרכז הידע", href: "/knowledge" },
+    { label: "מאמרים", href: "/knowledge/articles" },
     { label: article.title },
   ];
 
@@ -145,7 +146,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   צרו קשר
                 </GlassButton>
                 <Link
-                  href="/portfolio"
+                  href="/projects"
                   className="font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
                 >
                   לצפייה בפרויקטים ←

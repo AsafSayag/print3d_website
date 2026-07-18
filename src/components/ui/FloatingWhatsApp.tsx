@@ -1,7 +1,7 @@
 "use client";
 
 import { CONTACT } from "@/lib/constants";
-import { useNearFooter } from "@/lib/useNearFooter";
+import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
 
 /**
  * Floating WhatsApp action button, pinned to the physical bottom-right on every
@@ -17,6 +17,7 @@ export function FloatingWhatsApp() {
     ? `https://wa.me/${CONTACT.whatsappNumber}`
     : CONTACT.contactPath;
   const compact = useNearFooter();
+  const atBottom = useAtPageBottom();
 
   return (
     <a
@@ -24,7 +25,9 @@ export function FloatingWhatsApp() {
       target={hasNumber ? "_blank" : undefined}
       rel={hasNumber ? "noopener noreferrer" : undefined}
       aria-label="דברו איתנו בוואטסאפ"
-      className={`wa-fab${compact ? " wa-fab--compact" : ""}`}
+      className={`wa-fab${compact ? " wa-fab--compact" : ""}${
+        atBottom ? " wa-fab--raised" : ""
+      }`}
     >
       <span className="wa-fab-pulse" aria-hidden="true" />
       <svg viewBox="0 0 32 32" className="relative h-8 w-8 fill-white" aria-hidden="true">

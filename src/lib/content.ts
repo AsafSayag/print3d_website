@@ -107,7 +107,7 @@ export const WHO_FOR = {
 
 /**
  * Homepage blog teaser — the 4 most recent articles that have full written
- * content on /blog (title/readingTime mirror src/app/blog/content.ts
+ * content on /knowledge (title/readingTime mirror src/app/knowledge/content.ts
  * verbatim, so clicking a card always lands on a real, complete article
  * rather than the "coming soon" placeholder some other blog entries fall
  * back to). Card art is a generated colour treatment (see Articles.tsx),
@@ -316,7 +316,7 @@ export const FOOTER = {
     },
     company: {
       title: "החברה",
-      items: ["אודות", "תהליך", "קטלוג", "בלוג"],
+      items: ["אודות", "תהליך", "קטלוג"],
     },
   },
   ctaTitle: "מתחילים פרויקט?",

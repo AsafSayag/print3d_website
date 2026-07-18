@@ -3,7 +3,7 @@ import type { Crumb } from "@/components/legal/Breadcrumbs";
 import type { HubFaqItem } from "../hub-faq";
 
 /**
- * Structured data for the /blog knowledge-hub: Article (describing the hub
+ * Structured data for the /knowledge hub: Article (describing the hub
  * page itself), FAQPage (the extended FAQ set) and BreadcrumbList — all
  * emitted as JSON-LD, mirroring the pattern used on individual article pages.
  */

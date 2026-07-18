@@ -48,10 +48,10 @@ export const COLORS = {
 export const NAV_ITEMS = [
   { label: "שירותים", href: "#services" },
   { label: "תהליך", href: "#process" },
-  { label: "קטלוג", href: "/portfolio" },
+  { label: "קטלוג", href: "/projects" },
   { label: "לקוחות", href: "#clients" },
   { label: "אודות", href: "/about" },
-  { label: "מרכז ידע", href: "/blog" },
+  { label: "מרכז ידע", href: "/knowledge" },
 ] as const;
 
 /** Shared motion tokens (seconds unless noted). */

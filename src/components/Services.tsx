@@ -39,7 +39,7 @@ export function Services() {
           {SERVICES.cards.map((card, i) => (
             <Reveal as="li" index={i} key={card.title}>
               <Link
-                href="/portfolio"
+                href="/projects"
                 className="group flex h-full flex-col rounded-2xl overflow-hidden bg-white border border-black/5 shadow-[0_1px_0_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.25)]"
               >
                 <div className="relative aspect-[16/9] sm:aspect-[4/3] overflow-hidden">

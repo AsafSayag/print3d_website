@@ -1,28 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { CONTACT } from "@/lib/constants";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { FaqAccordion } from "@/components/FaqAccordion";
+import { ArticleCard } from "./ArticleCard";
 import type { BlogArticle } from "../content";
-import type { GlossaryTerm } from "../glossary";
+import { glossaryShort, type GlossaryTerm } from "../glossary";
 import type { HubFaqItem } from "../hub-faq";
 
-/** Canonical Hebrew alphabet order, base letters only (finals folded in the data layer). */
-const ALEF_BET = [
-  "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל",
-  "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש", "ת",
-] as const;
+/** How many article teasers the hub previews before linking to the full list. */
+const ARTICLES_PREVIEW = 4;
 
-/** A short set of foundational terms shown before the full glossary is expanded. */
+/** Foundational terms surfaced on the hub before linking to the full glossary. */
 const FEATURED_SLUGS = [
   "architectural-model",
   "scale",
   "sales-office-model",
   "marketing-model",
   "3d-printing",
+  "bim",
 ];
 
 function norm(s: string) {
@@ -39,7 +37,7 @@ export function KnowledgeHub({
   faq: HubFaqItem[];
 }) {
   const [query, setQuery] = useState("");
-  const [showAllTerms, setShowAllTerms] = useState(false);
+  const q = norm(query);
 
   const termBySlug = useMemo(() => {
     const map = new Map<string, GlossaryTerm>();
@@ -47,36 +45,7 @@ export function KnowledgeHub({
     return map;
   }, [terms]);
 
-  const q = norm(query);
-
-  const filteredArticles = useMemo(() => {
-    if (!q) return articles;
-    return articles.filter((a) =>
-      [a.title, a.lead, ...a.keywords].some((s) => norm(s).includes(q))
-    );
-  }, [articles, q]);
-
-  const filteredTerms = useMemo(() => {
-    if (!q) return terms;
-    return terms.filter(
-      (t) => norm(t.term).includes(q) || norm(t.definition).includes(q)
-    );
-  }, [terms, q]);
-
-  const grouped = useMemo(() => {
-    const map = new Map<string, GlossaryTerm[]>();
-    for (const t of filteredTerms) {
-      const list = map.get(t.letter) ?? [];
-      list.push(t);
-      map.set(t.letter, list);
-    }
-    for (const list of map.values()) {
-      list.sort((a, b) => a.term.localeCompare(b.term, "he"));
-    }
-    return map;
-  }, [filteredTerms]);
-
-  const availableLetters = ALEF_BET.filter((l) => (grouped.get(l)?.length ?? 0) > 0);
+  const previewArticles = articles.slice(0, ARTICLES_PREVIEW);
 
   const featuredTerms = useMemo(
     () =>
@@ -85,6 +54,13 @@ export function KnowledgeHub({
       ),
     [termBySlug]
   );
+
+  const filteredTerms = useMemo(() => {
+    if (!q) return [];
+    return terms.filter(
+      (t) => norm(t.term).includes(q) || norm(t.definition).includes(q)
+    );
+  }, [terms, q]);
 
   return (
     <div className="surface-white">
@@ -140,49 +116,41 @@ export function KnowledgeHub({
       {/* ============ ARTICLES ============ */}
       <section id="articles" className="section scroll-mt-24">
         <div className="container-x">
-          <h2 className="font-display text-2xl font-bold text-[color:var(--ink-950)] md:text-3xl">
-            מאמרים
-          </h2>
-          <p className="mt-3 max-w-2xl text-[color:var(--ink-950)]/65">
-            כל המדריכים המקצועיים של Print3D על מודלים אדריכליים — מתמחור ועד
-            תהליכי ייצור, שיווק ובחירת ספק.
-          </p>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-2xl font-bold text-[color:var(--ink-950)] md:text-3xl">
+                מאמרים
+              </h2>
+              <p className="mt-3 max-w-2xl text-[color:var(--ink-950)]/65">
+                מדריכים מקצועיים על מודלים אדריכליים — מתמחור ועד תהליכי ייצור,
+                שיווק ובחירת ספק.
+              </p>
+            </div>
+            <Link
+              href="/knowledge/articles"
+              className="font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
+            >
+              לכל המאמרים ←
+            </Link>
+          </div>
 
-          {filteredArticles.length === 0 ? (
-            <p className="mt-8 text-[color:var(--ink-950)]/60">
-              לא נמצאו מאמרים התואמים את החיפוש.
-            </p>
-          ) : (
-            <ul className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filteredArticles.map((article, i) => (
-                <li key={article.slug}>
-                  <Link href={`/blog/${article.slug}`} className="group block text-right">
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[color:var(--ice-050)]">
-                      <Image
-                        src={article.image}
-                        alt=""
-                        fill
-                        loading={i < 3 ? undefined : "lazy"}
-                        priority={i < 3}
-                        sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.04]"
-                      />
-                    </div>
-                    <div className="caption mt-3 flex items-center justify-end gap-2 text-[color:var(--ink-950)]/55">
-                      <span className="font-semibold uppercase tracking-[0.12em] text-[color:var(--gold-700)]">
-                        {article.category}
-                      </span>
-                      <span aria-hidden="true">·</span>
-                      <span>{article.readingTime}</span>
-                    </div>
-                    <h3 className="font-display mt-2 text-lg font-bold leading-snug text-[color:var(--ink-950)] transition-colors group-hover:text-[color:var(--gold-700)] md:text-xl">
-                      {article.title}
-                    </h3>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {previewArticles.map((article, i) => (
+              <li key={article.slug}>
+                <ArticleCard article={article} priority={i < 2} />
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/knowledge/articles"
+              className="inline-flex items-center gap-2 rounded-full border border-black/15 px-6 py-3 font-display font-semibold text-[color:var(--ink-950)] transition-colors hover:bg-black/[0.04]"
+            >
+              לכל המאמרים
+              <span aria-hidden="true">←</span>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -194,8 +162,7 @@ export function KnowledgeHub({
           </h2>
           <p className="mt-3 max-w-2xl text-[color:var(--ink-950)]/65">
             {terms.length} מונחים מעולם המודלים האדריכליים, תהליכי הייצור
-            והתכנון — הסבר קצר לכל מונח, מונחים קשורים וקישורים למאמרים
-            מורחבים.
+            והתכנון — כל מונח והסבר קצר, עם קישור לעמוד מורחב.
           </p>
 
           <div className="relative mt-8">
@@ -214,7 +181,6 @@ export function KnowledgeHub({
 
           <div className="mt-10">
             {q ? (
-              /* Search results */
               filteredTerms.length === 0 ? (
                 <p className="text-[color:var(--ink-950)]/60">
                   לא נמצאו מושגים התואמים את החיפוש &quot;{query}&quot;.
@@ -222,43 +188,25 @@ export function KnowledgeHub({
               ) : (
                 <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                   {filteredTerms.map((t) => (
-                    <GlossaryCard key={t.slug} term={t} termBySlug={termBySlug} />
+                    <GlossaryCard key={t.slug} term={t} />
                   ))}
                 </ul>
               )
-            ) : showAllTerms ? (
-              /* Full glossary, grouped by letter */
-              <div className="space-y-14">
-                {availableLetters.map((l) => (
-                  <div key={l} className="scroll-mt-28">
-                    <h3 className="num font-display text-xl font-bold text-[color:var(--gold-700)]">
-                      {l}
-                    </h3>
-                    <ul className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-                      {(grouped.get(l) ?? []).map((t) => (
-                        <GlossaryCard key={t.slug} term={t} termBySlug={termBySlug} />
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
             ) : (
-              /* Collapsed: a few foundational terms + expand button */
               <>
                 <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                   {featuredTerms.map((t) => (
-                    <GlossaryCard key={t.slug} term={t} termBySlug={termBySlug} />
+                    <GlossaryCard key={t.slug} term={t} />
                   ))}
                 </ul>
                 <div className="mt-10 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setShowAllTerms(true)}
+                  <Link
+                    href="/knowledge/glossary"
                     className="inline-flex items-center gap-2 rounded-full border border-black/15 px-6 py-3 font-display font-semibold text-[color:var(--ink-950)] transition-colors hover:bg-black/[0.04]"
                   >
                     לכל המושגים ({terms.length})
                     <span aria-hidden="true">←</span>
-                  </button>
+                  </Link>
                 </div>
               </>
             )}
@@ -304,49 +252,27 @@ export function KnowledgeHub({
   );
 }
 
-function GlossaryCard({
-  term,
-  termBySlug,
-}: {
-  term: GlossaryTerm;
-  termBySlug: Map<string, GlossaryTerm>;
-}) {
+/** Hub glossary card: term name + one-line teaser + link to the full term page. */
+function GlossaryCard({ term }: { term: GlossaryTerm }) {
   return (
-    <li
-      id={`term-${term.slug}`}
-      className="scroll-mt-28 rounded-2xl border border-black/10 bg-white p-6"
-    >
-      <h4 className="font-display text-lg font-bold text-[color:var(--ink-950)]">
-        {term.term}
-      </h4>
-      <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-950)]/70">
-        {term.definition}
-      </p>
-      {term.href && (
+    <li className="rounded-2xl border border-black/10 bg-white p-6">
+      <h3 className="font-display text-lg font-bold text-[color:var(--ink-950)]">
         <Link
-          href={term.href}
-          className="mt-3 inline-block text-sm font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
+          href={`/knowledge/glossary/${term.slug}`}
+          className="transition-colors hover:text-[color:var(--gold-700)]"
         >
-          קראו את המאמר המורחב ←
+          {term.term}
         </Link>
-      )}
-      {term.related.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2 border-t border-black/10 pt-4">
-          {term.related.map((slug) => {
-            const rel = termBySlug.get(slug);
-            if (!rel) return null;
-            return (
-              <a
-                key={slug}
-                href={`#term-${slug}`}
-                className="rounded-full bg-[color:var(--ice-050)] px-3 py-1 text-xs font-semibold text-[color:var(--ink-950)]/70 transition-colors hover:text-[color:var(--gold-700)]"
-              >
-                {rel.term}
-              </a>
-            );
-          })}
-        </div>
-      )}
+      </h3>
+      <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-950)]/70">
+        {glossaryShort(term.definition)}
+      </p>
+      <Link
+        href={`/knowledge/glossary/${term.slug}`}
+        className="mt-3 inline-block text-sm font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
+      >
+        קראו עוד על המושג ←
+      </Link>
     </li>
   );
 }

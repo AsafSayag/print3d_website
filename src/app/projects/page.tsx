@@ -17,7 +17,7 @@ import { PORTFOLIO_HERO } from "@/lib/portfolioContent";
 export const metadata: Metadata = buildPageMeta({
   title: "קטלוג",
   description: PORTFOLIO_HERO.subtitle,
-  path: "/portfolio",
+  path: "/projects",
 });
 
 const breadcrumbs: Crumb[] = [
@@ -31,7 +31,7 @@ export default function PortfolioPage() {
       <LegalJsonLd
         title={PORTFOLIO_HERO.title}
         description={PORTFOLIO_HERO.subtitle}
-        path="/portfolio"
+        path="/projects"
         breadcrumbs={breadcrumbs}
       />
       <Header />

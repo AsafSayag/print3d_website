@@ -36,7 +36,7 @@ export function Articles() {
           <SectionHeading eyebrow="בלוג" title={ARTICLES.heading} tone="dark" />
           <Reveal>
             <Link
-              href="/blog"
+              href="/knowledge/articles"
               className="text-[color:var(--gold-700)] font-semibold hover:underline underline-offset-4 md:mb-1"
             >
               {ARTICLES.allLink} ←
@@ -65,7 +65,7 @@ export function Articles() {
                 }`.trim()}
               >
                 <Link
-                  href={`/blog/${article.slug}`}
+                  href={`/knowledge/${article.slug}`}
                   className="group flex h-full flex-col rounded-2xl overflow-hidden bg-[color:var(--ice-050)] border border-black/5 transition-transform duration-300 hover:-translate-y-1"
                 >
                   <div className="aspect-[16/10] relative overflow-hidden bg-[color:var(--navy-900)]">

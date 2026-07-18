@@ -12,7 +12,7 @@ type Item = { q: string; a: string };
  * list so it can render the complete question set.
  */
 export function FaqAccordion({ items }: { items: readonly Item[] }) {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
   const reduce = useReducedMotion();
 
   return (

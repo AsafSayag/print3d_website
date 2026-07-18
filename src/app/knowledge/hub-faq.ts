@@ -1,4 +1,4 @@
-/** Extended FAQ set for the /blog knowledge-hub — feeds both the accordion and the FAQPage JSON-LD. */
+/** Extended FAQ set for the /knowledge hub — feeds both the accordion and the FAQPage JSON-LD. */
 
 export type HubFaqItem = { q: string; a: string };
 

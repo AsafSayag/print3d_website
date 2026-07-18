@@ -82,7 +82,7 @@ export function Portfolio() {
           <div className="max-w-2xl max-md:mx-auto max-md:text-center">
             <SectionHeading eyebrow="קטלוג" title="פרויקטים נבחרים" tone="light" />
             <Reveal index={2} className="lg:hidden mt-6">
-              <GlassButton href="/portfolio" variant="primary">
+              <GlassButton href="/projects" variant="primary">
                 לכל הפרויקטים
               </GlassButton>
             </Reveal>
@@ -97,7 +97,7 @@ export function Portfolio() {
 
           <Reveal index={3} className="shrink-0">
             <div className="hidden lg:block mb-6">
-              <GlassButton href="/portfolio" variant="primary">
+              <GlassButton href="/projects" variant="primary">
                 לכל הפרויקטים
               </GlassButton>
             </div>

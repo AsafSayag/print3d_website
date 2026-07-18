@@ -1222,7 +1222,16 @@ body {
   /* Slightly smaller than the box by default; shrinks further once the
      footer is about to enter view so it stops crowding the page end. */
   transform: scale(0.88);
-  transition: transform 0.35s var(--ease-brand), box-shadow 0.25s var(--ease-brand);
+  transition: transform 0.35s var(--ease-brand), box-shadow 0.25s var(--ease-brand),
+    bottom 0.35s var(--ease-brand);
+}
+/* At the very bottom of the page on small screens, lift the button clear of
+   the footer's copyright / legal row so it never covers it. Uses `bottom`
+   (not transform) so it composes with the scale states above. */
+@media (max-width: 639px) {
+  .wa-fab--raised {
+    bottom: 8.5rem;
+  }
 }
 .wa-fab--compact {
   transform: scale(0.62);

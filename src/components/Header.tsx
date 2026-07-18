@@ -26,7 +26,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
   // On the homepage the nav uses in-page hash anchors (with scroll-spy); from any
   // other route those same targets are reached by prefixing the homepage path, so
   // the header stays functional site-wide without changing homepage behaviour.
-  // Items whose href is a real path (e.g. "/portfolio") link there directly.
+  // Items whose href is a real path (e.g. "/projects") link there directly.
   const toHome = (hash: string) => (onHome ? hash : `/${hash}`);
   const navHref = (href: string) => (href.startsWith("#") ? toHome(href) : href);
   const isNavCurrent = (href: string) =>

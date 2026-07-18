@@ -40,10 +40,26 @@ export function Footer() {
             <FooterColumn title={FOOTER.columns.services.title}>
               <li>
                 <Link
-                  href="/blog"
+                  href="/knowledge"
                   className="text-white/80 hover:text-white text-sm transition-colors"
                 >
                   מרכז הידע
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-white/80 hover:text-white text-sm transition-colors"
+                >
+                  שאלות נפוצות
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={CONTACT.contactPath}
+                  className="text-white/80 hover:text-white text-sm transition-colors"
+                >
+                  צור קשר
                 </Link>
               </li>
             </FooterColumn>
@@ -58,22 +74,6 @@ export function Footer() {
                   {item.label}
                 </FooterLink>
               ))}
-              <li>
-                <Link
-                  href={CONTACT.contactPath}
-                  className="text-white/80 hover:text-white text-sm transition-colors"
-                >
-                  צור קשר
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-white/80 hover:text-white text-sm transition-colors"
-                >
-                  שאלות נפוצות
-                </Link>
-              </li>
             </FooterColumn>
           </div>
 

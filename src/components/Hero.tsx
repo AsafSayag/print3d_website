@@ -212,7 +212,7 @@ function HeroContent({
             {HERO_COPY.primaryCta}
           </GlassButton>
           <GlassButton
-            href="/portfolio"
+            href="/projects"
             variant="secondary"
             className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >

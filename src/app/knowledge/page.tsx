@@ -17,7 +17,7 @@ const DESCRIPTION =
 export const metadata: Metadata = buildPageMeta({
   title: TITLE,
   description: DESCRIPTION,
-  path: "/blog",
+  path: "/knowledge",
 });
 
 const breadcrumbs: Crumb[] = [
@@ -25,14 +25,14 @@ const breadcrumbs: Crumb[] = [
   { label: "מרכז הידע" },
 ];
 
-export default function BlogPage() {
+export default function KnowledgePage() {
   return (
     <>
       <ReadingProgress />
       <HubJsonLd
         title={TITLE}
         description={DESCRIPTION}
-        path="/blog"
+        path="/knowledge"
         publishDate="2026-07-17"
         updatedDate="2026-07-17"
         breadcrumbs={breadcrumbs}
