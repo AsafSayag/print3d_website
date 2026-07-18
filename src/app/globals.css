@@ -297,6 +297,14 @@ body {
     display: none;
   }
 }
+/* Extra items shown only on tablet/mobile — hidden on desktop (lg+) so the
+   blog grid stays a single row of four. Placed after the 640px rule so it
+   wins the tie on source order when both media queries match. */
+@media (min-width: 1024px) {
+  .collapse-lg {
+    display: none;
+  }
+}
 /* Toggle on: reveal the collapsed items and hide the button (mobile only —
    harmless on desktop where these are already block / hidden). */
 .more-toggle:checked ~ .collapse-host .collapse-sm {

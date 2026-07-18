@@ -38,11 +38,14 @@ export function Footer() {
               children — the exact, untouched desktop structure as before. */}
           <div className="grid grid-cols-2 gap-10 md:contents">
             <FooterColumn title={FOOTER.columns.services.title}>
-              {FOOTER.columns.services.items.map((item) => (
-                <FooterLink key={item} href="#services">
-                  {item}
-                </FooterLink>
-              ))}
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-white/80 hover:text-white text-sm transition-colors"
+                >
+                  מרכז הידע
+                </Link>
+              </li>
             </FooterColumn>
 
             <FooterColumn title={FOOTER.columns.company.title}>
@@ -112,34 +115,22 @@ export function Footer() {
           </div>
         </div>
 
-        {/* The accessibility statement gets its own centered spot (both on
-            mobile and desktop) instead of sitting inside the wrapped legal
-            list — on mobile that list's edge otherwise lands right under the
-            floating WhatsApp button and gets partly covered by it. */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col items-center gap-4 text-center text-sm text-white/70 sm:grid sm:grid-cols-3 sm:items-center sm:text-start">
-          <span dir="ltr" className="sm:justify-self-start">
-            {FOOTER.copyright}
-          </span>
-          <Link
-            href="/legal/accessibility"
-            className="text-white/70 hover:text-white transition-colors sm:justify-self-center"
-          >
-            {FOOTER.a11yLink}
-          </Link>
-          <nav aria-label="קישורים משפטיים" className="sm:justify-self-end">
+        {/* Copyright on one side, the full legal list — including the
+            accessibility statement — grouped together on the other. */}
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-col items-center gap-4 text-center text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between sm:text-start">
+          <span dir="ltr">{FOOTER.copyright}</span>
+          <nav aria-label="קישורים משפטיים">
             <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
-              {LEGAL_LINKS.filter((link) => link.href !== "/legal/accessibility").map(
-                (link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-white/70 hover:text-white transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ),
-              )}
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-white/70 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

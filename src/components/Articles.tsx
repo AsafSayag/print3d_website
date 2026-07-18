@@ -60,7 +60,9 @@ export function Articles() {
                 as="li"
                 index={i}
                 key={article.slug}
-                className={i >= 2 ? "collapse-sm" : ""}
+                className={`${i >= 2 ? "collapse-sm" : ""} ${
+                  i >= 4 ? "collapse-lg" : ""
+                }`.trim()}
               >
                 <Link
                   href={`/blog/${article.slug}`}

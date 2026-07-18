@@ -51,7 +51,7 @@ export const NAV_ITEMS = [
   { label: "קטלוג", href: "/portfolio" },
   { label: "לקוחות", href: "#clients" },
   { label: "אודות", href: "/about" },
-  { label: "בלוג", href: "/blog" },
+  { label: "מרכז ידע", href: "/blog" },
 ] as const;
 
 /** Shared motion tokens (seconds unless noted). */
