@@ -77,6 +77,20 @@ const PROJECTS: {
     href: "/projects/avisror-costa-rica-jerusalem",
   },
   {
+    src: "/projects/avisror-ramat-hasharon.webp",
+    title: "אביסרור, רמת השרון",
+    scale: "1:150",
+    span: "",
+    href: "/projects/avisror-ramat-hasharon",
+  },
+  {
+    src: "/projects/aura-natania.webp",
+    title: "אאורה, נתניה",
+    scale: "1:150",
+    span: "",
+    href: "/projects/aura-natania",
+  },
+  {
     src: "/projects/bonei-binyan-hahagana-raanana.webp",
     title: "בוני בניין, ההגנה",
     scale: "1:100",
