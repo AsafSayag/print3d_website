@@ -1345,6 +1345,15 @@ html.a11y-contrast footer {
   bottom: 1rem;
   width: max-content; /* shrink to the FAB so the panel anchors correctly */
   z-index: 60;
+  transition: bottom 0.35s var(--ease-brand);
+}
+/* At the very bottom of the page on small screens, lift the whole widget clear
+   of the footer's action buttons so it never covers them — mirrors the
+   WhatsApp button's raise on the opposite corner. */
+@media (max-width: 639px) {
+  .a11y-widget--raised {
+    bottom: 8.5rem;
+  }
 }
 .a11y-fab {
   display: grid;
