@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useNearFooter } from "@/lib/useNearFooter";
+import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
 
 /** Persisted accessibility preferences. */
 type Prefs = {
@@ -35,6 +35,7 @@ export function AccessibilityWidget() {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const compact = useNearFooter();
+  const atBottom = useAtPageBottom();
 
   // Load saved preferences once, on mount.
   useEffect(() => {
@@ -94,7 +95,10 @@ export function AccessibilityWidget() {
     prefs.font === 0 && !prefs.contrast && !prefs.links && !prefs.motion;
 
   return (
-    <div className="a11y-widget" dir="rtl">
+    <div
+      className={`a11y-widget${atBottom ? " a11y-widget--raised" : ""}`}
+      dir="rtl"
+    >
       {open && (
         <div
           ref={panelRef}
