@@ -165,16 +165,13 @@ export function Hero() {
           </h1>
           <span
             aria-hidden="true"
-            className="mx-auto my-1 h-[2px] w-28 rounded-full"
+            className="mx-auto mt-1 h-[2px] w-28 rounded-full"
             style={{
               background:
                 "linear-gradient(to right, transparent, var(--gold-500) 28%, var(--gold-400) 50%, var(--gold-500) 72%, transparent)",
               boxShadow: "0 0 12px rgba(95,154,192,0.5)",
             }}
           />
-          <h2 className="font-medium text-[0.92rem] sm:text-[1.02rem] text-white/85 leading-snug">
-            {HERO_COPY.h2}
-          </h2>
         </div>
       </div>
 
@@ -214,10 +211,12 @@ function HeroContent({
 
   return (
     <>
-      {/* CTAs anchor this bottom group on every breakpoint. On mobile the
-          heading now lives up top over the video (see the md:hidden block in
-          Hero above), so this group holds only the buttons. */}
-      <div className="absolute inset-x-0 bottom-32 sm:bottom-36 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-6">
+      {/* CTAs anchor this bottom group on every breakpoint. On mobile the H1
+          lives up top over the video (see the md:hidden block in Hero above);
+          the buttons sit a little lower here and the H2 subtitle now follows
+          directly beneath them. Desktop keeps its own top heading row and its
+          original button offset (md:bottom-40). */}
+      <div className="absolute inset-x-0 bottom-24 sm:bottom-28 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-5">
         {/* CTAs */}
         <div
           style={item(1)}
@@ -238,6 +237,21 @@ function HeroContent({
             {HERO_COPY.secondaryCta}
           </GlassButton>
         </div>
+
+        {/* Mobile-only subtitle — moved out of the top heading block to sit
+            directly under the CTAs. md:hidden so desktop (which shows the H2 in
+            its top row) stays untouched. */}
+        <h2
+          dir="rtl"
+          className="md:hidden font-medium text-[1.05rem] sm:text-[1.15rem] text-white/85 leading-snug"
+          style={{
+            ...item(2),
+            textShadow:
+              "0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
+          }}
+        >
+          {HERO_COPY.h2}
+        </h2>
       </div>
     </>
   );
