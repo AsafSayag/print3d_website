@@ -163,10 +163,14 @@ function FooterLink({
   href: string;
   children: React.ReactNode;
 }) {
+  // In-page hash targets (e.g. "#process") only exist on the homepage, so from
+  // any other route prefix them with "/" to jump home and then scroll — the
+  // same behaviour the header nav uses. Real paths pass through unchanged.
+  const resolved = href.startsWith("#") ? `/${href}` : href;
   return (
     <li>
       <a
-        href={href}
+        href={resolved}
         className="text-white/80 hover:text-white text-sm transition-colors"
       >
         {children}

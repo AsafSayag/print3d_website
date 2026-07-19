@@ -99,9 +99,12 @@ export function Hero() {
           }}
         >
           <div className="flex items-baseline justify-center gap-4 lg:gap-6">
-            <h1 className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
+            {/* Desktop heading is a <p>, NOT an <h1>: the mobile block below
+                carries the single semantic <h1> (mobile-first indexing), so the
+                page never ships two h1s. Visually identical to the old h1. */}
+            <p className="whitespace-nowrap text-white font-bold text-[clamp(1.35rem,2.15vw,2.05rem)] leading-snug">
               {HERO_COPY.h1}
-            </h1>
+            </p>
             {/* Slim dash joining the two headings. */}
             <span
               aria-hidden="true"

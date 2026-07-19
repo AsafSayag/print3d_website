@@ -275,7 +275,7 @@ export function ProjectShowcase() {
           type="button"
           aria-label="הפרויקט הקודם"
           onClick={prev}
-          className="glass-btn !w-11 !h-11 !p-0 !rounded-full !absolute start-4 md:start-8 top-1/2 -translate-y-1/2 z-10"
+          className="glass-btn showcase-nav !w-11 !h-11 !p-0 !rounded-full !absolute start-4 md:start-8 top-1/2 -translate-y-1/2 z-10"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 18l-6-6 6-6" />
@@ -285,7 +285,7 @@ export function ProjectShowcase() {
           type="button"
           aria-label="הפרויקט הבא"
           onClick={next}
-          className="glass-btn !w-11 !h-11 !p-0 !rounded-full !absolute end-4 md:end-8 top-1/2 -translate-y-1/2 z-10"
+          className="glass-btn showcase-nav !w-11 !h-11 !p-0 !rounded-full !absolute end-4 md:end-8 top-1/2 -translate-y-1/2 z-10"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5 rtl:-scale-x-100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 6l6 6-6 6" />

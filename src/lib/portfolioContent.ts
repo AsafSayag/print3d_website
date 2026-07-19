@@ -177,7 +177,7 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 
 export const PORTFOLIO_SHOWCASE = {
   eyebrow: "קטלוג · פרויקטים נבחרים",
-  note: "באתר מוצגים חלק גדול מהפרויקטים שהחברה עשתה, אך לא כולם.",
+  note: "מבחר נבחר מתוך למעלה מ-250 פרויקטים שהשלמנו — ממגדלי יוקרה ושכונות שלמות ועד תוכניות עירוניות.",
 } as const;
 
 export const PORTFOLIO_FILTERS = {

@@ -87,7 +87,7 @@ const PROJECTS: {
 
 const STATS = [
   { end: 15, label: "שנות ניסיון" },
-  { end: 200, label: "פרויקטים שהושלמו" },
+  { end: 250, label: "פרויקטים שהושלמו" },
 ] as const;
 
 export function Portfolio() {
@@ -109,7 +109,7 @@ export function Portfolio() {
             </Reveal>
             <Reveal index={2}>
               <p className="mt-5 text-[color:var(--steel-300)] text-base md:text-lg leading-relaxed">
-                מעל 15 שנות ניסיון ולמעלה מ־200 פרויקטים מוגמרים, ממגדלי יוקרה
+                מעל 15 שנות ניסיון ולמעלה מ־250 פרויקטים מוגמרים, ממגדלי יוקרה
                 ושכונות שלמות ועד מודלים תכנוניים, עבור חברות הנדל״ן והאדריכלים
                 המובילים בישראל.
               </p>

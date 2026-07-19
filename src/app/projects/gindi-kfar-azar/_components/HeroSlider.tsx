@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ScrollHint } from "./ScrollHint";
 
 type Props = {
@@ -66,6 +67,31 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
 
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.92)] via-[rgba(7,13,23,0.32)] to-[rgba(7,13,23,0.12)]" />
 
+      {/* Back to catalog — a small glass chip (mobile + desktop) that returns
+          to the projects carousel on the catalog page (the #showcase anchor),
+          not the top of the page. */}
+      <Link
+        href="/projects#showcase"
+        aria-label="חזרה לקטלוג"
+        className="back-to-catalog absolute z-30 top-[4.75rem] sm:top-24 start-3 sm:start-6 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold text-white"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="rtl:-scale-x-100"
+        >
+          <path d="M15 6l-6 6 6 6" />
+        </svg>
+        חזרה לקטלוג
+      </Link>
+
       {/* Copy */}
       <div className="container-x relative h-full flex flex-col items-center justify-center text-center text-white">
         {eyebrow ? (
@@ -127,7 +153,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
 
       <style>
         {
-          ".hero-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:9999px;color:#fff;border:1px solid rgba(255,255,255,0.35);background:rgba(9,15,26,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.7);transition:background .3s,transform .3s,border-color .3s}.hero-arrow:hover{background:rgba(9,15,26,0.7);border-color:rgba(255,255,255,0.6);transform:translateY(-50%) scale(1.08)}@media (min-width:640px){.hero-arrow{width:52px;height:52px}}"
+          ".hero-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:9999px;color:#fff;border:1px solid rgba(255,255,255,0.45);background:rgba(7,13,23,0.64);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,transform .3s,border-color .3s}.hero-arrow:hover{background:rgba(7,13,23,0.84);border-color:rgba(255,255,255,0.7);transform:translateY(-50%) scale(1.08)}@media (min-width:640px){.hero-arrow{width:52px;height:52px}}.back-to-catalog{border:1px solid rgba(255,255,255,0.28);background:rgba(7,13,23,0.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,border-color .3s,transform .3s}.back-to-catalog:hover{background:rgba(7,13,23,0.82);border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}"
         }
       </style>
     </section>

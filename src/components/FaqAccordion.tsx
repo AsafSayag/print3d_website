@@ -4,7 +4,12 @@ import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./ui/Reveal";
 
-type Item = { q: string; a: string };
+type Item = {
+  q: string;
+  a: string;
+  /** Optional "read more" link to a related knowledge article. */
+  more?: { label: string; href: string };
+};
 
 /**
  * Standalone FAQ accordion for the full /faq page. Same open/close behaviour
@@ -61,6 +66,19 @@ export function FaqAccordion({ items }: { items: readonly Item[] }) {
                   <p className="pb-6 text-[color:var(--ink-950)]/70 leading-relaxed">
                     {item.a}
                   </p>
+                  {item.more ? (
+                    <p className="pb-6 -mt-3 text-sm">
+                      <span className="text-[color:var(--ink-950)]/60">
+                        להרחבה:{" "}
+                      </span>
+                      <a
+                        href={item.more.href}
+                        className="font-semibold text-[color:var(--gold-700)] underline underline-offset-4 decoration-[color:var(--gold-700)]/40 hover:decoration-[color:var(--gold-700)] transition-colors"
+                      >
+                        {item.more.label}
+                      </a>
+                    </p>
+                  ) : null}
                 </motion.div>
               )}
             </AnimatePresence>
