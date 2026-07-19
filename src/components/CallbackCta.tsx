@@ -35,7 +35,7 @@ export function CallbackCta() {
           the section nears the viewport; the poster paints until then. */}
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
-        poster="/videos/cta-poster.jpg"
+        poster="/videos/cta-poster.webp"
         sources={[
           { src: "/videos/cta-loop.webm", type: "video/webm" },
           { src: "/videos/cta-loop.mp4", type: "video/mp4" },
