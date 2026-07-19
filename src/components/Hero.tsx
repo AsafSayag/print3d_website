@@ -211,15 +211,45 @@ function HeroContent({
 
   return (
     <>
-      {/* CTAs anchor this bottom group on every breakpoint. On mobile the H1
-          lives up top over the video (see the md:hidden block in Hero above);
-          the buttons sit a little lower here and the H2 subtitle now follows
-          directly beneath them. Desktop keeps its own top heading row and its
-          original button offset (md:bottom-40). */}
-      <div className="absolute inset-x-0 bottom-24 sm:bottom-28 md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-5">
+      {/* Bottom group. On mobile the H1 lives up top over the video (see the
+          md:hidden block in Hero above); here the H2 subtitle sits first and the
+          CTAs now follow directly BENEATH it. The base offset (bottom-10) is
+          tuned so the H2 keeps the exact position it had before the buttons were
+          moved below it (~96px from the section bottom). Desktop is unaffected:
+          the H2 here is md:hidden, so only the buttons remain and they keep their
+          original offset (md:bottom-40). */}
+      <div className="absolute inset-x-0 bottom-[34px] sm:bottom-[42px] md:bottom-40 z-10 flex flex-col items-center justify-center px-4 gap-5">
+        {/* Mobile-only subtitle — pinned in place; buttons follow below it.
+            md:hidden so desktop (which shows the H2 in its top row) stays
+            untouched. Carries the same blue accent rule beneath it as the H1. */}
+        <div
+          className="md:hidden flex flex-col items-center"
+          style={item(1)}
+        >
+          <h2
+            dir="rtl"
+            className="font-medium text-[1.05rem] sm:text-[1.15rem] text-white/85 leading-snug"
+            style={{
+              textShadow:
+                "0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
+            }}
+          >
+            {HERO_COPY.h2}
+          </h2>
+          <span
+            aria-hidden="true"
+            className="mt-1 h-[2px] w-28 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, var(--gold-500) 28%, var(--gold-400) 50%, var(--gold-500) 72%, transparent)",
+              boxShadow: "0 0 12px rgba(95,154,192,0.5)",
+            }}
+          />
+        </div>
+
         {/* CTAs */}
         <div
-          style={item(1)}
+          style={item(2)}
           className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
@@ -232,26 +262,11 @@ function HeroContent({
           <GlassButton
             href="/projects"
             variant="secondary"
-            className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
+            className="hero-secondary-cta !px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >
             {HERO_COPY.secondaryCta}
           </GlassButton>
         </div>
-
-        {/* Mobile-only subtitle — moved out of the top heading block to sit
-            directly under the CTAs. md:hidden so desktop (which shows the H2 in
-            its top row) stays untouched. */}
-        <h2
-          dir="rtl"
-          className="md:hidden font-medium text-[1.05rem] sm:text-[1.15rem] text-white/85 leading-snug"
-          style={{
-            ...item(2),
-            textShadow:
-              "0 2px 12px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,0.9)",
-          }}
-        >
-          {HERO_COPY.h2}
-        </h2>
       </div>
     </>
   );

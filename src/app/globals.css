@@ -367,6 +367,22 @@ body {
     0 8px 28px rgba(20, 52, 72, 0.5);
 }
 
+/* Desktop-only: give the hero "צפו בקטלוג" secondary button a darker glass
+   frame so it reads more clearly against the bright hero footage. Mobile keeps
+   the standard light frame (untouched). Scoped to >=768px = the `md` breakpoint. */
+@media (min-width: 768px) {
+  .glass-btn.hero-secondary-cta {
+    /* Darker translucent fill (was a light white glass) so the white label
+       reads clearly against the bright footage. */
+    --_bg: rgba(7, 13, 23, 0.42);
+    border-color: rgba(7, 13, 23, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 0 0 1px rgba(7, 13, 23, 0.35),
+      0 8px 32px rgba(7, 13, 23, 0.5);
+  }
+}
+
 /* Specular sweep — crosses once on hover */
 .glass-btn::after {
   content: "";
