@@ -42,6 +42,7 @@ export default function PortfolioPage() {
           breadcrumbs={breadcrumbs}
           video={HERO_VIDEO}
           singleLineTitle
+          hideBreadcrumbs
         />
         {/* Intro + showcase share ONE continuous ambient surface so the
             background flows seamlessly between them (no per-section gradient

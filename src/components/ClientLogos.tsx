@@ -194,6 +194,9 @@ export function ClientLogos() {
   return (
     <section id="clients" className="framer-logos-section" aria-label="לקוחות">
       <p className="framer-logos-subtitle">{CLIENTS_HEADING}</p>
+      <p className="framer-logos-stat">
+        מעל 250 פרויקטים · יותר מ-15 שנה · עשרות מהיזמים המובילים בישראל
+      </p>
 
       <div className="framer-marquee-container">
         <div className="framer-scroller" ref={scrollerRef} dir="ltr">

@@ -21,6 +21,8 @@ type Props = {
   video: { poster: string; sources: { src: string; type: string }[] };
   /** Keep the title on a single line at every breakpoint (used by the catalog). */
   singleLineTitle?: boolean;
+  /** Hide the visible breadcrumb row (SEO breadcrumbs live in JSON-LD anyway). */
+  hideBreadcrumbs?: boolean;
 };
 
 /**
@@ -36,6 +38,7 @@ export function BrightHero({
   breadcrumbs,
   video,
   singleLineTitle,
+  hideBreadcrumbs,
 }: Props) {
   return (
     <section
@@ -77,20 +80,22 @@ export function BrightHero({
       </div>
 
       <div className="relative z-10 container-x w-full">
-        <Reveal className="mb-6 md:mb-8">
-          <div
-            style={{
-              textShadow:
-                "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)",
-            }}
-          >
-            <Breadcrumbs
-              items={breadcrumbs}
-              tone="dark"
-              className="text-lg sm:text-xl font-bold"
-            />
-          </div>
-        </Reveal>
+        {hideBreadcrumbs ? null : (
+          <Reveal className="mb-6 md:mb-8">
+            <div
+              style={{
+                textShadow:
+                  "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)",
+              }}
+            >
+              <Breadcrumbs
+                items={breadcrumbs}
+                tone="dark"
+                className="text-lg sm:text-xl font-bold"
+              />
+            </div>
+          </Reveal>
+        )}
 
         <div
           style={{
@@ -100,16 +105,21 @@ export function BrightHero({
         >
           <Reveal delay={0.06}>
             <span
-              className="eyebrow inline-block text-black font-bold mb-4"
+              className="eyebrow inline-block text-black font-black mb-4"
               style={{
-                fontSize: "clamp(1.05rem, 2.6vw, 1.5rem)",
+                // The catalog's short "קטלוג" eyebrow is enlarged so it reads as
+                // the prominent page label now that the breadcrumb above it is
+                // hidden. Other pages (about) keep the standard size.
+                fontSize: singleLineTitle
+                  ? "clamp(1.5rem, 4vw, 2.35rem)"
+                  : "clamp(1.05rem, 2.6vw, 1.5rem)",
                 letterSpacing: "0.16em",
                 background: "rgba(255,255,255,0.34)",
                 border: "1px solid rgba(255,255,255,0.65)",
                 backdropFilter: "blur(9px) saturate(140%)",
                 WebkitBackdropFilter: "blur(9px) saturate(140%)",
-                borderRadius: "12px",
-                padding: "0.4rem 1rem",
+                borderRadius: "14px",
+                padding: singleLineTitle ? "0.5rem 1.4rem" : "0.4rem 1rem",
                 boxShadow:
                   "inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 24px -14px rgba(7,13,23,0.4)",
               }}
@@ -121,12 +131,7 @@ export function BrightHero({
           <Reveal delay={0.12}>
             {singleLineTitle ? (
               <h1
-                className="heading-accent max-w-none text-black font-display font-bold whitespace-nowrap"
-                style={{
-                  fontSize: "clamp(1.15rem, 5.3vw, 3.5rem)",
-                  lineHeight: 1.12,
-                  letterSpacing: "-0.015em",
-                }}
+                className="heading-accent max-w-none text-black font-display font-black tracking-[-0.02em] whitespace-normal text-[2.35rem] leading-[1.14] md:whitespace-nowrap md:text-[clamp(2rem,5.3vw,4.5rem)] md:leading-[1.1]"
               >
                 {title}
               </h1>

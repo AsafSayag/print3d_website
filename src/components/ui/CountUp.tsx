@@ -19,7 +19,10 @@ type Props = {
  */
 export function CountUp({ end, suffix = "", duration = 1.8, className }: Props) {
   const [ref, inView] = useInViewOnce<HTMLSpanElement>();
-  const [value, setValue] = useState(0);
+  // Start at the FINAL value so the number is present in the server-rendered
+  // HTML (SEO) and shows correctly even without JS. Once the element scrolls
+  // into view the animation restarts from 0 and counts up over it.
+  const [value, setValue] = useState(end);
   const [reduce, setReduce] = useState(false);
 
   useEffect(() => {

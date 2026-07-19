@@ -14,6 +14,29 @@ export function PortfolioIntro() {
   return (
     <section aria-label={PORTFOLIO_HERO.eyebrow}>
       <div className="container-x pt-8 md:pt-12 pb-2">
+        {/* A prominent scroll cue near the top hints that the projects carousel
+            is just below. Shown on every breakpoint (mobile + desktop) and
+            emphasised in the brand accent colour. */}
+        <Reveal>
+          <div className="mb-8 flex flex-col items-center gap-2.5 text-[color:var(--gold-400)]">
+            <span className="text-lg md:text-2xl font-bold tracking-wide">
+              גללו לצפייה בפרויקטים
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-7 w-7 md:h-8 md:w-8 animate-bounce"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 5v14M6 13l6 6 6-6" />
+            </svg>
+          </div>
+        </Reveal>
+
         <Reveal>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-10">
             <div className="portfolio-hero-glass max-w-3xl lg:flex-1">
@@ -33,28 +56,6 @@ export function PortfolioIntro() {
           </div>
         </Reveal>
 
-        {/* Mobile: a scroll cue keeps the projects carousel below the fold on
-            entry, so it's discovered on a small scroll rather than competing
-            with the hero. */}
-        <Reveal delay={0.1}>
-          <div className="lg:hidden mt-10 mb-1 flex flex-col items-center gap-2 text-white/55">
-            <span className="text-sm font-semibold tracking-wide">
-              גללו לצפייה בפרויקטים
-            </span>
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              className="h-5 w-5 animate-bounce text-[color:var(--gold-400)]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 5v14M6 13l6 6 6-6" />
-            </svg>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
