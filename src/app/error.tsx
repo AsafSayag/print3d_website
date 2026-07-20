@@ -1,15 +1,25 @@
-import type { Metadata } from "next";
+"use client";
+
+// Runtime error boundary — shown when a page throws unexpectedly, so a visitor
+// never hits a blank screen. Same friendly copy as the 404 page.
+
+import { useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  title: "משהו השתבש | Print3D",
-  robots: { index: false, follow: true },
-};
+export default function Error({
+  error,
+  unstable_retry,
+}: {
+  error: Error & { digest?: string };
+  unstable_retry: () => void;
+}) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
 
-export default function NotFound() {
   return (
     <>
       <Header />
@@ -19,10 +29,7 @@ export default function NotFound() {
       >
         <span className="legal-grid" aria-hidden="true" />
         <div className="max-w-xl">
-          <p className="error-code legal-rise" aria-hidden="true">
-            404
-          </p>
-          <h1 className="h2 text-white mt-2 legal-rise" style={{ animationDelay: "0.1s" }}>
+          <h1 className="h2 text-white legal-rise" style={{ animationDelay: "0.1s" }}>
             סליחה, משהו לא עבר תקין בתהליך
           </h1>
           <p
@@ -43,11 +50,11 @@ export default function NotFound() {
             className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3 legal-rise"
             style={{ animationDelay: "0.26s" }}
           >
-            <GlassButton href="/" variant="primary">
-              חזרה לעמוד הבית
+            <GlassButton onClick={() => unstable_retry()} variant="primary">
+              לנסות שוב
             </GlassButton>
-            <GlassButton href={CONTACT.mobilePhoneHref} variant="secondary">
-              חייגו אלינו
+            <GlassButton href="/" variant="secondary">
+              חזרה לעמוד הבית
             </GlassButton>
           </div>
         </div>

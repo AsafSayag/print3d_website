@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CONTACT_CTA } from "@/lib/content";
 import { submitLead } from "@/lib/submitLead";
-import { Reveal } from "./Reveal";
+import { ThankYouModal } from "./ThankYouModal";
 
 type Errors = Partial<Record<"name" | "phone" | "email", string>>;
 
@@ -37,7 +37,8 @@ export function LeadForm() {
     project: "",
   });
   const [errors, setErrors] = useState<Errors>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const update =
     (key: keyof typeof values) =>
@@ -51,24 +52,19 @@ export function LeadForm() {
     setErrors(found);
     if (Object.keys(found).length > 0) return;
     setStatus("sending");
-    await submitLead(values);
-    setStatus("done");
+    try {
+      await submitLead(values);
+      // Clear the form and celebrate with the thank-you popup.
+      setValues({ name: "", phone: "", email: "", project: "" });
+      setStatus("idle");
+      setShowThankYou(true);
+    } catch {
+      setStatus("error");
+    }
   };
 
-  if (status === "done") {
-    return (
-      <Reveal>
-        <div
-          role="status"
-          className="rounded-2xl border border-[color:var(--gold-500)]/40 bg-[color:var(--gold-500)]/10 px-8 py-10 text-center"
-        >
-          <p className="h3 text-white">{CONTACT_CTA.success}</p>
-        </div>
-      </Reveal>
-    );
-  }
-
   return (
+    <>
     <form onSubmit={onSubmit} noValidate className="grid sm:grid-cols-2 gap-4 text-start">
       <Field
         label={CONTACT_CTA.fields.name}
@@ -115,7 +111,7 @@ export function LeadForm() {
         />
       </div>
 
-      <div className="sm:col-span-2 flex justify-center mt-2">
+      <div className="sm:col-span-2 flex flex-col items-center gap-3 mt-2">
         <button
           type="submit"
           disabled={status === "sending"}
@@ -123,8 +119,16 @@ export function LeadForm() {
         >
           {status === "sending" ? "שולח…" : CONTACT_CTA.submit}
         </button>
+        {status === "error" && (
+          <p role="alert" className="text-sm text-red-300 text-center">
+            אירעה תקלה בשליחת הפרטים. אפשר לנסות שוב או להתקשר 053-724-7958.
+          </p>
+        )}
       </div>
     </form>
+
+    <ThankYouModal open={showThankYou} onClose={() => setShowThankYou(false)} />
+    </>
   );
 }
 

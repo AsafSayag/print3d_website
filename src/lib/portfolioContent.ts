@@ -120,6 +120,10 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/projects/dafna-tidhar.webp",
+    video: {
+      mp4: "/videos/projects/dafna-tidhar.mp4",
+      webm: "/videos/projects/dafna-tidhar.webm",
+    },
     href: "/projects/dafna-tidhar",
   },
   {
@@ -311,9 +315,25 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 };
 
 export const PORTFOLIO_SHOWCASE = {
-  eyebrow: "קטלוג · פרויקטים נבחרים",
-  note: "מבחר נבחר מתוך למעלה מ-250 פרויקטים שהשלמנו — ממגדלי יוקרה ושכונות שלמות ועד תוכניות עירוניות.",
+  title: "פרויקטים נבחרים",
 } as const;
+
+/** The curated set — and exact order — shown in the main showcase carousel:
+ *  our most select projects. Every other project stays discoverable through the
+ *  filter grid and the "פרויקטים נוספים שמדברים בעד עצמם" highlights strip below. */
+export const SHOWCASE_PROJECT_IDS: readonly string[] = [
+  "beit-hakerem",
+  "levinstein",
+  "dafna-tidhar",
+  "prashkovski-ramat-hanasi",
+  "gindi-kfar-azar",
+  "shbiro-rishon-letzion",
+  "avisror-ramat-hasharon",
+  "avisror-sde-dov",
+  "kardan-metsada-bat-yam",
+  "sarfati-arnona-jerusalem",
+  "prashkovski-ashdod",
+];
 
 export const PORTFOLIO_FILTERS = {
   eyebrow: "לפי סינון",
