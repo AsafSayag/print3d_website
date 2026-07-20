@@ -1,7 +1,11 @@
 /**
  * All copy for the Gindi · כפר אז"ר project page, verbatim from the brief PDF.
  * Rows marked `pending` are fields the brief flags as "להשלמה" (David/Nevo to fill).
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   'מודל אדריכלי גינדי כפר אז"ר | קנה מידה 1:100 | פרינט תלת מימד';
@@ -13,14 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: 'גינדי, כפר אז"ר',
   scale: "1:100",
-  src: "/project_pages/gindi_kfar_azar_project/gindi_hero.webp",
 };
 
-/** Dedicated street-level shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO = "/project_pages/gindi_kfar_azar_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG = "/project_pages/gindi_kfar_azar_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("gindi_kfar_azar_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -59,16 +65,7 @@ export const ABOUT = {
   pendingHint: 'מס\' יח"ד, שלב שיווק',
 };
 
-export const GALLERY_IMAGES = [
-  "/project_pages/gindi_kfar_azar_project/IMG_0943.webp",
-  "/project_pages/gindi_kfar_azar_project/IMG_0944.webp",
-  "/project_pages/gindi_kfar_azar_project/IMG_0945.webp",
-  FULL_BLEED_HERO,
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/** Hero slider cycles through all project photos, starting with the street shot. */
-export const HERO_SLIDES = [
-  FULL_BLEED_HERO,
-  HERO.src,
-  ...GALLERY_IMAGES.slice(0, 3),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

@@ -1,7 +1,11 @@
 /**
  * All copy for the בוני בניין, ההגנה project page.
  * Rows marked `pending` are fields that still need to be filled in.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי בוני בניין, ההגנה | קנה מידה 1:100 | פרינט תלת מימד";
@@ -13,15 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: "בוני בניין, ההגנה",
   scale: "1:100",
-  src: "/project_pages/bonei_binyan_hahagana_raanana_project/bonei_binyan_hero.webp",
 };
 
-export const FULL_BLEED_HERO =
-  "/project_pages/bonei_binyan_hahagana_raanana_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/bonei_binyan_hahagana_raanana_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("bonei_binyan_hahagana_raanana_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -43,28 +48,7 @@ export const SPECS: SpecRow[] = [
   { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
-export const GALLERY_IMAGES = [
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_01.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_02.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_03.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_04.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_05.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_06.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_07.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_08.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_09.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_10.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_11.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_12.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_13.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_14.webp",
-  "/project_pages/bonei_binyan_hahagana_raanana_project/IMG_15.webp",
-  HERO.src,
-  FULL_BLEED_HERO,
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-export const HERO_SLIDES = [
-  FULL_BLEED_HERO,
-  HERO.src,
-  ...GALLERY_IMAGES.filter((src) => src !== FULL_BLEED_HERO && src !== HERO.src),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

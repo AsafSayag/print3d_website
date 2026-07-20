@@ -4,7 +4,11 @@
  *
  * This project has a single supplied photograph, so it serves as the leader,
  * the only carousel slide and the מפרט טכני background alike.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי צרפתי ארנונה ירושלים | קנה מידה 1:100 | פרינט תלת מימד";
@@ -16,12 +20,16 @@ export const HERO = {
   eyebrow: "",
   title: "צרפתי, ארנונה ירושלים",
   scale: "1:100",
-  src: "/project_pages/sarfati_arnona_jerusalem_project/sarfati_hero.webp",
 };
 
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/sarfati_arnona_jerusalem_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("sarfati_arnona_jerusalem_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -58,7 +66,7 @@ export const SPECS: SpecRow[] = [
 ];
 
 /** Only one photograph was supplied for this project. */
-export const GALLERY_IMAGES = [HERO.src];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/** With a single photo there is nothing to cycle — the hero holds one slide. */
-export const HERO_SLIDES = [HERO.src];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

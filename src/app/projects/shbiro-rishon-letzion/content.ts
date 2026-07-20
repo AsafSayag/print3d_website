@@ -4,7 +4,11 @@
  * This page uses a bespoke, editorial layout (Yodezeen-style) rather than the
  * shared hero-slider layout — so there is no `HERO_SLIDES` and no `ABOUT`
  * accordion here. Rows marked `pending` still need real values.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי שבירו ראשון לציון | קנה מידה 1:200 | פרינט תלת מימד";
@@ -17,11 +21,16 @@ export const HERO = {
   /** Large display line shown centered over the hero slider. */
   title: "שבירו, ראשון לציון",
   scale: "1:200",
-  src: "/project_pages/shbiro_rishon_letzion_project/shbiro_hero.webp",
 };
 
 /** Full-bleed background image for the מפרט טכני section. */
-export const SPEC_BG = "/project_pages/shbiro_rishon_letzion_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("shbiro_rishon_letzion_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -53,18 +62,7 @@ export const SPECS: SpecRow[] = [
   { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
-export const GALLERY_IMAGES = [
-  "/project_pages/shbiro_rishon_letzion_project/IMG_04.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_05.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_06.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_07.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_08.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_09.webp",
-  "/project_pages/shbiro_rishon_letzion_project/IMG_10.webp",
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/** Hero slider cycles through every project photo, starting with the hero shot. */
-export const HERO_SLIDES = [
-  HERO.src,
-  ...GALLERY_IMAGES.filter((src) => src !== HERO.src),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;
