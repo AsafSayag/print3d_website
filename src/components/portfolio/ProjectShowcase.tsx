@@ -9,10 +9,18 @@ import {
   PORTFOLIO_PROJECTS,
   PORTFOLIO_SHOWCASE,
   PROJECT_TYPE_LABELS,
+  SHOWCASE_PROJECT_IDS,
+  type Project,
 } from "@/lib/portfolioContent";
 
 /** Auto-advance interval (ms) for the showcase carousel. */
 const AUTOPLAY_MS = 9000;
+
+/** Our most select projects, in the curated order defined alongside the data.
+ *  The rest stay discoverable via the filter grid and the highlights strip. */
+const SHOWCASE_PROJECTS: Project[] = SHOWCASE_PROJECT_IDS.map((id) =>
+  PORTFOLIO_PROJECTS.find((p) => p.id === id),
+).filter((p): p is Project => Boolean(p));
 
 /**
  * Wide, full-bleed showcase carousel — one project fills the screen at a time.
@@ -38,7 +46,7 @@ export function ProjectShowcase() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
 
-  const total = PORTFOLIO_PROJECTS.length;
+  const total = SHOWCASE_PROJECTS.length;
   const next = () => setActive((a) => (a + 1) % total);
   const prev = () => setActive((a) => (a - 1 + total) % total);
 
@@ -152,16 +160,13 @@ export function ProjectShowcase() {
     <section
       id="showcase"
       className="relative overflow-hidden"
-      aria-label={PORTFOLIO_SHOWCASE.eyebrow}
+      aria-label={PORTFOLIO_SHOWCASE.title}
     >
       <div className="container-x pt-6 md:pt-8">
         <Reveal>
-          <p className="eyebrow text-[color:var(--steel-300)] text-2xl md:text-3xl">
-            {PORTFOLIO_SHOWCASE.eyebrow}
-          </p>
-          <p className="mt-3 text-white text-base md:text-lg max-w-2xl leading-relaxed">
-            {PORTFOLIO_SHOWCASE.note}
-          </p>
+          <h2 className="font-display font-black tracking-[-0.02em] text-white text-4xl leading-[1.1] md:text-6xl">
+            {PORTFOLIO_SHOWCASE.title}
+          </h2>
         </Reveal>
       </div>
 
@@ -190,7 +195,7 @@ export function ProjectShowcase() {
               willChange: "transform",
             }}
           >
-            {PORTFOLIO_PROJECTS.map((p, i) => (
+            {SHOWCASE_PROJECTS.map((p, i) => (
               <div
                 key={p.id}
                 dir="rtl"

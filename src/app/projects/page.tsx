@@ -43,6 +43,7 @@ export default function PortfolioPage() {
           video={HERO_VIDEO}
           singleLineTitle
           hideBreadcrumbs
+          hideEyebrow
         />
         {/* Intro + showcase share ONE continuous ambient surface so the
             background flows seamlessly between them (no per-section gradient

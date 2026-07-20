@@ -7,6 +7,9 @@
 export const CONTACT = {
   phone: "03-6473338",
   phoneHref: "tel:+97236473338",
+  /** Mobile / WhatsApp line — shown on the error + 404 pages as a direct contact. */
+  mobilePhone: "053-724-7958",
+  mobilePhoneHref: "tel:+972537247958",
   email: "office@print3d.ltd",
   emailHref: "mailto:office@print3d.ltd",
   address: "דרך בן צבי 84, תל אביב",

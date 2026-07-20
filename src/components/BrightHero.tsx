@@ -23,6 +23,8 @@ type Props = {
   singleLineTitle?: boolean;
   /** Hide the visible breadcrumb row (SEO breadcrumbs live in JSON-LD anyway). */
   hideBreadcrumbs?: boolean;
+  /** Hide the glass eyebrow chip (the catalog drops it so the title leads). */
+  hideEyebrow?: boolean;
 };
 
 /**
@@ -39,6 +41,7 @@ export function BrightHero({
   video,
   singleLineTitle,
   hideBreadcrumbs,
+  hideEyebrow,
 }: Props) {
   return (
     <section
@@ -103,6 +106,7 @@ export function BrightHero({
               "0 0 3px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,0.95), 0 2px 28px rgba(255,255,255,0.9)",
           }}
         >
+          {hideEyebrow ? null : (
           <Reveal delay={0.06}>
             <span
               className="eyebrow inline-block text-black font-black mb-4"
@@ -127,6 +131,7 @@ export function BrightHero({
               {eyebrow}
             </span>
           </Reveal>
+          )}
 
           <Reveal delay={0.12}>
             {singleLineTitle ? (

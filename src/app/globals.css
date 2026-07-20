@@ -772,6 +772,85 @@ body {
 }
 
 /* ============================================================
+   Catalog intro — minimal premium glass info card + calm CTA
+   A single understated card (icon · stat · CTA) that bridges the
+   hero video and the projects carousel. No heavy fills, no glow.
+   ============================================================ */
+.portfolio-intro-card {
+  width: 100%;
+  padding: clamp(2rem, 5vw, 3.25rem);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 30px 60px -30px rgba(0, 0, 0, 0.6);
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .portfolio-intro-card {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.portfolio-intro-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  color: var(--steel-300);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Elegant, glow-free CTA — dark translucent fill, subtle border that brightens
+   on hover. Deliberately no neon halo (unlike the gold .cta-glow variant). */
+.catalog-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 999px;
+  padding: 14px 32px;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition:
+    background 0.5s var(--ease-brand),
+    border-color 0.5s var(--ease-brand),
+    transform 0.5s var(--ease-brand);
+}
+.catalog-cta:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.38);
+  transform: translateY(-1px);
+}
+.catalog-cta svg {
+  transition: transform 0.5s var(--ease-brand);
+}
+/* RTL: arrow points left, so it drifts left on hover */
+.catalog-cta:hover svg {
+  transform: translateX(-3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalog-cta,
+  .catalog-cta:hover,
+  .catalog-cta svg,
+  .catalog-cta:hover svg {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ============================================================
    Portfolio — ambient surface + premium project cards
    ============================================================ */
 /* Navy surface with a cool steel glow above and a faint gold wash below */

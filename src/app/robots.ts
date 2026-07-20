@@ -6,8 +6,6 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Utility page with no standalone value for search engines.
-      disallow: ["/contact/success"],
     },
     sitemap: `${CONTACT.siteUrl}/sitemap.xml`,
     host: CONTACT.siteUrl,
