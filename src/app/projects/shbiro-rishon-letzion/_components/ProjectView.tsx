@@ -2,8 +2,8 @@ import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { HeroSlider } from "./HeroSlider";
 import { TechnicalSpec } from "./TechnicalSpec";
-import { Gallery } from "./Gallery";
-import { IMAGE_ALT, HERO, HERO_SLIDES, GALLERY_IMAGES } from "../content";
+import { Gallery } from "@/components/project/Gallery";
+import { IMAGE_ALT, HERO, HERO_SLIDES, GALLERY_ITEMS } from "../content";
 
 /**
  * Page layout for שבירו · ראשון לציון:
@@ -27,7 +27,7 @@ export function ProjectView() {
       <section className="section surface-ice">
         <div className="container-x">
           <h2 className="h2 heading-accent mb-10">תמונות המודל</h2>
-          <Gallery images={GALLERY_IMAGES} alt={IMAGE_ALT} />
+          <Gallery items={GALLERY_ITEMS} alt={IMAGE_ALT} />
         </div>
       </section>
 

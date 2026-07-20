@@ -1,7 +1,11 @@
 /**
  * All copy for the אביסרור, קוסטה ריקה project page.
  * Rows marked `pending` are fields that still need to be filled in.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי אביסרור, קוסטה ריקה | קנה מידה 1:150 | פרינט תלת מימד";
@@ -13,15 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: "אביסרור, קוסטה ריקה",
   scale: "1:150",
-  src: "/project_pages/avisror_costa_rica_jerusalem_project/avisror_hero.webp",
 };
 
-export const FULL_BLEED_HERO =
-  "/project_pages/avisror_costa_rica_jerusalem_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/avisror_costa_rica_jerusalem_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("avisror_costa_rica_jerusalem_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -43,18 +48,7 @@ export const SPECS: SpecRow[] = [
   { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
-export const GALLERY_IMAGES = [
-  "/project_pages/avisror_costa_rica_jerusalem_project/IMG_01.webp",
-  "/project_pages/avisror_costa_rica_jerusalem_project/IMG_02.webp",
-  "/project_pages/avisror_costa_rica_jerusalem_project/IMG_03.webp",
-  "/project_pages/avisror_costa_rica_jerusalem_project/IMG_04.webp",
-  "/project_pages/avisror_costa_rica_jerusalem_project/IMG_05.webp",
-  HERO.src,
-  FULL_BLEED_HERO,
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-export const HERO_SLIDES = [
-  FULL_BLEED_HERO,
-  HERO.src,
-  ...GALLERY_IMAGES.filter((src) => src !== FULL_BLEED_HERO && src !== HERO.src),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

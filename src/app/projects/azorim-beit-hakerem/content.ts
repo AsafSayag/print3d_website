@@ -1,7 +1,11 @@
 /**
  * All copy for the אזורים, בית הכרם project page.
  * Rows marked `pending` are fields that still need to be filled in.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי אזורים בית הכרם | קנה מידה 1:200 | פרינט תלת מימד";
@@ -13,16 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: "אזורים, בית הכרם",
   scale: "1:200",
-  src: "/project_pages/azorim_beit_hakerem_project/azorim_beit_hakerem_hero.webp",
 };
 
-/** Dedicated shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO =
-  "/project_pages/azorim_beit_hakerem_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/azorim_beit_hakerem_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("azorim_beit_hakerem_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -61,16 +65,7 @@ export const ABOUT = {
   pendingHint: 'מס\' יח"ד, שלב שיווק',
 };
 
-export const GALLERY_IMAGES = [
-  "/project_pages/azorim_beit_hakerem_project/IMG_01.webp",
-  "/project_pages/azorim_beit_hakerem_project/IMG_02.webp",
-  HERO.src,
-  FULL_BLEED_HERO,
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/** Hero slider cycles through every project photo, starting with the full-bleed shot. */
-export const HERO_SLIDES = [
-  FULL_BLEED_HERO,
-  HERO.src,
-  ...GALLERY_IMAGES.filter((src) => src !== FULL_BLEED_HERO && src !== HERO.src),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

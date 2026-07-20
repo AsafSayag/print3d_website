@@ -1,7 +1,11 @@
 /**
  * All copy for the גיא דורון לוי, רמת אפעל project page.
  * Rows marked `pending` are fields that still need to be filled in.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי גיא דורון לוי רמת אפעל | קנה מידה 1:75 | פרינט תלת מימד";
@@ -13,16 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: "גיא דורון לוי, רמת אפעל",
   scale: "1:75",
-  src: "/project_pages/guy_doron_levy_ramat_efal_project/guy_doron_levy_hero.webp",
 };
 
-/** Dedicated shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO =
-  "/project_pages/guy_doron_levy_ramat_efal_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/guy_doron_levy_ramat_efal_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("guy_doron_levy_ramat_efal_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -55,14 +59,7 @@ export const SPECS: SpecRow[] = [
   { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
-export const GALLERY_IMAGES = [HERO.src, FULL_BLEED_HERO];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/**
- * Hero slider cycles through every project photo. The chosen leader shot
- * (HERO.src) leads the carousel, followed by the full-bleed shot, then the rest.
- */
-export const HERO_SLIDES = [
-  HERO.src,
-  FULL_BLEED_HERO,
-  ...GALLERY_IMAGES.filter((src) => src !== HERO.src && src !== FULL_BLEED_HERO),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

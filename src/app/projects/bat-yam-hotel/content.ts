@@ -1,7 +1,11 @@
 /**
  * All copy for the מלון בת ים project page.
  * Rows marked `pending` are fields that still need to be filled in.
+ *
+ * Server-only: `projectImages` reads the filesystem, so never import this
+ * module from a "use client" file — pass the image arrays down as props.
  */
+import { projectImages } from "@/lib/projectImages";
 
 export const SEO_TITLE_TAG =
   "מודל אדריכלי מלון בת ים | קנה מידה 1:125 | פרינט תלת מימד";
@@ -13,16 +17,16 @@ export const HERO = {
   eyebrow: "",
   title: "מלון בת ים",
   scale: "1:125",
-  src: "/project_pages/bat_yam_hotel_project/bat_yam_hotel_hero.webp",
 };
 
-/** Dedicated shot used as the page's full-bleed hero. */
-export const FULL_BLEED_HERO =
-  "/project_pages/bat_yam_hotel_project/design_1_hero.webp";
-
 /** Dedicated background image for the מפרט טכני section. */
-export const SPEC_BG =
-  "/project_pages/bat_yam_hotel_project/bg_placeholder.webp";
+/**
+ * Image lists come from the asset folder, not from this file — see
+ * `projectImages`. Add, reorder or reclassify photos by renaming files.
+ */
+const IMAGES = projectImages("bat_yam_hotel_project");
+
+export const SPEC_BG = IMAGES.bg;
 
 export type SpecRow = {
   label: string;
@@ -55,18 +59,7 @@ export const SPECS: SpecRow[] = [
   { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
-export const GALLERY_IMAGES = [
-  "/project_pages/bat_yam_hotel_project/IMG_01.webp",
-  HERO.src,
-  FULL_BLEED_HERO,
-];
+export const GALLERY_ITEMS = IMAGES.gallery;
 
-/**
- * Hero slider cycles through every project photo. The chosen leader shot
- * (HERO.src) leads the carousel, followed by the full-bleed shot, then the rest.
- */
-export const HERO_SLIDES = [
-  HERO.src,
-  FULL_BLEED_HERO,
-  ...GALLERY_IMAGES.filter((src) => src !== HERO.src && src !== FULL_BLEED_HERO),
-];
+/** Hero carousel — the IMG_ subset, in numeric order. GAL_ photos are skipped. */
+export const HERO_SLIDES = IMAGES.slides;

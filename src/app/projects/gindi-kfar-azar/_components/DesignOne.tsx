@@ -2,9 +2,9 @@ import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { TechnicalSpec } from "./TechnicalSpec";
 import { HeroSlider } from "./HeroSlider";
-import { Gallery } from "./Gallery";
+import { Gallery } from "@/components/project/Gallery";
 import { AboutProject } from "./AboutProject";
-import { IMAGE_ALT, HERO, HERO_SLIDES, ABOUT, GALLERY_IMAGES } from "../content";
+import { IMAGE_ALT, HERO, HERO_SLIDES, ABOUT, GALLERY_ITEMS } from "../content";
 
 /**
  * The project page layout: full-bleed hero, spec sheet, image gallery and an
@@ -28,7 +28,7 @@ export function DesignOne() {
       <section className="section surface-ice">
         <div className="container-x">
           <h2 className="h2 heading-accent mb-10">תמונות המודל</h2>
-          <Gallery images={GALLERY_IMAGES} alt={IMAGE_ALT} />
+          <Gallery items={GALLERY_ITEMS} alt={IMAGE_ALT} />
         </div>
       </section>
 
