@@ -302,6 +302,33 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     image: "/projects/ram-aderet-givat-hamatos.webp",
     href: "/projects/ram-aderet-givat-hamatos",
   },
+  {
+    id: "guy-doron-levy-tsur-hadassa",
+    title: "גיא דורון לוי, צור הדסה",
+    client: "גיא דורון לוי",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/guy-doron-levy-tsur-hadassa.webp",
+    href: "/projects/guy-doron-levy-tsur-hadassa",
+  },
+  {
+    id: "azorim-beit-hakerem",
+    title: "אזורים, בית הכרם",
+    client: "אזורים",
+    scale: "1:200",
+    type: "residential",
+    image: "/projects/azorim-beit-hakerem.webp",
+    href: "/projects/azorim-beit-hakerem",
+  },
+  {
+    id: "rotem-shani-petach-tikva",
+    title: "רותם שני, פתח תקווה",
+    client: "רותם שני",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/rotem-shani-petach-tikva.webp",
+    href: "/projects/rotem-shani-petach-tikva",
+  },
 ];
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
