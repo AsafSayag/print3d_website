@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
      the Hebrew accessibility widget. Dev-only; has no effect in production. */
   devIndicators: false,
 
+  experimental: {
+    /* Inline the (small, Tailwind-atomic) CSS into <head> as <style> instead of
+       a render-blocking <link>. Removes the CSS request from the critical path
+       → faster FCP/LCP for first-time visitors. Production-only; no effect in
+       dev. Trade-off: returning visitors re-download the ~21KB CSS with the HTML
+       rather than from cache — acceptable for a marketing site where first-load
+       (ads / search landings) is what's measured. */
+    inlineCss: true,
+  },
+
   /* Permanent (308) redirects from the old URL architecture to the new one.
      Kept indefinitely so existing links / indexed pages resolve cleanly.
        /blog       → /knowledge        (it's a knowledge center, not a blog)
