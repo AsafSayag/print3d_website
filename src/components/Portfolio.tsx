@@ -188,6 +188,27 @@ const PROJECTS: {
     span: "",
     href: "/projects/ram-aderet-givat-hamatos",
   },
+  {
+    src: "/projects/guy-doron-levy-tsur-hadassa.webp",
+    title: "גיא דורון לוי, צור הדסה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/guy-doron-levy-tsur-hadassa",
+  },
+  {
+    src: "/projects/azorim-beit-hakerem.webp",
+    title: "אזורים, בית הכרם",
+    scale: "1:200",
+    span: "",
+    href: "/projects/azorim-beit-hakerem",
+  },
+  {
+    src: "/projects/rotem-shani-petach-tikva.webp",
+    title: "רותם שני, פתח תקווה",
+    scale: "1:100",
+    span: "",
+    href: "/projects/rotem-shani-petach-tikva",
+  },
 ];
 
 const STATS = [
