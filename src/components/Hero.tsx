@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { GlassButton } from "./ui/GlassButton";
 import { HeroVideo } from "./ui/HeroVideo";
 import { HERO, MOTION, CONTACT } from "@/lib/constants";

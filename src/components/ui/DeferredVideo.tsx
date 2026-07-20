@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Phones get the `-mobile` poster cut (see the <picture> below).
+const POSTER_MOBILE_QUERY = "(max-width: 767px)";
+
 type Source = { src: string; type: string };
 
 type Props = {
@@ -60,19 +63,45 @@ export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: P
     el.play().catch(() => {});
   }, [load, playDelayMs]);
 
+  // The poster is served through a <picture> instead of the <video>'s `poster`
+  // attribute so the browser can pick a phone-sized cut on mobile (the full
+  // 1440×1080 still is wasteful there) and the best format it supports. It also
+  // lets us mark the still `loading="lazy"` — the section is below the fold, so
+  // the poster now downloads only as it nears the viewport rather than on first
+  // load. Paths follow a convention off the `.webp` poster: `<name>.{avif,webp,
+  // jpg}` for desktop and `<name>-mobile.{avif,webp,jpg}` for phones. Visually
+  // identical: the still fills the same box and the video covers it on play.
+  const base = poster.replace(/\.webp$/, "");
+
   return (
-    <video
-      ref={ref}
-      className={className}
-      muted
-      loop
-      playsInline
-      preload="none"
-      poster={poster}
-      aria-hidden="true"
-    >
-      {load &&
-        sources.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
-    </video>
+    <>
+      <picture>
+        <source media={POSTER_MOBILE_QUERY} type="image/avif" srcSet={`${base}-mobile.avif`} />
+        <source media={POSTER_MOBILE_QUERY} type="image/webp" srcSet={`${base}-mobile.webp`} />
+        <source media={POSTER_MOBILE_QUERY} srcSet={`${base}-mobile.jpg`} />
+        <source type="image/avif" srcSet={`${base}.avif`} />
+        <source type="image/webp" srcSet={`${base}.webp`} />
+        <img
+          className={className}
+          src={`${base}.jpg`}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <video
+        ref={ref}
+        className={className}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+      >
+        {load &&
+          sources.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
+      </video>
+    </>
   );
 }

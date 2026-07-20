@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { WhatsAppButton } from "./ui/WhatsAppButton";
