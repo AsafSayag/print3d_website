@@ -208,6 +208,8 @@ export function ClientLogos() {
                   src={logo.src}
                   alt={i < count ? logo.alt : ""}
                   aria-hidden={i >= count}
+                  width={logo.w}
+                  height={logo.h}
                   loading="lazy"
                   draggable={false}
                 />

@@ -25,15 +25,20 @@ export function Logo({
   href = "/",
   ariaLabel = "Print3D — לעמוד הבית",
 }: Props) {
-  const src = withSubtitle
-    ? "/brand/print3d-logo.webp"
-    : "/brand/print3d-mark.webp";
+  // Intrinsic file dimensions — passed as width/height so the browser reserves
+  // the correct box from the aspect ratio (no layout shift). `style` still sets
+  // the rendered height; width stays auto. Keep in sync with the source files.
+  const { src, w, h } = withSubtitle
+    ? { src: "/brand/print3d-logo.webp", w: 578, h: 180 }
+    : { src: "/brand/print3d-mark.webp", w: 521, h: 120 };
 
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt="Print3D"
+      width={w}
+      height={h}
       draggable={false}
       className={className}
       style={{ height: `${size}px`, width: "auto", display: "block" }}

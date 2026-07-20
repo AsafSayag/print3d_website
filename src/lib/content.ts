@@ -34,29 +34,33 @@ export const SEQUENCE_STAGES = [
 ] as const;
 export const SEQUENCE_EYEBROW = "כך נבנה מודל";
 
-export type ClientLogo = { src: string; alt: string };
+// `w`/`h` are the file's intrinsic pixel dimensions — passed to the <img> so
+// the browser can reserve the correct box from the aspect ratio (no layout
+// shift) before the logo loads. Dimensions reflect the perf resize pass; keep
+// in sync if a logo is re-exported (see scripts/perf-resize-images.mjs).
+export type ClientLogo = { src: string; alt: string; w: number; h: number };
 
 export const CLIENT_LOGOS: ClientLogo[] = [
-  { src: "/clients/shikun-binui.webp", alt: "שיכון ובינוי" },
-  { src: "/clients/ashdar.webp", alt: "אשדר" },
-  { src: "/clients/afrika-israel.webp", alt: "אפריקה ישראל" },
-  { src: "/clients/electra-magurim.webp", alt: "אלקטרה מגורים" },
-  { src: "/clients/canada-israel.webp", alt: "קנדה ישראל" },
-  { src: "/clients/azorim.webp", alt: "אזורים" },
-  { src: "/clients/gindi-investments.webp", alt: "גינדי השקעות" },
-  { src: "/clients/elad-magurim.webp", alt: "אלעד מגורים" },
-  { src: "/clients/tzemach-hammerman.webp", alt: "צמח המרמן" },
-  { src: "/clients/bsr.webp", alt: "BSR" },
-  { src: "/clients/rothstein.webp", alt: "רוטשטיין" },
-  { src: "/clients/shapir.webp", alt: "שפיר" },
-  { src: "/clients/hagag.webp", alt: "חג'ג'" },
-  { src: "/clients/guy-doron-levi.webp", alt: "גיא ודורון לוי" },
-  { src: "/clients/avisror.webp", alt: "אביסרור" },
-  { src: "/clients/aura.webp", alt: "AURA" },
-  { src: "/clients/donitz-elad.webp", alt: "דוניץ אלעד" },
-  { src: "/clients/sela-binui.webp", alt: "סלע בינוי" },
-  { src: "/clients/maoz-daniel.webp", alt: "מעוז דניאל" },
-  { src: "/clients/parshkovsky.webp", alt: "פרשקובסקי" },
+  { src: "/clients/shikun-binui.webp", alt: "שיכון ובינוי", w: 407, h: 160 },
+  { src: "/clients/ashdar.webp", alt: "אשדר", w: 322, h: 160 },
+  { src: "/clients/afrika-israel.webp", alt: "אפריקה ישראל", w: 388, h: 160 },
+  { src: "/clients/electra-magurim.webp", alt: "אלקטרה מגורים", w: 480, h: 81 },
+  { src: "/clients/canada-israel.webp", alt: "קנדה ישראל", w: 148, h: 82 },
+  { src: "/clients/azorim.webp", alt: "אזורים", w: 188, h: 160 },
+  { src: "/clients/gindi-investments.webp", alt: "גינדי השקעות", w: 178, h: 65 },
+  { src: "/clients/elad-magurim.webp", alt: "אלעד מגורים", w: 182, h: 107 },
+  { src: "/clients/tzemach-hammerman.webp", alt: "צמח המרמן", w: 193, h: 81 },
+  { src: "/clients/bsr.webp", alt: "BSR", w: 160, h: 78 },
+  { src: "/clients/rothstein.webp", alt: "רוטשטיין", w: 445, h: 160 },
+  { src: "/clients/shapir.webp", alt: "שפיר", w: 196, h: 160 },
+  { src: "/clients/hagag.webp", alt: "חג'ג'", w: 99, h: 108 },
+  { src: "/clients/guy-doron-levi.webp", alt: "גיא ודורון לוי", w: 289, h: 160 },
+  { src: "/clients/avisror.webp", alt: "אביסרור", w: 194, h: 103 },
+  { src: "/clients/aura.webp", alt: "AURA", w: 390, h: 160 },
+  { src: "/clients/donitz-elad.webp", alt: "דוניץ אלעד", w: 370, h: 160 },
+  { src: "/clients/sela-binui.webp", alt: "סלע בינוי", w: 480, h: 117 },
+  { src: "/clients/maoz-daniel.webp", alt: "מעוז דניאל", w: 404, h: 122 },
+  { src: "/clients/parshkovsky.webp", alt: "פרשקובסקי", w: 244, h: 160 },
 ];
 export const CLIENTS_HEADING = "היזמים המובילים בישראל בוחרים בנו";
 
