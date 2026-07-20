@@ -1,0 +1,12 @@
+# Modern-browser target. Next/SWC reads this to decide which transforms and
+# polyfills to ship. All versions below support the features PageSpeed flagged
+# as "Legacy JavaScript" (Object.hasOwn, Array.prototype.at/flat/flatMap,
+# Object.fromEntries, String.trimStart/trimEnd) natively — so none get
+# polyfilled. These browsers date to 2021–2022 and are universally deployed;
+# this changes nothing visually, only drops dead polyfill bytes.
+Chrome >= 93
+Edge >= 93
+Firefox >= 92
+Safari >= 15.4
+iOS >= 15.4
+not dead
