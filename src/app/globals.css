@@ -614,19 +614,15 @@ body {
   display: flex;
 }
 
-/* Horizontal scroller: auto-scroll (JS) + manual scroll/drag */
+/* Marquee viewport: clips the tripled track, which is moved with a transform
+   (see ClientLogos.tsx). It is NOT a native scroll container — that used to
+   fight iOS touch momentum and make the strip flicker. `touch-action: pan-y`
+   keeps vertical page scrolling while horizontal drags are handled in JS. */
 .framer-scroller {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;
+  overflow: hidden;
   cursor: grab;
-  touch-action: pan-x;
-  -webkit-overflow-scrolling: touch;
-}
-.framer-scroller::-webkit-scrollbar {
-  display: none;
+  touch-action: pan-y;
 }
 .framer-scroller.is-dragging {
   cursor: grabbing;
@@ -637,6 +633,7 @@ body {
   width: max-content;
   gap: 20px;
   padding-inline: 10px;
+  will-change: transform;
   /* Vertical breathing room so the centred/hovered tile — which lifts
      (translateY -4px) and scales (1.06) — is never clipped at the top by the
      scroller's overflow-y: hidden. Without this the scroller is exactly one
