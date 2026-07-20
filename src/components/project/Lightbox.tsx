@@ -18,7 +18,8 @@ type LightboxProps = {
  * `object-contain` (never cropped), with prev/next controls, keyboard nav
  * (Esc closes, ← / → navigate), backdrop-click to close and a body scroll lock.
  *
- * Video items play with controls and sound. Playback needs no explicit cleanup:
+ * Video items autoplay muted (browser policy) with controls; the user can
+ * unmute via the native control bar. Playback needs no explicit cleanup:
  * the `key` on the media element remounts it whenever the index changes, and
  * closing unmounts the whole portal — both stop the clip.
  */
@@ -92,6 +93,7 @@ export function Lightbox({
             poster={item.poster}
             controls
             autoPlay
+            muted
             playsInline
             aria-label={`${alt} — סרטון`}
             className="h-full w-full object-contain"
