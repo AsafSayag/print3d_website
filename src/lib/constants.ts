@@ -22,11 +22,11 @@ export const CONTACT = {
   mapsEmbedUrl:
     "https://www.google.com/maps?q=%D7%93%D7%A8%D7%9A%20%D7%91%D7%9F%20%D7%A6%D7%91%D7%99%2084%20%D7%AA%D7%9C%20%D7%90%D7%91%D7%99%D7%91&output=embed",
   /**
-   * TODO: set the business WhatsApp number in international format
-   * (e.g. "972501234567") to activate the floating WhatsApp button.
-   * While empty, the button scrolls to the contact form instead.
+   * Business WhatsApp number in international format (053-724-7958 → drop the
+   * leading 0, prefix 972). Both WhatsApp buttons — the floating bubble and the
+   * header icon — open a chat at https://wa.me/<this> when it is set.
    */
-  whatsappNumber: "",
+  whatsappNumber: "972537247958",
 } as const;
 
 /** Brand palette — mirrors the CSS variables declared in globals.css. */
