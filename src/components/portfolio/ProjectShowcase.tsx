@@ -17,10 +17,12 @@ import {
 const AUTOPLAY_MS = 9000;
 
 /** Our most select projects, in the curated order defined alongside the data.
- *  The rest stay discoverable via the filter grid and the highlights strip. */
+ *  The carousel is a video reel, so we also guard on `p.video`: only projects
+ *  with real footage appear. Image-only projects stay discoverable via the
+ *  filter grid and the highlights strip. */
 const SHOWCASE_PROJECTS: Project[] = SHOWCASE_PROJECT_IDS.map((id) =>
   PORTFOLIO_PROJECTS.find((p) => p.id === id),
-).filter((p): p is Project => Boolean(p));
+).filter((p): p is Project => Boolean(p?.video));
 
 /**
  * Wide, full-bleed showcase carousel — one project fills the screen at a time.

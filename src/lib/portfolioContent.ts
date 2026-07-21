@@ -244,6 +244,13 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/projects/sarfati-arnona-jerusalem.webp",
+    // Carousel-only footage: `video` is read solely by the showcase carousel
+    // (ProjectShowcase). The project's own case-study page draws from its
+    // separate content.ts/HeroSlider, so this clip never appears there.
+    video: {
+      mp4: "/videos/projects/sarfati-arnona-jerusalem.mp4",
+      webm: "/videos/projects/sarfati-arnona-jerusalem.webm",
+    },
     href: "/projects/sarfati-arnona-jerusalem",
   },
   {
@@ -373,9 +380,11 @@ export const PORTFOLIO_SHOWCASE = {
   title: "פרויקטים נבחרים",
 } as const;
 
-/** The curated set — and exact order — shown in the main showcase carousel:
- *  our most select projects. Every other project stays discoverable through the
- *  filter grid and the "פרויקטים נוספים שמדברים בעד עצמם" highlights strip below. */
+/** The curated set — and exact order — shown in the main showcase carousel.
+ *  The carousel is a video reel, so it lists only projects that have real
+ *  footage (a `video`); ProjectShowcase also guards on this. Image-only
+ *  projects are intentionally left out here but stay fully discoverable through
+ *  the filter grid below, which lists every project. */
 export const SHOWCASE_PROJECT_IDS: readonly string[] = [
   "dafna-tidhar",
   "beit-hakerem",
@@ -383,11 +392,8 @@ export const SHOWCASE_PROJECT_IDS: readonly string[] = [
   "prashkovski-ramat-hanasi",
   "gindi-kfar-azar",
   "shbiro-rishon-letzion",
-  "avisror-ramat-hasharon",
   "avisror-sde-dov",
-  "kardan-metsada-bat-yam",
   "sarfati-arnona-jerusalem",
-  "prashkovski-ashdod",
 ];
 
 export const PORTFOLIO_FILTERS = {
