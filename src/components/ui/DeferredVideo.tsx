@@ -29,6 +29,17 @@ type Props = {
    * below-the-fold videos, which stay lazy + proximity-gated.
    */
   priority?: boolean;
+  /**
+   * Carousel gate. In a horizontal slider every slide shares the same vertical
+   * position, so the proximity check alone treats them all as "near" and fires
+   * every clip at once — downloading the whole reel up front. Pass `false` for
+   * slides outside the active window to hold them on their poster; pass `true`
+   * for the active slide and its immediate neighbours, and the bytes load then
+   * — and stay loaded, so a slide reachable in one step always plays instantly
+   * and revisiting never re-downloads. Defaults to `true`, so the single-video
+   * callers (heroes, CTAs) are completely unaffected.
+   */
+  active?: boolean;
 };
 
 /**
@@ -48,6 +59,7 @@ export function DeferredVideo({
   posterVariants = false,
   playDelayMs = 0,
   priority = false,
+  active = true,
 }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const posterRef = useRef<HTMLImageElement | null>(null);
@@ -56,7 +68,14 @@ export function DeferredVideo({
   // meaningful in `priority` (hero) mode; for ambient videos it opens at mount.
   const [posterReady, setPosterReady] = useState(!priority);
 
+  // Proximity gate. Polls until the element is within ~2 viewports, then flips
+  // `load` on for good. `active` lets a carousel hold non-neighbour slides back:
+  // while it is false we don't even poll (so the whole reel can't load at once);
+  // when the slide enters the active window `active` turns true, the effect
+  // re-runs, and — since `load` is never reset — the clip loads once and stays.
   useEffect(() => {
+    if (load) return; // already committed to loading — nothing left to gate
+    if (!active) return; // carousel: hold this slide on its poster for now
     const el = ref.current;
     if (!el) return;
     let raf = 0;
@@ -75,7 +94,7 @@ export function DeferredVideo({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [load, active]);
 
   // Hero mode: open the video gate only once the eager poster (the LCP element)
   // has finished, so the ~750KB clip never competes with it. A safety timeout

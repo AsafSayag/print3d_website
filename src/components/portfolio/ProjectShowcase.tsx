@@ -52,6 +52,15 @@ export function ProjectShowcase() {
   const next = () => setActive((a) => (a + 1) % total);
   const prev = () => setActive((a) => (a - 1 + total) % total);
 
+  // Which slides may load their video bytes: the active one plus its immediate
+  // neighbours (with wraparound). Every slide reachable in a single prev/next
+  // step is therefore already loaded, so playback stays instant — but the rest
+  // of the reel is held on its poster instead of all clips downloading at once.
+  const nearActive = (i: number) => {
+    const d = (i - active + total) % total;
+    return d <= 1 || d === total - 1;
+  };
+
   // Auto-advance every AUTOPLAY_MS. Re-arming on `active` means any manual
   // navigation (button, drag or swipe) resets the timer, so the slide the user
   // just picked gets its full dwell before the next auto step. Only an in-flight
@@ -210,6 +219,7 @@ export function ProjectShowcase() {
                     poster={p.image}
                     posterVariants={p.posterVariants}
                     playDelayMs={3000}
+                    active={nearActive(i)}
                     sources={[
                       { src: p.video.webm, type: "video/webm" },
                       { src: p.video.mp4, type: "video/mp4" },

@@ -73,6 +73,9 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/videos/projects/gindi-kfar-azar.webp",
+    // Full poster-cut set exists on disk (avif + `-mobile.*` + jpg), so serve
+    // the responsive/AVIF poster: fewer bytes at the same resolution.
+    posterVariants: true,
     // Carousel-only footage: `video` is read solely by the showcase carousel
     // (ProjectShowcase). The project's own case-study page draws from its
     // separate content.ts/HeroSlider, so this clip never appears there.
@@ -174,6 +177,9 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/projects/avisror-sde-dov.webp",
+    // Full poster-cut set exists on disk (avif + `-mobile.*` + jpg), so serve
+    // the responsive/AVIF poster: fewer bytes at the same resolution.
+    posterVariants: true,
     // Carousel-only footage: `video` is read solely by the showcase carousel
     // (ProjectShowcase). The project's own case-study page draws from its
     // separate content.ts/HeroSlider, so this clip never appears there.
@@ -208,6 +214,9 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/projects/sarfati-arnona-jerusalem.webp",
+    // Full poster-cut set exists on disk (avif + `-mobile.*` + jpg), so serve
+    // the responsive/AVIF poster: fewer bytes at the same resolution.
+    posterVariants: true,
     // Carousel-only footage: `video` is read solely by the showcase carousel
     // (ProjectShowcase). The project's own case-study page draws from its
     // separate content.ts/HeroSlider, so this clip never appears there.
@@ -287,6 +296,9 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:200",
     type: "residential",
     image: "/projects/prashkovski-ramat-hanasi.webp",
+    // Full poster-cut set exists on disk (avif + `-mobile.*` + jpg), so serve
+    // the responsive/AVIF poster: fewer bytes at the same resolution.
+    posterVariants: true,
     // Carousel-only footage: `video` is read solely by the showcase carousel
     // (ProjectShowcase). The project's own case-study page draws from its
     // separate content.ts/HeroSlider, so this clip never appears there.
