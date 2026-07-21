@@ -4,6 +4,7 @@ import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
 import { CountUp } from "./ui/CountUp";
 import { GlassButton } from "./ui/GlassButton";
+import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 
 // Real models from the Print3D archive, with their scales.
 // `href` marks a project that links through to its own case-study page.
@@ -14,7 +15,6 @@ const PROJECTS: {
   span: string;
   href?: string;
 }[] = [
-  { src: "/projects/neve-gan.webp", title: "נווה גן", scale: "1:75", span: "row-span-2" },
   {
     src: "/projects/gindi_kfar_azar.webp",
     title: 'גינדי כפר אז"ר',
@@ -22,11 +22,6 @@ const PROJECTS: {
     span: "",
     href: "/projects/gindi-kfar-azar",
   },
-  { src: "/projects/gindi-bait-bapark.jpg", title: "גינדי החזקות · בית בפארק", scale: "1:100", span: "" },
-  { src: "/projects/shikun-binui-or-yam.jpg", title: "שיכון ובינוי · אור ים", scale: "1:200", span: "" },
-  { src: "/projects/gindi-tlv.webp", title: "גינדי TLV", scale: "1:200", span: "" },
-  { src: "/projects/tzavta-shapir.jpg", title: "צוותא · שפיר", scale: "1:150", span: "" },
-  { src: "/projects/preshkovsky-tabaa.jpg", title: "פרשקובסקי · מודל תב״ע", scale: "1:500", span: "" },
   {
     src: "/projects/dafna-tidhar.webp",
     title: "תדהר דפנה",
@@ -211,6 +206,10 @@ const PROJECTS: {
   },
 ];
 
+const VISIBLE_PROJECTS = PROJECTS.filter(
+  (p) => !p.href || !HIDDEN_PROJECT_SLUGS.includes(p.href.replace("/projects/", ""))
+);
+
 const STATS = [
   { end: 15, label: "שנות ניסיון" },
   { end: 250, label: "פרויקטים שהושלמו" },
@@ -277,7 +276,7 @@ export function Portfolio() {
           aria-label="הצגת כל הפרויקטים"
         />
         <div className="collapse-host grid grid-cols-2 lg:grid-cols-3 auto-rows-[220px] md:auto-rows-[260px] gap-4 mt-12 md:mt-16">
-          {PROJECTS.map((p, i) => (
+          {VISIBLE_PROJECTS.map((p, i) => (
             <Reveal
               key={p.src}
               index={i % 3}

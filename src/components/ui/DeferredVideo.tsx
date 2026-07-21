@@ -9,8 +9,16 @@ type Source = { src: string; type: string };
 
 type Props = {
   sources: Source[];
+  /** Poster path. Must be the `.webp`; it is used verbatim as the fallback. */
   poster: string;
   className?: string;
+  /**
+   * Set only when the derived poster cuts (`-mobile.{avif,webp,jpg}` and
+   * `.{avif,jpg}`) genuinely exist next to the `.webp` — see the <picture>
+   * comment below for why guessing is not safe. Defaults to false, which
+   * serves the `.webp` alone: heavier on phones, but never broken.
+   */
+  posterVariants?: boolean;
   /** Delay (ms) between the video becoming ready and its first play() call. */
   playDelayMs?: number;
   /**
@@ -37,6 +45,7 @@ export function DeferredVideo({
   sources,
   poster,
   className,
+  posterVariants = false,
   playDelayMs = 0,
   priority = false,
 }: Props) {
@@ -111,20 +120,36 @@ export function DeferredVideo({
   // load. Paths follow a convention off the `.webp` poster: `<name>.{avif,webp,
   // jpg}` for desktop and `<name>-mobile.{avif,webp,jpg}` for phones. Visually
   // identical: the still fills the same box and the video covers it on play.
+  //
+  // Those extra cuts are emitted ONLY under `posterVariants`, because <picture>
+  // has no fallback-on-error: the browser commits to the first <source> whose
+  // media+type match and, if that URL 404s, renders nothing at all — it does not
+  // try the next one. Emitting the full set by convention therefore broke every
+  // poster that only had its `.webp` (which was most of them): every AVIF-capable
+  // browser picked the missing `.avif` and painted an empty box. Default off so
+  // the failure mode of forgetting the flag is a heavier image, not a blank one.
   const base = poster.replace(/\.webp$/, "");
 
   return (
     <>
       <picture>
-        <source media={POSTER_MOBILE_QUERY} type="image/avif" srcSet={`${base}-mobile.avif`} />
-        <source media={POSTER_MOBILE_QUERY} type="image/webp" srcSet={`${base}-mobile.webp`} />
-        <source media={POSTER_MOBILE_QUERY} srcSet={`${base}-mobile.jpg`} />
-        <source type="image/avif" srcSet={`${base}.avif`} />
-        <source type="image/webp" srcSet={`${base}.webp`} />
+        {posterVariants && (
+          <>
+            <source media={POSTER_MOBILE_QUERY} type="image/avif" srcSet={`${base}-mobile.avif`} />
+            <source media={POSTER_MOBILE_QUERY} type="image/webp" srcSet={`${base}-mobile.webp`} />
+            <source media={POSTER_MOBILE_QUERY} srcSet={`${base}-mobile.jpg`} />
+            <source type="image/avif" srcSet={`${base}.avif`} />
+            <source type="image/webp" srcSet={`${base}.webp`} />
+          </>
+        )}
         <img
           ref={posterRef}
           className={className}
-          src={`${base}.jpg`}
+          // The `.webp` poster itself — the one file guaranteed to exist. In
+          // variant mode the <source> list above wins for browsers that can use
+          // it; here it is only the last resort. (It used to be a derived
+          // `.jpg`, which 404'd for posters that had no jpg cut.)
+          src={posterVariants ? `${base}.jpg` : poster}
           alt=""
           aria-hidden="true"
           // Hero posters are the LCP element — fetch them eagerly at high

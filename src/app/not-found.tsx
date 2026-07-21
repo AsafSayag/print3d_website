@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
+import { NOT_FOUND_METADATA } from "@/lib/pageMeta";
 
-export const metadata: Metadata = {
-  title: "משהו השתבש | Print3D",
-  robots: { index: false, follow: true },
-};
+export const metadata = NOT_FOUND_METADATA;
 
 export default function NotFound() {
   return (

@@ -8,7 +8,10 @@ import { SPEC_BG, SPECS, IMAGE_ALT } from "../content";
  */
 export function TechnicalSpec() {
   return (
-    <section className="relative w-full overflow-hidden bg-[color:var(--navy-950)] text-white">
+    <section
+      id="technical-spec"
+      className="relative w-full overflow-hidden bg-[color:var(--navy-950)] text-white"
+    >
       {/* Background image */}
       <Image
         src={SPEC_BG}

@@ -21,12 +21,16 @@ type Props = {
   /** Override the background video (defaults to the shared drone-loop). */
   video?: {
     poster: string;
+    /** True only when the poster's derived cuts exist — see DeferredVideo. */
+    posterVariants?: boolean;
     sources: { src: string; type: string }[];
   };
 };
 
 const DEFAULT_VIDEO = {
   poster: "/videos/cta-poster.webp",
+  // Full derived set present on disk.
+  posterVariants: true,
   sources: [
     { src: "/videos/cta-loop.webm", type: "video/webm" },
     { src: "/videos/cta-loop.mp4", type: "video/mp4" },
@@ -54,6 +58,7 @@ export function ContactHero({
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
         poster={video.poster}
+        posterVariants={video.posterVariants}
         sources={video.sources}
         priority
       />

@@ -36,6 +36,8 @@ export function CallbackCta() {
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
         poster="/videos/cta-poster.webp"
+        // Full derived set present on disk.
+        posterVariants
         sources={[
           { src: "/videos/cta-loop.webm", type: "video/webm" },
           { src: "/videos/cta-loop.mp4", type: "video/mp4" },
