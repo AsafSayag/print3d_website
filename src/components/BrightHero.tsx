@@ -52,6 +52,7 @@ export function BrightHero({
         className="cta-layer h-full w-full object-cover"
         poster={video.poster}
         sources={video.sources}
+        priority
       />
 
       {/* Bright overlays for the black-copy treatment */}

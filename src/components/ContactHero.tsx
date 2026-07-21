@@ -55,6 +55,7 @@ export function ContactHero({
         className="cta-layer h-full w-full object-cover"
         poster={video.poster}
         sources={video.sources}
+        priority
       />
 
       {/* Overlays for depth + legibility */}

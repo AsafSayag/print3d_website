@@ -13,6 +13,14 @@ type Props = {
   className?: string;
   /** Delay (ms) between the video becoming ready and its first play() call. */
   playDelayMs?: number;
+  /**
+   * Above-the-fold hero mode. The poster is the page's LCP element, so it is
+   * loaded eagerly at high priority (never `loading="lazy"`, which would tank
+   * LCP), and the video bytes are held until the poster has painted so the clip
+   * can never steal bandwidth from the LCP image. Leave `false` for the ambient
+   * below-the-fold videos, which stay lazy + proximity-gated.
+   */
+  priority?: boolean;
 };
 
 /**
@@ -25,9 +33,19 @@ type Props = {
  * the full file immediately; we call play() ourselves after attaching the
  * sources.
  */
-export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: Props) {
+export function DeferredVideo({
+  sources,
+  poster,
+  className,
+  playDelayMs = 0,
+  priority = false,
+}: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
+  const posterRef = useRef<HTMLImageElement | null>(null);
   const [load, setLoad] = useState(false);
+  // Gate that holds the video's bytes until the LCP poster is painted. Only
+  // meaningful in `priority` (hero) mode; for ambient videos it opens at mount.
+  const [posterReady, setPosterReady] = useState(!priority);
 
   useEffect(() => {
     const el = ref.current;
@@ -50,9 +68,31 @@ export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: P
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Sources were just attached — load and start the loop.
+  // Hero mode: open the video gate only once the eager poster (the LCP element)
+  // has finished, so the ~750KB clip never competes with it. A safety timeout
+  // covers a missed load/error event.
   useEffect(() => {
-    if (!load) return;
+    if (!priority) return;
+    const img = posterRef.current;
+    if (!img || img.complete) {
+      setPosterReady(true);
+      return;
+    }
+    const done = () => setPosterReady(true);
+    img.addEventListener("load", done);
+    img.addEventListener("error", done);
+    const t = window.setTimeout(done, 2500);
+    return () => {
+      img.removeEventListener("load", done);
+      img.removeEventListener("error", done);
+      window.clearTimeout(t);
+    };
+  }, [priority]);
+
+  // Sources were just attached — load and start the loop. Waits for both the
+  // proximity gate (`load`) and, in hero mode, the poster gate (`posterReady`).
+  useEffect(() => {
+    if (!load || !posterReady) return;
     const el = ref.current;
     if (!el) return;
     el.load();
@@ -61,7 +101,7 @@ export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: P
       return () => clearTimeout(t);
     }
     el.play().catch(() => {});
-  }, [load, playDelayMs]);
+  }, [load, posterReady, playDelayMs]);
 
   // The poster is served through a <picture> instead of the <video>'s `poster`
   // attribute so the browser can pick a phone-sized cut on mobile (the full
@@ -82,11 +122,15 @@ export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: P
         <source type="image/avif" srcSet={`${base}.avif`} />
         <source type="image/webp" srcSet={`${base}.webp`} />
         <img
+          ref={posterRef}
           className={className}
           src={`${base}.jpg`}
           alt=""
           aria-hidden="true"
-          loading="lazy"
+          // Hero posters are the LCP element — fetch them eagerly at high
+          // priority. Ambient below-the-fold posters stay lazy.
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
           decoding="async"
         />
       </picture>
@@ -100,6 +144,7 @@ export function DeferredVideo({ sources, poster, className, playDelayMs = 0 }: P
         aria-hidden="true"
       >
         {load &&
+          posterReady &&
           sources.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
       </video>
     </>

@@ -6,7 +6,11 @@ export const HERO_VIDEO: {
   poster: string;
   sources: { src: string; type: string }[];
 } = {
-  poster: "/videos/about-hero-poster.jpg",
+  // Must be the `.webp` base: DeferredVideo derives every poster variant
+  // (`.jpg`/`.avif` + `-mobile.*`) by stripping this `.webp` suffix. A `.jpg`
+  // here produced broken URLs (`…jpg.jpg`, `…jpg-mobile.avif`) that 404'd, so
+  // the hero painted no poster and its LCP stalled on the video/heading.
+  poster: "/videos/about-hero-poster.webp",
   sources: [
     { src: "/videos/about-hero.webm", type: "video/webm" },
     { src: "/videos/about-hero.mp4", type: "video/mp4" },
