@@ -9,15 +9,16 @@ import { Fragment } from "react";
  * Kept deliberately small: it tokenises on the two patterns only, so the
  * article content stays plain, translation-friendly strings in content.ts.
  */
-const PATTERN = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
-
 export function RichText({ text }: { text: string }) {
+  // Fresh regex per render: a module-level `/…/g` carries its `lastIndex`
+  // across calls (shared mutable state). A local literal gives each render a
+  // clean instance starting at 0, so no reset is needed.
+  const pattern = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
   const nodes: React.ReactNode[] = [];
   let last = 0;
   let match: RegExpExecArray | null;
 
-  PATTERN.lastIndex = 0;
-  while ((match = PATTERN.exec(text)) !== null) {
+  while ((match = pattern.exec(text)) !== null) {
     if (match.index > last) nodes.push(text.slice(last, match.index));
 
     if (match[1] !== undefined) {

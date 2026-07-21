@@ -111,6 +111,13 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/videos/projects/gindi-kfar-azar.webp",
+    // Carousel-only footage: `video` is read solely by the showcase carousel
+    // (ProjectShowcase). The project's own case-study page draws from its
+    // separate content.ts/HeroSlider, so this clip never appears there.
+    video: {
+      mp4: "/videos/projects/gindi-kfar-azar.mp4",
+      webm: "/videos/projects/gindi-kfar-azar.webm",
+    },
     href: "/projects/gindi-kfar-azar",
   },
   {
