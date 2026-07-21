@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { buildProjectMeta } from "@/lib/pageMeta";
-import { Header } from "@/components/Header";
+import { createProjectPage } from "@/lib/projectPage";
 import { ProjectView } from "./_components/ProjectView";
 import { SEO_TITLE_TAG, IMAGE_ALT } from "./content";
 
-export const metadata: Metadata = buildProjectMeta({
+const { metadata, ProjectPage } = createProjectPage({
+  slug: "avisror-ramat-hasharon",
   title: SEO_TITLE_TAG,
   description: IMAGE_ALT,
-  slug: "avisror-ramat-hasharon",
+  view: ProjectView,
 });
 
-export default function AvisrorRamatHasharonPage() {
-  return (
-    <div className="relative">
-      <Header />
-      <ProjectView />
-    </div>
-  );
-}
+export { metadata };
+export default ProjectPage;

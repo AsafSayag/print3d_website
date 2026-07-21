@@ -1,24 +1,13 @@
-import type { Metadata } from "next";
-import { buildProjectMeta } from "@/lib/pageMeta";
-import { notFound } from "next/navigation";
-import { Header } from "@/components/Header";
-import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
+import { createProjectPage } from "@/lib/projectPage";
 import { ProjectView } from "./_components/ProjectView";
 import { SEO_TITLE_TAG, IMAGE_ALT } from "./content";
 
-export const metadata: Metadata = buildProjectMeta({
+const { metadata, ProjectPage } = createProjectPage({
+  slug: "guy-doron-levy-tsur-hadassa",
   title: SEO_TITLE_TAG,
   description: IMAGE_ALT,
-  slug: "guy-doron-levy-tsur-hadassa",
+  view: ProjectView,
 });
 
-export default function GuyDoronLevyTsurHadassaPage() {
-  if (HIDDEN_PROJECT_SLUGS.includes("guy-doron-levy-tsur-hadassa")) notFound();
-
-  return (
-    <div className="relative">
-      <Header />
-      <ProjectView />
-    </div>
-  );
-}
+export { metadata };
+export default ProjectPage;

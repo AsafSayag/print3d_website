@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { buildProjectMeta } from "@/lib/pageMeta";
-import { Header } from "@/components/Header";
+import { createProjectPage } from "@/lib/projectPage";
 import { DesignOne } from "./_components/DesignOne";
 import { SEO_TITLE_TAG, IMAGE_ALT } from "./content";
 
-export const metadata: Metadata = buildProjectMeta({
+const { metadata, ProjectPage } = createProjectPage({
+  slug: "gindi-kfar-azar",
   title: SEO_TITLE_TAG,
   description: IMAGE_ALT,
-  slug: "gindi-kfar-azar",
+  view: DesignOne,
 });
 
-export default function GindiKfarAzarPage() {
-  return (
-    <div className="relative">
-      <Header />
-      <DesignOne />
-    </div>
-  );
-}
+export { metadata };
+export default ProjectPage;

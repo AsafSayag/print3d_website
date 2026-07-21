@@ -2,6 +2,21 @@ import type { Metadata } from "next";
 import { CONTACT } from "./constants";
 
 /**
+ * Metadata for anything that renders the 404 page — the not-found route itself
+ * and any page that calls notFound().
+ *
+ * Deliberately bare: no description, no canonical, no OG/Twitter cards. A page
+ * that 404s must not describe what would have been there. Hidden projects rely
+ * on this — Next evaluates a page's `metadata` export even when the component
+ * calls notFound(), so a project's real title and canonical URL would otherwise
+ * still ship inside the 404 response.
+ */
+export const NOT_FOUND_METADATA: Metadata = {
+  title: "משהו השתבש | Print3D",
+  robots: { index: false, follow: true },
+};
+
+/**
  * Builds a complete, self-consistent Metadata object for a standalone page:
  * unique title (suffixed with the brand), description, canonical URL, and
  * matching Open Graph + Twitter cards. Titles stay under ~60 chars.
