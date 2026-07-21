@@ -220,11 +220,18 @@ track is intentional before shipping. Videos never enter the hero carousel.
    - `page.tsx` — a plain server component: `Header` + `ProjectView`, with
      `metadata` from `SEO_TITLE_TAG` / `IMAGE_ALT`. (`shbiro` passes
      `<Header transparent />` so the dark carousel reads under the header.)
-4. **Register the project** in both catalog sources:
+4. **Register the project** in both catalog sources, plus the slug reference:
    - `src/lib/portfolioContent.ts` — add to `PORTFOLIO_PROJECTS`
      (`id`, `title`, `client`, `scale`, `type`, `image`, `href`).
    - `src/components/Portfolio.tsx` — add to the local `PROJECTS` array
      (`src`, `title`, `scale`, `span: ""`, `href`).
+   - `src/lib/SLUGS.md` — add a row to the table (slug, title, client, blank
+     `Hidden` column) so the new project is discoverable for copy/pasting into
+     `HIDDEN_PROJECT_SLUGS` later.
+   - `src/lib/hiddenProjects.ts` — add the same row to the reference table in
+     the comment above `HIDDEN_PROJECT_SLUGS`. It's a duplicate of the
+     `SLUGS.md` table on purpose, kept in the same file as the array so a
+     slug can be found and hidden without leaving this file.
 5. **Verify** in-browser (dev server):
    - Hero slider cycles every image, no duplicates/missing, arrows + dots work.
    - מפרט טכני shows the bg photo + shadow with the spec text in a legible glass

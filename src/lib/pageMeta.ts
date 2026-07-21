@@ -19,7 +19,49 @@ export function buildPageMeta({
   /** Utility pages (404, success) opt out of indexing. */
   index?: boolean;
 }): Metadata {
-  const fullTitle = `${title} | Print3D`;
+  return build({ fullTitle: `${title} | Print3D`, description, path, index });
+}
+
+/**
+ * Metadata for a project case-study page.
+ *
+ * Separate from `buildPageMeta` because a project's `SEO_TITLE_TAG` already
+ * ends in its own brand suffix ("… | פרינט תלת מימד"); routing it through
+ * `buildPageMeta` would append a second one. Everything else — the canonical
+ * URL and the matching OG/Twitter cards — is identical.
+ *
+ * Use this on every project page. Declaring `metadata` inline instead silently
+ * inherits the root layout's homepage canonical, which makes Google read the
+ * page as a duplicate of the homepage and drop it from the index.
+ */
+export function buildProjectMeta({
+  title,
+  description,
+  slug,
+}: {
+  /** The project's `SEO_TITLE_TAG` — used verbatim, no suffix appended. */
+  title: string;
+  description: string;
+  /** Project slug, without the `/projects/` prefix. */
+  slug: string;
+}): Metadata {
+  return build({ fullTitle: title, description, path: `/projects/${slug}` });
+}
+
+function build({
+  fullTitle,
+  description,
+  path,
+  index = true,
+}: {
+  /** Final `<title>`, already carrying whatever brand suffix it needs. */
+  fullTitle: string;
+  description: string;
+  /** Absolute path beginning with "/". */
+  path: string;
+  /** Utility pages (404, success) opt out of indexing. */
+  index?: boolean;
+}): Metadata {
   const url = `${CONTACT.siteUrl}${path}`;
 
   return {

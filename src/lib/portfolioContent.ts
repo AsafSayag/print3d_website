@@ -5,6 +5,8 @@
  * highlights carousel all read from the same source.
  */
 
+import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
+
 export const PORTFOLIO_HERO = {
   eyebrow: "קטלוג",
   title: "כל פרויקט הוא סיפור שהופך למודל",
@@ -21,6 +23,14 @@ export type Project = {
   scale: string;
   type: ProjectType;
   image: string;
+  /**
+   * Set only when `image`'s derived poster cuts (`-mobile.{avif,webp,jpg}` and
+   * `.{avif,jpg}`) actually sit next to it in `public/projects/`. Drives the
+   * showcase carousel's responsive poster; omitting it just serves the `.webp`.
+   * Never set it speculatively — a missing cut renders a blank poster rather
+   * than falling back (see DeferredVideo).
+   */
+  posterVariants?: true;
   /** Real footage — when present, the showcase carousel plays this instead of
    * the static image (lazy-loaded, muted, looping; `image` doubles as poster). */
   video?: { mp4: string; webm: string };
@@ -29,7 +39,7 @@ export type Project = {
 };
 
 /** Real models from the Print3D archive — same source as Portfolio.tsx. */
-export const PORTFOLIO_PROJECTS: Project[] = [
+const ALL_PORTFOLIO_PROJECTS: Project[] = [
   {
     id: "levinstein",
     title: "מגדלי לוינשטיין",
@@ -55,54 +65,6 @@ export const PORTFOLIO_PROJECTS: Project[] = [
       webm: "/videos/projects/beit-hakerem.webm",
     },
     href: "/projects/beit-hakerem",
-  },
-  {
-    id: "neve-gan",
-    title: "נווה גן",
-    client: "אלעד מגורים",
-    scale: "1:75",
-    type: "residential",
-    image: "/projects/neve-gan.webp",
-  },
-  {
-    id: "gindi-bait-bapark",
-    title: "גינדי החזקות · בית בפארק",
-    client: "גינדי החזקות",
-    scale: "1:100",
-    type: "marketing",
-    image: "/projects/gindi-bait-bapark.jpg",
-  },
-  {
-    id: "shikun-binui-or-yam",
-    title: "שיכון ובינוי · אור ים",
-    client: "שיכון ובינוי",
-    scale: "1:200",
-    type: "residential",
-    image: "/projects/shikun-binui-or-yam.jpg",
-  },
-  {
-    id: "gindi-tlv",
-    title: "גינדי TLV",
-    client: "גינדי השקעות",
-    scale: "1:200",
-    type: "marketing",
-    image: "/projects/gindi-tlv.webp",
-  },
-  {
-    id: "tzavta-shapir",
-    title: "צוותא · שפיר",
-    client: "שפיר",
-    scale: "1:150",
-    type: "marketing",
-    image: "/projects/tzavta-shapir.jpg",
-  },
-  {
-    id: "preshkovsky-tabaa",
-    title: "פרשקובסקי · מודל תב״ע",
-    client: "פרשקובסקי",
-    scale: "1:500",
-    type: "urban",
-    image: "/projects/preshkovsky-tabaa.jpg",
   },
   {
     id: "gindi-kfar-azar",
@@ -149,6 +111,8 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:200",
     type: "urban",
     image: "/projects/shbiro-rishon-letzion.webp",
+    // The only project image with the full derived cut set on disk.
+    posterVariants: true,
     // Carousel-only footage: `video` is read solely by the showcase carousel
     // (ProjectShowcase). The project's own case-study page draws from its
     // separate content.ts/HeroSlider, so this clip never appears there.
@@ -369,6 +333,10 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     href: "/projects/rotem-shani-petach-tikva",
   },
 ];
+
+export const PORTFOLIO_PROJECTS: Project[] = ALL_PORTFOLIO_PROJECTS.filter(
+  (p) => !HIDDEN_PROJECT_SLUGS.includes(p.id)
+);
 
 export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
   marketing: 'שיווק נדל"ן',

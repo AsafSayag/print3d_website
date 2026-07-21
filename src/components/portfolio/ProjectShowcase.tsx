@@ -208,6 +208,7 @@ export function ProjectShowcase() {
                   <DeferredVideo
                     className="absolute inset-0 h-full w-full object-cover"
                     poster={p.image}
+                    posterVariants={p.posterVariants}
                     playDelayMs={3000}
                     sources={[
                       { src: p.video.webm, type: "video/webm" },

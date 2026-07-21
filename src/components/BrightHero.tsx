@@ -18,7 +18,12 @@ type Props = {
   /** Optional lead copy — rendered inside a frosted glass frame in the hero. */
   description?: string;
   breadcrumbs: Crumb[];
-  video: { poster: string; sources: { src: string; type: string }[] };
+  video: {
+    poster: string;
+    /** True only when the poster's derived cuts exist — see DeferredVideo. */
+    posterVariants?: boolean;
+    sources: { src: string; type: string }[];
+  };
   /** Keep the title on a single line at every breakpoint (used by the catalog). */
   singleLineTitle?: boolean;
   /** Hide the visible breadcrumb row (SEO breadcrumbs live in JSON-LD anyway). */
@@ -51,6 +56,7 @@ export function BrightHero({
       <DeferredVideo
         className="cta-layer h-full w-full object-cover"
         poster={video.poster}
+        posterVariants={video.posterVariants}
         sources={video.sources}
         priority
       />
