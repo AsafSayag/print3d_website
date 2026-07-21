@@ -142,6 +142,13 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:200",
     type: "urban",
     image: "/projects/shbiro-rishon-letzion.webp",
+    // Carousel-only footage: `video` is read solely by the showcase carousel
+    // (ProjectShowcase). The project's own case-study page draws from its
+    // separate content.ts/HeroSlider, so this clip never appears there.
+    video: {
+      mp4: "/videos/projects/shbiro-rishon-letzion.mp4",
+      webm: "/videos/projects/shbiro-rishon-letzion.webm",
+    },
     href: "/projects/shbiro-rishon-letzion",
   },
   {

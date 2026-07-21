@@ -108,8 +108,10 @@ export const SEQUENCE = {
       sequence is always smooth on the user's first scroll. The remaining frames
       then stream in progressively in the background. */
   eagerCount: 30,
-  /** Delay (ms) before the frame preload begins on the first visit, so the hero
-      video gets the connection to itself instead of competing with ~4MB of
-      frames. A scroll toward the section starts the preload sooner regardless. */
+  /** Idle beat (ms) after the window `load` event before the blind frame
+      preload begins on the first visit — so the hero poster (LCP) and video
+      finish first and the ~4MB of frames never compete with them during the LCP
+      window. A scroll toward the section starts the preload sooner regardless
+      (see ScrollSequence's scroll/IntersectionObserver accelerants). */
   preloadDelayMs: 1800,
 } as const;
