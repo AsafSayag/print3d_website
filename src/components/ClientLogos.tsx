@@ -3,8 +3,21 @@
 import { useEffect, useRef } from "react";
 import { CLIENT_LOGOS, CLIENTS_HEADING } from "@/lib/content";
 
-const AUTO_SPEED = 0.5; // px per frame
+// Auto-scroll speed in px/second — time-based, so it's identical on 60Hz and
+// 120Hz displays (the old per-frame constant ran twice as fast on high-refresh
+// screens). Mobile runs a touch quicker: the strip is narrower there, so a
+// higher rate keeps the logos gliding past at a lively, legible pace.
+const AUTO_SPEED_DESKTOP = 46;
+const AUTO_SPEED_MOBILE = 78;
+const MOBILE_QUERY = "(max-width: 767px)";
 const RESUME_DELAY = 1600; // ms of quiet before auto-scroll resumes
+// Flick momentum — a released swipe keeps gliding and decays instead of
+// dead-stopping, which is what makes manual scrubbing feel natural on touch.
+// FRICTION is applied per ~60fps frame; MIN is the px/s speed below which the
+// glide ends (and, for a release, the threshold for it to count as a flick at
+// all rather than a slow drag-and-hold that should just settle in place).
+const FLING_FRICTION = 0.94;
+const FLING_MIN = 12;
 
 /**
  * Client-logo marquee. Auto-scrolls on its own; the user can also drag it
@@ -44,14 +57,24 @@ export function ClientLogos() {
     // transform we apply below).
     const seg = () => track.scrollWidth / 3;
 
+    // Speed follows the viewport: mobile scrolls a bit faster. Kept live so a
+    // rotate / resize across the breakpoint updates it.
+    const mql = window.matchMedia(MOBILE_QUERY);
+    let autoSpeed = mql.matches ? AUTO_SPEED_MOBILE : AUTO_SPEED_DESKTOP;
+    const onMedia = () =>
+      (autoSpeed = mql.matches ? AUTO_SPEED_MOBILE : AUTO_SPEED_DESKTOP);
+    mql.addEventListener("change", onMedia);
+
     let raf = 0;
     let running = false;
     let frame = 0;
     let pauseUntil = 0;
+    let lastT = now(); // for time-based (dt) stepping
+    let fling = 0; // px/sec glide carried after a swipe release
     // Current translate offset (px); translateX(-offset) moves the logos left as
     // it grows. Sub-pixel values are fine — transforms aren't pixel-rounded.
     let offset = seg(); // start in the middle copy → a full segment of runway both ways
-    const drag = { active: false, startX: 0, startOffset: 0 };
+    const drag = { active: false, startX: 0, startOffset: 0, velX: 0, lastX: 0, lastT: 0 };
 
     const pause = () => (pauseUntil = now() + RESUME_DELAY);
     const render = () => {
@@ -94,8 +117,18 @@ export function ClientLogos() {
 
     const tick = () => {
       if (!running) return;
-      if (!reduced && now() >= pauseUntil && !drag.active) {
-        offset += AUTO_SPEED;
+      const t = now();
+      const dt = Math.min(t - lastT, 50); // ms; clamp jumps after a tab switch
+      lastT = t;
+      if (!drag.active) {
+        if (Math.abs(fling) > FLING_MIN) {
+          // Glide from the swipe, decaying by friction each frame.
+          offset += (fling * dt) / 1000;
+          fling *= Math.pow(FLING_FRICTION, dt / 16.67);
+        } else if (!reduced && t >= pauseUntil) {
+          fling = 0;
+          offset += (autoSpeed * dt) / 1000;
+        }
       }
       wrap();
       render();
@@ -105,6 +138,7 @@ export function ClientLogos() {
     const start = () => {
       if (running) return;
       running = true;
+      lastT = now(); // avoid a huge first dt after being stopped
       raf = requestAnimationFrame(tick);
     };
     const stop = () => {
@@ -120,6 +154,10 @@ export function ClientLogos() {
       drag.active = true;
       drag.startX = e.clientX;
       drag.startOffset = offset;
+      drag.lastX = e.clientX;
+      drag.lastT = now();
+      drag.velX = 0;
+      fling = 0; // a new grab cancels any in-flight glide
       pause();
       try {
         viewport.setPointerCapture(e.pointerId);
@@ -129,6 +167,16 @@ export function ClientLogos() {
     const onPointerMove = (e: PointerEvent) => {
       if (!drag.active) return;
       // Content follows the finger: dragging right slides the logos right.
+      // Track a smoothed velocity (in offset space, opposite the finger) so a
+      // release can carry momentum.
+      const t = now();
+      const dt = t - drag.lastT;
+      if (dt > 0) {
+        const inst = (-(e.clientX - drag.lastX) / dt) * 1000; // px/sec
+        drag.velX = drag.velX * 0.7 + inst * 0.3;
+        drag.lastX = e.clientX;
+        drag.lastT = t;
+      }
       offset = drag.startOffset - (e.clientX - drag.startX);
       wrap();
       render();
@@ -136,6 +184,9 @@ export function ClientLogos() {
     const onPointerUp = (e: PointerEvent) => {
       if (!drag.active) return;
       drag.active = false;
+      // Carry the release velocity into a glide, but only for a real flick — a
+      // slow drag-and-hold should settle right where it was let go.
+      fling = Math.abs(drag.velX) > FLING_MIN ? drag.velX : 0;
       pause();
       try {
         viewport.releasePointerCapture(e.pointerId);
@@ -169,6 +220,7 @@ export function ClientLogos() {
 
     return () => {
       stop();
+      mql.removeEventListener("change", onMedia);
       activeBox?.classList.remove("is-active");
       io?.disconnect();
       viewport.removeEventListener("pointerdown", onPointerDown);
