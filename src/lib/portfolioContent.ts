@@ -377,9 +377,9 @@ export const PORTFOLIO_SHOWCASE = {
  *  our most select projects. Every other project stays discoverable through the
  *  filter grid and the "פרויקטים נוספים שמדברים בעד עצמם" highlights strip below. */
 export const SHOWCASE_PROJECT_IDS: readonly string[] = [
+  "dafna-tidhar",
   "beit-hakerem",
   "levinstein",
-  "dafna-tidhar",
   "prashkovski-ramat-hanasi",
   "gindi-kfar-azar",
   "shbiro-rishon-letzion",
