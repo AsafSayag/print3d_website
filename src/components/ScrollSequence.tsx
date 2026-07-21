@@ -187,11 +187,28 @@ export function ScrollSequence() {
     window.addEventListener("scroll", start, { passive: true, once: true });
 
     // Deferred fallback: if the user just watches the hero without scrolling,
-    // hold the frame preload for a beat so the hero's ~1.6MB video gets the
-    // connection to itself first — otherwise the ~4MB of frames download
-    // alongside it, choke the pipe, and stutter both on the first visit. The
-    // accelerants above fire it sooner the moment the user heads for the section.
-    const startTimer = window.setTimeout(start, SEQUENCE.preloadDelayMs);
+    // hold the frame preload until AFTER the window `load` event — i.e. once the
+    // hero poster (the LCP element) and its video have finished. This is the key
+    // LCP guard: previously a blind 1.8s timer began pulling the full ~4MB of
+    // frames straight through the middle of the hero's LCP window on a throttled
+    // connection, starving the poster of bandwidth and pushing LCP out to ~6s.
+    // Gating on `load` means the frames can never compete with the poster, yet
+    // costs the user nothing: anyone heading toward the section triggers `start`
+    // instantly via the scroll/IntersectionObserver accelerants above; this
+    // fallback only serves a visitor who sits on the hero without scrolling —
+    // and they aren't looking at the sequence anyway. A short idle beat after
+    // `load` keeps the frame fetch from spiking the connection the instant it
+    // frees up. The whole fallback is torn down if `start` already ran.
+    let startTimer = 0;
+    const scheduleFallback = () => {
+      if (cancelled) return;
+      startTimer = window.setTimeout(start, SEQUENCE.preloadDelayMs);
+    };
+    if (document.readyState === "complete") {
+      scheduleFallback();
+    } else {
+      window.addEventListener("load", scheduleFallback, { once: true });
+    }
 
     // Safety net: never leave the loading overlay up indefinitely if the network
     // stalls mid-buffer — reveal after a hard cap regardless of decode progress.
@@ -203,6 +220,7 @@ export function ScrollSequence() {
       cancelled = true;
       io?.disconnect();
       window.removeEventListener("scroll", start);
+      window.removeEventListener("load", scheduleFallback);
       window.clearTimeout(startTimer);
       window.clearTimeout(revealSafety);
     };
