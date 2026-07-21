@@ -58,7 +58,3 @@ Frank Ruhl Libre (display, 500/700) · Assistant (body, 400/600) · Montserrat
 ## Gold discipline
 Gold (`--gold-500`) appears only on the primary CTA, the thin accent line under section
 headings, and stat numbers — nowhere else, per the brief.
-
-
-TO COMPLETE 
-public/project_pages/ashdar_tagor_project
