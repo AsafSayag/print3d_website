@@ -7,6 +7,7 @@ export const HIDDEN_PROJECT_SLUGS: string[] = [
   "bat-yam-hotel",
   "hayiriya-kiryat-yam",
   "guy-doron-levy-tsur-hadassa",
+  "kardan-metsada-bat-yam",
 ];
 
 /* Reference: every project slug, for copy/pasting into HIDDEN_PROJECT_SLUGS

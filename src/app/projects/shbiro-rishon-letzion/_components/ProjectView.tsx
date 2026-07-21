@@ -24,7 +24,7 @@ export function ProjectView() {
       <TechnicalSpec />
 
       {/* Gallery */}
-      <section className="section surface-ice">
+      <section id="gallery" className="section surface-ice">
         <div className="container-x">
           <h2 className="h2 heading-accent mb-10">תמונות המודל</h2>
           <Gallery items={GALLERY_ITEMS} alt={IMAGE_ALT} />
