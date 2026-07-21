@@ -203,6 +203,13 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:100",
     type: "residential",
     image: "/projects/avisror-sde-dov.webp",
+    // Carousel-only footage: `video` is read solely by the showcase carousel
+    // (ProjectShowcase). The project's own case-study page draws from its
+    // separate content.ts/HeroSlider, so this clip never appears there.
+    video: {
+      mp4: "/videos/projects/avisror-sde-dov.mp4",
+      webm: "/videos/projects/avisror-sde-dov.webm",
+    },
     href: "/projects/avisror-sde-dov",
   },
   {
@@ -302,6 +309,13 @@ export const PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:200",
     type: "residential",
     image: "/projects/prashkovski-ramat-hanasi.webp",
+    // Carousel-only footage: `video` is read solely by the showcase carousel
+    // (ProjectShowcase). The project's own case-study page draws from its
+    // separate content.ts/HeroSlider, so this clip never appears there.
+    video: {
+      mp4: "/videos/projects/prashkovski-ramat-hanasi.mp4",
+      webm: "/videos/projects/prashkovski-ramat-hanasi.webm",
+    },
     href: "/projects/prashkovski-ramat-hanasi",
   },
   {
