@@ -50,7 +50,6 @@ export const COLORS = {
 /** Header navigation, right-to-left order (first item sits right-most). */
 export const NAV_ITEMS = [
   { label: "שירותים", href: "#services" },
-  { label: "תהליך", href: "#process" },
   { label: "קטלוג", href: "/projects" },
   { label: "לקוחות", href: "#clients" },
   { label: "אודות", href: "/about" },
