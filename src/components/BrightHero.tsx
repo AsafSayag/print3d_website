@@ -30,6 +30,8 @@ type Props = {
   hideBreadcrumbs?: boolean;
   /** Hide the glass eyebrow chip (the catalog drops it so the title leads). */
   hideEyebrow?: boolean;
+  /** Center the hero copy on mobile (<md); desktop is unchanged. */
+  centerOnMobile?: boolean;
 };
 
 /**
@@ -47,6 +49,7 @@ export function BrightHero({
   singleLineTitle,
   hideBreadcrumbs,
   hideEyebrow,
+  centerOnMobile,
 }: Props) {
   return (
     <section
@@ -89,10 +92,11 @@ export function BrightHero({
         ))}
       </div>
 
-      <div className="relative z-10 container-x w-full">
+      <div className={`relative z-10 container-x w-full${centerOnMobile ? " max-md:text-center" : ""}`}>
         {hideBreadcrumbs ? null : (
           <Reveal className="mb-6 md:mb-8">
             <div
+              className={centerOnMobile ? "max-md:flex max-md:justify-center" : undefined}
               style={{
                 textShadow:
                   "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)",

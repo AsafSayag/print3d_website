@@ -27,7 +27,7 @@ export function PortfolioCta() {
       <div className="container-x relative">
         <div className="grid gap-10 md:grid-cols-[1.3fr_1px_1fr] md:gap-12 items-center">
           <Reveal>
-            <div>
+            <div className="max-md:text-center">
               <p className="eyebrow text-[color:var(--gold-400)] mb-4">
                 {PORTFOLIO_CTA.eyebrow}
               </p>
@@ -43,8 +43,8 @@ export function PortfolioCta() {
           />
 
           <Reveal delay={0.1}>
-            <div>
-              <p className="text-white/70 text-lg leading-relaxed max-w-sm">
+            <div className="max-md:text-center">
+              <p className="text-white/70 text-lg leading-relaxed max-w-sm max-md:mx-auto">
                 {PORTFOLIO_CTA.text}
               </p>
               <div className="mt-8">

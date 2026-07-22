@@ -174,7 +174,7 @@ export function ProjectShowcase() {
     >
       <div className="container-x pt-6 md:pt-8">
         <Reveal>
-          <h2 className="font-display font-black tracking-[-0.02em] text-white text-4xl leading-[1.1] md:text-6xl">
+          <h2 className="font-display font-black tracking-[-0.02em] text-white text-4xl leading-[1.1] md:text-6xl max-md:text-center">
             {PORTFOLIO_SHOWCASE.title}
           </h2>
         </Reveal>

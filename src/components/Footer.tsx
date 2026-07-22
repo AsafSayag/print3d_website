@@ -11,9 +11,9 @@ export function Footer() {
       <div className="container-x py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Column 1 — brand + contact */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 max-md:text-center">
             <Logo size={52} withSubtitle />
-            <p className="text-white/75 text-sm mt-4 leading-relaxed max-w-xs">
+            <p className="text-white/75 text-sm mt-4 leading-relaxed max-w-xs max-md:mx-auto">
               {FOOTER.tagline}
             </p>
             <ul className="mt-5 space-y-2 text-sm">
@@ -78,7 +78,7 @@ export function Footer() {
           </div>
 
           {/* Column 4 — CTA + small location map */}
-          <div>
+          <div className="max-md:text-center">
             <h3 className="font-display text-lg text-white mb-4">
               {FOOTER.ctaTitle}
             </h3>
@@ -92,7 +92,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`המיקום שלנו, ${CONTACT.address}, פתיחה ב־Google Maps`}
-              className="group mt-6 block w-56 max-w-full overflow-hidden rounded-xl border border-white/12 bg-white/[0.03] shadow-[0_18px_40px_-30px_rgba(0,0,0,0.8)] transition-colors hover:border-white/25"
+              className="group mt-6 block w-56 max-w-full overflow-hidden rounded-xl border border-white/12 bg-white/[0.03] shadow-[0_18px_40px_-30px_rgba(0,0,0,0.8)] transition-colors hover:border-white/25 max-md:mx-auto"
             >
               <iframe
                 src={CONTACT.mapsEmbedUrl}
@@ -147,7 +147,7 @@ function FooterColumn({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="max-md:text-center">
       <h3 className="font-display text-lg text-white mb-4">
         {title}
       </h3>
