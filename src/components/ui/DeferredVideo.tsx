@@ -96,23 +96,25 @@ export function DeferredVideo({
     return () => cancelAnimationFrame(raf);
   }, [load, active]);
 
-  // Hero mode: open the video gate only once the eager poster (the LCP element)
-  // has finished, so the ~750KB clip never competes with it. A safety timeout
-  // covers a missed load/error event.
+  // Hero mode: hold the ~731KB clip until the page has fully loaded. The poster
+  // paints almost immediately, so gating the video on the poster alone let it
+  // start downloading within ~150ms and saturate a slow link right through the
+  // LCP window — Lighthouse then charges the poster's paint with that bandwidth
+  // and CPU contention. Waiting for the `load` event keeps the whole critical
+  // path (poster, CSS, JS, fonts) clear first; a timeout covers the rare case
+  // where `load` is delayed. The poster is already showing, so the deferred clip
+  // just fades in a beat later.
   useEffect(() => {
     if (!priority) return;
-    const img = posterRef.current;
-    if (!img || img.complete) {
+    if (document.readyState === "complete") {
       setPosterReady(true);
       return;
     }
     const done = () => setPosterReady(true);
-    img.addEventListener("load", done);
-    img.addEventListener("error", done);
-    const t = window.setTimeout(done, 2500);
+    window.addEventListener("load", done, { once: true });
+    const t = window.setTimeout(done, 5000);
     return () => {
-      img.removeEventListener("load", done);
-      img.removeEventListener("error", done);
+      window.removeEventListener("load", done);
       window.clearTimeout(t);
     };
   }, [priority]);
@@ -149,10 +151,21 @@ export function DeferredVideo({
   // the failure mode of forgetting the flag is a heavier image, not a blank one.
   const base = poster.replace(/\.webp$/, "");
 
+  // When may the poster's bytes be fetched? The hero (priority) poster is the
+  // LCP element and loads immediately. Every other poster waits for the same
+  // proximity/`active` gate as the video (`load`): otherwise a horizontal reel's
+  // slides all share one vertical position, so their `loading="lazy"` posters
+  // are all "near" at once and download together at first paint — a ~300KB
+  // flood that starves the hero's LCP poster of bandwidth. Holding them until
+  // the reel nears the viewport (and, per slide, until it's in the active
+  // window) keeps that bandwidth for the LCP and still loads each poster before
+  // it can be seen.
+  const showPoster = priority || load;
+
   return (
     <>
       <picture>
-        {posterVariants && (
+        {showPoster && posterVariants && (
           <>
             <source media={POSTER_MOBILE_QUERY} type="image/avif" srcSet={`${base}-mobile.avif`} />
             <source media={POSTER_MOBILE_QUERY} type="image/webp" srcSet={`${base}-mobile.webp`} />
@@ -167,8 +180,9 @@ export function DeferredVideo({
           // The `.webp` poster itself — the one file guaranteed to exist. In
           // variant mode the <source> list above wins for browsers that can use
           // it; here it is only the last resort. (It used to be a derived
-          // `.jpg`, which 404'd for posters that had no jpg cut.)
-          src={posterVariants ? `${base}.jpg` : poster}
+          // `.jpg`, which 404'd for posters that had no jpg cut.) Until the gate
+          // opens for non-priority posters, `src` is omitted so nothing loads.
+          src={showPoster ? (posterVariants ? `${base}.jpg` : poster) : undefined}
           alt=""
           aria-hidden="true"
           // Hero posters are the LCP element — fetch them eagerly at high
