@@ -54,7 +54,7 @@ export function WhySection() {
             {/* Small showroom photo — sits quietly under the heading, on
                 every breakpoint. */}
             <Reveal delay={0.1} className="mt-8">
-              <figure className="group relative w-full max-w-xs overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.8)]">
+              <figure className="group relative w-full max-w-xs max-md:mx-auto overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_24px_60px_-40px_rgba(0,0,0,0.8)]">
                 <div className="relative aspect-square">
                   <Image
                     src="/why-print3d.jpg"
@@ -77,7 +77,7 @@ export function WhySection() {
                 type="button"
                 onClick={() => setShowMore((v) => !v)}
                 aria-expanded={showMore}
-                className="md:hidden inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+                className="md:hidden flex w-fit mx-auto items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
                 style={{
                   border:
                     "1px solid color-mix(in srgb, var(--gold-500) 55%, transparent)",
@@ -127,7 +127,7 @@ export function WhySection() {
         <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 mt-20">
           {WHY.cards.map((card, i) => (
             <Reveal as="li" index={i} key={card.n}>
-              <article className="group relative pt-7">
+              <article className="group relative pt-7 max-sm:text-center">
                 {/* Touch devices can't hover, so the blue reveal would never
                     show — mobile carries a permanent, subtle blue tint
                     instead; sm+ reverts to the white idle state + hover reveal. */}
