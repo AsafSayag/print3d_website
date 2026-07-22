@@ -49,6 +49,7 @@ export default function AboutPage() {
           description={ABOUT.hero.description}
           breadcrumbs={breadcrumbs}
           video={HERO_VIDEO}
+          centerOnMobile
         />
 
         {/* ── Story + stats ─────────────────────────────────────────── */}
@@ -56,7 +57,7 @@ export default function AboutPage() {
           <div className="container-x">
             <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
               <div className="lg:col-span-5">
-                <Reveal>
+                <Reveal className="max-md:text-center">
                   <p className="eyebrow text-[color:var(--gold-700)] mb-3">
                     {ABOUT.story.eyebrow}
                   </p>
@@ -132,12 +133,12 @@ export default function AboutPage() {
         {/* ── Values / what sets us apart ───────────────────────────── */}
         <section className="surface-ice section" aria-label={ABOUT.values.title}>
           <div className="container-x">
-            <Reveal>
+            <Reveal className="max-md:text-center">
               <p className="eyebrow text-[color:var(--gold-700)] mb-3">
                 {ABOUT.values.eyebrow}
               </p>
             </Reveal>
-            <Reveal index={1}>
+            <Reveal index={1} className="max-md:text-center">
               <h2 className="h2 heading-accent text-[color:var(--ink-950)]">
                 {ABOUT.values.title}
               </h2>
@@ -146,7 +147,7 @@ export default function AboutPage() {
             <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 mt-14">
               {WHY.cards.map((card, i) => (
                 <Reveal as="li" index={i} key={card.n}>
-                  <article className="group relative pt-7">
+                  <article className="group relative pt-7 max-sm:text-center">
                     <span
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-px bg-[color:var(--gold-500)]/40 sm:bg-[color:var(--ink-950)]/15 transition-colors duration-700 sm:group-hover:bg-[color:var(--gold-500)]/70"
@@ -184,13 +185,13 @@ export default function AboutPage() {
           aria-label={SERVICES.heading}
         >
           <div className="container-x">
-            <div className="max-w-3xl">
-              <Reveal>
+            <div className="max-w-3xl max-md:mx-auto">
+              <Reveal className="max-md:text-center">
                 <p className="eyebrow text-[color:var(--gold-700)] mb-3">
                   {ABOUT.services.eyebrow}
                 </p>
               </Reveal>
-              <Reveal index={1}>
+              <Reveal index={1} className="max-md:text-center">
                 <h2 className="h2 heading-accent text-white">
                   {SERVICES.heading}
                 </h2>
@@ -229,12 +230,12 @@ export default function AboutPage() {
           <div className="container-x">
             <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
               <div className="lg:col-span-6">
-                <Reveal>
+                <Reveal className="max-md:text-center">
                   <p className="eyebrow text-[color:var(--gold-700)] mb-3">
                     {ABOUT.audience.eyebrow}
                   </p>
                 </Reveal>
-                <Reveal index={1}>
+                <Reveal index={1} className="max-md:text-center">
                   <h2 className="h2 heading-accent text-[color:var(--ink-950)]">
                     {WHO_FOR.heading}
                   </h2>

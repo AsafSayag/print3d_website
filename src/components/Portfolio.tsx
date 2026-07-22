@@ -247,7 +247,7 @@ export function Portfolio() {
                 לכל הפרויקטים
               </GlassButton>
             </div>
-            <div className="flex items-stretch gap-8 lg:gap-10">
+            <div className="flex items-stretch gap-8 lg:gap-10 max-md:justify-center">
               {STATS.map((s, i) => (
                 <div
                   key={s.label}
@@ -280,7 +280,7 @@ export function Portfolio() {
             <Reveal
               key={p.src}
               index={i % 3}
-              className={`${p.span} ${i >= 3 ? "collapse-sm" : ""}`}
+              className={`${p.span} ${i >= 4 ? "collapse-sm" : ""}`}
             >
               {/* Hover transforms live on this inner card — Reveal owns the
                   element's inline transform, so the two must not share a node. */}
