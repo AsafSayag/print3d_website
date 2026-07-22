@@ -181,6 +181,17 @@ export function DeferredVideo({
       <video
         ref={ref}
         className={className}
+        // Hero mode: a full-bleed background <video> is unavoidably the LCP
+        // element (it's the largest paint the user sees). Without a `poster` its
+        // LCP paint is the first decoded video frame — which only arrives after
+        // the JS-injected, preload="none" clip downloads, so Lighthouse's LCP
+        // simulation projects it many seconds out and marks the resource
+        // "not discoverable". Giving it the poster (already in the initial HTML,
+        // loaded eagerly regardless of preload) makes the poster image the
+        // video's contentful paint: discoverable, fast, and identical to the
+        // <picture> still beneath it. Ambient videos keep no poster attr so their
+        // posters are never eagerly fetched below the fold.
+        poster={priority ? poster : undefined}
         muted
         loop
         playsInline

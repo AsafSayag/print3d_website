@@ -94,7 +94,7 @@ export function BrightHero({
 
       <div className={`relative z-10 container-x w-full${centerOnMobile ? " max-md:text-center" : ""}`}>
         {hideBreadcrumbs ? null : (
-          <Reveal className="mb-6 md:mb-8">
+          <Reveal immediate className="mb-6 md:mb-8">
             <div
               className={centerOnMobile ? "max-md:flex max-md:justify-center" : undefined}
               style={{
@@ -118,7 +118,7 @@ export function BrightHero({
           }}
         >
           {hideEyebrow ? null : (
-          <Reveal delay={0.06}>
+          <Reveal immediate delay={0.06}>
             <span
               className="eyebrow inline-block text-black font-black mb-4"
               style={{
@@ -144,7 +144,7 @@ export function BrightHero({
           </Reveal>
           )}
 
-          <Reveal delay={0.12}>
+          <Reveal immediate delay={0.12}>
             {singleLineTitle ? (
               <h1
                 className="heading-accent max-w-none text-black font-display font-black tracking-[-0.02em] whitespace-normal text-[2.35rem] leading-[1.14] md:whitespace-nowrap md:text-[clamp(2rem,5.3vw,4.5rem)] md:leading-[1.1]"
@@ -160,7 +160,7 @@ export function BrightHero({
         </div>
 
         {description ? (
-          <Reveal delay={0.18}>
+          <Reveal immediate delay={0.18}>
             <div className="portfolio-hero-glass max-w-2xl mt-6">
               <p className="text-black text-lg leading-relaxed font-medium">
                 {description}
