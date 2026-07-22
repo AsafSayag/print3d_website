@@ -12,6 +12,15 @@ type Props = {
   className?: string;
   /** Extra delay in seconds on top of the index stagger. */
   delay?: number;
+  /**
+   * Above-the-fold mode. Instead of gating the fade+rise on hydration + an
+   * IntersectionObserver, run it as a pure-CSS entrance that plays on the first
+   * paint. Use this ONLY for content that is the LCP element or sits with it in
+   * the initial viewport (e.g. the hero heading): gating those on JS holds them
+   * at opacity:0 until the bundle hydrates, which wrecks LCP. Off by default so
+   * below-the-fold reveals keep their scroll-triggered behaviour.
+   */
+  immediate?: boolean;
 };
 
 /**
@@ -25,6 +34,7 @@ export function Reveal({
   as: Tag = "div",
   className,
   delay = 0,
+  immediate = false,
 }: Props) {
   const [ref, shown] = useInViewOnce<HTMLElement>();
   const [reduce, setReduce] = useState(false);
@@ -34,6 +44,23 @@ export function Reveal({
   }, []);
 
   const totalDelay = delay + index * MOTION.staggerStep;
+
+  // Immediate mode: no JS gate. The element is emitted visible in the SSR HTML
+  // and animated by a pure-CSS keyframe (see .reveal-immediate) so it paints as
+  // the LCP element on first frame rather than after hydration. The stagger is
+  // carried by animation-delay instead of transition-delay.
+  if (immediate) {
+    return (
+      <Tag
+        ref={ref as never}
+        className={className ? `reveal-immediate ${className}` : "reveal-immediate"}
+        style={{ animationDelay: `${totalDelay}s` }}
+      >
+        {children}
+      </Tag>
+    );
+  }
+
   const style: React.CSSProperties = reduce
     ? {}
     : {

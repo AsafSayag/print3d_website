@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Open_Sans, Assistant, Montserrat } from "next/font/google";
+import { Open_Sans, Assistant } from "next/font/google";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
 import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
@@ -22,15 +22,6 @@ const assistant = Assistant({
   weight: ["400", "600"],
   display: "swap",
   preload: true,
-});
-
-/* Numbers & Latin — matches the logo */
-const montserrat = Montserrat({
-  variable: "--font-num",
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  display: "swap",
-  preload: false,
 });
 
 const SITE_TITLE = "Print3D — מודלים אדריכליים פיזיים לפרויקטי נדל״ן";
@@ -77,7 +68,7 @@ export default function RootLayout({
       lang="he"
       dir="rtl"
       data-scroll-behavior="smooth"
-      className={`${openSans.variable} ${assistant.variable} ${montserrat.variable} h-full`}
+      className={`${openSans.variable} ${assistant.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <JsonLd />

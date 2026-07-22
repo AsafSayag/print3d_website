@@ -49,7 +49,9 @@
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
-  --font-num: var(--font-num);
+  /* Numbers/Latin used to have their own face (Montserrat); it was dropped to
+     shed 2 font files for LCP. `.num`/`.error-code` now inherit the body font. */
+  --font-num: var(--font-body);
 
   --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -94,6 +96,32 @@ body {
 /* Section fade-in with Intersection Observer support */
 .section-fade-in {
   animation: fadeInUp 0.8s var(--ease-brand) both;
+}
+
+/* Reveal in "immediate" mode (above-the-fold hero copy). Matches Reveal's
+   fade+rise (24px / 0.7s) but as a pure-CSS entrance that runs on first paint
+   instead of waiting for hydration + IntersectionObserver. This keeps the LCP
+   element (the hero <h1>) from being held at opacity:0 until JS runs, which was
+   pushing LCP out by ~4s. The per-element stagger is applied via inline
+   animation-delay. */
+@keyframes revealRise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-immediate {
+  animation: revealRise 0.7s var(--ease-brand) both;
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-immediate {
+    animation: none;
+  }
 }
 
 ::selection {
