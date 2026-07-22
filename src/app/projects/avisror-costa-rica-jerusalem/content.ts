@@ -39,13 +39,11 @@ export const SPECS: SpecRow[] = [
   { label: "שם המודל", value: "מודל אדריכלי — פרויקט אביסרור, קוסטה ריקה" },
   { label: "סוג המודל", pending: true, pendingHint: "שיווקי / עירוני / אחר" },
   { label: "קנה מידה", value: "1:150" },
-  { label: "מידות המודל", pending: true, pendingHint: 'אורך × רוחב בס"מ' },
   { label: "שיטות ייצור", pending: true, pendingHint: "הדפסה, חיתוך לייזר וכו׳" },
   { label: "חומרים וגימורים", pending: true, pendingHint: "חזיתות, זיגוג, צביעה" },
   { label: "תאורה", pending: true, pendingHint: "יש/אין LED, ופירוט אם יש" },
   { label: "אלמנטים במודל", pending: true, pendingHint: "פיתוח סביבתי, גינון וכו׳" },
   { label: "ייעוד", pending: true, pendingHint: "תצוגה במשרד מכירות וכו׳" },
-  { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
 export const GALLERY_ITEMS = IMAGES.gallery;

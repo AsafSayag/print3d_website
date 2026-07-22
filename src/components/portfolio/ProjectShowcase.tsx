@@ -8,7 +8,6 @@ import { DeferredVideo } from "@/components/ui/DeferredVideo";
 import {
   PORTFOLIO_PROJECTS,
   PORTFOLIO_SHOWCASE,
-  PROJECT_TYPE_LABELS,
   SHOWCASE_PROJECT_IDS,
   type Project,
 } from "@/lib/portfolioContent";
@@ -254,10 +253,7 @@ export function ProjectShowcase() {
                 )}
 
                 <div className="absolute inset-x-0 bottom-0 container-x pb-10 md:pb-14">
-                  <span className="eyebrow text-[color:var(--gold-400)]">
-                    {PROJECT_TYPE_LABELS[p.type]}
-                  </span>
-                  <h2 className="h1 text-white mt-3 max-w-3xl text-balance">
+                  <h2 className="h1 text-white max-w-3xl text-balance">
                     {p.title}
                   </h2>
                   <div className="mt-4 flex flex-wrap items-center gap-4">
