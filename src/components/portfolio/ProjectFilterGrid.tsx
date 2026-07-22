@@ -5,12 +5,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { useInViewOnce } from "@/lib/useInViewOnce";
 import {
   PORTFOLIO_FILTERS,
   PORTFOLIO_PROJECTS,
 } from "@/lib/portfolioContent";
 
 const ALL = "all" as const;
+
+/**
+ * A grid card image that only mounts its <Image> once the card nears the
+ * viewport. The grid lists every project, and native `loading="lazy"` still
+ * fetches all ~25 stills early (Chrome's lazy distance threshold is generous),
+ * flooding the link at first paint and starving the hero LCP poster of the
+ * simulated bandwidth. Gating on the in-view observer holds each still until it
+ * is actually about to be seen. The fixed aspect box keeps CLS at zero.
+ */
+function GridImage({ src, alt }: { src: string; alt: string }) {
+  const [ref, shown] = useInViewOnce<HTMLSpanElement>();
+  return (
+    <span ref={ref} className="absolute inset-0 block">
+      {shown && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-brand)] group-hover:scale-[1.07]"
+        />
+      )}
+    </span>
+  );
+}
 
 const SCALES = Array.from(new Set(PORTFOLIO_PROJECTS.map((p) => p.scale)));
 
@@ -116,12 +142,9 @@ export function ProjectFilterGrid() {
             {filtered.map((p, i) => (
               <Reveal key={p.id} index={i % 3}>
                 <div className="portfolio-card group relative overflow-hidden rounded-2xl aspect-[4/5]">
-                  <Image
+                  <GridImage
                     src={p.image}
                     alt={`${p.title} · מודל אדריכלי בקנה מידה ${p.scale}`}
-                    fill
-                    sizes="(max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-brand)] group-hover:scale-[1.07]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-950)]/85 via-[color:var(--navy-950)]/15 to-transparent" />
                   <div className="portfolio-card-sheen" aria-hidden />
