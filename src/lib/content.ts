@@ -364,7 +364,7 @@ export const FOOTER = {
     },
     company: {
       title: "החברה",
-      items: ["אודות", "תהליך", "קטלוג"],
+      items: ["אודות", "קטלוג"],
     },
   },
   ctaTitle: "מתחילים פרויקט?",
