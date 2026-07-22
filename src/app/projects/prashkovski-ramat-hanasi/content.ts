@@ -50,8 +50,7 @@ export const SPECS: SpecRow[] = [
   },
   {
     label: "תאורה",
-    pending: true,
-    pendingHint: "לאישור — האם הותקנה תאורת LED במודל",
+    value: "ללא תאורה פנימית — המודל מוצג בגימור יום מלא בתוך ויטרינת תצוגה",
   },
   {
     label: "אלמנטים במודל",

@@ -266,18 +266,25 @@ established row set, in order:
 - שם המודל
 - סוג המודל
 - קנה מידה
-- מידות המודל
 - שיטות ייצור
 - חומרים וגימורים
 - תאורה
 - אלמנטים במודל
 - ייעוד
-- משך ייצור
+
+These eight are the full set — every project ships exactly these, in this order.
+Do not add rows such as מידות המודל or משך ייצור.
 
 **Fallback rule:** if the Builder doesn't provide full content, copy an existing
 project's `SPECS` array as the starting template — same labels/shape, swap in
 whatever project-specific values are known, and leave anything genuinely unknown
 as `pending: true` with a `pendingHint` rather than guessing.
+
+**Write it per project.** The values must describe *that* model — the actual
+facade colours, lighting, and landscape elements visible in its photos. Generic
+filler like "פיתוח סביבתי מלא (עצים, שבילים, גינון)" is not acceptable; see
+`src/app/projects/rotem-shani-beit-shemesh/content.ts` for the reference level of
+detail.
 
 ## Gallery
 
