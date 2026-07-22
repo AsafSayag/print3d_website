@@ -39,7 +39,6 @@ export const SPECS: SpecRow[] = [
   { label: "שם המודל", value: "מודל אדריכלי — פרויקט רותם שני, פתח תקווה" },
   { label: "סוג המודל", value: "מודל שיווקי למשרד מכירות" },
   { label: "קנה מידה", value: "1:100" },
-  { label: "מידות המודל", pending: true, pendingHint: 'אורך × רוחב בס"מ' },
   {
     label: "שיטות ייצור",
     value: "הדפסת תלת מימד, חיתוך לייזר, הרכבה וגימור בעבודת יד",
@@ -55,7 +54,6 @@ export const SPECS: SpecRow[] = [
       "בניין/י מגורים, פיתוח סביבתי מלא (עצים, שבילים, גינון, ריצוף מדומה)",
   },
   { label: "ייעוד", value: "תצוגה במשרד מכירות" },
-  { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
 export const ABOUT = {

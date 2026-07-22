@@ -45,7 +45,6 @@ export const SPECS: SpecRow[] = [
   },
   { label: "סוג המודל", value: "מודל שיווקי למשרד מכירות" },
   { label: "קנה מידה", value: "1:100" },
-  { label: "מידות המודל", pending: true, pendingHint: 'אורך × רוחב בס"מ' },
   {
     label: "שיטות ייצור",
     value: "הדפסת תלת מימד, חיתוך לייזר, הרכבה וגימור בעבודת יד",
@@ -62,7 +61,6 @@ export const SPECS: SpecRow[] = [
       "שישה בנייני מגורים לאורך רחוב, פיתוח סביבתי מלא (עצים, מדשאות, שבילים, גינון), פארק עירוני, כביש עם מדרכות ומגרש חניה, כלי רכב ודמויות בקנה מידה",
   },
   { label: "ייעוד", value: "תצוגה במשרד מכירות" },
-  { label: "משך ייצור", pending: true, pendingHint: "בשבועות" },
 ];
 
 /** Only one photograph was supplied for this project. */
