@@ -493,7 +493,12 @@ export function ScrollSequence() {
               }
             >
               <p
-                className="mb-2 font-semibold text-[color:var(--gold-500)]"
+                // --gold-400, not --gold-500: this eyebrow is 14px/600 with wide
+                // tracking on the navy surface, where --gold-500 measures 3.69:1
+                // — under the 4.5:1 WCAG AA needs for text this size. --gold-400
+                // is the same brand ramp at 5.71:1. The section is always
+                // surface-navy-950, so there is no light-background case here.
+                className="mb-2 font-semibold text-[color:var(--gold-400)]"
                 style={{ fontSize: "0.875rem", letterSpacing: "0.28em" }}
               >
                 {SEQUENCE_EYEBROW}

@@ -46,8 +46,11 @@ type Props = {
  * Background video whose bytes are fetched only when the element comes
  * within ~2 viewports of the screen. Until then only the poster paints.
  *
- * Uses the same throttled-rAF proximity check as useInViewOnce (see its
- * comment for why not IntersectionObserver). `autoplay` is intentionally
+ * Proximity is measured vertically only, so it can't use the shared
+ * IntersectionObserver in useInViewOnce: a carousel's slides are translated far
+ * off-screen horizontally and clipped by the track, so an observer would report
+ * them as not intersecting and never preload the neighbours.
+ * `autoplay` is intentionally
  * absent — with autoplay the browser ignores preload="none" and downloads
  * the full file immediately; we call play() ourselves after attaching the
  * sources.
@@ -78,17 +81,35 @@ export function DeferredVideo({
     if (!active) return; // carousel: hold this slide on its poster for now
     const el = ref.current;
     if (!el) return;
+
+    // Vertical-only proximity: within ~2 viewports below, ~1 above. Horizontal
+    // position is ignored on purpose — a carousel's slides are translated far
+    // off to the side but are exactly as "near" as the active one.
+    const near = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < vh * 2 && rect.bottom > -vh;
+    };
+
+    // Check straight away, before committing to a rAF loop. This is the case
+    // that matters for a carousel: all slides share one vertical position, so a
+    // slide entering the active window is already in range and can load on the
+    // spot. Waiting for a frame made loading hostage to rAF, which browsers
+    // throttle hard (background tab, low-power mode — measured at 1fps here).
+    // The auto-advance runs on setTimeout, which is NOT throttled the same way,
+    // so the reel would advance onto slides that had neither video nor poster
+    // (`showPoster` is gated on this same flag) and render completely blank.
+    if (near()) {
+      setLoad(true);
+      return;
+    }
+
     let raf = 0;
     let frame = 0;
-
     const tick = () => {
-      if (frame++ % 8 === 0) {
-        const rect = el.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        if (rect.top < vh * 2 && rect.bottom > -vh) {
-          setLoad(true);
-          return; // stop polling
-        }
+      if (frame++ % 8 === 0 && near()) {
+        setLoad(true);
+        return; // stop polling
       }
       raf = requestAnimationFrame(tick);
     };

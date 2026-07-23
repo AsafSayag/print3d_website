@@ -45,6 +45,20 @@ export function Reveal({
 
   const totalDelay = delay + index * MOTION.staggerStep;
 
+  // Drop `will-change` once the entrance has finished. Left on permanently it
+  // (a) keeps every revealed element promoted to its own compositor layer for
+  // the life of the page — dozens of them on a 12,000px page — and (b) makes
+  // each one a containing block for `position: fixed` descendants, which is why
+  // a modal rendered inside a <Reveal> was being clipped to the card instead of
+  // covering the viewport. Only needed while the transition is actually running.
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    if (!shown || reduce || settled) return;
+    const ms = (totalDelay + MOTION.revealDuration) * 1000 + 60;
+    const t = window.setTimeout(() => setSettled(true), ms);
+    return () => window.clearTimeout(t);
+  }, [shown, reduce, settled, totalDelay]);
+
   // Immediate mode: no JS gate. The element is emitted visible in the SSR HTML
   // and animated by a pure-CSS keyframe (see .reveal-immediate) so it paints as
   // the LCP element on first frame rather than after hydration. The stagger is
@@ -67,7 +81,7 @@ export function Reveal({
         opacity: shown ? 1 : 0,
         transform: shown ? "none" : `translateY(${MOTION.revealDistance}px)`,
         transition: `opacity ${MOTION.revealDuration}s var(--ease-brand) ${totalDelay}s, transform ${MOTION.revealDuration}s var(--ease-brand) ${totalDelay}s`,
-        willChange: "opacity, transform",
+        ...(settled ? null : { willChange: "opacity, transform" }),
       };
 
   return (

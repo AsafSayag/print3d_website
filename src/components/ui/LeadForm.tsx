@@ -68,8 +68,15 @@ export function LeadForm() {
     <>
     <form onSubmit={onSubmit} noValidate className="grid sm:grid-cols-2 gap-4 text-start">
       {/* Honeypot — invisible to real visitors, irresistible to form-filling bots.
-          Off-screen (not display:none) so it still exists in the accessibility
-          tree the way scrapers expect a real field to. */}
+          Clipped rather than display:none so it still renders (and so still
+          looks like a real field to a scraper), but stays out of the layout.
+
+          Deliberately NOT positioned off-screen with a negative offset: on this
+          RTL site `-left-[9999px]` extended the document's scroll width to
+          ~11,000px on every page carrying this form, which is real horizontal
+          overflow (body's `overflow-x: clip` hides it, but the metric still
+          leaks into anything that measures the page). The sr-only clip pattern
+          takes up no space in any direction. */}
       <input
         type="text"
         name="company"
@@ -78,7 +85,7 @@ export function LeadForm() {
         tabIndex={-1}
         autoComplete="off"
         aria-hidden="true"
-        className="absolute -left-[9999px] w-px h-px overflow-hidden"
+        className="sr-only"
       />
       <Field
         label={CONTACT_CTA.fields.name}
