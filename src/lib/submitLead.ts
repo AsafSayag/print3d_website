@@ -3,6 +3,8 @@ export type Lead = {
   phone: string;
   email: string;
   project?: string;
+  /** Honeypot — must stay empty. Real visitors never see or fill this field. */
+  company?: string;
 };
 
 /**

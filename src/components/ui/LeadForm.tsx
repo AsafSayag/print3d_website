@@ -35,6 +35,7 @@ export function LeadForm() {
     phone: "",
     email: "",
     project: "",
+    company: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
@@ -55,7 +56,7 @@ export function LeadForm() {
     try {
       await submitLead(values);
       // Clear the form and celebrate with the thank-you popup.
-      setValues({ name: "", phone: "", email: "", project: "" });
+      setValues({ name: "", phone: "", email: "", project: "", company: "" });
       setStatus("idle");
       setShowThankYou(true);
     } catch {
@@ -66,6 +67,19 @@ export function LeadForm() {
   return (
     <>
     <form onSubmit={onSubmit} noValidate className="grid sm:grid-cols-2 gap-4 text-start">
+      {/* Honeypot — invisible to real visitors, irresistible to form-filling bots.
+          Off-screen (not display:none) so it still exists in the accessibility
+          tree the way scrapers expect a real field to. */}
+      <input
+        type="text"
+        name="company"
+        value={values.company}
+        onChange={update("company")}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] w-px h-px overflow-hidden"
+      />
       <Field
         label={CONTACT_CTA.fields.name}
         value={values.name}
