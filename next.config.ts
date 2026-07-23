@@ -27,6 +27,52 @@ const nextConfig: NextConfig = {
       { source: "/portfolio", destination: "/projects", permanent: true },
     ];
   },
+
+  /* Baseline security headers — there was none of this before. `script-src`/
+     `style-src` need 'unsafe-inline' because the app has no CSP-nonce plumbing:
+     Next's own hydration payload and every `dangerouslySetInnerHTML` JSON-LD
+     block are unnonced inline <script>s, and `experimental.inlineCss` above
+     puts Tailwind's CSS inline too. That keeps this CSP from stopping inline
+     script injection — it still blocks loading a stranger's script/iframe/
+     object from a third-party origin, clickjacking (frame-ancestors), and
+     form-hijacking (form-action). Tightening it to nonces later would close
+     the remaining gap, but that's a separate, larger change (needs
+     middleware.ts to mint a nonce and every JsonLd usage to receive it). */
+  async headers() {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https:",
+      "font-src 'self' data:",
+      "frame-src https://www.google.com",
+      "connect-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+    ].join("; ");
+
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: csp },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=15552000; includeSubDomains",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
