@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
@@ -39,7 +40,18 @@ export function ThankYouModal({
     };
   }, [open, onClose]);
 
-  return (
+  // No `document` during SSR. Rendering null there is not a hydration risk:
+  // a portal contributes nothing at this position in the tree either way, and
+  // `open` can only become true from a client-side interaction.
+  if (typeof document === "undefined") return null;
+
+  // Rendered into <body> rather than in place. `position: fixed` resolves
+  // against the nearest ancestor with a transform / filter / will-change, and
+  // every <LeadForm> sits inside a <Reveal> (which sets will-change) — in place,
+  // this overlay was being clipped to the form card (524x606 instead of the full
+  // viewport) instead of covering the page. `html.a11y-contrast main` applies a
+  // filter too, so the portal is the fix that holds in both cases.
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -118,6 +130,7 @@ export function ThankYouModal({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

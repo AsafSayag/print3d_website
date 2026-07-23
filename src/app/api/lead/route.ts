@@ -13,6 +13,9 @@ import type { NextRequest } from "next/server";
  * both fail do we return an error, so the visitor is told to try again rather
  * than silently losing their details.
  *
+ * Abuse protection: a `company` honeypot field (silently accepted, never
+ * sent) plus a per-IP in-memory rate limit (5 requests/minute/instance).
+ *
  * Configuration (environment variables — see LEADS_SETUP.md):
  *   RESEND_API_KEY          Resend API key (required for the email channel).
  *   LEAD_NOTIFY_TO          Recipient of the notification. Default: asaf00500@gmail.com.
@@ -28,10 +31,34 @@ type LeadPayload = {
   phone?: unknown;
   email?: unknown;
   project?: unknown;
+  /** Honeypot — real visitors never see or fill this field. */
+  company?: unknown;
 };
 
 const PHONE_RE = /^0\d{1,2}-?\d{7}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Best-effort in-memory rate limit: caps repeat submissions from the same IP.
+// Only shared across requests that land on the same warm serverless instance
+// (not a distributed guarantee), but it stops the common case of a script
+// hammering the endpoint in a tight loop within one instance's lifetime.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 5;
+const submissionsByIp = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (submissionsByIp.get(ip) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS,
+  );
+  recent.push(now);
+  submissionsByIp.set(ip, recent);
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+function getClientIp(request: NextRequest): string {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+}
 
 const NOTIFY_TO = process.env.LEAD_NOTIFY_TO || "asaf00500@gmail.com";
 // Resend's shared onboarding sender works out-of-the-box but only delivers to
@@ -159,11 +186,22 @@ async function appendToSheet(lead: {
 }
 
 export async function POST(request: NextRequest) {
+  if (isRateLimited(getClientIp(request))) {
+    return Response.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  }
+
   let body: LeadPayload;
   try {
     body = (await request.json()) as LeadPayload;
   } catch {
     return Response.json({ ok: false, error: "invalid_json" }, { status: 400 });
+  }
+
+  // Honeypot tripped — a bot filled a field real visitors never see. Report
+  // success without actually sending anything, so scripts don't learn to
+  // leave it blank.
+  if (clean(body.company)) {
+    return Response.json({ ok: true });
   }
 
   const name = clean(body.name);
