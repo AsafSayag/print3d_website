@@ -134,6 +134,12 @@ export function Footer() {
             </ul>
           </nav>
         </div>
+
+        {/* Builder signature — the site's final line, centered on every page. */}
+        <div className="mt-8 text-center text-xs text-white/45" dir="rtl">
+          נבנה על ידי{" "}
+          <span className="text-white/70" dir="ltr">Asaf Sayag</span>
+        </div>
       </div>
     </footer>
   );
