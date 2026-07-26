@@ -21,7 +21,7 @@ main
  └─ Footer
 ```
 
-**Section 1 — `HeroSlider`** (`_components/HeroSlider.tsx`): a full-viewport
+**Section 1 — `HeroSlider`** (`src/components/project/HeroSlider.tsx`, shared): a full-viewport
 (`100svh`) image carousel that crossfades every 5s, with left/right arrows, dots,
 and a scroll cue (`ScrollHint.tsx`). Any manual interaction pauses auto-advance.
 It's a `"use client"` component; props are `{ slides, alt, eyebrow, title }`.
@@ -33,13 +33,16 @@ shadow gradient; the spec rows render inside a **centered, frosted-glass panel**
 so the text stays clearly legible over the photo. Heading and all rows are
 center-aligned. `pending` rows show a dashed "להשלמה" pill with an optional hint.
 
-`Gallery.tsx` and `Lightbox.tsx` are **shared** — one copy each in
-`src/components/project/`, imported by every project. Do not re-create them
-per project.
+`Gallery.tsx`, `Lightbox.tsx`, `HeroSlider.tsx` and `ScrollHint.tsx` are
+**shared** — one copy each in `src/components/project/`, imported by every
+project (`@/components/project/…`). Do not re-create them per project. The
+shared `HeroSlider` is a single animated hero: the title enters large and
+centered, then glides up to a small top-middle resting position (framer-motion
+`layout`, reduced-motion aware). It takes everything as data via its props.
 
-`HeroSlider.tsx`, `TechnicalSpec.tsx`, `ScrollHint.tsx` and `AboutProject.tsx`
-are still copied verbatim into each project's `_components/`. They take
-everything as data from the co-located `content.ts`.
+`TechnicalSpec.tsx` and `AboutProject.tsx` are still copied verbatim into each
+project's `_components/`. They take everything as data from the co-located
+`content.ts`.
 
 ## Inputs required from the Builder
 
@@ -213,10 +216,11 @@ track is intentional before shipping. Videos never enter the hero carousel.
      props via `ProjectView`, which is where that boundary lives.
    - `_components/ProjectView.tsx` — the layout above. Copy from an existing
      project; only the `content.ts` import path changes.
-   - `_components/HeroSlider.tsx`, `ScrollHint.tsx`, `TechnicalSpec.tsx`,
-     `AboutProject.tsx` — copy unchanged from an
+   - `_components/TechnicalSpec.tsx`, `AboutProject.tsx` — copy unchanged from an
      existing project. `TechnicalSpec.tsx` reads `SPEC_BG`, `SPECS`, `IMAGE_ALT`
-     from `../content` itself, so it takes no props.
+     from `../content` itself, so it takes no props. The hero (`HeroSlider`) and
+     its scroll cue (`ScrollHint`) are **shared** — import `HeroSlider` from
+     `@/components/project/HeroSlider`; do not copy them per project.
    - `page.tsx` — a plain server component: `Header` + `ProjectView`, with
      `metadata` from `SEO_TITLE_TAG` / `IMAGE_ALT`. (`shbiro` passes
      `<Header transparent />` so the dark carousel reads under the header.)

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ScrollHint } from "./ScrollHint";
 
 type Props = {
@@ -11,12 +12,6 @@ type Props = {
   alt: string;
   eyebrow?: string;
   title: string;
-  /**
-   * "עיצוב 2": when true, the title first appears centered & large, then after a
-   * short delay smoothly glides to its small top-left resting position. When
-   * false (default), it renders statically at the top-left (עיצוב 1).
-   */
-  animated?: boolean;
 };
 
 /**
@@ -27,22 +22,26 @@ type Props = {
  * `slides` can include the full project gallery (see HERO_SLIDES), so only the
  * active slide and its two neighbors are ever mounted — otherwise every photo
  * on the page would load up front instead of on demand.
+ *
+ * The title makes an entrance: it appears large and vertically centered, holds
+ * briefly, then glides up to a small top-middle resting position (framer-motion
+ * `layout`). Users who prefer reduced motion get the resting state immediately.
  */
-export function HeroSlider({ slides, alt, eyebrow, title, animated = false }: Props) {
+export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   const n = slides.length;
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  // Title placement. In עיצוב 1 the title rests at the top-middle immediately.
-  // In עיצוב 2 it starts large & vertically centered (settled=false), then after
-  // a delay settles up to the top-middle — framer-motion's `layout` animates the
-  // move + resize smoothly.
-  const [settled, setSettled] = useState(!animated);
+  // Title placement: it starts large & vertically centered (settled=false),
+  // then after a short hold settles up to the small top-middle position.
+  // Reduced-motion users start settled, so no glide runs.
+  const reduce = useReducedMotion();
+  const [settled, setSettled] = useState(reduce);
   useEffect(() => {
-    if (!animated) return;
+    if (reduce) return;
     const t = window.setTimeout(() => setSettled(true), 1600);
     return () => window.clearTimeout(t);
-  }, [animated]);
+  }, [reduce]);
 
   const go = useCallback(
     (delta: number) => {
@@ -110,7 +109,8 @@ export function HeroSlider({ slides, alt, eyebrow, title, animated = false }: Pr
         חזרה לקטלוג
       </Link>
 
-      {/* Copy */}
+      {/* Copy — horizontally centered always; only the vertical placement
+          animates (center → top-middle). */}
       <div
         className={`container-x relative h-full flex flex-col items-center text-center text-white ${
           settled ? "justify-start pt-32 sm:pt-36" : "justify-center"
@@ -120,7 +120,7 @@ export function HeroSlider({ slides, alt, eyebrow, title, animated = false }: Pr
           <p className="eyebrow text-[color:var(--steel-300)] mb-3">{eyebrow}</p>
         ) : null}
         <motion.h1
-          layout={animated || undefined}
+          layout={reduce ? undefined : true}
           transition={{ layout: { duration: 1, ease: [0.22, 1, 0.36, 1] } }}
           className="h1 heading-accent heading-accent--center max-w-3xl font-bold"
           style={{
