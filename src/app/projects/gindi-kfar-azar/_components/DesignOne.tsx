@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { TechnicalSpec } from "./TechnicalSpec";
-import { HeroDesignToggle } from "./HeroDesignToggle";
+import { HeroSlider } from "@/components/project/HeroSlider";
 import { Gallery } from "@/components/project/Gallery";
 import { AboutProject } from "./AboutProject";
 import { IMAGE_ALT, HERO, HERO_SLIDES, ABOUT, GALLERY_ITEMS } from "../content";
@@ -13,9 +13,8 @@ import { IMAGE_ALT, HERO, HERO_SLIDES, ABOUT, GALLERY_ITEMS } from "../content";
 export function DesignOne() {
   return (
     <main>
-      {/* Hero — full-bleed image slider with manual arrows + auto-advance.
-          Wrapped in a Gindi-only toggle to preview an alternate hero (עיצוב 2). */}
-      <HeroDesignToggle
+      {/* Hero — full-bleed image slider with manual arrows + auto-advance. */}
+      <HeroSlider
         slides={HERO_SLIDES}
         alt={IMAGE_ALT}
         eyebrow={HERO.eyebrow}

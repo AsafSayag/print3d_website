@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
-import { HeroSlider } from "./HeroSlider";
+import { HeroSlider } from "@/components/project/HeroSlider";
 import { TechnicalSpec } from "./TechnicalSpec";
 import { Gallery } from "@/components/project/Gallery";
 import { IMAGE_ALT, HERO, HERO_SLIDES, GALLERY_ITEMS } from "../content";
