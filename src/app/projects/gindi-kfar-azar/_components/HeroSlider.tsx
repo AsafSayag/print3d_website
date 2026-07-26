@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ScrollHint } from "./ScrollHint";
 
 type Props = {
@@ -10,6 +11,12 @@ type Props = {
   alt: string;
   eyebrow?: string;
   title: string;
+  /**
+   * "עיצוב 2": when true, the title first appears centered & large, then after a
+   * short delay smoothly glides to its small top-left resting position. When
+   * false (default), it renders statically at the top-left (עיצוב 1).
+   */
+  animated?: boolean;
 };
 
 /**
@@ -21,10 +28,21 @@ type Props = {
  * active slide and its two neighbors are ever mounted — otherwise every photo
  * on the page would load up front instead of on demand.
  */
-export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
+export function HeroSlider({ slides, alt, eyebrow, title, animated = false }: Props) {
   const n = slides.length;
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+
+  // Title placement. In עיצוב 1 the title rests at the top-middle immediately.
+  // In עיצוב 2 it starts large & vertically centered (settled=false), then after
+  // a delay settles up to the top-middle — framer-motion's `layout` animates the
+  // move + resize smoothly.
+  const [settled, setSettled] = useState(!animated);
+  useEffect(() => {
+    if (!animated) return;
+    const t = window.setTimeout(() => setSettled(true), 1600);
+    return () => window.clearTimeout(t);
+  }, [animated]);
 
   const go = useCallback(
     (delta: number) => {
@@ -93,16 +111,26 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
       </Link>
 
       {/* Copy */}
-      <div className="container-x relative h-full flex flex-col items-center justify-center text-center text-white">
+      <div
+        className={`container-x relative h-full flex flex-col items-center text-center text-white ${
+          settled ? "justify-start pt-32 sm:pt-36" : "justify-center"
+        }`}
+      >
         {eyebrow ? (
           <p className="eyebrow text-[color:var(--steel-300)] mb-3">{eyebrow}</p>
         ) : null}
-        <h1
+        <motion.h1
+          layout={animated || undefined}
+          transition={{ layout: { duration: 1, ease: [0.22, 1, 0.36, 1] } }}
           className="h1 heading-accent heading-accent--center max-w-3xl font-bold"
-          style={{ fontSize: "clamp(2.75rem, 6.5vw, 4.75rem)" }}
+          style={{
+            fontSize: settled
+              ? "clamp(1.75rem, 3.2vw, 2.75rem)"
+              : "clamp(2.75rem, 6.5vw, 4.75rem)",
+          }}
         >
           {title}
-        </h1>
+        </motion.h1>
       </div>
 
       {/* Navigation arrows */}
