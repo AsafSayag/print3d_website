@@ -377,7 +377,7 @@ export const CONTACT_PAGE = {
     phone: "טלפון",
     email: 'דוא"ל',
   },
-  companyName: "Print3D · מודלים אדריכליים",
+  companyName: "Print3D Ltd · מודלים אדריכליים",
   map: {
     eyebrow: "המשרד שלנו",
     title: "איך מגיעים אלינו",
