@@ -434,7 +434,7 @@ export function ScrollSequence() {
       <section
         id="process"
         className="surface-navy-950 section"
-        aria-label="כך נבנה מודל"
+        aria-label="תתחברו לחוויית היצירה"
       >
         <SequenceFrame mobile={isMobile}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -450,7 +450,7 @@ export function ScrollSequence() {
   }
 
   return (
-    <section id="process" aria-label="כך נבנה מודל">
+    <section id="process" aria-label="תתחברו לחוויית היצירה">
       {/* Tall outer container defines the scroll "cost" of the sequence. */}
       <div
         ref={outerRef}
