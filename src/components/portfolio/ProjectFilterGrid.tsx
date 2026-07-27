@@ -38,7 +38,9 @@ function GridImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-const SCALES = Array.from(new Set(PORTFOLIO_PROJECTS.map((p) => p.scale)));
+const SCALES = Array.from(new Set(PORTFOLIO_PROJECTS.map((p) => p.scale))).sort(
+  (a, b) => Number(a.split(":")[1]) - Number(b.split(":")[1]),
+);
 
 function Select({
   label,

@@ -305,22 +305,7 @@ export function ProjectShowcase() {
             <path d="M9 6l6 6-6 6" />
           </svg>
         </button>
-
-        {/* Index + progress rule */}
-        <div className="container-x mt-5 flex items-center gap-4">
-          <span className="num text-[color:var(--steel-300)] text-sm shrink-0" dir="ltr">
-            {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <div className="h-px flex-1 bg-white/10 relative overflow-hidden rounded-full">
-            <div
-              className="absolute inset-y-0 start-0 bg-gradient-to-r from-[color:var(--gold-700)] via-[color:var(--gold-400)] to-[color:var(--gold-700)] transition-[width] duration-500 ease-[var(--ease-brand)]"
-              style={{ width: `${((active + 1) / total) * 100}%` }}
-            />
-          </div>
-        </div>
       </div>
-
-      <div className="h-16 md:h-20" aria-hidden />
     </section>
   );
 }

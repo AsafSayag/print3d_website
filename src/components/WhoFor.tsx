@@ -51,7 +51,7 @@ export function WhoFor() {
       <div className="container-x">
         <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-start">
           <div className="lg:col-span-5">
-            <SectionHeading eyebrow="הלקוחות שלנו" title={WHO_FOR.heading} tone="light" />
+            <SectionHeading eyebrow="שותפים לדרך" title={WHO_FOR.heading} tone="light" />
           </div>
           <div className="lg:col-span-7">
             <Reveal>

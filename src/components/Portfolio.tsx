@@ -267,8 +267,8 @@ export function Portfolio() {
           </Reveal>
         </div>
 
-        {/* Mobile shows the first 3 projects; the rest reveal on tap (pure-CSS
-            toggle). Desktop always shows the full grid — see .collapse-sm. */}
+        {/* Shows the first 6 projects on every breakpoint; the rest reveal
+            in place on tap (pure-CSS toggle) — see .portfolio-collapse. */}
         <input
           type="checkbox"
           id="portfolio-more"
@@ -280,7 +280,7 @@ export function Portfolio() {
             <Reveal
               key={p.src}
               index={i % 3}
-              className={`${p.span} ${i >= 4 ? "collapse-sm" : ""}`}
+              className={`${p.span} ${i >= 6 ? "portfolio-collapse" : ""}`}
             >
               {/* Hover transforms live on this inner card — Reveal owns the
                   element's inline transform, so the two must not share a node. */}
@@ -322,14 +322,45 @@ export function Portfolio() {
           ))}
         </div>
 
-        {/* Mobile-only "view full gallery" button */}
-        <div className="more-btn-wrap mt-8 justify-center">
+        {/* "Show more" / "show less" toggle — same checkbox drives both
+            states, the label just swaps its visible content via CSS; see
+            .portfolio-more-wrap / .portfolio-collapse and the .label-more /
+            .label-less rules in globals.css. */}
+        <div className="portfolio-more-wrap mt-8 justify-center">
           <label
             htmlFor="portfolio-more"
             className="more-btn cursor-pointer inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
           >
-            לכל הקטלוג
-            <span aria-hidden="true">←</span>
+            <span className="label-more inline-flex items-center gap-2">
+              לפרויקטים נוספים
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+            <span className="label-less inline-flex items-center gap-2">
+              הצג פחות
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 15l-6-6-6 6" />
+              </svg>
+            </span>
           </label>
         </div>
       </div>

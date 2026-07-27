@@ -347,6 +347,35 @@ body {
   outline-offset: 3px;
 }
 
+/* Portfolio-only variant: unlike .collapse-sm/.more-btn-wrap above, this stays
+   collapsed (and the button stays visible) at every breakpoint, not just on
+   mobile — the homepage portfolio grid caps at 6 items everywhere. The button
+   itself never disappears: the same checkbox drives it both ways, and its
+   label swaps between "show more" / "show less" content so the user can
+   collapse back down to 6. */
+.portfolio-collapse {
+  display: none;
+}
+.portfolio-more-wrap {
+  display: flex;
+}
+.more-toggle:checked ~ .collapse-host .portfolio-collapse {
+  display: block;
+}
+.more-toggle:focus-visible ~ .portfolio-more-wrap .more-btn {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+.portfolio-more-wrap .label-less {
+  display: none;
+}
+.more-toggle:checked ~ .portfolio-more-wrap .label-more {
+  display: none;
+}
+.more-toggle:checked ~ .portfolio-more-wrap .label-less {
+  display: inline-flex;
+}
+
 /* ============================================================
    Liquid Glass buttons
    ============================================================ */
