@@ -24,7 +24,12 @@ const PARTICLES = [
   { left: 34, size: 2, dur: 12, delay: 8 },
 ];
 
-export function CallbackCta() {
+export function CallbackCta({
+  ctaHref = CONTACT.contactPath,
+}: {
+  /** On the home page this points to the in-page lead form (#contact). */
+  ctaHref?: string;
+}) {
   return (
     <section
       id="callback"
@@ -78,7 +83,7 @@ export function CallbackCta() {
               {CALLBACK_CTA.subtitle}
             </p>
             <div className="mt-9 flex justify-center">
-              <GlassButton href={CONTACT.contactPath} variant="primary">
+              <GlassButton href={ctaHref} variant="primary">
                 {CALLBACK_CTA.button}
               </GlassButton>
             </div>

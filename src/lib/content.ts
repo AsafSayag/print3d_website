@@ -93,7 +93,7 @@ export const BUSINESS_VALUE = {
     "מודל מדויק הופך תכנון מורכב לפרויקט שקל להבין, לרצות ולקנות",
   cards: [
     {
-      icon: "clock",
+      icon: "timer",
       side: "right",
       title: "מקצרים את תקופת המכירה",
       stat: "20%",
@@ -101,15 +101,15 @@ export const BUSINESS_VALUE = {
       text: "החלטה מהירה יותר, נרתמים מוקדם יותר, פחות עלויות מימון ושיווק",
     },
     {
-      icon: "shield",
+      icon: "tag",
       side: "left",
       title: "מגנים על מחיר המכירה",
-      stat: "1-10%",
+      stat: "10%",
       statLabel: "פוטנציאל השבחה",
       text: "מחזקים את תפיסת הערך ומצמצמים את הצורך בהנחות",
     },
     {
-      icon: "eye",
+      icon: "building",
       side: "right",
       title: "הופכים התעניינות לרצון לקנות",
       stat: "85%",
@@ -117,7 +117,7 @@ export const BUSINESS_VALUE = {
       text: "הרוכש רואה את הפרויקט, מבין אותו ומתחבר אליו",
     },
     {
-      icon: "chat",
+      icon: "contract",
       side: "left",
       title: "פחות הסברים פחות התנגדויות",
       stat: "81%",
@@ -128,6 +128,38 @@ export const BUSINESS_VALUE = {
   bannerTop: "לעיתים די בשיפור של עסקה אחת",
   bannerBottom: "כדי להחזיר את מלוא ההשקעה במודל",
   cta: "בואו נדבר על הפרויקט שלכם",
+} as const;
+
+/**
+ * Home "מה אנחנו בונים" module — an interactive "mirror" heading that flips to
+ * each category's title + description on hover (desktop) / tap (mobile).
+ * Separate from SERVICES (which the About page still consumes).
+ */
+export const WE_BUILD = {
+  eyebrow: "מה אנחנו בונים",
+  heading: "אנחנו בונים חלומות בתלת מימד",
+  cards: [
+    {
+      title: "מודל שיווקי",
+      text: "מודל המיועד למשרדי מכירות וממחיש לרוכשים את הפרויקט, המבנים והסביבה במבט אחד. הוא מפחית אי־בהירויות, יוצר חיבור רגשי ומעניק לצוות המכירות כלי אפקטיבי לקידום החלטות ולסגירת עסקאות.",
+      image: { src: "/projects/gindi-bait-bapark.jpg", alt: "מודל שיווקי למשרד מכירות, גינדי החזקות, בית בפארק" },
+    },
+    {
+      title: "מודל תצוגה",
+      text: "מודל מוקפד ומרשים להצגת מבנים, מתחמים ורעיונות אדריכליים בלובי, במשרד, בתערוכה או בכנס. הוא מושך תשומת לב, מבטא את איכות הפרויקט ומחזק את הנראות והתדמית של החברה.",
+      image: { src: "/projects/neve-gan.webp", alt: "מודל תצוגה מרשים של מגדל מגורים מואר, נווה גן" },
+    },
+    {
+      title: "עירוני ורשויות",
+      text: "מודלים לתוכניות מתאר, התחדשות עירונית, מבני ציבור ותכנון סביבתי. המודל מציג בצורה ברורה את היקף התוכנית, הטופוגרפיה, הבינוי והקשר לסביבה, ומסייע בדיונים מקצועיים ובקבלת החלטות.",
+      image: { src: "/projects/preshkovsky-tabaa.jpg", alt: "מודל תב״ע עירוני, פרשקובסקי" },
+    },
+    {
+      title: "גיוס כספים",
+      text: "מודל פיזי הופך תוכנית מורכבת לפרויקט מוחשי שקל להציג ולהבין. הוא מסייע ליזמים להמחיש את החזון בפני משקיעים וגופים מממנים, לחזק את אמינות ההצעה ולייצר ביטחון בפוטנציאל הפרויקט.",
+      image: { src: "/projects/avisror-sde-dov.jpg", alt: "מודל מגדל יוקרתי להצגה בפני משקיעים, אביסרור שדה דב" },
+    },
+  ],
 } as const;
 
 export const SERVICES = {

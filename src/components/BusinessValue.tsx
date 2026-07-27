@@ -120,28 +120,38 @@ function BackgroundScene() {
 }
 
 const ICONS: Record<string, React.ReactNode> = {
-  clock: (
+  // Shorten the sale period → a stopwatch (time / speed)
+  timer: (
     <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7.5V12l3 2" />
+      <circle cx="12" cy="14" r="7.5" />
+      <path d="M12 14v-4" />
+      <path d="M9.75 3.5h4.5" />
+      <path d="M12 3.5v3" />
+      <path d="M18.6 7.4 20 6" />
     </>
   ),
-  shield: (
+  // Protect the sale price → a price tag
+  tag: (
     <>
-      <path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6l7-3z" />
-      <path d="M12 8.6c-1.5 0-2.3.8-2.3 1.8 0 2.1 4 1.2 4 3.2 0 1-1 1.8-2.4 1.8-1 0-1.9-.4-2.3-1M12 7.6v.9M12 16.3v.9" />
+      <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.83 0l-6.77-6.77A2 2 0 0 1 3.2 12.4V5a2 2 0 0 1 2-2h7.4a2 2 0 0 1 1.42.59l6.58 6.58a2 2 0 0 1 0 2.83z" />
+      <circle cx="7.6" cy="7.6" r="1.4" />
     </>
   ),
-  eye: (
+  // The buyer sees the project → the physical building / model
+  building: (
     <>
-      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" />
-      <circle cx="12" cy="12" r="3.2" />
+      <path d="M3 21h18" />
+      <path d="M5 21V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16" />
+      <path d="M14 21V9h4a1 1 0 0 1 1 1v11" />
+      <path d="M8 7.5h3M8 11.5h3M8 15.5h3" />
     </>
   ),
-  chat: (
+  // Fewer objections, focus on closing → a signed / approved document
+  contract: (
     <>
-      <path d="M4 5.5h16a1 1 0 0 1 1 1V15a1 1 0 0 1-1 1H9l-4 3.5V16H4a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1z" />
-      <path d="M8 10.7h.01M12 10.7h.01M16 10.7h.01" />
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <path d="M8.5 14.5l2 2 4-4" />
     </>
   ),
 };
@@ -187,7 +197,7 @@ export function BusinessValue() {
 
         {/* Cards — 3D fly-in from the sides */}
         <div
-          className="mt-10 md:mt-14 grid gap-4 md:gap-6 md:grid-cols-2"
+          className="mt-10 md:mt-12 grid gap-4 md:gap-5 md:grid-cols-2 md:max-w-4xl md:mx-auto"
           style={{ perspective: "1400px" }}
         >
           {BUSINESS_VALUE.cards.map((card, i) => (
@@ -206,7 +216,7 @@ export function BusinessValue() {
             </p>
           </Reveal>
           <Reveal index={1} className="mt-8">
-            <GlassButton href="/contact" variant="primary">
+            <GlassButton href="#contact" variant="primary">
               {BUSINESS_VALUE.cta}
             </GlassButton>
           </Reveal>

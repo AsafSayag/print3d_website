@@ -66,6 +66,9 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Offset in-page anchor jumps (e.g. the "#contact" lead-form CTAs and the
+     nav hash links) so targets don't land beneath the fixed header. */
+  scroll-padding-top: 5.5rem;
 }
 
 body {
@@ -277,7 +280,7 @@ body {
 }
 
 .section {
-  padding-block: clamp(2.25rem, 4.5vw, 4rem);
+  padding-block: clamp(1.85rem, 3.5vw, 3.15rem);
 }
 
 /* Section surfaces */
@@ -628,7 +631,7 @@ body {
    ============================================================ */
 .framer-logos-section {
   width: 100%;
-  padding-block: clamp(4rem, 8vw, 6.5rem);
+  padding-block: clamp(2.75rem, 5.5vw, 4.5rem);
   background:
     radial-gradient(
       120% 100% at 50% 0%,
@@ -933,7 +936,7 @@ body {
    intentional, premium hinge rather than a plain gap. */
 .portfolio-seam {
   position: relative;
-  height: clamp(2.5rem, 5.5vw, 4rem);
+  height: clamp(1.75rem, 4vw, 2.75rem);
   pointer-events: none;
 }
 .portfolio-seam::before {
@@ -1933,20 +1936,23 @@ html.a11y-motion .a11y-panel {
 /* Value card — dark liquid glass with a soft 3D-ready frame */
 .bizval-card {
   position: relative;
-  padding: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(1.25rem, 2.2vw, 1.65rem);
   border-radius: 20px;
+  /* Stronger blue-tinted glass so each tile reads as a distinct blue panel. */
   background: linear-gradient(
     155deg,
-    rgba(255, 255, 255, 0.07),
-    rgba(255, 255, 255, 0.02) 60%,
-    rgba(255, 255, 255, 0.01)
+    rgba(62, 121, 159, 0.34),
+    rgba(45, 90, 120, 0.2) 55%,
+    rgba(20, 52, 72, 0.14)
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(95, 154, 192, 0.4);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 26px 60px -30px rgba(0, 0, 0, 0.85);
+    0 0 0 1px rgba(95, 154, 192, 0.12),
+    0 24px 56px -30px rgba(0, 0, 0, 0.85),
+    0 0 30px -14px rgba(62, 121, 159, 0.5);
   transition:
     transform 0.5s var(--ease-brand),
     border-color 0.5s var(--ease-brand),
@@ -1957,17 +1963,18 @@ html.a11y-motion .a11y-panel {
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
 ) {
   .bizval-card {
-    background: rgba(21, 38, 61, 0.75);
+    background: rgba(35, 72, 104, 0.85);
   }
 }
 @media (hover: hover) {
   .bizval-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(95, 154, 192, 0.5);
+    border-color: rgba(120, 176, 210, 0.7);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      0 0 0 1px rgba(95, 154, 192, 0.35),
       0 34px 70px -28px rgba(0, 0, 0, 0.9),
-      0 0 26px -8px rgba(62, 121, 159, 0.45);
+      0 0 34px -8px rgba(62, 121, 159, 0.6);
   }
 }
 
@@ -1999,17 +2006,23 @@ html.a11y-motion .a11y-panel {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 3.1rem;
+  height: 3.1rem;
   border-radius: 14px;
-  color: var(--steel-300);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(166, 195, 220, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #d6e8f4;
+  background: linear-gradient(
+    155deg,
+    rgba(95, 154, 192, 0.32),
+    rgba(62, 121, 159, 0.18)
+  );
+  border: 1px solid rgba(120, 176, 210, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 16px -6px rgba(95, 154, 192, 0.6);
 }
 .bizval-icon svg {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.55rem;
+  height: 1.55rem;
 }
 
 /* Closing banner headline */
@@ -2021,6 +2034,157 @@ html.a11y-motion .a11y-panel {
   font-size: clamp(1.5rem, 3.4vw, 2.25rem);
   color: #fff;
   text-wrap: balance;
+}
+
+/* ============================================================
+   "מה אנחנו בונים" — mirror heading that flips to each category's
+   title + description on hover/tap, plus the trigger cards.
+   ============================================================ */
+.wb-mirror {
+  position: relative;
+  max-width: 62rem;
+  margin-inline: auto;
+  margin-block: clamp(1.25rem, 3vw, 2.25rem) clamp(1.75rem, 4vw, 2.75rem);
+  min-height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.wb-mirror-face {
+  width: 100%;
+  will-change: transform, opacity;
+}
+.wb-mirror-heading {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  color: var(--ink-950);
+}
+.wb-mirror-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  color: var(--gold-700);
+  margin-bottom: 0.75rem;
+}
+.wb-mirror-sub {
+  max-width: 46rem;
+  margin-inline: auto;
+  color: color-mix(in srgb, var(--ink-950) 72%, transparent);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+@media (max-width: 640px) {
+  .wb-mirror {
+    min-height: 11rem;
+    margin-block: 1.25rem 1.5rem;
+  }
+}
+
+.wb-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+@media (min-width: 1024px) {
+  .wb-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.wb-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(10, 21, 38, 0.08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    transform 0.4s var(--ease-brand),
+    box-shadow 0.4s var(--ease-brand),
+    border-color 0.4s var(--ease-brand);
+}
+.wb-card-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.wb-card-media img {
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-brand);
+}
+.wb-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 21, 38, 0.3), transparent 55%);
+  transition: opacity 0.4s var(--ease-brand);
+}
+.wb-card-title {
+  display: block;
+  padding: 0.8rem 0.75rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: var(--ink-950);
+  transition: color 0.3s var(--ease-brand);
+}
+@media (hover: hover) {
+  .wb-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.28);
+  }
+  .wb-card:hover .wb-card-media img {
+    transform: scale(1.05);
+  }
+}
+.wb-card.is-active {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--gold-500) 60%, transparent);
+  box-shadow:
+    0 18px 44px -22px rgba(62, 121, 159, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--gold-500) 35%, transparent);
+}
+.wb-card.is-active .wb-card-title {
+  color: var(--gold-700);
+}
+.wb-card.is-active .wb-card-scrim {
+  opacity: 0.35;
+}
+.wb-card:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+}
+
+.wb-catalog-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--gold-700);
+  border-bottom: 1px solid color-mix(in srgb, var(--gold-700) 30%, transparent);
+  padding-bottom: 2px;
+  transition:
+    color 0.3s var(--ease-brand),
+    border-color 0.3s var(--ease-brand);
+}
+.wb-catalog-link svg {
+  transition: transform 0.3s var(--ease-brand);
+}
+.wb-catalog-link:hover {
+  color: var(--gold-500);
+  border-color: var(--gold-500);
+}
+.wb-catalog-link:hover svg {
+  transform: translateX(-4px);
 }
 
 /* Phones: shorten each card so the four don't take too long to scroll —
