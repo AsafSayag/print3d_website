@@ -358,6 +358,7 @@ export const PROJECT_TYPE_LABELS: Record<ProjectType, string> = {
 
 export const PORTFOLIO_SHOWCASE = {
   title: "פרויקטים נבחרים",
+  note: "הסרטונים נוצרו בעזרת AI, התמונות בדפי פרויקט אמיתיות לחלוטין.",
 } as const;
 
 /** The curated set — and exact order — shown in the main showcase carousel.
