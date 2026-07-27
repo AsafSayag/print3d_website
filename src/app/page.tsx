@@ -47,12 +47,12 @@ export default function Home() {
       <main id="main" className="flex-1">
         <Hero />
         <BusinessValue />
+        <Portfolio />
         <WhySection />
         <ClientLogos />
         <CallbackCta />
         <ScrollSequence />
         <Services />
-        <Portfolio />
         <ContactBand />
         <WhoFor />
         <Faq />

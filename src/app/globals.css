@@ -277,7 +277,7 @@ body {
 }
 
 .section {
-  padding-block: clamp(4.5rem, 9vw, 8rem);
+  padding-block: clamp(2.25rem, 4.5vw, 4rem);
 }
 
 /* Section surfaces */

@@ -45,7 +45,7 @@ export function TechnicalSpec() {
               className="font-display font-bold leading-[1.05] mb-12"
               style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}
             >
-              מפרט טכני
+              מפרט המודל
             </h2>
 
             <dl className="grid sm:grid-cols-2 gap-x-12 gap-y-8 text-center">
