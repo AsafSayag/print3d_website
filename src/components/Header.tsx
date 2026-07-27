@@ -18,9 +18,11 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
   const reduce = useReducedMotion();
   const pathname = usePathname();
   const onHome = pathname === "/";
-  // On the home page the "get a quote" CTA scrolls to the in-page lead form
-  // instead of routing to /contact; elsewhere it goes to the contact page.
-  const quoteHref = onHome ? "#contact" : CONTACT.contactPath;
+  // On the home page AND the contact page the "get a quote" CTA scrolls to that
+  // page's in-page lead form (#contact) instead of routing to /contact; on every
+  // other route it goes to the contact page.
+  const onContact = pathname === CONTACT.contactPath;
+  const quoteHref = onHome || onContact ? "#contact" : CONTACT.contactPath;
 
   // On the transparent variant (used by a single project page) the bar never
   // tints or re-tints on scroll — it stays fully see-through over the hero.

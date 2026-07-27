@@ -43,6 +43,7 @@ export default function ContactPage() {
 
         {/* Details + form */}
         <section
+          id="contact"
           className="surface-ice section"
           aria-label={CONTACT_PAGE.formTitle}
         >
@@ -150,7 +151,8 @@ export default function ContactPage() {
         {/* FAQ — reused from the homepage */}
         <Faq />
       </main>
-      <Footer />
+      {/* On this page the footer CTA scrolls up to the form above, not to /contact */}
+      <Footer quoteHref="#contact" />
     </>
   );
 }

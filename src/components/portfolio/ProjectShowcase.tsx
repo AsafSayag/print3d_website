@@ -178,9 +178,14 @@ export function ProjectShowcase() {
             {PORTFOLIO_SHOWCASE.title}
           </h2>
         </Reveal>
+        <Reveal index={1}>
+          <p className="mt-3 text-center text-sm md:text-base text-[color:var(--steel-300)]">
+            {PORTFOLIO_SHOWCASE.note}
+          </p>
+        </Reveal>
       </div>
 
-      <div className="relative mt-8 md:mt-10">
+      <div className="relative mt-5 md:mt-6">
         {/* Viewport — forced LTR so the transform math is unambiguous; each
             slide restores dir=rtl for its Hebrew content. */}
         <div

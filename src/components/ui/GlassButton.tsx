@@ -43,6 +43,21 @@ export function GlassButton({
 }: Props) {
   if ("href" in rest && rest.href) {
     const { href, ...linkProps } = rest as AsLink;
+    // In-page hash links (e.g. "#contact") use a plain <a>, not next/link:
+    // next/link intercepts the click for client-side routing, which breaks
+    // repeat scrolls to the same anchor. A native anchor + the global
+    // InPageAnchorScroll handler makes every click scroll to the target.
+    if (href.startsWith("#")) {
+      return (
+        <a
+          href={href}
+          className={classes(variant, className)}
+          {...(linkProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={classes(variant, className)} {...linkProps}>
         {children}

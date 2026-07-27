@@ -5,7 +5,13 @@ import { CONTACT, NAV_ITEMS } from "@/lib/constants";
 import { FOOTER } from "@/lib/content";
 import { LEGAL_LINKS } from "@/lib/legal";
 
-export function Footer() {
+export function Footer({
+  quoteHref = CONTACT.contactPath,
+}: {
+  /** Where the footer's "get a quote" CTA points. On the contact page this is
+   *  set to the in-page form anchor (#contact) instead of routing to /contact. */
+  quoteHref?: string;
+}) {
   return (
     <footer className="surface-navy-950 border-t border-white/8">
       <div className="container-x py-16">
@@ -82,7 +88,7 @@ export function Footer() {
             <h3 className="font-display text-lg text-white mb-4">
               {FOOTER.ctaTitle}
             </h3>
-            <GlassButton href={CONTACT.contactPath} variant="primary">
+            <GlassButton href={quoteHref} variant="primary">
               {FOOTER.ctaButton}
             </GlassButton>
 
