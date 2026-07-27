@@ -50,10 +50,10 @@ export default function Home() {
         <Portfolio />
         <WhySection />
         <ClientLogos />
-        <CallbackCta />
+        <CallbackCta ctaHref="#contact" />
         <ScrollSequence />
         <Services />
-        <ContactBand />
+        <ContactBand ctaHref="#contact" />
         <WhoFor />
         <Faq />
         <Articles />

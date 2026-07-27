@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { GlassButton } from "./ui/GlassButton";
 import { HeroVideo } from "./ui/HeroVideo";
-import { HERO, MOTION, CONTACT } from "@/lib/constants";
+import { HERO, MOTION } from "@/lib/constants";
 import { HERO_COPY } from "@/lib/content";
 
 export function Hero() {
@@ -257,7 +257,7 @@ function HeroContent({
           className="mb-6 sm:mb-8 md:mb-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
-            href={CONTACT.contactPath}
+            href="#contact"
             variant="primary"
             className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >

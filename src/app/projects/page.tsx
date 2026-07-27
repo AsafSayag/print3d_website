@@ -47,11 +47,11 @@ export default function PortfolioPage() {
           centerOnMobile
         />
         {/* Intro + showcase share ONE continuous ambient surface so the
-            background flows seamlessly between them (no per-section gradient
-            reset). A luminous connector bridges the two as a premium hinge. */}
+            background flows seamlessly between them. The luminous seam line was
+            removed (it took up too much vertical space); the intro's own bottom
+            padding keeps them comfortably apart. */}
         <div className="portfolio-ambient">
           <PortfolioIntro />
-          <div className="portfolio-seam" aria-hidden="true" />
           <ProjectShowcase />
         </div>
         <ProjectFilterGrid />

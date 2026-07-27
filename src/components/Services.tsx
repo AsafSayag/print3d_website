@@ -1,67 +1,127 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SERVICES } from "@/lib/content";
-import { SectionHeading } from "./ui/SectionHeading";
+import { motion, useReducedMotion } from "framer-motion";
+import { WE_BUILD } from "@/lib/content";
 import { Reveal } from "./ui/Reveal";
 
-// Real model photos from the Print3D portfolio, matched to each service.
-const SERVICE_IMAGES = [
-  { src: "/projects/gindi-bait-bapark.jpg", alt: "מודל שיווקי למשרד מכירות, גינדי החזקות, בית בפארק" },
-  { src: "/projects/neve-gan.webp", alt: "מודל מגדל מגורים מואר, נווה גן" },
-  { src: "/projects/preshkovsky-tabaa.jpg", alt: "מודל תב״ע עירוני, פרשקובסקי" },
-  { src: "/projects/tzavta-shapir.jpg", alt: "מעמד תצוגה ממותג, צוותא, שפיר" },
-];
-
+/**
+ * "מה אנחנו בונים" — a central "mirror" heading that flips to reveal each
+ * category's title + description. On desktop it reacts to hover/focus; on
+ * touch devices a tap toggles it. The swap is a vertical 3D flip (rotateX),
+ * reading like a mirror turning over. Reduced-motion falls back to a crossfade.
+ */
 export function Services() {
-  return (
-    <section id="services" className="surface-ice section" aria-label={SERVICES.heading}>
-      <div className="container-x">
-        <SectionHeading eyebrow="מה אנחנו בונים" title={SERVICES.heading} tone="dark" />
+  const reduce = useReducedMotion();
+  const [active, setActive] = useState<number | null>(null);
+  const [hasHover, setHasHover] = useState(true);
 
-        <Reveal delay={0.05}>
-          <div className="max-w-4xl mt-6 space-y-4">
-            {SERVICES.paragraphs.map((p, i) => (
-              <p
-                key={i}
-                className="text-[color:var(--ink-950)]/75 text-lg leading-[1.85] text-pretty"
-              >
-                {p}
-              </p>
-            ))}
-          </div>
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setHasHover(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const activeCard = active !== null ? WE_BUILD.cards[active] : null;
+
+  const onEnter = (i: number) => hasHover && setActive(i);
+  const onLeave = () => hasHover && setActive(null);
+  // Click/tap toggles on every device (touch taps, and desktop clicks or
+  // keyboard Enter/Space) — hover just previews on top of it.
+  const onToggle = (i: number) =>
+    setActive((prev) => (prev === i ? null : i));
+
+  return (
+    <section
+      id="services"
+      className="surface-ice section"
+      aria-label={WE_BUILD.heading}
+    >
+      <div className="container-x">
+        <Reveal>
+          <p className="eyebrow text-center text-[color:var(--gold-700)]">
+            {WE_BUILD.eyebrow}
+          </p>
         </Reveal>
 
-        {/* Each card links to the catalog. Full-width photo banner at the top
-            (crisp — sized to the card, not a tiny cropped thumbnail). A shorter
-            16:9 ratio on mobile keeps it from taking too much screen height;
-            it grows to a taller 4:3 once the cards sit in a multi-column grid. */}
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
-          {SERVICES.cards.map((card, i) => (
+        {/* Mirror — the flipping heading */}
+        <div className="wb-mirror" style={{ perspective: "1000px" }}>
+          <motion.div
+            key={active ?? "default"}
+            className="wb-mirror-face"
+            initial={reduce ? { opacity: 0 } : { rotateX: 90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+            style={{ transformOrigin: "50% 50%", backfaceVisibility: "hidden" }}
+          >
+            {activeCard ? (
+              <>
+                <h2 className="wb-mirror-title">{activeCard.title}</h2>
+                <p className="wb-mirror-sub">{activeCard.text}</p>
+              </>
+            ) : (
+              <h2 className="wb-mirror-heading heading-accent heading-accent--center">
+                {WE_BUILD.heading}
+              </h2>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Category cards — the flip triggers */}
+        <ul className="wb-grid">
+          {WE_BUILD.cards.map((card, i) => (
             <Reveal as="li" index={i} key={card.title}>
-              <Link
-                href="/projects"
-                className="group flex h-full flex-col rounded-2xl overflow-hidden bg-white border border-black/5 shadow-[0_1px_0_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.25)]"
+              <button
+                type="button"
+                className={`wb-card${active === i ? " is-active" : ""}`}
+                onMouseEnter={() => onEnter(i)}
+                onMouseLeave={onLeave}
+                onFocus={() => onEnter(i)}
+                onBlur={onLeave}
+                onClick={() => onToggle(i)}
+                aria-pressed={active === i}
+                aria-label={card.title}
               >
-                <div className="relative aspect-[16/9] sm:aspect-[4/3] overflow-hidden">
+                <span className="wb-card-media">
                   <Image
-                    src={SERVICE_IMAGES[i].src}
-                    alt={SERVICE_IMAGES[i].alt}
+                    src={card.image.src}
+                    alt={card.image.alt}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-                <div className="p-5">
-                  <h3 className="h3 mb-2 text-xl">{card.title}</h3>
-                  <p className="text-[color:var(--ink-950)]/65 text-[15px] leading-relaxed">
-                    {card.text}
-                  </p>
-                </div>
-              </Link>
+                  <span aria-hidden="true" className="wb-card-scrim" />
+                </span>
+                <span className="wb-card-title">{card.title}</span>
+                {/* Full description kept in the DOM for SEO / screen readers */}
+                <span className="sr-only">{card.text}</span>
+              </button>
             </Reveal>
           ))}
         </ul>
+
+        <div className="mt-9 text-center">
+          <Link href="/projects" className="wb-catalog-link">
+            לצפייה בקטלוג הפרויקטים
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 12H5M11 6l-6 6 6 6" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );
