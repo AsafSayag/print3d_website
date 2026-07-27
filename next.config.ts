@@ -39,9 +39,16 @@ const nextConfig: NextConfig = {
      the remaining gap, but that's a separate, larger change (needs
      middleware.ts to mint a nonce and every JsonLd usage to receive it). */
   async headers() {
+    // React's dev runtime uses eval() for debugging features (never in a
+    // production build), so 'unsafe-eval' is added to script-src ONLY in
+    // development. The production CSP stays tight and identical to before.
+    const isDev = process.env.NODE_ENV !== "production";
+    const scriptSrc = `script-src 'self' 'unsafe-inline'${
+      isDev ? " 'unsafe-eval'" : ""
+    }`;
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self' data:",

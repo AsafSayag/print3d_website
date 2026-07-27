@@ -81,6 +81,55 @@ export const WHY = {
   ],
 } as const;
 
+/**
+ * "הערך העסקי של מודל אדריכלי" — homepage module directly after the hero.
+ * Copy is verbatim from the brief image; do not paraphrase.
+ */
+export const BUSINESS_VALUE = {
+  eyebrow: "הערך העסקי של מודל אדריכלי",
+  titleTop: "השקעה קטנה ביחס לפרויקט",
+  titleBottom: "השפעה גדולה על המכירה",
+  subtitle:
+    "מודל מדויק הופך תכנון מורכב לפרויקט שקל להבין, לרצות ולקנות",
+  cards: [
+    {
+      icon: "clock",
+      side: "right",
+      title: "מקצרים את תקופת המכירה",
+      stat: "20%",
+      statLabel: "מהר יותר",
+      text: "החלטה מהירה יותר, נרתמים מוקדם יותר, פחות עלויות מימון ושיווק",
+    },
+    {
+      icon: "shield",
+      side: "left",
+      title: "מגנים על מחיר המכירה",
+      stat: "1-10%",
+      statLabel: "פוטנציאל השבחה",
+      text: "מחזקים את תפיסת הערך ומצמצמים את הצורך בהנחות",
+    },
+    {
+      icon: "eye",
+      side: "right",
+      title: "הופכים התעניינות לרצון לקנות",
+      stat: "85%",
+      statLabel: "חוויה מוחשית",
+      text: "הרוכש רואה את הפרויקט, מבין אותו ומתחבר אליו",
+    },
+    {
+      icon: "chat",
+      side: "left",
+      title: "פחות הסברים פחות התנגדויות",
+      stat: "81%",
+      statLabel: "יותר בחירות",
+      text: "המודל מחזק ביטחון ומאפשר לצוות להתמקד בסגירה",
+    },
+  ],
+  bannerTop: "לעיתים די בשיפור של עסקה אחת",
+  bannerBottom: "כדי להחזיר את מלוא ההשקעה במודל",
+  cta: "בואו נדבר על הפרויקט שלכם",
+} as const;
+
 export const SERVICES = {
   heading: "שירותים",
   paragraphs: [

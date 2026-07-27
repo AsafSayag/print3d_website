@@ -35,6 +35,9 @@ const WhySection = dynamic(() =>
 const Portfolio = dynamic(() =>
   import("@/components/Portfolio").then((m) => m.Portfolio),
 );
+const BusinessValue = dynamic(() =>
+  import("@/components/BusinessValue").then((m) => m.BusinessValue),
+);
 
 export default function Home() {
   return (
@@ -43,6 +46,7 @@ export default function Home() {
       <Header />
       <main id="main" className="flex-1">
         <Hero />
+        <BusinessValue />
         <WhySection />
         <ClientLogos />
         <CallbackCta />

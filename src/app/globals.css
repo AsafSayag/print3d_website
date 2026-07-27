@@ -1813,6 +1813,218 @@ html.a11y-motion .a11y-panel {
 }
 
 /* ============================================================
+   Business value ("הערך העסקי של מודל אדריכלי") — blueprint surface
+   with a fine engineering grid, soft steel glows, and glass value
+   cards that fly in from the sides in 3D (see BusinessValue.tsx).
+   ============================================================ */
+.bizval {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+/* Cinematic background — the full layer stack lives inside .bizval-bg. */
+.bizval-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The architectural-model photo, darkened + de-saturated so it reads as a
+   moody premium backdrop rather than a bright product shot. */
+.bizval-bg-img {
+  object-fit: cover;
+  object-position: center center;
+  filter: brightness(0.44) saturate(0.72) contrast(1.03);
+  transform: scale(1.04);
+}
+/* Deep-navy scrim: strong at the edges (keeps card text legible), lighter in
+   the centre so the model's warm lights glow through. A steel duotone wash
+   unifies the photo with the brand blue. */
+.bizval-bg-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      95% 75% at 50% 44%,
+      rgba(14, 26, 44, 0.35),
+      rgba(14, 26, 44, 0.82) 78%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(14, 26, 44, 0.95) 0%,
+      rgba(14, 26, 44, 0.62) 40%,
+      rgba(14, 26, 44, 0.7) 66%,
+      rgba(14, 26, 44, 0.97) 100%
+    ),
+    linear-gradient(
+      120deg,
+      rgba(45, 90, 120, 0.32),
+      transparent 55%
+    );
+}
+/* Fine blueprint grid over the photo — brand signature, kept subtle */
+.bizval-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(166, 195, 220, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(166, 195, 220, 0.07) 1px, transparent 1px);
+  background-size: 54px 54px;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(120% 95% at 50% 35%, black, transparent 82%);
+  mask-image: radial-gradient(120% 95% at 50% 35%, black, transparent 82%);
+}
+/* Soft steel glows top + bottom for depth */
+.bizval-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 45% at 15% 4%, rgba(110, 147, 184, 0.14), transparent 60%),
+    radial-gradient(65% 50% at 85% 100%, rgba(62, 121, 159, 0.18), transparent 62%);
+}
+
+/* Centered hairline under the eyebrow */
+.bizval-eyebrow-line {
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin: 0.9rem auto 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-400),
+    transparent
+  );
+}
+
+/* Value card — dark liquid glass with a soft 3D-ready frame */
+.bizval-card {
+  position: relative;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: 20px;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0.01)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 26px 60px -30px rgba(0, 0, 0, 0.85);
+  transition:
+    transform 0.5s var(--ease-brand),
+    border-color 0.5s var(--ease-brand),
+    box-shadow 0.5s var(--ease-brand);
+  will-change: transform;
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .bizval-card {
+    background: rgba(21, 38, 61, 0.75);
+  }
+}
+@media (hover: hover) {
+  .bizval-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(95, 154, 192, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 34px 70px -28px rgba(0, 0, 0, 0.9),
+      0 0 26px -8px rgba(62, 121, 159, 0.45);
+  }
+}
+
+/* Big stat number + its small label */
+.bizval-stat {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  background: linear-gradient(180deg, #ffffff 0%, var(--steel-300) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bizval-stat-label {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(166, 195, 220, 0.25);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--steel-300);
+  white-space: nowrap;
+}
+
+/* Outlined icon tile */
+.bizval-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 14px;
+  color: var(--steel-300);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(166, 195, 220, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.bizval-icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* Closing banner headline */
+.bizval-banner {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.5rem, 3.4vw, 2.25rem);
+  color: #fff;
+  text-wrap: balance;
+}
+
+/* Phones: shorten each card so the four don't take too long to scroll —
+   tighter padding, smaller stat + icon, and the icon sits on the number's
+   row (see BusinessValue.tsx) instead of adding its own. */
+@media (max-width: 767px) {
+  .bizval.section {
+    padding-block: 3.5rem;
+  }
+  .bizval-card {
+    padding: 1.1rem 1.2rem;
+    border-radius: 16px;
+  }
+  .bizval-stat {
+    font-size: 2.1rem;
+  }
+  .bizval-stat-label {
+    margin-top: 0.25rem;
+    padding-top: 0.3rem;
+    font-size: 0.82rem;
+  }
+  .bizval-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 12px;
+  }
+  .bizval-icon svg {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+/* ============================================================
    Mobile: every section heading centers (title, eyebrow, and the
    accent underline), regardless of its desktop alignment. Wins over
    both .heading-accent::after and .heading-accent--center::after —
