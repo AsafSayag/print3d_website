@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
      the Hebrew accessibility widget. Dev-only; has no effect in production. */
   devIndicators: false,
 
+  images: {
+    /* Next 16 only serves qualities on this allowlist (anything else is coerced
+       to the nearest entry). 90 is for the project-page hero slider, whose
+       photos are shown full-bleed and undimmed. 75 stays the default for
+       everything else. */
+    qualities: [75, 90],
+  },
+
   experimental: {
     /* Inline the (small, Tailwind-atomic) CSS into <head> as <style> instead of
        a render-blocking <link>. Removes the CSS request from the critical path

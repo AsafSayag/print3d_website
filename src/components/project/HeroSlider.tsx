@@ -26,6 +26,8 @@ type Props = {
  * The title makes an entrance: it appears large and vertically centered, holds
  * briefly, then glides up to a small top-middle resting position (framer-motion
  * `layout`). Users who prefer reduced motion get the resting state immediately.
+ * The dark scrim exists only to carry that big title, so it fades out on the
+ * same curve — once the title is small, the photos are shown uncovered.
  */
 export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   const n = slides.length;
@@ -34,14 +36,16 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
 
   // Title placement: it starts large & vertically centered (settled=false),
   // then after a short hold settles up to the small top-middle position.
-  // Reduced-motion users start settled, so no glide runs.
+  // `settled` is derived rather than stored because useReducedMotion always
+  // reports false on the first render — deriving it lets that preference take
+  // effect the moment it's known, skipping the hold.
   const reduce = useReducedMotion();
-  const [settled, setSettled] = useState(reduce);
+  const [holdOver, setHoldOver] = useState(false);
   useEffect(() => {
-    if (reduce) return;
-    const t = window.setTimeout(() => setSettled(true), 1600);
+    const t = window.setTimeout(() => setHoldOver(true), 1600);
     return () => window.clearTimeout(t);
-  }, [reduce]);
+  }, []);
+  const settled = reduce || holdOver;
 
   const go = useCallback(
     (delta: number) => {
@@ -74,6 +78,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
             aria-hidden={i !== idx}
             fill
             sizes="100vw"
+            quality={90}
             priority={i === 0}
             loading={i === 0 ? undefined : "eager"}
             className="object-cover object-[center_55%] transition-opacity duration-[1100ms] ease-[var(--ease-brand)]"
@@ -82,7 +87,22 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
         ) : null,
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.92)] via-[rgba(7,13,23,0.32)] to-[rgba(7,13,23,0.12)]" />
+      {/* Entrance scrim — darkens the photo while the title is large, then
+          fades out on the title's own curve so the image ends up uncovered. */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 bg-gradient-to-t from-[rgba(7,13,23,0.92)] via-[rgba(7,13,23,0.45)] to-[rgba(7,13,23,0.35)] ${
+          reduce ? "" : "transition-opacity duration-1000 ease-[var(--ease-brand)]"
+        }`}
+        style={{ opacity: settled ? 0 : 1 }}
+      />
+
+      {/* Kept after the scrim goes: the dots and the ScrollHint row are white
+          text sitting directly on the photo, which can be bright. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-t from-[rgba(7,13,23,0.55)] to-transparent"
+      />
 
       {/* Back to catalog — a small glass chip (mobile + desktop) that returns
           to the projects carousel on the catalog page (the #showcase anchor),
@@ -117,7 +137,12 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
         }`}
       >
         {eyebrow ? (
-          <p className="eyebrow text-[color:var(--steel-300)] mb-3">{eyebrow}</p>
+          <p
+            className="eyebrow text-[color:var(--steel-300)] mb-3"
+            style={{ textShadow: "0 2px 20px rgba(7,13,23,0.75)" }}
+          >
+            {eyebrow}
+          </p>
         ) : null}
         <motion.h1
           layout={reduce ? undefined : true}
@@ -127,6 +152,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
             fontSize: settled
               ? "clamp(1.75rem, 3.2vw, 2.75rem)"
               : "clamp(2.75rem, 6.5vw, 4.75rem)",
+            textShadow: "0 2px 20px rgba(7,13,23,0.75)",
           }}
         >
           {title}
@@ -181,7 +207,11 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
 
       <style>
         {
-          ".hero-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:9999px;color:#fff;border:1px solid rgba(255,255,255,0.45);background:rgba(7,13,23,0.64);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,transform .3s,border-color .3s}.hero-arrow:hover{background:rgba(7,13,23,0.84);border-color:rgba(255,255,255,0.7);transform:translateY(-50%) scale(1.08)}@media (min-width:640px){.hero-arrow{width:52px;height:52px}}.back-to-catalog{border:1px solid rgba(255,255,255,0.28);background:rgba(7,13,23,0.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,border-color .3s,transform .3s}.back-to-catalog:hover{background:rgba(7,13,23,0.82);border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}"
+          /* The arrows are centred with Tailwind's -translate-y-1/2, which in
+             v4 compiles to the standalone `translate` property. A `transform`
+             here would stack on top of it rather than replace it, jumping the
+             button out from under the cursor — so hover is colour-only. */
+          ".hero-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:9999px;color:#fff;border:1px solid rgba(255,255,255,0.45);background:rgba(7,13,23,0.64);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,border-color .3s}.hero-arrow:hover{background:rgba(7,13,23,0.84);border-color:rgba(255,255,255,0.7)}@media (min-width:640px){.hero-arrow{width:52px;height:52px}}.back-to-catalog{border:1px solid rgba(255,255,255,0.28);background:rgba(7,13,23,0.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 30px -14px rgba(0,0,0,0.85);transition:background .3s,border-color .3s,transform .3s}.back-to-catalog:hover{background:rgba(7,13,23,0.82);border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}"
         }
       </style>
     </section>
