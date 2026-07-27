@@ -418,6 +418,6 @@ export const FOOTER = {
   },
   ctaTitle: "מתחילים פרויקט?",
   ctaButton: "קבלו הצעת מחיר",
-  copyright: "© Print3D LTD 2026",
+  copyright: "© Print3D Ltd 2026",
   a11yLink: "הצהרת נגישות",
 } as const;
