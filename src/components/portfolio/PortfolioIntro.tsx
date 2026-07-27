@@ -48,7 +48,7 @@ export function PortfolioIntro() {
                   className="font-display text-4xl text-white md:text-5xl"
                   dir="ltr"
                 >
-                  250+
+                  350+
                 </span>
                 <span className="mt-1.5 text-sm text-[color:var(--steel-300)]">
                   פרויקטים שהושלמו

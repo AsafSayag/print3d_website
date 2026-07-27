@@ -250,10 +250,11 @@ function HeroContent({
           />
         </div>
 
-        {/* CTAs */}
+        {/* CTAs — nudged up slightly via bottom margin (container is anchored to
+            the section bottom, so mb lifts the buttons off the bottom edge). */}
         <div
           style={item(2)}
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
+          className="mb-6 sm:mb-8 md:mb-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
             href={CONTACT.contactPath}

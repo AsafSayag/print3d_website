@@ -211,8 +211,8 @@ const VISIBLE_PROJECTS = PROJECTS.filter(
 );
 
 const STATS = [
-  { end: 15, label: "שנות ניסיון" },
-  { end: 250, label: "פרויקטים שהושלמו" },
+  { end: 15, prefix: "", suffix: "+", label: "שנות ניסיון" },
+  { end: 350, prefix: "", suffix: "+", label: "פרויקטים מוגמרים" },
 ] as const;
 
 export function Portfolio() {
@@ -234,7 +234,7 @@ export function Portfolio() {
             </Reveal>
             <Reveal index={2}>
               <p className="mt-5 text-[color:var(--steel-300)] text-base md:text-lg leading-relaxed">
-                מעל 15 שנות ניסיון ולמעלה מ־250 פרויקטים מוגמרים, ממגדלי יוקרה
+                מעל 15 שנות ניסיון ולמעלה מ־350 פרויקטים מוגמרים, ממגדלי יוקרה
                 ושכונות שלמות ועד מודלים תכנוניים, עבור חברות הנדל״ן והאדריכלים
                 המובילים בישראל.
               </p>
@@ -256,7 +256,7 @@ export function Portfolio() {
                   }
                 >
                   <div className="font-display text-4xl md:text-5xl text-[#d9e2ec]">
-                    <CountUp end={s.end} suffix="+" />
+                    <CountUp end={s.end} prefix={s.prefix} suffix={s.suffix} />
                   </div>
                   <div className="mt-1.5 text-sm text-[color:var(--steel-300)]">
                     {s.label}

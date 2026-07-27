@@ -6,6 +6,8 @@ import { useInViewOnce } from "@/lib/useInViewOnce";
 type Props = {
   /** Final value counted up to. */
   end: number;
+  /** Rendered before the number, e.g. "למעלה מ־". */
+  prefix?: string;
   /** Appended after the number, e.g. "+". */
   suffix?: string;
   /** Count duration in seconds. */
@@ -17,7 +19,13 @@ type Props = {
  * Number that counts up from 0 when scrolled into view, with an ease-out
  * curve. Respects prefers-reduced-motion (jumps straight to the end value).
  */
-export function CountUp({ end, suffix = "", duration = 1.8, className }: Props) {
+export function CountUp({
+  end,
+  prefix = "",
+  suffix = "",
+  duration = 1.8,
+  className,
+}: Props) {
   const [ref, inView] = useInViewOnce<HTMLSpanElement>();
   // Start at the FINAL value so the number is present in the server-rendered
   // HTML (SEO) and shows correctly even without JS. Once the element scrolls
@@ -48,8 +56,16 @@ export function CountUp({ end, suffix = "", duration = 1.8, className }: Props) 
   }, [inView, reduce, end, duration]);
 
   return (
-    <span ref={ref} dir="ltr" className={`num ${className ?? ""}`}>
-      {value}
+    // With a Hebrew prefix the whole stat reads RTL (prefix first, number to its
+    // left); the number itself stays LTR so its digits render correctly. Without
+    // a prefix the stat is a plain LTR "number + suffix" (e.g. "15+").
+    <span
+      ref={ref}
+      dir={prefix ? "rtl" : "ltr"}
+      className={`num ${className ?? ""}`}
+    >
+      {prefix}
+      <span dir="ltr">{value}</span>
       {suffix}
     </span>
   );

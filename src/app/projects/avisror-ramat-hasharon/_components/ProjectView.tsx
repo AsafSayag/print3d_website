@@ -25,7 +25,7 @@ export function ProjectView() {
       {/* Gallery */}
       <section id="gallery" className="section surface-ice">
         <div className="container-x">
-          <h2 className="h2 heading-accent mb-10">תמונות המודל</h2>
+          <h2 className="h2 heading-accent mb-10">תמונות נוספות</h2>
           <Gallery items={GALLERY_ITEMS} alt={IMAGE_ALT} />
         </div>
       </section>
