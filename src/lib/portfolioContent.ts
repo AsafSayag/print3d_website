@@ -377,7 +377,7 @@ export const SHOWCASE_PROJECT_IDS: readonly string[] = [
 ];
 
 export const PORTFOLIO_FILTERS = {
-  eyebrow: "לפי סינון",
+  eyebrow: "בואו נעשה סדר",
   title: "מצאו את הפרויקט שמדבר אליכם",
   all: "כל הפרויקטים",
   brandLabel: "מותג",

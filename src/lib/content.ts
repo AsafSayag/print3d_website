@@ -28,11 +28,11 @@ export const STATS: Stat[] = [
 ];
 
 export const SEQUENCE_STAGES = [
-  { until: 0.33, text: "ייצור מדויק במכונה" },
-  { until: 0.66, text: "גימור והרכבה ביד" },
-  { until: 1.01, text: "מודל מוכן להצבה" },
+  { until: 0.33, text: "הפיכת חזון למציאות" },
+  { until: 0.66, text: "מה אנחנו יוצרים" },
+  { until: 1.01, text: "מה אנחנו יוצרים" },
 ] as const;
-export const SEQUENCE_EYEBROW = "כך נבנה מודל";
+export const SEQUENCE_EYEBROW = "תתחברו לחוויית היצירה";
 
 // `w`/`h` are the file's intrinsic pixel dimensions — passed to the <img> so
 // the browser can reserve the correct box from the aspect ratio (no layout
