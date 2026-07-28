@@ -3,6 +3,8 @@
  * Nothing here is invented or paraphrased — edit with care.
  */
 
+import { CONTACT } from "./constants";
+
 export const HERO_COPY = {
   eyebrow: "מודלים אדריכליים פיזיים · ייצור מתקדם · גימור יד אומן",
   h1: "מודלים אדריכליים יוקרתיים",
@@ -436,16 +438,35 @@ export const ABOUT = {
   lead: { eyebrow: "בואו נתחיל" },
 } as const;
 
+/**
+ * Footer copy. The two link columns below are the footer's single source of
+ * truth: together with the legal bar they must cover every main page of the
+ * site, so a new top-level route gets a link here as part of adding it.
+ * `#` hrefs are homepage sections — Footer's `FooterLink` rewrites them to
+ * `/#…` so they work from any route.
+ */
 export const FOOTER = {
   tagline: "מודלים אדריכליים · ייצור מתקדם וגימור יד אומן",
   columns: {
-    services: {
-      title: "שירותים",
-      items: ['שיווק נדל"ן', "מגורים ושכונות", "עירוני ורשויות", "מעמדי תצוגה"],
-    },
     company: {
       title: "החברה",
-      items: ["אודות", "קטלוג"],
+      links: [
+        { label: "בית", href: "/" },
+        { label: "אודות", href: "/about" },
+        { label: "שירותים", href: "#services" },
+        { label: "לקוחות", href: "#clients" },
+        { label: "קטלוג", href: "/projects" },
+      ],
+    },
+    knowledge: {
+      title: "מרכז ידע",
+      links: [
+        { label: "מרכז הידע", href: "/knowledge" },
+        { label: "מאמרים", href: "/knowledge/articles" },
+        { label: "מילון מונחים", href: "/knowledge/glossary" },
+        { label: "שאלות נפוצות", href: "/faq" },
+        { label: "צור קשר", href: CONTACT.contactPath },
+      ],
     },
   },
   ctaTitle: "מתחילים פרויקט?",

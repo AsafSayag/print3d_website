@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
-import { CONTACT, NAV_ITEMS } from "@/lib/constants";
+import { CONTACT } from "@/lib/constants";
 import { FOOTER } from "@/lib/content";
-import { LEGAL_LINKS } from "@/lib/legal";
+import { LEGAL_HUB, LEGAL_LINKS } from "@/lib/legal";
+
+/** The legal bar: the hub itself first, then each document under it. */
+const LEGAL_BAR_LINKS = [
+  { label: LEGAL_HUB.navLabel, href: LEGAL_HUB.path },
+  ...LEGAL_LINKS,
+];
 
 export function Footer({
   quoteHref = CONTACT.contactPath,
@@ -37,50 +43,23 @@ export function Footer({
             </ul>
           </div>
 
-          {/* Columns 2+3 — services & company. Paired side by side on mobile
+          {/* Columns 2+3 — company & knowledge. Paired side by side on mobile
               via this 2-col sub-grid; at md: it becomes `display:contents`,
               so the wrapper vanishes from the layout tree entirely and
-              services/company rejoin the outer grid as plain direct
-              children — the exact, untouched desktop structure as before. */}
+              the two columns rejoin the outer grid as plain direct
+              children — the exact, untouched desktop structure as before.
+              Both are driven off FOOTER.columns so the footer's link set is
+              declared in one place and stays complete. */}
           <div className="grid grid-cols-2 gap-10 md:contents">
-            <FooterColumn title={FOOTER.columns.services.title}>
-              <li>
-                <Link
-                  href="/knowledge"
-                  className="text-white/80 hover:text-white text-sm transition-colors"
-                >
-                  מרכז הידע
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-white/80 hover:text-white text-sm transition-colors"
-                >
-                  שאלות נפוצות
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={CONTACT.contactPath}
-                  className="text-white/80 hover:text-white text-sm transition-colors"
-                >
-                  צור קשר
-                </Link>
-              </li>
-            </FooterColumn>
-
-            <FooterColumn title={FOOTER.columns.company.title}>
-              {NAV_ITEMS.filter((n) =>
-                (FOOTER.columns.company.items as readonly string[]).includes(
-                  n.label,
-                ),
-              ).map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {item.label}
-                </FooterLink>
-              ))}
-            </FooterColumn>
+            {[FOOTER.columns.company, FOOTER.columns.knowledge].map((column) => (
+              <FooterColumn key={column.title} title={column.title}>
+                {column.links.map((link) => (
+                  <FooterLink key={link.href} href={link.href}>
+                    {link.label}
+                  </FooterLink>
+                ))}
+              </FooterColumn>
+            ))}
           </div>
 
           {/* Column 4 — CTA + small location map */}
@@ -127,7 +106,7 @@ export function Footer({
           <span dir="ltr">{FOOTER.copyright}</span>
           <nav aria-label="קישורים משפטיים">
             <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
-              {LEGAL_LINKS.map((link) => (
+              {LEGAL_BAR_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
