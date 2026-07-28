@@ -34,6 +34,20 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  // "חזרה לקטלוג" normally returns to the showcase carousel. But if the visitor
+  // reached this project with an active scale filter, send them back to the
+  // filter grid instead — where that selection is still applied — so their
+  // filtering context is preserved. (Key mirrors ProjectFilterGrid's.)
+  const [catalogHref, setCatalogHref] = useState("/projects#showcase");
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("catalog:scale");
+      if (saved && saved !== "all") setCatalogHref("/projects#filters");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   // Title placement: it starts large & vertically centered (settled=false),
   // then after a short hold settles up to the small top-middle position.
   // `settled` is derived rather than stored because useReducedMotion always
@@ -108,7 +122,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
           to the projects carousel on the catalog page (the #showcase anchor),
           not the top of the page. */}
       <Link
-        href="/projects#showcase"
+        href={catalogHref}
         aria-label="חזרה לקטלוג"
         className="back-to-catalog absolute z-30 top-[4.75rem] sm:top-24 start-3 sm:start-6 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold text-white"
       >
