@@ -121,7 +121,7 @@ export const BUSINESS_VALUE = {
       side: "left",
       title: "פחות הסברים פחות התנגדויות",
       stat: "81%",
-      statLabel: "יותר בחירות",
+      statLabel: "יותר בטחון",
       text: "המודל מחזק ביטחון ומאפשר לצוות להתמקד בסגירה",
     },
   ],
