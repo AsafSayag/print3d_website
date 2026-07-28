@@ -229,7 +229,7 @@ export function Portfolio() {
             <SectionHeading eyebrow="קטלוג" title="פרויקטים נבחרים" tone="light" />
             <Reveal index={2} className="lg:hidden mt-6">
               <GlassButton href="/projects" variant="primary">
-                לכל הפרויקטים
+                לחץ לקטלוג
               </GlassButton>
             </Reveal>
             <Reveal index={2}>
@@ -244,7 +244,7 @@ export function Portfolio() {
           <Reveal index={3} className="shrink-0">
             <div className="hidden lg:block mb-6">
               <GlassButton href="/projects" variant="primary">
-                לכל הפרויקטים
+                לחץ לקטלוג
               </GlassButton>
             </div>
             <div className="flex items-stretch gap-8 lg:gap-10 max-md:justify-center">

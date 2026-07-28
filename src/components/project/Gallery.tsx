@@ -22,13 +22,22 @@ export function Gallery({ items, alt }: { items: GalleryItem[]; alt: string }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {items.map((item, i) => {
           const isVideo = item.kind === "video";
+          // Tiles adopt each photo's real aspect ratio so the whole image shows
+          // (landscape model shots were being cropped to ~56% width inside the
+          // old fixed portrait box). Falls back to 3:4 when dimensions are
+          // unknown, matching the previous behaviour.
+          const ratio =
+            !isVideo && item.w && item.h ? `${item.w} / ${item.h}` : undefined;
           return (
             <button
               type="button"
               key={item.src}
               onClick={() => setLightbox(i)}
               aria-label={isVideo ? "הפעלת סרטון" : `הגדלת תמונה ${i + 1}`}
-              className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-[color:var(--navy-800)]/10 focus-visible:outline-none"
+              style={ratio ? { aspectRatio: ratio } : undefined}
+              className={`group relative overflow-hidden rounded-2xl border border-[color:var(--navy-800)]/10 focus-visible:outline-none ${
+                ratio ? "" : "aspect-[3/4]"
+              }`}
             >
               <Image
                 src={isVideo ? item.poster : item.src}

@@ -119,6 +119,45 @@ function BackgroundScene() {
   );
 }
 
+/**
+ * A single decorative model tower flanking the value cards. Purely ambient
+ * background (aria-hidden, non-interactive), desktop-only (lg+), matched to the
+ * cards' height via the parent's `inset-y-0`. The cut-out PNG→WebP has a
+ * transparent background so it blends into the module's navy without a box; a
+ * soft mask fades its inner edge toward the cards and the opacity keeps it
+ * subordinate to the content. `side="start"` sits on the right (RTL),
+ * `side="end"` on the left.
+ */
+function TowerAside({ side }: { side: "start" | "end" }) {
+  const isStart = side === "start";
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-y-0 z-0 hidden select-none opacity-90 lg:block"
+      style={{
+        aspectRatio: "526 / 760",
+        // Anchor to the page edge (not the centred container) so the towers sit
+        // out in the margin, clear of the cards, and read boldly. `100%` is the
+        // wrapper width; the calc pushes the outer edge to the viewport edge.
+        [isStart ? "insetInlineStart" : "insetInlineEnd"]:
+          "calc((100% - 100vw) / 2 + 0.5rem)",
+        // A gentle fade only on the very inner edge, so any sliver that reaches a
+        // card melts away without dimming the tower itself.
+        WebkitMaskImage: `linear-gradient(to ${isStart ? "left" : "right"}, #000 72%, transparent 100%)`,
+        maskImage: `linear-gradient(to ${isStart ? "left" : "right"}, #000 72%, transparent 100%)`,
+      }}
+    >
+      <Image
+        src="/bizval-tower.webp"
+        alt=""
+        fill
+        sizes="(min-width: 1024px) 30vw, 0px"
+        className="object-contain object-center"
+      />
+    </div>
+  );
+}
+
 const ICONS: Record<string, React.ReactNode> = {
   // Shorten the sale period → a stopwatch (time / speed)
   timer: (
@@ -195,14 +234,22 @@ export function BusinessValue() {
           </Reveal>
         </div>
 
-        {/* Cards — 3D fly-in from the sides */}
-        <div
-          className="mt-10 md:mt-12 grid gap-4 md:gap-5 md:grid-cols-2 md:max-w-4xl md:mx-auto"
-          style={{ perspective: "1400px" }}
-        >
-          {BUSINESS_VALUE.cards.map((card, i) => (
-            <ValueCard key={card.title} card={card} index={i} reduce={reduce} />
-          ))}
+        {/* Cards — 3D fly-in from the sides. The wrapper is the reference box
+            for the two flanking model towers: they span exactly the cards'
+            height ("at the height of the cubes"), sit behind the cards as part
+            of the ambient backdrop, and show only from lg up (desktop). */}
+        <div className="relative mt-10 md:mt-12">
+          <TowerAside side="start" />
+          <TowerAside side="end" />
+
+          <div
+            className="relative z-10 grid gap-4 md:gap-5 md:grid-cols-2 md:max-w-4xl md:mx-auto"
+            style={{ perspective: "1400px" }}
+          >
+            {BUSINESS_VALUE.cards.map((card, i) => (
+              <ValueCard key={card.title} card={card} index={i} reduce={reduce} />
+            ))}
+          </div>
         </div>
 
         {/* Closing banner + CTA */}

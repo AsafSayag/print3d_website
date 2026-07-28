@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -12,6 +12,11 @@ import {
 } from "@/lib/portfolioContent";
 
 const ALL = "all" as const;
+
+// Where the chosen scale filter is remembered, so entering a project and coming
+// back (browser Back or the "חזרה לקטלוג" chip) restores the same selection
+// instead of resetting to "all". Scoped to the tab session on purpose.
+export const CATALOG_SCALE_KEY = "catalog:scale";
 
 /**
  * A grid card image that only mounts its <Image> once the card nears the
@@ -93,6 +98,29 @@ function Select({
 export function ProjectFilterGrid() {
   const [scale, setScale] = useState<string>(ALL);
 
+  // Restore the last-used filter on mount. Kept in an effect (not a lazy state
+  // initializer) so the server/first-client render stays "all" and hydration
+  // matches; the grid sits below the fold, so the one-tick correction is unseen.
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(CATALOG_SCALE_KEY);
+      if (saved && (saved === ALL || SCALES.includes(saved))) setScale(saved);
+    } catch {
+      /* sessionStorage unavailable (private mode / SSR) — ignore. */
+    }
+  }, []);
+
+  // Every change is persisted so the selection survives navigating into a
+  // project and back.
+  const changeScale = (v: string) => {
+    setScale(v);
+    try {
+      sessionStorage.setItem(CATALOG_SCALE_KEY, v);
+    } catch {
+      /* ignore */
+    }
+  };
+
   const isAll = scale === ALL;
 
   const filtered = useMemo(
@@ -101,7 +129,7 @@ export function ProjectFilterGrid() {
     [scale],
   );
 
-  const resetAll = () => setScale(ALL);
+  const resetAll = () => changeScale(ALL);
 
   const filterKey = scale;
 
@@ -127,7 +155,7 @@ export function ProjectFilterGrid() {
           <Select
             label={PORTFOLIO_FILTERS.scaleLabel}
             value={scale}
-            onChange={setScale}
+            onChange={changeScale}
             options={SCALES.map((s) => ({ value: s, label: s }))}
           />
         </Reveal>
