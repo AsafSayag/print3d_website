@@ -457,6 +457,25 @@ body {
   border-color: rgba(255, 255, 255, 0.72);
 }
 
+/* Catalog main-carousel caption (title, client, scale, CTA) — given its own
+   compositing layer.
+   The carousel's slides live in one very wide transformed track, and on iOS
+   Safari re-rasterising that surface on touch or scroll could drop a slide
+   tile's painted content for a frame: the caption and its scrim vanished and
+   came back, while the poster/video and the (backdrop-filtered, so separately
+   composited) scale pill stayed put. Promoting the caption puts it on the safe
+   side of that line. It carries its own bottom scrim, so the whole legible unit
+   is one small bottom-strip layer — cheap, unlike promoting the full-slide
+   overlay would be. `will-change` is stated outright rather than left to the
+   translateZ(0) trick, which is only a hint an engine may decline; it is
+   affordable here precisely because this is a strip, not a whole slide. */
+.showcase-caption {
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* Specular sweep — crosses once on hover */
 .glass-btn::after {
   content: "";

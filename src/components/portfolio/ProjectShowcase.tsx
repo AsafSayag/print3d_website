@@ -207,7 +207,15 @@ export function ProjectShowcase() {
               transform: `translateX(calc(${-active * 100}% + ${dragPx}px))`,
               transition:
                 dragging || reduce ? "none" : "transform 0.6s var(--ease-brand)",
-              willChange: "transform",
+              // Promote only while dragging, where the transform is rewritten
+              // every pointermove with no transition to ride. Holding the hint
+              // permanently kept a layer the size of the whole reel (8 slides ×
+              // 100vw) rasterised at all times; on iOS that backing store is
+              // large enough that Safari drops a tile's paint for a frame or two
+              // when it re-rasterises on touch/scroll — which blanked the slide
+              // captions. An auto-advance or snap-back needs no hint: a
+              // `transform` transition promotes itself for its own duration.
+              willChange: dragging ? "transform" : undefined,
             }}
           >
             {SHOWCASE_PROJECTS.map((p, i) => (
@@ -240,7 +248,14 @@ export function ProjectShowcase() {
                     draggable={false}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
+                {/* Uniform wash only. The bottom-heavy half of the scrim moved
+                    onto the caption below, so the part that carries the text's
+                    legibility is composited together with the text instead of
+                    being painted into the slide's tile — see `.showcase-caption`
+                    in globals.css. The two gradients recombine to the original
+                    curve: identical from the caption's top edge (50% of the
+                    slide) upwards, and within ~0.01 alpha below it. */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/15 to-black/10" />
 
                 {/* Decorative "future video" marker — only on stills still
                     waiting for real footage; real videos need no play glyph. */}
@@ -257,7 +272,7 @@ export function ProjectShowcase() {
                   </div>
                 )}
 
-                <div className="absolute inset-x-0 bottom-0 container-x pb-10 md:pb-14">
+                <div className="showcase-caption absolute inset-x-0 bottom-0 container-x pt-24 pb-10 md:pb-14 bg-gradient-to-t from-black/75 via-black/35 to-transparent">
                   <h2 className="h1 text-white max-w-3xl text-balance">
                     {p.title}
                   </h2>
@@ -267,7 +282,11 @@ export function ProjectShowcase() {
                     </span>
                     <span className="w-1 h-1 rounded-full bg-white/30" aria-hidden />
                     <span
-                      className="num text-[color:var(--gold-400)] text-sm bg-black/30 backdrop-blur px-2.5 py-1 rounded-full border border-white/10"
+                      // Solid fill, not the `backdrop-blur` the other scale
+                      // pills use: a backdrop-filter here sits inside the
+                      // carousel's transformed track and makes Safari
+                      // re-snapshot the whole slide behind it every frame.
+                      className="num text-[color:var(--gold-400)] text-sm bg-black/45 px-2.5 py-1 rounded-full border border-white/10"
                       dir="ltr"
                     >
                       {p.scale}
