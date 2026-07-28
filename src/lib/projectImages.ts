@@ -32,10 +32,56 @@
  * request on the server instead — where `public/` is not guaranteed to exist on
  * Vercel — so keep those pages static.
  */
-import { readdirSync } from "node:fs";
+import { readdirSync, openSync, readSync, closeSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = join(process.cwd(), "public", "project_pages");
+
+/**
+ * Reads a WebP's pixel dimensions straight from its header (no decode, no
+ * dependency) so gallery tiles can adopt each photo's real aspect ratio instead
+ * of being force-cropped into a fixed portrait box. Handles the three WebP
+ * variants (lossy VP8, lossless VP8L, extended VP8X). Returns null on anything
+ * unexpected — callers fall back to the default tile shape, so a parse miss can
+ * never fail the build.
+ */
+function webpSize(file: string): { w: number; h: number } | null {
+  let fd: number | undefined;
+  try {
+    fd = openSync(file, "r");
+    const buf = Buffer.alloc(30);
+    if (readSync(fd, buf, 0, 30, 0) < 30) return null;
+    if (buf.toString("ascii", 0, 4) !== "RIFF" || buf.toString("ascii", 8, 12) !== "WEBP") {
+      return null;
+    }
+    const fourcc = buf.toString("ascii", 12, 16);
+    if (fourcc === "VP8 ") {
+      // Lossy: 14-bit width/height at byte 26/28 (little-endian).
+      const w = buf.readUInt16LE(26) & 0x3fff;
+      const h = buf.readUInt16LE(28) & 0x3fff;
+      return w && h ? { w, h } : null;
+    }
+    if (fourcc === "VP8L") {
+      // Lossless: signature 0x2f at byte 20, then 14-bit width-1/height-1.
+      if (buf[20] !== 0x2f) return null;
+      const b1 = buf[21], b2 = buf[22], b3 = buf[23], b4 = buf[24];
+      const w = 1 + (((b2 & 0x3f) << 8) | b1);
+      const h = 1 + (((b4 & 0x0f) << 10) | (b3 << 2) | ((b2 & 0xc0) >> 6));
+      return { w, h };
+    }
+    if (fourcc === "VP8X") {
+      // Extended: 24-bit canvas width-1 at byte 24, height-1 at byte 27.
+      const w = 1 + (buf[24] | (buf[25] << 8) | (buf[26] << 16));
+      const h = 1 + (buf[27] | (buf[28] << 8) | (buf[29] << 16));
+      return { w, h };
+    }
+    return null;
+  } catch {
+    return null;
+  } finally {
+    if (fd !== undefined) closeSync(fd);
+  }
+}
 
 /** `IMG_07.webp`, `GAL_02.webp`, `VID_01.mp4`, `VID_01.webp`. */
 const ASSET = /^(IMG|GAL|VID)_(\d{2})\.(webp|mp4)$/;
@@ -44,7 +90,9 @@ const ASSET = /^(IMG|GAL|VID)_(\d{2})\.(webp|mp4)$/;
 const ORDER = { VID: 0, IMG: 1, GAL: 2 } as const;
 
 export type GalleryItem =
-  | { kind: "image"; src: string }
+  // `w`/`h` are the photo's real pixel dimensions (when readable) so the tile
+  // can match its aspect ratio and show the whole image uncropped.
+  | { kind: "image"; src: string; w?: number; h?: number }
   | { kind: "video"; src: string; poster: string };
 
 export type ProjectImages = {
@@ -120,15 +168,21 @@ export function projectImages(folder: string): ProjectImages {
   const url = (file: string) => `/project_pages/${folder}/${file}`;
 
   return {
-    gallery: assets.map((a) =>
-      a.prefix === "VID"
-        ? {
-            kind: "video" as const,
-            src: url(a.file),
-            poster: url(a.file.replace(/\.mp4$/, ".webp")),
-          }
-        : { kind: "image" as const, src: url(a.file) },
-    ),
+    gallery: assets.map((a) => {
+      if (a.prefix === "VID") {
+        return {
+          kind: "video" as const,
+          src: url(a.file),
+          poster: url(a.file.replace(/\.mp4$/, ".webp")),
+        };
+      }
+      const size = webpSize(join(ROOT, folder, a.file));
+      return {
+        kind: "image" as const,
+        src: url(a.file),
+        ...(size ? { w: size.w, h: size.h } : {}),
+      };
+    }),
     slides: assets.filter((a) => a.prefix === "IMG").map((a) => url(a.file)),
     bg: url("bg.webp"),
   };
