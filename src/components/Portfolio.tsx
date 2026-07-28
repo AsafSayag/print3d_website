@@ -267,14 +267,9 @@ export function Portfolio() {
           </Reveal>
         </div>
 
-        {/* Shows the first 6 projects on every breakpoint; the rest reveal
-            in place on tap (pure-CSS toggle) — see .portfolio-collapse. */}
-        <input
-          type="checkbox"
-          id="portfolio-more"
-          className="more-toggle"
-          aria-label="הצגת כל הפרויקטים"
-        />
+        {/* Shows the first 6 projects on every breakpoint; the rest live in the
+            full catalog page — the button below links straight to its filter
+            module (see .portfolio-collapse, which keeps items 7+ hidden here). */}
         <div className="collapse-host grid grid-cols-2 lg:grid-cols-3 auto-rows-[220px] md:auto-rows-[260px] gap-4 mt-12 md:mt-16">
           {VISIBLE_PROJECTS.map((p, i) => (
             <Reveal
@@ -322,46 +317,27 @@ export function Portfolio() {
           ))}
         </div>
 
-        {/* "Show more" / "show less" toggle — same checkbox drives both
-            states, the label just swaps its visible content via CSS; see
-            .portfolio-more-wrap / .portfolio-collapse and the .label-more /
-            .label-less rules in globals.css. */}
+        {/* "More projects" now links straight to the catalog's filter module
+            (/projects#filters) rather than expanding the grid in place. */}
         <div className="portfolio-more-wrap mt-8 justify-center">
-          <label
-            htmlFor="portfolio-more"
-            className="more-btn cursor-pointer inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
+          <Link
+            href="/projects#filters"
+            className="more-btn inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
           >
-            <span className="label-more inline-flex items-center gap-2">
-              לפרויקטים נוספים
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </span>
-            <span className="label-less inline-flex items-center gap-2">
-              הצג פחות
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 15l-6-6-6 6" />
-              </svg>
-            </span>
-          </label>
+            לפרויקטים נוספים
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 6l-6 6 6 6" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
