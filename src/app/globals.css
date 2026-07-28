@@ -1844,6 +1844,23 @@ html.a11y-motion .a11y-panel {
   .why-arrow { animation: none; }
 }
 
+/* Icon marker variant — same glow language as .why-arrow but without the
+   arrow's rotation, so each card carries a topic icon instead of a chevron. */
+.why-icon {
+  display: inline-flex;
+  color: var(--gold-400);
+  filter: drop-shadow(0 0 7px rgba(95, 154, 192, 0.55)) drop-shadow(0 0 16px rgba(95, 154, 192, 0.3));
+  animation: whyArrowGlow 3.2s ease-in-out infinite;
+  transition: transform 0.4s var(--ease-brand), filter 0.4s var(--ease-brand);
+}
+.group:hover .why-icon {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 0 10px rgba(95, 154, 192, 0.8)) drop-shadow(0 0 24px rgba(95, 154, 192, 0.5));
+}
+@media (prefers-reduced-motion: reduce) {
+  .why-icon { animation: none; }
+}
+
 /* ============================================================
    Business value ("הערך העסקי של מודל אדריכלי") — blueprint surface
    with a fine engineering grid, soft steel glows, and glass value
