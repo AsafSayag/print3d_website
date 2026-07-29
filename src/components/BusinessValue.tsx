@@ -197,17 +197,32 @@ const ICONS: Record<string, React.ReactNode> = {
       />
     </svg>
   ),
-  // Prefer the tangible over a render → a tree (a physical model detail).
-  // A layered conifer: an unmistakable tree silhouette in the duotone style.
-  tree: (
+  // Prefer the tangible over a render → a building with a small tree beside it
+  // (a physical architectural model), in the shared duotone style.
+  building: (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="21.4" y="30" width="5.2" height="12" rx="1.8" fill="#4f8fbf" />
-      <path d="M24 19.5L35 36H13L24 19.5z" fill="#eaf4ff" />
-      <path d="M24 19.5L35 36H24V19.5z" fill="#cfe6f8" />
-      <path d="M24 11.5L32.5 25.5H15.5L24 11.5z" fill="#eaf4ff" />
-      <path d="M24 11.5L32.5 25.5H24V11.5z" fill="#cfe6f8" />
-      <path d="M24 4.5L30.5 15.5H17.5L24 4.5z" fill="#eaf4ff" />
-      <path d="M24 4.5L30.5 15.5H24V4.5z" fill="#cfe6f8" />
+      {/* small tree — round bushy canopy on a short trunk */}
+      <rect x="10.6" y="31" width="2.8" height="11" rx="1.2" fill="#4f8fbf" />
+      <circle cx="15.4" cy="28" r="4" fill="#cfe6f8" />
+      <circle cx="8.6" cy="28" r="4" fill="#eaf4ff" />
+      <circle cx="12" cy="24.3" r="5" fill="#eaf4ff" />
+      {/* building */}
+      <rect x="19.4" y="7.4" width="17.2" height="2.6" rx="1.1" fill="#7cb2da" />
+      <rect x="20" y="10" width="16" height="32" fill="#eaf4ff" />
+      <path d="M30.5 10H36v32h-5.5z" fill="#cfe6f8" />
+      <g fill="#4f8fbf">
+        <rect x="22" y="12.5" width="2.8" height="3.4" rx="0.5" />
+        <rect x="26.6" y="12.5" width="2.8" height="3.4" rx="0.5" />
+        <rect x="31.2" y="12.5" width="2.8" height="3.4" rx="0.5" />
+        <rect x="22" y="18" width="2.8" height="3.4" rx="0.5" />
+        <rect x="26.6" y="18" width="2.8" height="3.4" rx="0.5" />
+        <rect x="31.2" y="18" width="2.8" height="3.4" rx="0.5" />
+        <rect x="22" y="23.5" width="2.8" height="3.4" rx="0.5" />
+        <rect x="26.6" y="23.5" width="2.8" height="3.4" rx="0.5" />
+        <rect x="31.2" y="23.5" width="2.8" height="3.4" rx="0.5" />
+      </g>
+      {/* entrance */}
+      <path d="M25 42v-8.5a3 3 0 0 1 6 0V42h-6z" fill="#17384f" />
     </svg>
   ),
   // Fewer explanations, more signatures → a signed contract with a pen
