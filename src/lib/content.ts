@@ -95,7 +95,7 @@ export const BUSINESS_VALUE = {
     "מודל מדויק הופך תכנון מורכב לפרויקט שקל להבין, לרצות ולקנות",
   cards: [
     {
-      icon: "timer",
+      icon: "rocket",
       side: "right",
       title: "מקצרים את תקופת המכירה",
       stat: "20%",
@@ -103,7 +103,7 @@ export const BUSINESS_VALUE = {
       text: "החלטה מהירה יותר, נרתמים מוקדם יותר, פחות עלויות מימון ושיווק",
     },
     {
-      icon: "tag",
+      icon: "shield",
       side: "left",
       title: "מגנים על מחיר המכירה",
       stat: "10%",
@@ -111,7 +111,7 @@ export const BUSINESS_VALUE = {
       text: "מחזקים את תפיסת הערך ומצמצמים את הצורך בהנחות",
     },
     {
-      icon: "building",
+      icon: "heart",
       side: "right",
       title: "הופכים התעניינות לרצון לקנות",
       stat: "85%",
@@ -119,7 +119,7 @@ export const BUSINESS_VALUE = {
       text: "הרוכש רואה את הפרויקט, מבין אותו ומתחבר אליו",
     },
     {
-      icon: "contract",
+      icon: "thumbsUp",
       side: "left",
       title: "פחות הסברים פחות התנגדויות",
       stat: "81%",
