@@ -54,7 +54,7 @@ function ValueCard({
     >
       {/* On phones the icon shares the number's row (compact, less scrolling);
           from md up it becomes the side-by-side layout. */}
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-center md:flex-nowrap md:justify-start md:text-start md:gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-center md:h-full md:flex-nowrap md:justify-start md:text-start md:gap-6">
         {/* Stat */}
         <div className={`order-1 shrink-0 ${isRight ? "md:order-2" : "md:order-1"}`}>
           <div className="bizval-stat num" dir="ltr">
@@ -159,38 +159,31 @@ function TowerAside({ side }: { side: "start" | "end" }) {
 }
 
 const ICONS: Record<string, React.ReactNode> = {
-  // Shorten the sale period → a stopwatch (time / speed)
-  timer: (
+  // Shorten the sale period → a rocket (speed / momentum)
+  rocket: (
     <>
-      <circle cx="12" cy="14" r="7.5" />
-      <path d="M12 14v-4" />
-      <path d="M9.75 3.5h4.5" />
-      <path d="M12 3.5v3" />
-      <path d="M18.6 7.4 20 6" />
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+      <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
     </>
   ),
-  // Protect the sale price → a price tag
-  tag: (
+  // Protect the sale price → a shield with a check
+  shield: (
     <>
-      <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.83 0l-6.77-6.77A2 2 0 0 1 3.2 12.4V5a2 2 0 0 1 2-2h7.4a2 2 0 0 1 1.42.59l6.58 6.58a2 2 0 0 1 0 2.83z" />
-      <circle cx="7.6" cy="7.6" r="1.4" />
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="M9 12l2 2 4-4" />
     </>
   ),
-  // The buyer sees the project → the physical building / model
-  building: (
-    <>
-      <path d="M3 21h18" />
-      <path d="M5 21V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16" />
-      <path d="M14 21V9h4a1 1 0 0 1 1 1v11" />
-      <path d="M8 7.5h3M8 11.5h3M8 15.5h3" />
-    </>
+  // Turn interest into desire to buy → a heart (emotional connection)
+  heart: (
+    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" />
   ),
-  // Fewer objections, focus on closing → a signed / approved document
-  contract: (
+  // Fewer objections, more confidence → a thumbs-up
+  thumbsUp: (
     <>
-      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
-      <path d="M14 3v5h5" />
-      <path d="M8.5 14.5l2 2 4-4" />
+      <path d="M7 10v11" />
+      <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z" />
     </>
   ),
 };
