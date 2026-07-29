@@ -111,7 +111,7 @@ export const BUSINESS_VALUE = {
       text: "מחזקים את תפיסת הערך ומצמצמים את הצורך בהנחות",
     },
     {
-      icon: "tree",
+      icon: "building",
       side: "right",
       title: "מעדיפים מוחשי על הדמיה",
       stat: "85%",
