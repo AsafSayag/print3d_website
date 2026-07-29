@@ -159,18 +159,25 @@ function TowerAside({ side }: { side: "start" | "end" }) {
  * #4f8fbf · highlight #aad3ef · deep detail #17384f.
  */
 const ICONS: Record<string, React.ReactNode> = {
-  // Shorten the sale period → a rocket (speed / momentum)
-  rocket: (
+  // Shorten the sale period → a clock with motion lines (time / speed)
+  clock: (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
-        d="M24 4c7 4.2 10 11.2 10 19.2L30 29H18l-4-5.8C14 15.2 17 8.2 24 4z"
-        fill="#eaf4ff"
+        d="M6 24h12.5M10 17.5h8.5M10 30.5h8.5"
+        stroke="#7cb2da"
+        strokeWidth="2.6"
+        strokeLinecap="round"
       />
-      <circle cx="24" cy="18" r="3.7" fill="#4f8fbf" />
-      <path d="M18 29l-6.2 3.2 2-8.2 4.2 1z" fill="#7cb2da" />
-      <path d="M30 29l6.2 3.2-2-8.2-4.2 1z" fill="#7cb2da" />
-      <path d="M24 44c-3.1-2.1-4.2-5.2-4.2-8.2h8.4c0 3-1.1 6.1-4.2 8.2z" fill="#7cb2da" />
-      <path d="M24 40c-1.5-1-2.1-2.5-2.1-4.2h4.2c0 1.7-.6 3.2-2.1 4.2z" fill="#aad3ef" />
+      <circle cx="32" cy="24" r="12.5" fill="#eaf4ff" />
+      <circle cx="32" cy="24" r="12.5" stroke="#7cb2da" strokeWidth="2" />
+      <path
+        d="M32 24V16.5M32 24l6.4 3.6"
+        stroke="#17384f"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="32" cy="24" r="1.7" fill="#17384f" />
     </svg>
   ),
   // Protect the sale price → a shield with a check
@@ -190,19 +197,17 @@ const ICONS: Record<string, React.ReactNode> = {
       />
     </svg>
   ),
-  // Turn interest into desire to buy → a heart (emotional connection)
-  heart: (
+  // Prefer the tangible over a render → a tree (a physical model detail).
+  // A layered conifer: an unmistakable tree silhouette in the duotone style.
+  tree: (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M24 42.5S5.5 30 5.5 17.3C5.5 10.8 10.7 6.6 16.4 6.6c3.5 0 6.6 2 7.6 4.1 1-2.1 4.1-4.1 7.6-4.1 5.7 0 10.9 4.2 10.9 10.7C42.5 30 24 42.5 24 42.5z"
-        fill="#eaf4ff"
-      />
-      <path
-        d="M16.4 11.6c-3.1 0-5.7 2.3-5.7 5.7 0 1.7.5 3.2 1.4 4.6"
-        stroke="#aad3ef"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
+      <rect x="21.4" y="30" width="5.2" height="12" rx="1.8" fill="#4f8fbf" />
+      <path d="M24 19.5L35 36H13L24 19.5z" fill="#eaf4ff" />
+      <path d="M24 19.5L35 36H24V19.5z" fill="#cfe6f8" />
+      <path d="M24 11.5L32.5 25.5H15.5L24 11.5z" fill="#eaf4ff" />
+      <path d="M24 11.5L32.5 25.5H24V11.5z" fill="#cfe6f8" />
+      <path d="M24 4.5L30.5 15.5H17.5L24 4.5z" fill="#eaf4ff" />
+      <path d="M24 4.5L30.5 15.5H24V4.5z" fill="#cfe6f8" />
     </svg>
   ),
   // Fewer explanations, more signatures → a signed contract with a pen
