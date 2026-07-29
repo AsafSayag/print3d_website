@@ -60,9 +60,12 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     scale: "1:1000",
     type: "urban",
     image: "/projects/beit-hakerem.webp",
+    // Reuses the bright-hero clip (same Beit HaKerem footage) — a shorter 1080p
+    // cut vs. the older 720p carousel file. Sharing the hero's `about-hero.*`
+    // means the catalog page downloads this reel once instead of twice.
     video: {
-      mp4: "/videos/projects/beit-hakerem.mp4",
-      webm: "/videos/projects/beit-hakerem.webm",
+      mp4: "/videos/about-hero.mp4",
+      webm: "/videos/about-hero.webm",
     },
     href: "/projects/beit-hakerem",
   },

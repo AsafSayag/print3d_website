@@ -80,16 +80,7 @@ function ValueCard({
           aria-hidden="true"
           className="bizval-icon order-2 ms-auto md:order-3 md:ms-0"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {ICONS[card.icon]}
-          </svg>
+          {ICONS[card.icon]}
         </span>
       </div>
     </motion.article>
@@ -158,33 +149,91 @@ function TowerAside({ side }: { side: "start" | "end" }) {
   );
 }
 
+/**
+ * The four value icons — a cohesive duotone "illustrated" set (crisp filled
+ * shapes over a light steel-blue base, matching the signed-contract reference
+ * for the "more signatures" card). Each returns a complete <svg> so it can carry
+ * its own multi-fill artwork; the container sizes it via `.bizval-icon svg`.
+ *
+ * Shared palette (steel-blue, on-brand): base #eaf4ff · accent #7cb2da /
+ * #4f8fbf · highlight #aad3ef · deep detail #17384f.
+ */
 const ICONS: Record<string, React.ReactNode> = {
-  // Shorten the sale period → a rocket (speed / momentum)
-  rocket: (
-    <>
-      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-      <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-    </>
+  // Shorten the sale period → a clock with motion lines (time / speed)
+  clock: (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M6 24h12.5M10 17.5h8.5M10 30.5h8.5"
+        stroke="#7cb2da"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <circle cx="32" cy="24" r="12.5" fill="#eaf4ff" />
+      <circle cx="32" cy="24" r="12.5" stroke="#7cb2da" strokeWidth="2" />
+      <path
+        d="M32 24V16.5M32 24l6.4 3.6"
+        stroke="#17384f"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="32" cy="24" r="1.7" fill="#17384f" />
+    </svg>
   ),
   // Protect the sale price → a shield with a check
   shield: (
-    <>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="M9 12l2 2 4-4" />
-    </>
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M24 4l15 6v10.5c0 10-6.7 16.5-15 21C15.7 37 9 30.5 9 20.5V10l15-6z"
+        fill="#eaf4ff"
+      />
+      <path d="M24 4l15 6v10.5c0 10-6.7 16.5-15 21V4z" fill="#cfe6f8" />
+      <path
+        d="M16.8 23.2l5 5 9.4-10.4"
+        stroke="#2f6f9c"
+        strokeWidth="3.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   ),
-  // Turn interest into desire to buy → a heart (emotional connection)
-  heart: (
-    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" />
+  // Prefer the tangible over a render → a tree (a physical model detail).
+  // A layered conifer: an unmistakable tree silhouette in the duotone style.
+  tree: (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="21.4" y="30" width="5.2" height="12" rx="1.8" fill="#4f8fbf" />
+      <path d="M24 19.5L35 36H13L24 19.5z" fill="#eaf4ff" />
+      <path d="M24 19.5L35 36H24V19.5z" fill="#cfe6f8" />
+      <path d="M24 11.5L32.5 25.5H15.5L24 11.5z" fill="#eaf4ff" />
+      <path d="M24 11.5L32.5 25.5H24V11.5z" fill="#cfe6f8" />
+      <path d="M24 4.5L30.5 15.5H17.5L24 4.5z" fill="#eaf4ff" />
+      <path d="M24 4.5L30.5 15.5H24V4.5z" fill="#cfe6f8" />
+    </svg>
   ),
-  // Fewer objections, more confidence → a thumbs-up
-  thumbsUp: (
-    <>
-      <path d="M7 10v11" />
-      <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z" />
-    </>
+  // Fewer explanations, more signatures → a signed contract with a pen
+  signature: (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M13 4h13l8 8v28a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"
+        fill="#eaf4ff"
+      />
+      <path d="M26 4l8 8h-6a2 2 0 0 1-2-2V4z" fill="#7cb2da" />
+      <rect x="14" y="16" width="13" height="2.6" rx="1.3" fill="#7cb2da" />
+      <rect x="14" y="21.5" width="9" height="2.6" rx="1.3" fill="#7cb2da" />
+      <path
+        d="M13.5 33c2.2-3.5 3.9 2.9 5.7.4 1.2-1.6 2.3 1.9 4.1.2 1.4-1.3 3.1.8 5.5-1"
+        stroke="#17384f"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M39.4 15.9a3.1 3.1 0 0 1 4.3 4.3L30 33.9l-5.8 1.7 1.7-5.8L39.4 15.9z"
+        fill="#4f8fbf"
+      />
+      <path d="M24.2 35.6l1.7-5.8 4.1 4.1-5.8 1.7z" fill="#17384f" />
+      <path d="M39.4 15.9a3.1 3.1 0 0 1 4.3 4.3l-2 2-4.3-4.3 2-2z" fill="#aad3ef" />
+    </svg>
   ),
 };
 
