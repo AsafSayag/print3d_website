@@ -119,9 +119,9 @@ export const BUSINESS_VALUE = {
       text: "הרוכש רואה את הפרויקט, מבין אותו ומתחבר אליו",
     },
     {
-      icon: "thumbsUp",
+      icon: "signature",
       side: "left",
-      title: "פחות הסברים פחות התנגדויות",
+      title: "פחות הסברים יותר חתימות",
       stat: "81%",
       statLabel: "יותר בטחון",
       text: "המודל מחזק ביטחון ומאפשר לצוות להתמקד בסגירה",

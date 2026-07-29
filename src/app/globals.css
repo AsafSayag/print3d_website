@@ -2042,9 +2042,9 @@ html.a11y-motion .a11y-panel {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 3.1rem;
-  height: 3.1rem;
-  border-radius: 14px;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 15px;
   color: #d6e8f4;
   background: linear-gradient(
     155deg,
@@ -2057,8 +2057,9 @@ html.a11y-motion .a11y-panel {
     0 0 16px -6px rgba(95, 154, 192, 0.6);
 }
 .bizval-icon svg {
-  width: 1.55rem;
-  height: 1.55rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  filter: drop-shadow(0 1px 2px rgba(6, 22, 38, 0.35));
 }
 
 /* Closing banner headline */
@@ -2243,13 +2244,13 @@ html.a11y-motion .a11y-panel {
     font-size: 0.82rem;
   }
   .bizval-icon {
-    width: 2.6rem;
-    height: 2.6rem;
-    border-radius: 12px;
+    width: 3.15rem;
+    height: 3.15rem;
+    border-radius: 13px;
   }
   .bizval-icon svg {
-    width: 1.3rem;
-    height: 1.3rem;
+    width: 1.95rem;
+    height: 1.95rem;
   }
 }
 

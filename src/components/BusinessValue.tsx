@@ -80,16 +80,7 @@ function ValueCard({
           aria-hidden="true"
           className="bizval-icon order-2 ms-auto md:order-3 md:ms-0"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {ICONS[card.icon]}
-          </svg>
+          {ICONS[card.icon]}
         </span>
       </div>
     </motion.article>
@@ -158,33 +149,86 @@ function TowerAside({ side }: { side: "start" | "end" }) {
   );
 }
 
+/**
+ * The four value icons — a cohesive duotone "illustrated" set (crisp filled
+ * shapes over a light steel-blue base, matching the signed-contract reference
+ * for the "more signatures" card). Each returns a complete <svg> so it can carry
+ * its own multi-fill artwork; the container sizes it via `.bizval-icon svg`.
+ *
+ * Shared palette (steel-blue, on-brand): base #eaf4ff · accent #7cb2da /
+ * #4f8fbf · highlight #aad3ef · deep detail #17384f.
+ */
 const ICONS: Record<string, React.ReactNode> = {
   // Shorten the sale period → a rocket (speed / momentum)
   rocket: (
-    <>
-      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-      <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-    </>
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M24 4c7 4.2 10 11.2 10 19.2L30 29H18l-4-5.8C14 15.2 17 8.2 24 4z"
+        fill="#eaf4ff"
+      />
+      <circle cx="24" cy="18" r="3.7" fill="#4f8fbf" />
+      <path d="M18 29l-6.2 3.2 2-8.2 4.2 1z" fill="#7cb2da" />
+      <path d="M30 29l6.2 3.2-2-8.2-4.2 1z" fill="#7cb2da" />
+      <path d="M24 44c-3.1-2.1-4.2-5.2-4.2-8.2h8.4c0 3-1.1 6.1-4.2 8.2z" fill="#7cb2da" />
+      <path d="M24 40c-1.5-1-2.1-2.5-2.1-4.2h4.2c0 1.7-.6 3.2-2.1 4.2z" fill="#aad3ef" />
+    </svg>
   ),
   // Protect the sale price → a shield with a check
   shield: (
-    <>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="M9 12l2 2 4-4" />
-    </>
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M24 4l15 6v10.5c0 10-6.7 16.5-15 21C15.7 37 9 30.5 9 20.5V10l15-6z"
+        fill="#eaf4ff"
+      />
+      <path d="M24 4l15 6v10.5c0 10-6.7 16.5-15 21V4z" fill="#cfe6f8" />
+      <path
+        d="M16.8 23.2l5 5 9.4-10.4"
+        stroke="#2f6f9c"
+        strokeWidth="3.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   ),
   // Turn interest into desire to buy → a heart (emotional connection)
   heart: (
-    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" />
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M24 42.5S5.5 30 5.5 17.3C5.5 10.8 10.7 6.6 16.4 6.6c3.5 0 6.6 2 7.6 4.1 1-2.1 4.1-4.1 7.6-4.1 5.7 0 10.9 4.2 10.9 10.7C42.5 30 24 42.5 24 42.5z"
+        fill="#eaf4ff"
+      />
+      <path
+        d="M16.4 11.6c-3.1 0-5.7 2.3-5.7 5.7 0 1.7.5 3.2 1.4 4.6"
+        stroke="#aad3ef"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+    </svg>
   ),
-  // Fewer objections, more confidence → a thumbs-up
-  thumbsUp: (
-    <>
-      <path d="M7 10v11" />
-      <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z" />
-    </>
+  // Fewer explanations, more signatures → a signed contract with a pen
+  signature: (
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M13 4h13l8 8v28a4 4 0 0 1-4 4H13a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"
+        fill="#eaf4ff"
+      />
+      <path d="M26 4l8 8h-6a2 2 0 0 1-2-2V4z" fill="#7cb2da" />
+      <rect x="14" y="16" width="13" height="2.6" rx="1.3" fill="#7cb2da" />
+      <rect x="14" y="21.5" width="9" height="2.6" rx="1.3" fill="#7cb2da" />
+      <path
+        d="M13.5 33c2.2-3.5 3.9 2.9 5.7.4 1.2-1.6 2.3 1.9 4.1.2 1.4-1.3 3.1.8 5.5-1"
+        stroke="#17384f"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M39.4 15.9a3.1 3.1 0 0 1 4.3 4.3L30 33.9l-5.8 1.7 1.7-5.8L39.4 15.9z"
+        fill="#4f8fbf"
+      />
+      <path d="M24.2 35.6l1.7-5.8 4.1 4.1-5.8 1.7z" fill="#17384f" />
+      <path d="M39.4 15.9a3.1 3.1 0 0 1 4.3 4.3l-2 2-4.3-4.3 2-2z" fill="#aad3ef" />
+    </svg>
   ),
 };
 
