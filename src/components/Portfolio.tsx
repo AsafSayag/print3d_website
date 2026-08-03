@@ -30,6 +30,13 @@ const PROJECTS: {
     href: "/projects/dafna-tidhar",
   },
   {
+    src: "/projects/sela-binui-up-town.webp",
+    title: "סלע בינוי · Up Town",
+    scale: "1:75",
+    span: "",
+    href: "/projects/sela-binui-up-town",
+  },
+  {
     src: "/projects/sela-baitar-hadera.webp",
     title: "סלע ביתר · חדרה",
     scale: "1:100",
