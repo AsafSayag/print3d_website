@@ -268,15 +268,13 @@ Each row is `{ label, value }` or `{ label, pending: true, pendingHint }`. The
 established row set, in order:
 
 - שם המודל
-- סוג המודל
 - קנה מידה
 - שיטות ייצור
-- חומרים וגימורים
 - תאורה
 - אלמנטים במודל
 - ייעוד
 
-These eight are the full set — every project ships exactly these, in this order.
+These six are the full set — every project ships exactly these, in this order.
 Do not add rows such as מידות המודל or משך ייצור.
 
 **Fallback rule:** if the Builder doesn't provide full content, copy an existing

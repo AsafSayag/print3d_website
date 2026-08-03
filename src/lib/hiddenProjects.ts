@@ -42,6 +42,7 @@ export const HIDDEN_PROJECT_SLUGS: string[] = [
  * | `rotem-shani-petach-tikva` | רותם שני, פתח תקווה | רותם שני | |
  * | `sarfati-arnona-jerusalem` | צרפתי, ארנונה ירושלים | צרפתי | |
  * | `sela-baitar-hadera` | סלע ביתר · חדרה | סלע ביתר | |
+ * | `sela-binui-up-town` | סלע בינוי · Up Town | סלע בינוי | |
  * | `shbiro-rishon-letzion` | שבירו, ראשון לציון | שבירו | |
  * | `vitania-har-hotzvim` | ויטניה, הר חוצבים | ויטניה | ✅ |
  */

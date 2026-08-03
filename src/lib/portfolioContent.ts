@@ -102,6 +102,15 @@ const ALL_PORTFOLIO_PROJECTS: Project[] = [
     href: "/projects/dafna-tidhar",
   },
   {
+    id: "sela-binui-up-town",
+    title: "סלע בינוי · Up Town",
+    client: "סלע בינוי",
+    scale: "1:75",
+    type: "residential",
+    image: "/projects/sela-binui-up-town.webp",
+    href: "/projects/sela-binui-up-town",
+  },
+  {
     id: "sela-baitar-hadera",
     title: "סלע ביתר · חדרה",
     client: "סלע ביתר",
