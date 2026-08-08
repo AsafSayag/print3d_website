@@ -51,7 +51,11 @@ const nextConfig: NextConfig = {
     // production build), so 'unsafe-eval' is added to script-src ONLY in
     // development. The production CSP stays tight and identical to before.
     const isDev = process.env.NODE_ENV !== "production";
-    const scriptSrc = `script-src 'self' 'unsafe-inline'${
+    // Google Analytics 4 (via @next/third-parties): gtag.js loads from
+    // googletagmanager.com, then beacons hits go to google-analytics.com /
+    // its regional subdomains (e.g. region1.google-analytics.com). Scoped to
+    // exactly those two host patterns — nothing broader.
+    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${
       isDev ? " 'unsafe-eval'" : ""
     }`;
     const csp = [
@@ -61,7 +65,7 @@ const nextConfig: NextConfig = {
       "img-src 'self' data: https:",
       "font-src 'self' data:",
       "frame-src https://www.google.com",
-      "connect-src 'self'",
+      "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

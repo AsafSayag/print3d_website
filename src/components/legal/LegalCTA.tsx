@@ -1,5 +1,6 @@
 import { GlassButton } from "@/components/ui/GlassButton";
 import { Reveal } from "@/components/ui/Reveal";
+import { analyticsAttrs } from "@/lib/analytics";
 import { LEGAL_CTA } from "@/lib/legal";
 
 /**
@@ -18,7 +19,14 @@ export function LegalCTA() {
         </Reveal>
         <Reveal delay={0.1}>
           <div className="mt-8 flex justify-center">
-            <GlassButton href="/contact" variant="primary">
+            <GlassButton
+              href="/contact"
+              variant="primary"
+              {...analyticsAttrs("cta_click", {
+                cta_name: "quote_request",
+                location: "legal_page",
+              })}
+            >
               {LEGAL_CTA.button}
             </GlassButton>
           </div>

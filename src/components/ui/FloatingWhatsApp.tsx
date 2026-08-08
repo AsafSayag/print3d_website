@@ -1,6 +1,7 @@
 "use client";
 
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
 
 /**
@@ -25,6 +26,7 @@ export function FloatingWhatsApp() {
       target={hasNumber ? "_blank" : undefined}
       rel={hasNumber ? "noopener noreferrer" : undefined}
       aria-label="דברו איתנו בוואטסאפ"
+      {...analyticsAttrs("whatsapp_click", { location: "floating_button" })}
       className={`wa-fab${compact ? " wa-fab--compact" : ""}${
         atBottom ? " wa-fab--raised" : ""
       }`}

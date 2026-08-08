@@ -7,6 +7,7 @@ import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { WhatsAppButton } from "./ui/WhatsAppButton";
 import { NAV_ITEMS, CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { HERO_COPY } from "@/lib/content";
 
 const SCROLL_THRESHOLD = 80;
@@ -175,6 +176,10 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
             <GlassButton
               href={quoteHref}
               variant="primary"
+              {...analyticsAttrs("cta_click", {
+                cta_name: "quote_request",
+                location: "header",
+              })}
               className="!py-2.5 !px-5 !text-[15px]"
             >
               {HERO_COPY.primaryCta}
@@ -295,7 +300,15 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
             צור קשר
           </a>
           <div className="pt-6">
-            <GlassButton href={quoteHref} variant="primary" onClick={() => setOpen(false)}>
+            <GlassButton
+              href={quoteHref}
+              variant="primary"
+              onClick={() => setOpen(false)}
+              {...analyticsAttrs("cta_click", {
+                cta_name: "quote_request",
+                location: "header_mobile_menu",
+              })}
+            >
               {HERO_COPY.primaryCta}
             </GlassButton>
           </div>

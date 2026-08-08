@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { Open_Sans, Assistant } from "next/font/google";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { AnalyticsClickTracker } from "@/components/analytics/AnalyticsClickTracker";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { InPageAnchorScroll } from "@/components/ui/InPageAnchorScroll";
 import "./globals.css";
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 /* Display — Open Sans Bold for all headings */
 const openSans = Open_Sans({
@@ -77,6 +82,17 @@ export default function RootLayout({
         {children}
         <FloatingWhatsApp />
         <AccessibilityWidget />
+        {GA_MEASUREMENT_ID && (
+          <>
+            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+            {/* One delegated listener serves every tracked link and button on
+                the site — see `analyticsAttrs` in lib/analytics.ts. */}
+            <AnalyticsClickTracker />
+            {/* The sole source of page_view — the bootstrap sets
+                send_page_view:false so gtag sends none of its own. */}
+            <PageViewTracker />
+          </>
+        )}
       </body>
     </html>
   );

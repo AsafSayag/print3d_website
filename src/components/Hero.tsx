@@ -5,6 +5,7 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { GlassButton } from "./ui/GlassButton";
 import { HeroVideo } from "./ui/HeroVideo";
 import { HERO, MOTION } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { HERO_COPY } from "@/lib/content";
 
 export function Hero() {
@@ -259,6 +260,10 @@ function HeroContent({
           <GlassButton
             href="#contact"
             variant="primary"
+            {...analyticsAttrs("cta_click", {
+              cta_name: "quote_request",
+              location: "hero",
+            })}
             className="!px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >
             {HERO_COPY.primaryCta}
@@ -266,6 +271,10 @@ function HeroContent({
           <GlassButton
             href="/projects"
             variant="secondary"
+            {...analyticsAttrs("cta_click", {
+              cta_name: "view_projects",
+              location: "hero",
+            })}
             className="hero-secondary-cta !px-5 sm:!px-7 md:!px-8 !py-2.5 sm:!py-3.5 !text-[15px] sm:!text-base"
           >
             {HERO_COPY.secondaryCta}

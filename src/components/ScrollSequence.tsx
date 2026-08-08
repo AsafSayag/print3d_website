@@ -224,7 +224,6 @@ export function ScrollSequence() {
       window.clearTimeout(startTimer);
       window.clearTimeout(revealSafety);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, isMobile]);
 
   // ---- Canvas sizing (DPR-aware) ----
@@ -260,7 +259,6 @@ export function ScrollSequence() {
     return () => window.removeEventListener("resize", resize);
     // isMobile is a dep because the frame's aspect ratio (and thus the canvas
     // CSS size) changes when it settles on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, ready, isMobile]);
 
   // ---- Draw helper: nearest loaded frame, cover-fit ----
@@ -425,7 +423,6 @@ export function ScrollSequence() {
       io?.disconnect();
       window.removeEventListener("resize", measure);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
 
   // ---------- Reduced-motion / no-JS static fallback ----------

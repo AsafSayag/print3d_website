@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { FOOTER } from "@/lib/content";
 import { LEGAL_HUB, LEGAL_LINKS } from "@/lib/legal";
 
@@ -30,7 +31,15 @@ export function Footer({
             </p>
             <ul className="mt-5 space-y-2 text-sm">
               <li>
-                <a href={CONTACT.phoneHref} className="text-white/85 hover:text-white transition-colors" dir="ltr">
+                <a
+                  href={CONTACT.phoneHref}
+                  {...analyticsAttrs("phone_click", {
+                    location: "footer",
+                    phone_type: "office",
+                  })}
+                  className="text-white/85 hover:text-white transition-colors"
+                  dir="ltr"
+                >
                   {CONTACT.phone}
                 </a>
               </li>
@@ -67,7 +76,14 @@ export function Footer({
             <h3 className="font-display text-lg text-white mb-4">
               {FOOTER.ctaTitle}
             </h3>
-            <GlassButton href={quoteHref} variant="primary">
+            <GlassButton
+              href={quoteHref}
+              variant="primary"
+              {...analyticsAttrs("cta_click", {
+                cta_name: "quote_request",
+                location: "footer",
+              })}
+            >
               {FOOTER.ctaButton}
             </GlassButton>
 

@@ -302,7 +302,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.1}>
               <div className="mt-10">
-                <LeadForm />
+                <LeadForm location="about_page" />
               </div>
             </Reveal>
           </div>

@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { NOT_FOUND_METADATA } from "@/lib/pageMeta";
 
 export const metadata = NOT_FOUND_METADATA;
@@ -30,6 +31,10 @@ export default function NotFound() {
             <a
               href={CONTACT.mobilePhoneHref}
               dir="ltr"
+              {...analyticsAttrs("phone_click", {
+                location: "not_found_page",
+                phone_type: "mobile",
+              })}
               className="font-semibold text-[color:var(--gold-400)] hover:text-[color:var(--gold-500)] transition-colors"
             >
               {CONTACT.mobilePhone}
@@ -43,7 +48,14 @@ export default function NotFound() {
             <GlassButton href="/" variant="primary">
               חזרה לעמוד הבית
             </GlassButton>
-            <GlassButton href={CONTACT.mobilePhoneHref} variant="secondary">
+            <GlassButton
+              href={CONTACT.mobilePhoneHref}
+              variant="secondary"
+              {...analyticsAttrs("phone_click", {
+                location: "not_found_page",
+                phone_type: "mobile",
+              })}
+            >
               חייגו אלינו
             </GlassButton>
           </div>

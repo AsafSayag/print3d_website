@@ -4,6 +4,7 @@ import { SectionHeading } from "./ui/SectionHeading";
 import { Reveal } from "./ui/Reveal";
 import { CountUp } from "./ui/CountUp";
 import { GlassButton } from "./ui/GlassButton";
+import { analyticsAttrs } from "@/lib/analytics";
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 
 // Real models from the Print3D archive, with their scales.
@@ -235,7 +236,14 @@ export function Portfolio() {
           <div className="max-w-2xl max-md:mx-auto max-md:text-center">
             <SectionHeading eyebrow="קטלוג" title="פרויקטים נבחרים" tone="light" />
             <Reveal index={2} className="lg:hidden mt-6">
-              <GlassButton href="/projects" variant="primary">
+              <GlassButton
+                href="/projects"
+                variant="primary"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "view_projects",
+                  location: "home_portfolio",
+                })}
+              >
                 לחץ לקטלוג
               </GlassButton>
             </Reveal>
@@ -250,7 +258,14 @@ export function Portfolio() {
 
           <Reveal index={3} className="shrink-0">
             <div className="hidden lg:block mb-6">
-              <GlassButton href="/projects" variant="primary">
+              <GlassButton
+                href="/projects"
+                variant="primary"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "view_projects",
+                  location: "home_portfolio",
+                })}
+              >
                 לחץ לקטלוג
               </GlassButton>
             </div>
@@ -330,6 +345,13 @@ export function Portfolio() {
           <Link
             href="/projects#filters"
             className="more-btn inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 font-display text-white transition-colors hover:bg-white/10"
+            {...analyticsAttrs("cta_click", {
+              cta_name: "view_projects",
+              // Below the grid, and it lands on the catalog's filter module —
+              // a different intent from the section's "לחץ לקטלוג" buttons,
+              // which already report `home_portfolio`.
+              location: "home_portfolio_more",
+            })}
           >
             לפרויקטים נוספים
             <svg

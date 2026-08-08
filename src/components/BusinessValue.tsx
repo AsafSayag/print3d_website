@@ -4,6 +4,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { BUSINESS_VALUE } from "@/lib/content";
+import { analyticsAttrs } from "@/lib/analytics";
 import { Reveal } from "./ui/Reveal";
 import { GlassButton } from "./ui/GlassButton";
 
@@ -320,7 +321,14 @@ export function BusinessValue() {
             </p>
           </Reveal>
           <Reveal index={1} className="mt-8">
-            <GlassButton href="#contact" variant="primary">
+            <GlassButton
+              href="#contact"
+              variant="primary"
+              {...analyticsAttrs("cta_click", {
+                cta_name: "quote_request",
+                location: "business_value",
+              })}
+            >
               {BUSINESS_VALUE.cta}
             </GlassButton>
           </Reveal>
