@@ -70,7 +70,7 @@ export default function FaqPage() {
             </Reveal>
             <Reveal delay={0.1}>
               <div className="mt-10">
-                <LeadForm />
+                <LeadForm location="faq_page" />
               </div>
             </Reveal>
           </div>

@@ -1,5 +1,6 @@
 import { CALLBACK_CTA } from "@/lib/content";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { GlassButton } from "./ui/GlassButton";
 import { Reveal } from "./ui/Reveal";
 import { DeferredVideo } from "./ui/DeferredVideo";
@@ -83,7 +84,14 @@ export function CallbackCta({
               {CALLBACK_CTA.subtitle}
             </p>
             <div className="mt-9 flex justify-center">
-              <GlassButton href={ctaHref} variant="primary">
+              <GlassButton
+                href={ctaHref}
+                variant="primary"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "quote_request",
+                  location: "callback_section",
+                })}
+              >
                 {CALLBACK_CTA.button}
               </GlassButton>
             </div>

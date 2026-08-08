@@ -1,6 +1,7 @@
 import { GlassButton } from "@/components/ui/GlassButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { PORTFOLIO_CTA } from "@/lib/portfolioContent";
 
 /**
@@ -48,7 +49,14 @@ export function PortfolioCta() {
                 {PORTFOLIO_CTA.text}
               </p>
               <div className="mt-8">
-                <GlassButton href={CONTACT.contactPath} variant="primary">
+                <GlassButton
+                  href={CONTACT.contactPath}
+                  variant="primary"
+                  {...analyticsAttrs("cta_click", {
+                    cta_name: "quote_request",
+                    location: "catalog_cta",
+                  })}
+                >
                   {PORTFOLIO_CTA.button}
                 </GlassButton>
               </div>

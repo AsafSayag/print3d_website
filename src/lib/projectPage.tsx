@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
+import { TrackProjectView } from "@/components/analytics/TrackView";
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 import { buildProjectMeta, NOT_FOUND_METADATA } from "@/lib/pageMeta";
+import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
 
 /**
  * Builds a project case-study page — both its `metadata` and its component.
@@ -48,11 +50,23 @@ export function createProjectPage({
     ? NOT_FOUND_METADATA
     : buildProjectMeta({ title, description, slug });
 
+  // The catalog entry is the only place a project's display name and category
+  // live, and its `id` is the slug — so routing `project_view` through here
+  // gives every case study the same two parameters without each page (or its
+  // content file) having to restate them. Resolved once at module scope, on the
+  // server; only the resulting strings reach the browser.
+  const catalogEntry = PORTFOLIO_PROJECTS.find((p) => p.id === slug);
+
   function ProjectPage() {
     if (hidden) notFound();
 
     return (
       <div className="relative">
+        <TrackProjectView
+          projectName={catalogEntry?.title ?? slug}
+          projectCategory={catalogEntry?.type}
+          projectSlug={slug}
+        />
         <Header />
         <View />
       </div>

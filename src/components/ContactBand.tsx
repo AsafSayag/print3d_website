@@ -1,6 +1,7 @@
 import { GlassButton } from "./ui/GlassButton";
 import { Reveal } from "./ui/Reveal";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { HOME_CONTACT_BAND } from "@/lib/content";
 
 /**
@@ -32,7 +33,14 @@ export function ContactBand({
               {HOME_CONTACT_BAND.text}
             </p>
             <div className="mt-8 flex justify-center on-light">
-              <GlassButton href={ctaHref} variant="primary">
+              <GlassButton
+                href={ctaHref}
+                variant="primary"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "quote_request",
+                  location: "contact_band",
+                })}
+              >
                 {HOME_CONTACT_BAND.button}
               </GlassButton>
             </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { PORTFOLIO_HERO, PORTFOLIO_CTA } from "@/lib/portfolioContent";
 
 /**
@@ -57,7 +58,16 @@ export function PortfolioIntro() {
 
               <span className="my-7 h-px w-16 bg-white/10" aria-hidden="true" />
 
-              <Link href={CONTACT.contactPath} className="catalog-cta group">
+              <Link
+                href={CONTACT.contactPath}
+                className="catalog-cta group"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "quote_request",
+                  // Distinct from the catalog page's closing CTA
+                  // (`catalog_cta`) so the two do not merge in reporting.
+                  location: "catalog_intro",
+                })}
+              >
                 {PORTFOLIO_CTA.button}
                 <svg
                   viewBox="0 0 24 24"

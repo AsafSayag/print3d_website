@@ -14,7 +14,7 @@ export function ContactCta() {
         </Reveal>
         <Reveal delay={0.1}>
           <div className="mt-10">
-            <LeadForm />
+            <LeadForm location="home_contact_section" />
           </div>
         </Reveal>
       </div>

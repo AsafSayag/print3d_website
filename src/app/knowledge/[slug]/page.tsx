@@ -7,8 +7,10 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumbs, type Crumb } from "@/components/legal/Breadcrumbs";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { GlassButton } from "@/components/ui/GlassButton";
+import { TrackArticleView } from "@/components/analytics/TrackView";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { getBlogArticle, blogArticleSlugs } from "../content";
 import { ArticleBody } from "../_components/ArticleBody";
 import { ArticleJsonLd } from "../_components/ArticleJsonLd";
@@ -60,6 +62,12 @@ export default async function ArticlePage({ params }: { params: Params }) {
 
   return (
     <>
+      {/* Resolved on the server; the tracker only reports these strings. */}
+      <TrackArticleView
+        articleName={article.title}
+        articleCategory={article.category}
+        articleSlug={slug}
+      />
       <ReadingProgress />
       <ArticleJsonLd article={article} breadcrumbs={breadcrumbs} />
       <a href="#main" className="skip-link">
@@ -142,7 +150,14 @@ export default async function ArticlePage({ params }: { params: Params }) {
                 <RichText text={article.cta.text} />
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-4">
-                <GlassButton href={CONTACT.contactPath} variant="primary">
+                <GlassButton
+                  href={CONTACT.contactPath}
+                  variant="primary"
+                  {...analyticsAttrs("cta_click", {
+                    cta_name: "quote_request",
+                    location: "article_cta",
+                  })}
+                >
                   צרו קשר
                 </GlassButton>
                 <Link

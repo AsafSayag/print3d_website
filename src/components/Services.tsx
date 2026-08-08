@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { WE_BUILD } from "@/lib/content";
+import { analyticsAttrs } from "@/lib/analytics";
 import { Reveal } from "./ui/Reveal";
 
 /**
@@ -105,7 +106,14 @@ export function Services() {
         </ul>
 
         <div className="mt-9 text-center">
-          <Link href="/projects" className="wb-catalog-link">
+          <Link
+            href="/projects"
+            className="wb-catalog-link"
+            {...analyticsAttrs("cta_click", {
+              cta_name: "view_projects",
+              location: "home_services",
+            })}
+          >
             לצפייה בקטלוג הפרויקטים
             <svg
               viewBox="0 0 24 24"

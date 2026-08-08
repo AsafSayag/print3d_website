@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { ArticleCard } from "./ArticleCard";
@@ -241,7 +242,14 @@ export function KnowledgeHub({
               גבוהה — עבור משרד מכירות, פגישת משקיעים או ועדת תכנון.
             </p>
             <div className="mt-8 flex justify-center">
-              <GlassButton href={CONTACT.contactPath} variant="primary">
+              <GlassButton
+                href={CONTACT.contactPath}
+                variant="primary"
+                {...analyticsAttrs("cta_click", {
+                  cta_name: "quote_request",
+                  location: "knowledge_hub",
+                })}
+              >
                 צור קשר
               </GlassButton>
             </div>

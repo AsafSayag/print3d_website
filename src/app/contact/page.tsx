@@ -10,6 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs, type AnalyticsAttrs } from "@/lib/analytics";
 import { CONTACT_PAGE } from "@/lib/content";
 
 export const metadata: Metadata = buildPageMeta({
@@ -56,7 +57,7 @@ export default function ContactPage() {
                   <p className="text-white/60 mt-2 mb-7">
                     {CONTACT_PAGE.formSubtitle}
                   </p>
-                  <LeadForm />
+                  <LeadForm location="contact_page" />
                 </div>
               </Reveal>
 
@@ -89,6 +90,10 @@ export default function ContactPage() {
                       value={CONTACT.phone}
                       href={CONTACT.phoneHref}
                       ltr
+                      trackAttrs={analyticsAttrs("phone_click", {
+                        location: "contact_page_details",
+                        phone_type: "office",
+                      })}
                     />
                     <DetailRow
                       icon={<MailIcon />}
@@ -164,6 +169,7 @@ function DetailRow({
   href,
   ltr,
   external,
+  trackAttrs,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -171,6 +177,8 @@ function DetailRow({
   href?: string;
   ltr?: boolean;
   external?: boolean;
+  /** Optional `analyticsAttrs(...)` output — set on the rows worth measuring. */
+  trackAttrs?: AnalyticsAttrs;
 }) {
   const valueEl = href ? (
     <a
@@ -178,6 +186,7 @@ function DetailRow({
       dir={ltr ? "ltr" : undefined}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
+      {...trackAttrs}
       className="font-display text-lg text-[color:var(--ink-950)] hover:text-[color:var(--gold-700)] transition-colors break-words"
     >
       {value}

@@ -1,4 +1,5 @@
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 
 /**
  * Compact WhatsApp icon button for the header bar (visible on all breakpoints).
@@ -8,10 +9,13 @@ import { CONTACT } from "@/lib/constants";
 export function WhatsAppButton({
   className,
   contactHref = "#contact",
+  location = "header",
 }: {
   className?: string;
   /** Fallback target used while no WhatsApp number is configured. */
   contactHref?: string;
+  /** Surface this button sits on, reported as the `whatsapp_click` location. */
+  location?: string;
 }) {
   const hasNumber = CONTACT.whatsappNumber.length > 0;
   const href = hasNumber
@@ -24,6 +28,7 @@ export function WhatsAppButton({
       target={hasNumber ? "_blank" : undefined}
       rel={hasNumber ? "noopener noreferrer" : undefined}
       aria-label="דברו איתנו בוואטסאפ"
+      {...analyticsAttrs("whatsapp_click", { location })}
       className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/[0.06] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] transition-all duration-300 ease-[var(--ease-brand)] hover:bg-white/[0.14] hover:border-white/40 active:scale-95 ${className ?? ""}`}
     >
       <svg viewBox="0 0 32 32" className="h-[22px] w-[22px] fill-white" aria-hidden="true">

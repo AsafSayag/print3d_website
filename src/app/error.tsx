@@ -8,6 +8,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
+import { analyticsAttrs } from "@/lib/analytics";
 
 export default function Error({
   error,
@@ -40,6 +41,10 @@ export default function Error({
             <a
               href={CONTACT.mobilePhoneHref}
               dir="ltr"
+              {...analyticsAttrs("phone_click", {
+                location: "error_page",
+                phone_type: "mobile",
+              })}
               className="font-semibold text-[color:var(--gold-400)] hover:text-[color:var(--gold-500)] transition-colors"
             >
               {CONTACT.mobilePhone}
