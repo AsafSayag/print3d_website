@@ -15,8 +15,14 @@ export const CONTACT = {
   address: "דרך בן צבי 84, תל אביב",
   addressStreet: "דרך בן צבי 84",
   addressCity: "תל אביב",
-  domain: "print3d.ltd",
-  siteUrl: "https://www.print3d.ltd",
+  /* The site is served from the print3d.co.il apex — NOT from print3d.ltd,
+     which hosts a separate WordPress install. `siteUrl` feeds metadataBase,
+     every canonical/OG URL, robots.txt's Host, the whole sitemap and every
+     JSON-LD `url`, so pointing it at the wrong domain told search engines the
+     authoritative copy lived elsewhere (and made og:image 404). The mailbox
+     stays on print3d.ltd — that address is unrelated to where the site runs. */
+  domain: "print3d.co.il",
+  siteUrl: "https://print3d.co.il",
   /** Canonical destination for every contact / get-a-quote CTA across the site. */
   contactPath: "/contact",
   /** Google Maps — search link (opens the app/site) and embeddable iframe URL. */
