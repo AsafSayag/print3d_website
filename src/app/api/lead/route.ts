@@ -38,6 +38,14 @@ type LeadPayload = {
 const PHONE_RE = /^0\d{1,2}-?\d{7}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Field length bounds, enforced before any data reaches Resend or the Sheet webhook.
+const MAX_BODY_BYTES = 10 * 1024; // 10KB
+const NAME_MIN = 2;
+const NAME_MAX = 100;
+const PHONE_MAX = 20;
+const EMAIL_MAX = 254;
+const PROJECT_MAX = 1000;
+
 // Best-effort in-memory rate limit: caps repeat submissions from the same IP.
 // Only shared across requests that land on the same warm serverless instance
 // (not a distributed guarantee), but it stops the common case of a script
@@ -193,9 +201,14 @@ export async function POST(request: NextRequest) {
     return Response.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
 
+  const rawBody = await request.text();
+  if (new TextEncoder().encode(rawBody).length > MAX_BODY_BYTES) {
+    return Response.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+  }
+
   let body: LeadPayload;
   try {
-    body = (await request.json()) as LeadPayload;
+    body = JSON.parse(rawBody) as LeadPayload;
   } catch {
     return Response.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
@@ -213,11 +226,19 @@ export async function POST(request: NextRequest) {
   const project = clean(body.project);
 
   // Mirror the client-side validation so the endpoint is safe on its own.
-  if (name.length < 2 || !PHONE_RE.test(phone.replace(/\s/g, ""))) {
+  if (
+    name.length < NAME_MIN ||
+    name.length > NAME_MAX ||
+    phone.length > PHONE_MAX ||
+    !PHONE_RE.test(phone.replace(/\s/g, ""))
+  ) {
     return Response.json({ ok: false, error: "invalid_lead" }, { status: 400 });
   }
-  if (email && !EMAIL_RE.test(email)) {
+  if (email && (email.length > EMAIL_MAX || !EMAIL_RE.test(email))) {
     return Response.json({ ok: false, error: "invalid_email" }, { status: 400 });
+  }
+  if (project.length > PROJECT_MAX) {
+    return Response.json({ ok: false, error: "invalid_project" }, { status: 400 });
   }
 
   const now = new Date();
