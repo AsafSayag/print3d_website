@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Open_Sans, Assistant } from "next/font/google";
+import { Open_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
@@ -21,13 +22,35 @@ const openSans = Open_Sans({
   preload: true,
 });
 
-/* Body & UI */
-const assistant = Assistant({
+/* Body & UI — self-hosted (Google Fonts CDN for Assistant started 404ing on
+   build, breaking `next/font/google`'s fetch). Files vendored from
+   @fontsource/assistant 5.3.0 (OFL-licensed); see src/fonts/assistant/OFL.txt. */
+const assistant = localFont({
   variable: "--font-body",
-  subsets: ["hebrew", "latin"],
-  weight: ["400", "600"],
   display: "swap",
   preload: true,
+  src: [
+    {
+      path: "../fonts/assistant/assistant-hebrew-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/assistant/assistant-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/assistant/assistant-hebrew-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../fonts/assistant/assistant-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+  ],
 });
 
 const SITE_TITLE = "Print3D — מודלים אדריכליים פיזיים לפרויקטי נדל״ן";
