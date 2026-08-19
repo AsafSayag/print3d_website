@@ -254,7 +254,9 @@ export function ProjectShowcase() {
                     being painted into the slide's tile — see `.showcase-caption`
                     in globals.css. The two gradients recombine to the original
                     curve: identical from the caption's top edge (50% of the
-                    slide) upwards, and within ~0.01 alpha below it. */}
+                    slide) upwards, and within ~0.01 alpha below it. Which only
+                    holds while both wash and scrim are full-bleed — see the
+                    caption's own note about `container-x`. */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/15 to-black/10" />
 
                 {/* Decorative "future video" marker — only on stills still
@@ -272,36 +274,47 @@ export function ProjectShowcase() {
                   </div>
                 )}
 
-                <div className="showcase-caption absolute inset-x-0 bottom-0 container-x pt-24 pb-10 md:pb-14 bg-gradient-to-t from-black/75 via-black/35 to-transparent">
-                  <h2 className="h1 text-white max-w-3xl text-balance">
-                    {p.title}
-                  </h2>
-                  <div className="mt-4 flex flex-wrap items-center gap-4">
-                    <span className="text-white/75 text-base md:text-lg">
-                      {p.client}
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-white/30" aria-hidden />
-                    <span
-                      // Solid fill, not the `backdrop-blur` the other scale
-                      // pills use: a backdrop-filter here sits inside the
-                      // carousel's transformed track and makes Safari
-                      // re-snapshot the whole slide behind it every frame.
-                      className="num text-[color:var(--gold-400)] text-sm bg-black/45 px-2.5 py-1 rounded-full border border-white/10"
-                      dir="ltr"
-                    >
-                      {p.scale}
-                    </span>
+                {/* The scrim layer is full-bleed; `container-x` belongs on the
+                    inner wrapper, NOT here. Merged onto this div its
+                    `max-width: 1200px` beats `inset-x-0`, so above a 1200px
+                    viewport the gradient stopped 200px short of each slide edge
+                    while the video ran on underneath — a faint dark rectangle
+                    outlined over every clip, desktop only. Only the vertical
+                    padding lives out here (the gradient's height); the
+                    horizontal box — max-width, centring, gutter — is the
+                    wrapper's, so the copy sits exactly where it always did. */}
+                <div className="showcase-caption absolute inset-x-0 bottom-0 pt-24 pb-10 md:pb-14 bg-gradient-to-t from-black/75 via-black/35 to-transparent">
+                  <div className="container-x">
+                    <h2 className="h1 text-white max-w-3xl text-balance">
+                      {p.title}
+                    </h2>
+                    <div className="mt-4 flex flex-wrap items-center gap-4">
+                      <span className="text-white/75 text-base md:text-lg">
+                        {p.client}
+                      </span>
+                      <span className="w-1 h-1 rounded-full bg-white/30" aria-hidden />
+                      <span
+                        // Solid fill, not the `backdrop-blur` the other scale
+                        // pills use: a backdrop-filter here sits inside the
+                        // carousel's transformed track and makes Safari
+                        // re-snapshot the whole slide behind it every frame.
+                        className="num text-[color:var(--gold-400)] text-sm bg-black/45 px-2.5 py-1 rounded-full border border-white/10"
+                        dir="ltr"
+                      >
+                        {p.scale}
+                      </span>
+                    </div>
+                    {p.href && (
+                      <Link
+                        href={p.href}
+                        draggable={false}
+                        className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 font-display text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold-400)]"
+                      >
+                        לצפייה בעמוד הפרויקט
+                        <span aria-hidden="true">←</span>
+                      </Link>
+                    )}
                   </div>
-                  {p.href && (
-                    <Link
-                      href={p.href}
-                      draggable={false}
-                      className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 font-display text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold-400)]"
-                    >
-                      לצפייה בעמוד הפרויקט
-                      <span aria-hidden="true">←</span>
-                    </Link>
-                  )}
                 </div>
               </div>
             ))}
