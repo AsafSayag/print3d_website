@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
+import { PreferredSource } from "./PreferredSource";
 import { CONTACT } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { FOOTER } from "@/lib/content";
@@ -134,6 +135,13 @@ export function Footer({
               ))}
             </ul>
           </nav>
+        </div>
+
+        {/* Opt-in "make Print3D a preferred source in Google" button. Its own
+            row, so whether Google renders it or not the rows around it are
+            unaffected. */}
+        <div className="mt-8">
+          <PreferredSource />
         </div>
 
         {/* Builder signature — the site's final line, centered on every page. */}
