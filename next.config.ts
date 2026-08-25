@@ -55,7 +55,11 @@ const nextConfig: NextConfig = {
     // googletagmanager.com, then beacons hits go to google-analytics.com /
     // its regional subdomains (e.g. region1.google-analytics.com). Scoped to
     // exactly those two host patterns — nothing broader.
-    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${
+    // news.google.com serves publisher.js, which renders the "preferred
+    // sources" button in the footer (see components/PreferredSource.tsx). It
+    // needs script-src to load, connect-src to fetch the button's config, and
+    // frame-src because the widget renders itself into an iframe.
+    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://news.google.com${
       isDev ? " 'unsafe-eval'" : ""
     }`;
     const csp = [
@@ -64,8 +68,8 @@ const nextConfig: NextConfig = {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
-      "frame-src https://www.google.com",
-      "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
+      "frame-src https://www.google.com https://news.google.com",
+      "connect-src 'self' https://news.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
