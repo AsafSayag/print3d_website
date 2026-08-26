@@ -118,30 +118,30 @@ export function Footer({
         </div>
 
         {/* Copyright on one side, the full legal list — including the
-            accessibility statement — grouped together on the other. */}
+            accessibility statement — grouped together on the other, with the
+            opt-in "make Print3D a preferred source in Google" button sharing
+            that same row. `items-center` on both this row and the group is what
+            keeps the button vertically centred against the legal links rather
+            than sitting below them. */}
         <div className="mt-14 pt-6 border-t border-white/10 flex flex-col items-center gap-4 text-center text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between sm:text-start">
           <span dir="ltr">{FOOTER.copyright}</span>
-          <nav aria-label="קישורים משפטיים">
-            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
-              {LEGAL_BAR_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-
-        {/* Opt-in "make Print3D a preferred source in Google" button. Its own
-            row, so whether Google renders it or not the rows around it are
-            unaffected. */}
-        <div className="mt-8">
-          <PreferredSource />
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <nav aria-label="קישורים משפטיים">
+              <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
+                {LEGAL_BAR_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-white/70 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <PreferredSource />
+          </div>
         </div>
 
         {/* Builder signature — the site's final line, centered on every page. */}

@@ -38,17 +38,19 @@ const LANG = "he";
  */
 export function PreferredSource() {
   return (
-    <div className="flex justify-center">
+    <div className="w-56 max-w-full shrink-0">
       {/* On init the script stamps `width:100%; min-height:60px` onto the
-          container, so it is sized from the outside here: a max-width to stop
-          the button stretching the full 1400px footer, and the same 60px
-          reserved up front so filling the iframe doesn't shift the signature
-          row below it (CLS). */}
+          container, so it is sized from the outside here — hence the explicit
+          width on the wrapper above: as a flex item next to the legal links it
+          would otherwise shrink to its content, and its content is a child
+          asking for 100% of it, which resolves to zero. The 60px is reserved up
+          front so filling the iframe doesn't shift the signature row below
+          it (CLS). */}
       <div
         google-add-preferred-source-btn=""
         data-theme={THEME}
         data-lang={LANG}
-        className="min-h-[60px] w-full max-w-xs"
+        className="min-h-[60px] w-full"
       />
       <Script
         id="google-preferred-source"
