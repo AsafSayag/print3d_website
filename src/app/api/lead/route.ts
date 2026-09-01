@@ -18,7 +18,7 @@ import type { NextRequest } from "next/server";
  *
  * Configuration (environment variables — see LEADS_SETUP.md):
  *   RESEND_API_KEY          Resend API key (required for the email channel).
- *   LEAD_NOTIFY_TO          Recipient of the notification. Default: office@print3d.ltd.
+ *   LEAD_NOTIFY_TO          Recipient of the notification. Default: frank@print3d.co.il.
  *   LEAD_NOTIFY_FROM        Verified sender. Default: Print3D <leads@print3d.ltd>.
  *   LEADS_SHEET_WEBHOOK_URL Apps Script web-app URL (required for the Sheet channel).
  */
@@ -68,9 +68,9 @@ function getClientIp(request: NextRequest): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 }
 
-const NOTIFY_TO = process.env.LEAD_NOTIFY_TO || "office@print3d.ltd";
+const NOTIFY_TO = process.env.LEAD_NOTIFY_TO || "frank@print3d.co.il";
 // Sends from the verified print3d.ltd domain so notifications can reach any
-// inbox (e.g. office@print3d.ltd), not just the Resend account owner. This
+// inbox (e.g. frank@print3d.co.il), not just the Resend account owner. This
 // REQUIRES print3d.ltd to be verified in Resend (add the DKIM/SPF DNS records
 // from the Resend dashboard). Until then, override with the shared sender
 // "Print3D <onboarding@resend.dev>" via LEAD_NOTIFY_FROM — but note that shared
