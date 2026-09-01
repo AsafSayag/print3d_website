@@ -10,8 +10,8 @@ export const CONTACT = {
   /** Mobile / WhatsApp line — shown on the error + 404 pages as a direct contact. */
   mobilePhone: "053-724-7958",
   mobilePhoneHref: "tel:+972537247958",
-  email: "office@print3d.ltd",
-  emailHref: "mailto:office@print3d.ltd",
+  email: "frank@print3d.co.il",
+  emailHref: "mailto:frank@print3d.co.il",
   address: "דרך בן צבי 84, תל אביב",
   addressStreet: "דרך בן צבי 84",
   addressCity: "תל אביב",
@@ -19,8 +19,7 @@ export const CONTACT = {
      which hosts a separate WordPress install. `siteUrl` feeds metadataBase,
      every canonical/OG URL, robots.txt's Host, the whole sitemap and every
      JSON-LD `url`, so pointing it at the wrong domain told search engines the
-     authoritative copy lived elsewhere (and made og:image 404). The mailbox
-     stays on print3d.ltd — that address is unrelated to where the site runs. */
+     authoritative copy lived elsewhere (and made og:image 404). */
   domain: "print3d.co.il",
   siteUrl: "https://print3d.co.il",
   /** Canonical destination for every contact / get-a-quote CTA across the site. */
