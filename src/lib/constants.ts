@@ -37,6 +37,16 @@ export const CONTACT = {
   whatsappNumber: "972537247958",
 } as const;
 
+/**
+ * Social profiles shown as icon links in the footer.
+ * TODO: replace the placeholder URLs with the business's real profile pages.
+ */
+export const SOCIAL_LINKS = [
+  { name: "Facebook", label: "פייסבוק", href: "https://www.facebook.com/" },
+  { name: "Instagram", label: "אינסטגרם", href: "https://www.instagram.com/" },
+  { name: "LinkedIn", label: "לינקדאין", href: "https://www.linkedin.com/" },
+] as const;
+
 /** Brand palette — mirrors the CSS variables declared in globals.css. */
 export const COLORS = {
   navy950: "#0E1A2C",

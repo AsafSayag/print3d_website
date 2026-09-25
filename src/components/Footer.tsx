@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
 import { PreferredSource } from "./PreferredSource";
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, SOCIAL_LINKS } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { FOOTER } from "@/lib/content";
 import { LEGAL_HUB, LEGAL_LINKS } from "@/lib/legal";
@@ -50,6 +50,21 @@ export function Footer({
                 </a>
               </li>
               <li className="text-white/75">{CONTACT.address}</li>
+            </ul>
+            <ul className="mt-5 flex items-center gap-3 max-md:justify-center">
+              {SOCIAL_LINKS.map((social) => (
+                <li key={social.name}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Print3D ב${social.label} (נפתח בחלון חדש)`}
+                    className="block transition-transform duration-200 hover:-translate-y-0.5"
+                  >
+                    <SocialIcon name={social.name} />
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -192,4 +207,57 @@ function FooterLink({
       </a>
     </li>
   );
+}
+
+/** Official brand marks in their real colours, so each network is instantly
+ *  recognisable (Facebook's blue disc, Instagram's gradient, LinkedIn's blue tile). */
+function SocialIcon({ name }: { name: (typeof SOCIAL_LINKS)[number]["name"] }) {
+  const common = { viewBox: "0 0 24 24", className: "h-8 w-8", "aria-hidden": true } as const;
+  switch (name) {
+    case "Facebook":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="11.5" fill="#fff" />
+          <path
+            fill="#0866FF"
+            d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"
+          />
+        </svg>
+      );
+    case "Instagram":
+      return (
+        <svg {...common}>
+          <defs>
+            <radialGradient id="ig-grad" cx="0.3" cy="1.07" r="1.2">
+              <stop offset="0" stopColor="#FFDD55" />
+              <stop offset="0.1" stopColor="#FFDD55" />
+              <stop offset="0.5" stopColor="#FF543E" />
+              <stop offset="1" stopColor="#C837AB" />
+            </radialGradient>
+            <radialGradient id="ig-grad-2" cx="-0.17" cy="0.07" r="0.6">
+              <stop offset="0" stopColor="#3771C8" />
+              <stop offset="0.13" stopColor="#3771C8" />
+              <stop offset="1" stopColor="#6600FF" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="24" height="24" rx="6" fill="url(#ig-grad)" />
+          <rect width="24" height="24" rx="6" fill="url(#ig-grad-2)" />
+          <g fill="none" stroke="#fff" strokeWidth="1.8">
+            <rect x="5" y="5" width="14" height="14" rx="4" />
+            <circle cx="12" cy="12" r="3.4" />
+          </g>
+          <circle cx="16.1" cy="7.9" r="0.95" fill="#fff" />
+        </svg>
+      );
+    case "LinkedIn":
+      return (
+        <svg {...common}>
+          <rect width="24" height="24" rx="4" fill="#0A66C2" />
+          <path
+            fill="#fff"
+            d="M7.3 9.6H4.7V19h2.6V9.6ZM6 5.1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM19.3 13.8c0-2.6-1.4-4.4-3.8-4.4-1.2 0-2.1.6-2.5 1.3V9.6h-2.6V19H13v-5c0-1.3.5-2.3 1.8-2.3s1.7 1 1.7 2.3v5h2.8v-5.2Z"
+          />
+        </svg>
+      );
+  }
 }
