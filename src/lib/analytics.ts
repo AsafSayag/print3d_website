@@ -86,6 +86,12 @@ export type AnalyticsParams = {
     /** Which of the two published lines — the office or the mobile/WhatsApp one. */
     phone_type?: "office" | "mobile";
   };
+  /** A social / business profile link was clicked. */
+  social_click: {
+    /** The profile's `SOCIAL_LINKS` id, e.g. `"instagram"`. */
+    platform: string;
+    location: string;
+  };
   /** A call-to-action link or button was clicked. */
   cta_click: {
     /** Stable identifier for the CTA's intent, e.g. `"quote_request"`. */

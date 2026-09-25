@@ -37,6 +37,24 @@ export const CONTACT = {
   whatsappNumber: "972537247958",
 } as const;
 
+/**
+ * Social / business profiles, in display order. Drives the footer icon row and
+ * the JSON-LD `sameAs` list. A profile whose `url` is still empty renders as an
+ * inert (non-clickable) icon and is left out of `sameAs` until it is filled in.
+ */
+export const SOCIAL_LINKS = [
+  { id: "linkedin", label: "LinkedIn", url: "" },
+  { id: "facebook", label: "Facebook", url: "" },
+  { id: "instagram", label: "Instagram", url: "" },
+  { id: "google", label: "Google Business", url: "" },
+] as const satisfies readonly {
+  id: string;
+  label: string;
+  url: string;
+}[];
+
+export type SocialId = (typeof SOCIAL_LINKS)[number]["id"];
+
 /** Brand palette — mirrors the CSS variables declared in globals.css. */
 export const COLORS = {
   navy950: "#0E1A2C",

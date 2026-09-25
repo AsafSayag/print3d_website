@@ -1,4 +1,4 @@
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, SOCIAL_LINKS } from "@/lib/constants";
 import { FAQ } from "@/lib/content";
 
 /**
@@ -22,6 +22,7 @@ export function JsonLd() {
       addressCountry: "IL",
     },
     areaServed: "IL",
+    sameAs: SOCIAL_LINKS.map((s) => s.url as string).filter(Boolean),
   };
 
   return (

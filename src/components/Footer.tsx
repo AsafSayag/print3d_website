@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./ui/Logo";
 import { GlassButton } from "./ui/GlassButton";
+import { SocialLinks } from "./ui/SocialLinks";
 import { PreferredSource } from "./PreferredSource";
 import { CONTACT } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
@@ -51,6 +52,7 @@ export function Footer({
               </li>
               <li className="text-white/75">{CONTACT.address}</li>
             </ul>
+            <SocialLinks location="footer" className="mt-5 max-md:justify-center" />
           </div>
 
           {/* Columns 2+3 — company & knowledge. Paired side by side on mobile
