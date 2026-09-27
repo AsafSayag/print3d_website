@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { LEAD_SOURCES, leadSourceLabel } from "@/lib/leadSources";
 
 /**
  * Lead intake endpoint.
@@ -31,6 +32,8 @@ type LeadPayload = {
   phone?: unknown;
   email?: unknown;
   project?: unknown;
+  /** Lead origin id (see lib/leadSources.ts); unknown values fall back to "website". */
+  source?: unknown;
   /** Honeypot — real visitors never see or fill this field. */
   company?: unknown;
 };
@@ -103,6 +106,7 @@ async function sendEmail(lead: {
   phone: string;
   email: string;
   project: string;
+  source: string;
   receivedAt: string;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -111,6 +115,7 @@ async function sendEmail(lead: {
   const rows: [string, string][] = [
     ["שם", lead.name],
     ["טלפון", lead.phone],
+    ["מקור", lead.source],
     ["תאריך ושעת השארת פרטים", lead.receivedAt],
   ];
   if (lead.email) rows.push(["אימייל", lead.email]);
@@ -146,6 +151,7 @@ async function sendEmail(lead: {
     "אלו הפרטים שלו:",
     `שם: ${lead.name}`,
     `טלפון: ${lead.phone}`,
+    `מקור: ${lead.source}`,
     `תאריך ושעת השארת פרטים: ${lead.receivedAt}`,
   ];
   if (lead.email) textLines.push(`אימייל: ${lead.email}`);
@@ -161,7 +167,11 @@ async function sendEmail(lead: {
       from: NOTIFY_FROM,
       to: [NOTIFY_TO],
       reply_to: lead.email || undefined,
-      subject: "לקוח מתעניין חדש השאיר פרטים",
+      // Paid-traffic leads are flagged in the subject so they stand out in the inbox.
+      subject:
+        lead.source === LEAD_SOURCES.website
+          ? "לקוח מתעניין חדש השאיר פרטים"
+          : `לקוח מתעניין חדש השאיר פרטים · ${lead.source}`,
       html,
       text: textLines.join("\n"),
     }),
@@ -178,6 +188,7 @@ async function appendToSheet(lead: {
   phone: string;
   email: string;
   project: string;
+  source: string;
   receivedAt: string;
   receivedAtIso: string;
 }): Promise<void> {
@@ -247,6 +258,7 @@ export async function POST(request: NextRequest) {
     phone,
     email,
     project,
+    source: leadSourceLabel(body.source),
     receivedAt: formatIsraelTime(now),
     receivedAtIso: now.toISOString(),
   };

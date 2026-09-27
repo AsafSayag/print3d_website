@@ -1,8 +1,12 @@
+import type { LeadSource } from "./leadSources";
+
 export type Lead = {
   name: string;
   phone: string;
   email: string;
   project?: string;
+  /** Which surface the lead came from — see lib/leadSources.ts. */
+  source?: LeadSource;
   /** Honeypot — must stay empty. Real visitors never see or fill this field. */
   company?: string;
 };

@@ -37,7 +37,11 @@ function doPost(e) {
 
   // כותרות בפעם הראשונה
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["תאריך ושעה", "שם", "טלפון", "אימייל", "על הפרויקט"]);
+    sheet.appendRow(["תאריך ושעה", "שם", "טלפון", "אימייל", "על הפרויקט", "מקור"]);
+  }
+  // גיליון קיים שנוצר לפני עמודת "מקור" — מוסיפים לו את הכותרת בעמודה F
+  if (sheet.getRange(1, 6).getValue() === "") {
+    sheet.getRange(1, 6).setValue("מקור");
   }
 
   var data = JSON.parse(e.postData.contents);
@@ -46,14 +50,39 @@ function doPost(e) {
     data.name || "",
     data.phone || "",
     data.email || "",
-    data.project || ""
+    data.project || "",
+    data.source || ""
   ]);
+
+  // מייל התראה ל-frank, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
+  try {
+    var lines = [
+      "ליד חדש נכנס לגיליון:",
+      "",
+      "שם: " + (data.name || ""),
+      "טלפון: " + (data.phone || ""),
+      "מקור: " + (data.source || "")
+    ];
+    if (data.email) lines.push("אימייל: " + data.email);
+    if (data.project) lines.push("על הפרויקט: " + data.project);
+    lines.push("תאריך ושעה: " + (data.receivedAt || ""));
+
+    var subject = "ליד חדש - Print3D" + (data.source && data.source !== "אתר" ? " · " + data.source : "");
+    MailApp.sendEmail("frank@print3d.co.il", subject, lines.join("\n"));
+  } catch (err) {
+    // לא לחסום את השמירה בגיליון אם שליחת המייל נכשלה
+  }
 
   return ContentService
     .createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
+
+> **חשוב:** אחרי שמדביקים את הקוד המעודכן, צריך לפרסם מחדש כדי שהוא ייכנס לתוקף
+> על אותו URL קיים: **Deploy → Manage deployments** → לחצו על עיפרון העריכה ליד
+> הפריסה הקיימת → **Version: New version** → **Deploy**.
+> (אם עושים "New deployment" במקום זאת, מקבלים URL חדש וצריך לעדכן אותו ב-`LEADS_SHEET_WEBHOOK_URL`.)
 
 3. לחץ **Deploy → New deployment**.
 4. ליד "Select type" לחץ על גלגל השיניים ובחר **Web app**.
