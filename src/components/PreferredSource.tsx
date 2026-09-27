@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { PreferredSourceInit } from "./PreferredSourceInit";
 
 /** `dark` to match the navy footer; `he` because the site is Hebrew and the
@@ -22,12 +21,14 @@ const LANG = "he";
  *   2. The container, marked by the valueless
  *      `google-add-preferred-source-btn` attribute (typed in
  *      src/types/google-preferred-source.d.ts).
- *   3. PreferredSourceInit, which fills the container and refills it after
- *      client-side navigation — see there for why that's necessary.
+ *   3. PreferredSourceInit, which renders both of the above, loads the script
+ *      only once the footer nears the viewport, and fills the container (and
+ *      refills it after client-side navigation) — see there for why.
  *
- * `lazyOnload` rather than the `afterInteractive` used for GA: this is a
- * footer widget nobody is waiting on, so it loads during idle time and stays
- * off the critical path.
+ * Loading on approach rather than on every page view: publisher.js pulls in
+ * ~240KB of Google JS (news.google.com + gstatic) plus an iframe that sets
+ * third-party cookies. PageSpeed measured it as the largest third-party cost
+ * on the home page, for a footer widget most visitors never scroll to.
  *
  * Note the script's origin (news.google.com) is allowlisted in the CSP in
  * next.config.ts — script-src, frame-src and connect-src. Without that the
@@ -43,21 +44,9 @@ export function PreferredSource() {
           container, so it is sized from the outside here — hence the explicit
           width on the wrapper above: as a flex item next to the legal links it
           would otherwise shrink to its content, and its content is a child
-          asking for 100% of it, which resolves to zero. The 60px is reserved up
-          front so filling the iframe doesn't shift the signature row below
-          it (CLS). */}
-      <div
-        google-add-preferred-source-btn=""
-        data-theme={THEME}
-        data-lang={LANG}
-        className="min-h-[60px] w-full"
-      />
-      <Script
-        id="google-preferred-source"
-        strategy="lazyOnload"
-        preferred-sources-control="manual"
-        src="https://news.google.com/swg/js/v1/publisher.js"
-      />
+          asking for 100% of it, which resolves to zero. The 60px is reserved
+          (inside PreferredSourceInit) so filling the iframe doesn't shift the
+          signature row below it (CLS). */}
       <PreferredSourceInit theme={THEME} lang={LANG} />
     </div>
   );
