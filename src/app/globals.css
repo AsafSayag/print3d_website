@@ -2498,8 +2498,20 @@ html.a11y-motion .a11y-panel {
      wins on very short phones (min-height, not height). */
   .lp-hero { min-height: calc(100svh - 8.5rem); }
   .lp-hero-inner { padding-block: 6.25rem 2.75rem; }
+  /* The copy block is anchored near the top (rather than centred) so the
+     audience line and the headline sit high and close together; the spare
+     height falls below the CTAs, where the photo shows through. */
+  .lp-hero { align-items: flex-start; }
+  .lp-hero-inner { padding-block-start: 10rem; }
+  .lp-hero-title { margin-top: 0.85rem; }
   .lp-hero .lp-flow-hint { display: none; }
-  .lp-hero-ctas { margin-top: 1.75rem; }
+  .lp-hero-ctas { margin-top: 4rem; }
+  /* Centred under the stacked CTAs and set bold, so the "no commitment"
+     reassurance reads as part of the action rather than fine print. */
+  .lp-hero-micro {
+    text-align: center;
+    font-weight: 700;
+  }
   /* The logos heading right below already says "350+ projects · 15+ years",
      so the trust row is dropped here to keep the first screen light. */
   .lp-hero-trust { display: none; }
@@ -2606,24 +2618,10 @@ html.a11y-motion .a11y-panel {
   from { top: -40%; }
   to { top: 100%; }
 }
-.lp-connector {
-  display: flex;
-  justify-content: center;
-  height: clamp(3.5rem, 8vw, 5.5rem);
-}
-.lp-connector--light {
-  background: linear-gradient(180deg, var(--navy-950), var(--ice-050));
-}
-.lp-connector--light .lp-flow-line {
-  background: linear-gradient(180deg, rgba(166, 195, 220, 0.5), var(--gold-500));
-}
-.lp-connector--light .lp-flow-pulse {
-  background: linear-gradient(180deg, transparent, var(--gold-400), transparent);
-  box-shadow: 0 0 10px 1px rgba(95, 154, 192, 0.6);
-}
-
-/* Logo bar sits flush under the hero — trim its top padding a touch. */
-.lp-logos .framer-logos-section { padding-block-start: clamp(1.5rem, 3vw, 2.5rem); }
+/* Logo bar sits flush under the hero and hands straight over to the problem
+   section — trim its padding on both sides. */
+.lp-logos .framer-logos-section { padding-block: clamp(1.5rem, 3vw, 2.5rem); }
+.lp-problem.section-lp { padding-block-start: clamp(2.5rem, 5vw, 4rem); }
 
 /* ---------- Problem ---------- */
 .lp-pain {
@@ -2917,6 +2915,15 @@ html.a11y-motion .a11y-panel {
   transition: background 0.3s var(--ease-brand);
 }
 .lp-faq[open] { background: #fff; box-shadow: 0 20px 40px -32px rgba(14, 26, 44, 0.6); }
+.lp-faq-section {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+.lp-faq-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  line-height: 1.25;
+}
 .lp-faq summary {
   list-style: none;
   cursor: pointer;
@@ -2924,16 +2931,16 @@ html.a11y-motion .a11y-panel {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.15rem 1.35rem;
+  padding: 0.85rem 1.15rem;
   font-family: var(--font-display), sans-serif;
   font-weight: 600;
-  font-size: 1.08rem;
+  font-size: 1rem;
   color: var(--ink-950);
 }
 .lp-faq summary::-webkit-details-marker { display: none; }
 .lp-faq summary:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; border-radius: 18px; }
 .lp-faq p {
-  padding: 0 1.35rem 1.3rem;
+  padding: 0 1.15rem 1rem;
   color: rgba(10, 12, 15, 0.7);
   line-height: 1.75;
   animation: revealRise 0.45s var(--ease-brand) both;
@@ -2941,8 +2948,8 @@ html.a11y-motion .a11y-panel {
 .lp-faq-icon {
   position: relative;
   flex-shrink: 0;
-  width: 1.9rem;
-  height: 1.9rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 999px;
   background: rgba(62, 121, 159, 0.12);
 }
@@ -2983,17 +2990,114 @@ html.a11y-motion .a11y-panel {
   letter-spacing: -0.015em;
   font-size: clamp(2rem, 4.4vw, 3.2rem);
 }
+/* A bright, solid card so the form is the unmistakable focal point of the
+   dark closing section. The shared LeadForm is styled for dark surfaces
+   (white text, translucent inputs), so it's re-skinned here — scoped to the
+   <form> so the thank-you modal rendered alongside it is untouched. */
 .lp-form-card {
+  position: relative;
   padding: clamp(1.5rem, 3.5vw, 2.4rem);
   border-radius: 26px;
-  background: linear-gradient(160deg, rgba(29, 51, 80, 0.72), rgba(14, 26, 44, 0.82));
-  border: 1px solid rgba(166, 195, 220, 0.2);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, var(--ice-050) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 0 0 6px rgba(166, 195, 220, 0.16),
+    0 30px 70px -30px rgba(0, 0, 0, 0.85),
+    0 0 60px -10px rgba(120, 176, 210, 0.35);
 }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .lp-form-card { background: rgba(21, 38, 61, 0.97); }
+.lp-form-card::before {
+  content: "";
+  position: absolute;
+  inset-inline: 1.6rem;
+  top: 0;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(to left, var(--steel-500), var(--gold-500));
+}
+.lp-form-card form label { color: rgba(10, 12, 15, 0.82); }
+.lp-form-card form label span { color: rgba(10, 12, 15, 0.45); }
+.lp-form-card form input:not(.sr-only),
+.lp-form-card form textarea {
+  background: #fff;
+  color: var(--ink-950);
+  border-color: rgba(14, 26, 44, 0.2);
+  box-shadow: inset 0 1px 2px rgba(14, 26, 44, 0.06);
+}
+.lp-form-card form input::placeholder,
+.lp-form-card form textarea::placeholder { color: rgba(10, 12, 15, 0.38); }
+.lp-form-card form input:focus,
+.lp-form-card form textarea:focus {
+  background: #fff;
+  border-color: #3e799f;
+  box-shadow: 0 0 0 3px rgba(62, 121, 159, 0.2);
+}
+.lp-form-card form input[aria-invalid="true"]:not(.sr-only) { border-color: #c0262d; }
+.lp-form-card form [id$="-err"],
+.lp-form-card form [role="alert"] { color: #c0262d; }
+.lp-form-card form .glass-btn--primary {
+  --_bg: linear-gradient(135deg, #3e799f, #1d3350);
+  color: #fff;
+  width: 100%;
+  padding-block: 16px;
+  font-size: 1.05rem;
+  border-color: transparent;
+  box-shadow: 0 14px 30px -14px rgba(29, 51, 80, 0.8);
+}
+
+/* ---------- Photo sections (numbers + closing) ----------
+   Both sit on photos that were dimmed to ~50% under heavy navy scrims and read
+   as flat dark panels. They're shown bright here, on every breakpoint: the
+   photos get full brightness and richer colour, the scrims only fade the
+   section edges into navy (plus a light wash behind the copy), and legibility
+   comes from a soft text shadow and deeper-tinted glass cards instead. */
+.lp-numbers-img {
+  filter: brightness(0.95) saturate(1.15) contrast(1.05);
+}
+.lp-numbers-scrim {
+  background:
+    linear-gradient(180deg, var(--navy-950) 0%, rgba(14, 26, 44, 0.3) 14%, rgba(14, 26, 44, 0.24) 50%, rgba(14, 26, 44, 0.34) 86%, var(--navy-950) 100%);
+}
+.lp-stat {
+  background: linear-gradient(155deg, rgba(20, 40, 64, 0.66), rgba(10, 18, 31, 0.56));
+}
+.lp-stat p:not(.lp-stat-label) { color: rgba(255, 255, 255, 0.82); }
+.lp-numbers h2,
+.lp-numbers .eyebrow,
+.lp-banner,
+.lp-final .eyebrow,
+.lp-final-title,
+.lp-final-text,
+.lp-final .caption {
+  text-shadow: 0 2px 18px rgba(5, 9, 15, 0.85), 0 1px 3px rgba(5, 9, 15, 0.65);
+}
+.lp-final-img {
+  filter: brightness(0.95) saturate(1.15) contrast(1.05);
+}
+.lp-final-text { color: rgba(255, 255, 255, 0.92); }
+.lp-final .caption { color: rgba(255, 255, 255, 0.82); }
+/* Light wash on the copy side (RTL: right), open toward the form. */
+.lp-final-scrim {
+  background:
+    linear-gradient(to left, rgba(10, 18, 31, 0.74) 0%, rgba(10, 18, 31, 0.56) 32%, rgba(10, 18, 31, 0.22) 56%, rgba(10, 18, 31, 0.12) 100%),
+    linear-gradient(180deg, var(--navy-950) 0%, transparent 16%, transparent 84%, var(--navy-950) 100%);
+}
+
+@media (max-width: 767px) {
+  /* Closing section on a phone: the panoramic photo becomes a band behind
+     the heading (instead of being stretched over the whole tall section),
+     fading into navy behind the bright form card. */
+  .lp-final-bg {
+    bottom: auto;
+    height: min(38rem, 62%);
+    /* The photo's slow zoom scales it past the band; clip it so its lower edge
+       can't peek out below the scrim's navy fade. */
+    overflow: hidden;
+  }
+  .lp-final-img { object-position: 50% 45%; }
+  .lp-final-scrim {
+    background:
+      linear-gradient(180deg, var(--navy-950) 0%, rgba(10, 18, 31, 0.4) 16%, rgba(10, 18, 31, 0.5) 55%, var(--navy-950) 100%);
+  }
 }
 
 /* ---------- Scroll-linked motion ----------
@@ -3017,14 +3121,6 @@ html.a11y-motion .a11y-panel {
       animation: lpHeroLeave linear both;
       animation-timeline: view();
       animation-range: exit 0% exit 80%;
-    }
-
-    /* Connectors between sections: the path line draws itself downward. */
-    .lp-connector .lp-flow-line {
-      transform-origin: top;
-      animation: lpLineDraw linear both;
-      animation-timeline: view();
-      animation-range: entry 10% cover 45%;
     }
 
     /* Stat cards and the banner settle up from a slight scale. */
@@ -3072,10 +3168,6 @@ html.a11y-motion .a11y-panel {
 @keyframes lpHeroLeave {
   to { transform: translateY(-10%); opacity: 0.15; }
 }
-@keyframes lpLineDraw {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
-}
 @keyframes lpSlideIn {
   from { transform: translateX(36px); opacity: 0.35; }
   to { transform: none; opacity: 1; }
@@ -3085,8 +3177,8 @@ html.a11y-motion .a11y-panel {
   to { transform: none; }
 }
 @keyframes lpBgDrift {
-  from { transform: scale(1.15) translateY(-6%); }
-  to { transform: scale(1.15) translateY(6%); }
+  from { transform: scale(1.1) translateY(-4%); }
+  to { transform: scale(1.1) translateY(4%); }
 }
 @keyframes lpPop {
   from { transform: scale(0.55); }

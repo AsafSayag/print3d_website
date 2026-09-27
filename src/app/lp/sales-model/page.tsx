@@ -4,7 +4,6 @@ import { buildPageMeta } from "@/lib/pageMeta";
 import { LpHeader } from "./_components/LpHeader";
 import { LpHero } from "./_components/LpHero";
 import {
-  FlowConnector,
   LpFaq,
   LpFinal,
   LpFooter,
@@ -46,7 +45,6 @@ export default function SalesModelLandingPage() {
         <div className="lp-logos">
           <ClientLogos />
         </div>
-        <FlowConnector tone="light" />
         <LpProblem />
         <FlowJourney />
         <LpNumbers />

@@ -21,7 +21,10 @@ export function LpHero() {
           fill
           preload
           fetchPriority="high"
-          sizes="100vw"
+          // On a phone the 4:3 photo is cropped to the hero's height, so it
+          // renders ~2.5x the viewport width; 100vw fetched a file far too
+          // small and the photo came out soft.
+          sizes="(max-width: 767px) 150vw, 100vw"
           className="lp-hero-img"
         />
         {/* Ambient life over the still photo (all pure CSS, see .lp-hero-*):
@@ -37,7 +40,7 @@ export function LpHero() {
 
       <div className="container-x relative z-10 lp-hero-inner">
         <div className="max-w-3xl">
-          <p className="lp-rise eyebrow text-[color:var(--steel-300)]" style={{ animationDelay: "0.05s" }}>
+          <p className="lp-rise eyebrow text-white" style={{ animationDelay: "0.05s" }}>
             {LP_HERO.eyebrow}
           </p>
 

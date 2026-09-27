@@ -17,20 +17,6 @@ import {
 } from "../content";
 
 /* ------------------------------------------------------------------ */
-/* Section-to-section connector — continues the hero's glowing line    */
-/* so the whole page reads as one path.                                */
-/* ------------------------------------------------------------------ */
-export function FlowConnector({ tone = "light" }: { tone?: "light" | "dark" }) {
-  return (
-    <div aria-hidden="true" className={`lp-connector lp-connector--${tone}`}>
-      <span className="lp-flow-line">
-        <span className="lp-flow-pulse" />
-      </span>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* 1 · The honest problem                                              */
 /* ------------------------------------------------------------------ */
 export function LpProblem() {
@@ -81,14 +67,16 @@ export function LpNumbers() {
   return (
     <section className="lp-numbers surface-navy-950 section-lp" aria-labelledby="lp-numbers-title">
       <div aria-hidden="true" className="lp-numbers-bg">
-        <Image src={LP_NUMBERS.image.src} alt="" fill sizes="100vw" className="lp-numbers-img" />
+        {/* On a phone the section is far taller than the photo's 3:2, so it's
+            cropped to height — request the full-resolution file there. */}
+        <Image src={LP_NUMBERS.image.src} alt="" fill sizes="(max-width: 767px) 200vw, 100vw" className="lp-numbers-img" />
         <span className="lp-numbers-scrim" />
       </div>
 
       <div className="container-x relative">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
-            <p className="eyebrow text-[color:var(--steel-300)]">{LP_NUMBERS.eyebrow}</p>
+            <p className="eyebrow text-white">{LP_NUMBERS.eyebrow}</p>
           </Reveal>
           <Reveal index={1}>
             <h2 id="lp-numbers-title" className="h2 mt-4 text-white text-balance">
@@ -224,19 +212,16 @@ export function LpProcess() {
 /* ------------------------------------------------------------------ */
 export function LpFaq() {
   return (
-    <section className="surface-white section-lp" aria-labelledby="lp-faq-title">
+    <section className="surface-white lp-faq-section" aria-labelledby="lp-faq-title">
+      {/* Kept deliberately compact: three questions, no eyebrow, tight rows —
+          a quick objection-clearer on the way to the form, not a destination. */}
       <div className="container-x max-w-3xl">
-        <div className="text-center">
-          <Reveal>
-            <p className="eyebrow text-[color:var(--gold-700)]">{LP_FAQ.eyebrow}</p>
-          </Reveal>
-          <Reveal index={1}>
-            <h2 id="lp-faq-title" className="h2 mt-4 text-[color:var(--ink-950)]">
-              {LP_FAQ.title}
-            </h2>
-          </Reveal>
-        </div>
-        <div className="mt-10 space-y-3">
+        <Reveal>
+          <h2 id="lp-faq-title" className="lp-faq-title text-center text-[color:var(--ink-950)]">
+            {LP_FAQ.title}
+          </h2>
+        </Reveal>
+        <div className="mt-5 space-y-2">
           {LP_FAQ.items.map((item, i) => (
             <Reveal key={item.q} index={i}>
               <details className="lp-faq" name="lp-faq">
@@ -262,7 +247,9 @@ export function LpFinal() {
   return (
     <section id="lead" className="lp-final surface-navy-950 section-lp" aria-labelledby="lp-final-title">
       <div aria-hidden="true" className="lp-final-bg">
-        <Image src={LP_FINAL.image.src} alt="" fill sizes="100vw" className="lp-final-img" />
+        {/* Panoramic photo: on a phone it's a band behind the heading (see
+            .lp-final-bg) cropped to that band's height — full-res file there. */}
+        <Image src={LP_FINAL.image.src} alt="" fill sizes="(max-width: 767px) 400vw, 100vw" className="lp-final-img" />
         <span className="lp-final-scrim" />
       </div>
 
@@ -278,7 +265,7 @@ export function LpFinal() {
               </h2>
             </Reveal>
             <Reveal index={2}>
-              <p className="mt-5 text-white/75 text-lg leading-relaxed max-w-md text-pretty">{LP_FINAL.text}</p>
+              <p className="lp-final-text mt-5 text-white/75 text-lg leading-relaxed max-w-md text-pretty">{LP_FINAL.text}</p>
             </Reveal>
             <Reveal index={3}>
               <div className="mt-8">
@@ -308,7 +295,7 @@ export function LpFinal() {
 
           <Reveal delay={0.1}>
             <div className="lp-form-card">
-              <h3 className="h3 text-white">{LP_FINAL.formTitle}</h3>
+              <h3 className="h3 text-[color:var(--ink-950)]">{LP_FINAL.formTitle}</h3>
               <div className="mt-6">
                 <LeadForm location={LP_LOCATION} source="lp_sales_model" />
               </div>
