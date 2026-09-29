@@ -28,14 +28,24 @@ export function Logo({
   // Intrinsic file dimensions — passed as width/height so the browser reserves
   // the correct box from the aspect ratio (no layout shift). `style` still sets
   // the rendered height; width stays auto. Keep in sync with the source files.
-  const { src, w, h } = withSubtitle
-    ? { src: "/brand/print3d-logo.webp", w: 578, h: 180 }
-    : { src: "/brand/print3d-mark.webp", w: 521, h: 120 };
+  // `small` is an optional ~2x-of-header-size cut, offered via srcSet so a
+  // 34px-tall header logo doesn't download the full 521px-wide file on every
+  // page; 3x screens still pick the full file.
+  const { src, w, h, small } = withSubtitle
+    ? { src: "/brand/print3d-logo.webp", w: 578, h: 180, small: null }
+    : {
+        src: "/brand/print3d-mark.webp",
+        w: 521,
+        h: 120,
+        small: { src: "/brand/print3d-mark-300.webp", w: 300 },
+      };
 
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
+      srcSet={small ? `${small.src} ${small.w}w, ${src} ${w}w` : undefined}
+      sizes={small ? `${Math.round((size * w) / h)}px` : undefined}
       alt="Print3D"
       width={w}
       height={h}

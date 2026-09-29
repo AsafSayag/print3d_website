@@ -80,6 +80,11 @@ export function Footer({
             <GlassButton
               href={quoteHref}
               variant="primary"
+              aria-label={
+                quoteHref === CONTACT.contactPath
+                  ? FOOTER.ctaButtonToContactPage
+                  : undefined
+              }
               {...analyticsAttrs("cta_click", {
                 cta_name: "quote_request",
                 location: "footer",
@@ -145,7 +150,7 @@ export function Footer({
         </div>
 
         {/* Builder signature — the site's final line, centered on every page. */}
-        <div className="mt-8 text-center text-xs text-white/45" dir="rtl">
+        <div className="mt-8 text-center text-xs text-white/60" dir="rtl">
           נבנה על ידי{" "}
           <span className="text-white/70" dir="ltr">Asaf Sayag</span>
         </div>

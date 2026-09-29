@@ -471,6 +471,9 @@ export const FOOTER = {
   },
   ctaTitle: "מתחילים פרויקט?",
   ctaButton: "קבלו הצעת מחיר",
+  /** Accessible name when the CTA leads to the contact page — distinguishes it
+   *  from the same-text in-page CTAs that scroll to the form (#contact). */
+  ctaButtonToContactPage: "קבלו הצעת מחיר בעמוד יצירת קשר",
   copyright: "© Print3D Ltd 2026",
   a11yLink: "הצהרת נגישות",
 } as const;

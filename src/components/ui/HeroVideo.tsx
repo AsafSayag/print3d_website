@@ -29,6 +29,14 @@ const MOBILE_QUERY = "(max-width: 767px)";
 // extension to point a <source> at the lighter format.
 const posterExt = (jpg: string, ext: string) => jpg.replace(/\.jpg$/, ext);
 
+// The mobile poster also ships a 720w cut (`-720` suffix) next to the 864w
+// original, so ~1.75x-DPR phones (412px viewport → ~720 device px) stop
+// downloading a larger file than they can show. 2x/3x phones still get 864w.
+const mobilePosterSet = (ext: string) => {
+  const full = posterExt(MOBILE.poster, ext);
+  return `${full.replace(/(\.\w+)$/, "-720$1")} 720w, ${full} 864w`;
+};
+
 const DESKTOP = {
   poster: "/videos/home-hero-poster.jpg",
   // Loops continuously as an ambient background — on every breakpoint.
@@ -107,14 +115,20 @@ export function HeroVideo({ className }: { className?: string }) {
         <source
           media={MOBILE_QUERY}
           type="image/avif"
-          srcSet={posterExt(MOBILE.poster, ".avif")}
+          srcSet={mobilePosterSet(".avif")}
+          sizes="100vw"
         />
         <source
           media={MOBILE_QUERY}
           type="image/webp"
-          srcSet={posterExt(MOBILE.poster, ".webp")}
+          srcSet={mobilePosterSet(".webp")}
+          sizes="100vw"
         />
-        <source media={MOBILE_QUERY} srcSet={MOBILE.poster} />
+        <source
+          media={MOBILE_QUERY}
+          srcSet={mobilePosterSet(".jpg")}
+          sizes="100vw"
+        />
         {/* Desktop cut. */}
         <source type="image/avif" srcSet={posterExt(DESKTOP.poster, ".avif")} />
         <source type="image/webp" srcSet={posterExt(DESKTOP.poster, ".webp")} />

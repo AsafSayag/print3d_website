@@ -5,6 +5,7 @@ import { CONTACT_CTA } from "@/lib/content";
 import { submitLead } from "@/lib/submitLead";
 import { trackEvent } from "@/lib/analyticsClient";
 import { ThankYouModal } from "./ThankYouModal";
+import type { LeadSource } from "@/lib/leadSources";
 
 type Errors = Partial<Record<"name" | "phone" | "email", string>>;
 
@@ -38,11 +39,14 @@ function validate(values: {
 export function LeadForm({
   formName = "lead_form",
   location,
+  source = "website",
 }: {
   /** Identifies the form itself. There is currently only one across the site. */
   formName?: string;
   /** Which surface this instance sits on, e.g. `"home_contact_section"`. */
   location: string;
+  /** Lead origin recorded in the email + sheet. Defaults to the main site. */
+  source?: LeadSource;
 }) {
   const [values, setValues] = useState({
     name: "",
@@ -84,7 +88,7 @@ export function LeadForm({
     if (Object.keys(found).length > 0) return;
     setStatus("sending");
     try {
-      await submitLead(values);
+      await submitLead({ ...values, source });
       // Only a lead that actually reached the intake endpoint counts as a
       // submission — a failed POST leaves the visitor on the form, retrying.
       trackEvent("form_submit", { form_name: formName, location });
