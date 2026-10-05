@@ -111,7 +111,7 @@ export function LpHero() {
 
       {/* The "path" begins here: a glowing line with a light pulse flowing
           down into the next section — the page's guiding motif. */}
-      <a href="#lp-problem" className="lp-flow-hint" aria-label="המשיכו לגלול">
+      <a href="#lp-journey" className="lp-flow-hint" aria-label="המשיכו לגלול">
         <span className="lp-flow-line" aria-hidden="true">
           <span className="lp-flow-pulse" />
         </span>

@@ -11,57 +11,11 @@ import {
   LP_FINAL,
   LP_LOCATION,
   LP_NUMBERS,
-  LP_PROBLEM,
   LP_PROCESS,
-  LP_SHOWCASE,
 } from "../content";
 
 /* ------------------------------------------------------------------ */
-/* 1 · The honest problem                                              */
-/* ------------------------------------------------------------------ */
-export function LpProblem() {
-  return (
-    <section id="lp-problem" className="surface-ice section-lp lp-problem" aria-labelledby="lp-problem-title">
-      <div className="container-x">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16 items-center">
-          <div>
-            <Reveal>
-              <p className="eyebrow text-[color:var(--gold-700)]">{LP_PROBLEM.eyebrow}</p>
-            </Reveal>
-            <Reveal index={1}>
-              <h2 id="lp-problem-title" className="h2 heading-accent mt-4 text-[color:var(--ink-950)] text-balance">
-                {LP_PROBLEM.title}
-              </h2>
-            </Reveal>
-            <Reveal index={2}>
-              <p className="mt-5 text-lg text-[color:var(--ink-950)]/70 leading-relaxed text-pretty max-w-xl">
-                {LP_PROBLEM.text}
-              </p>
-            </Reveal>
-          </div>
-
-          <div>
-            <ul className="space-y-3">
-              {LP_PROBLEM.pains.map((p, i) => (
-                <Reveal as="li" key={p.text} index={i} delay={0.1}>
-                  <div className="lp-pain">
-                    <span className="text-[color:var(--ink-950)]/85 font-semibold">{p.text}</span>
-                  </div>
-                </Reveal>
-              ))}
-            </ul>
-            <Reveal delay={0.45}>
-              <p className="lp-problem-closing mt-6">{LP_PROBLEM.closing}</p>
-            </Reveal>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 3 · Numbers + ROI banner                                            */
+/* 2 · Numbers + ROI banner                                            */
 /* ------------------------------------------------------------------ */
 export function LpNumbers() {
   return (
@@ -126,57 +80,7 @@ export function LpNumbers() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 4 · Showcase mosaic                                                 */
-/* ------------------------------------------------------------------ */
-export function LpShowcase() {
-  const [a, b, c] = LP_SHOWCASE.items;
-  return (
-    <section className="surface-white section-lp" aria-labelledby="lp-showcase-title">
-      <div className="container-x">
-        <div className="text-center max-w-2xl mx-auto">
-          <Reveal>
-            <p className="eyebrow text-[color:var(--gold-700)]">{LP_SHOWCASE.eyebrow}</p>
-          </Reveal>
-          <Reveal index={1}>
-            <h2 id="lp-showcase-title" className="h2 mt-4 text-[color:var(--ink-950)] text-balance">
-              {LP_SHOWCASE.title}
-            </h2>
-          </Reveal>
-        </div>
-
-        <div className="lp-mosaic mt-10">
-          <Reveal className="lp-mosaic-a">
-            <ShowcaseTile item={a} sizes="(min-width: 1024px) 700px, 92vw" />
-          </Reveal>
-          <Reveal className="lp-mosaic-b" index={1}>
-            <ShowcaseTile item={b} sizes="(min-width: 1024px) 460px, 92vw" />
-          </Reveal>
-          <Reveal className="lp-mosaic-c" index={2}>
-            <ShowcaseTile item={c} sizes="(min-width: 1024px) 460px, 92vw" />
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ShowcaseTile({
-  item,
-  sizes,
-}: {
-  item: (typeof LP_SHOWCASE.items)[number];
-  sizes: string;
-}) {
-  return (
-    <figure className="lp-tile">
-      <Image src={item.src} alt={item.alt} width={item.w} height={item.h} sizes={sizes} className="lp-tile-img" />
-      <figcaption className="lp-tile-cap">{item.caption}</figcaption>
-    </figure>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 5 · Process                                                         */
+/* 4 · Process                                                         */
 /* ------------------------------------------------------------------ */
 export function LpProcess() {
   return (
@@ -208,7 +112,7 @@ export function LpProcess() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 6 · FAQ — native <details>, zero JS                                  */
+/* 5 · FAQ — native <details>, zero JS                                  */
 /* ------------------------------------------------------------------ */
 export function LpFaq() {
   return (
@@ -240,7 +144,7 @@ export function LpFaq() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 7 · Final CTA + form                                                */
+/* 6 · Final CTA + form                                                */
 /* ------------------------------------------------------------------ */
 export function LpFinal() {
   const waHref = `https://wa.me/${CONTACT.whatsappNumber}`;
@@ -297,7 +201,7 @@ export function LpFinal() {
             <div className="lp-form-card">
               <h3 className="h3 text-[color:var(--ink-950)]">{LP_FINAL.formTitle}</h3>
               <div className="mt-6">
-                <LeadForm location={LP_LOCATION} source="lp_sales_model" />
+                <LeadForm location={LP_LOCATION} source="lp_sales_model" emailOptional />
               </div>
             </div>
           </Reveal>

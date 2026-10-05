@@ -6,12 +6,16 @@ import { JsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AnalyticsClickTracker } from "@/components/analytics/AnalyticsClickTracker";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { InPageAnchorScroll } from "@/components/ui/InPageAnchorScroll";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+/** Google Ads tag id (AW-…). Optional — when set, gtag also configures Ads so
+ *  lead submissions report as Ads conversions (see GoogleAnalytics.tsx). */
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
 /* Display — Open Sans Bold for all headings */
 const openSans = Open_Sans({
@@ -105,9 +109,12 @@ export default function RootLayout({
         {children}
         <FloatingWhatsApp />
         <AccessibilityWidget />
+        {/* Independent of GA: the lead form records the ad click id / UTMs
+            even where no analytics ID is configured. */}
+        <AttributionCapture />
         {GA_MEASUREMENT_ID && (
           <>
-            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} adsId={GOOGLE_ADS_ID} />
             {/* One delegated listener serves every tracked link and button on
                 the site — see `analyticsAttrs` in lib/analytics.ts. */}
             <AnalyticsClickTracker />

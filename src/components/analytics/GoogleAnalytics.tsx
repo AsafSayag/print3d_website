@@ -16,9 +16,13 @@ import Script from "next/script";
  * unchanged. `'unsafe-inline'` is already present in the site's script-src, so
  * the inline snippet needs no CSP change.
  *
+ * `adsId` (optional, `AW-…`) adds a second `config` on the same gtag.js for
+ * Google Ads: it sets the conversion-linker cookie from the landing gclid and
+ * lets `trackAdsConversion` report lead submissions as Ads conversions.
+ *
  * A Server Component: `next/script` needs no client boundary here.
  */
-export function GoogleAnalytics({ gaId }: { gaId: string }) {
+export function GoogleAnalytics({ gaId, adsId }: { gaId: string; adsId?: string }) {
   return (
     <>
       <Script
@@ -32,7 +36,9 @@ export function GoogleAnalytics({ gaId }: { gaId: string }) {
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', ${JSON.stringify(gaId)}, { send_page_view: false });`,
+gtag('config', ${JSON.stringify(gaId)}, { send_page_view: false });${
+            adsId ? `\ngtag('config', ${JSON.stringify(adsId)});` : ""
+          }`,
         }}
       />
       <Script

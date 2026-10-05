@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { LEAD_SOURCES, leadSourceLabel } from "@/lib/leadSources";
+import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
 
 /**
  * Lead intake endpoint.
@@ -34,6 +35,8 @@ type LeadPayload = {
   project?: unknown;
   /** Lead origin id (see lib/leadSources.ts); unknown values fall back to "website". */
   source?: unknown;
+  /** Ad click id / UTMs captured on landing (see lib/attribution.ts). */
+  attribution?: unknown;
   /** Honeypot — real visitors never see or fill this field. */
   company?: unknown;
 };
@@ -101,6 +104,19 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
+/** Labelled attribution rows for the email — only the params that are present. */
+function attributionRows(a: Attribution): [string, string][] {
+  const rows: [string, string][] = [];
+  if (a.utm_campaign) rows.push(["קמפיין", a.utm_campaign]);
+  if (a.utm_term) rows.push(["מילת מפתח", a.utm_term]);
+  if (a.utm_content) rows.push(["מודעה", a.utm_content]);
+  if (a.utm_source || a.utm_medium)
+    rows.push(["מקור / מדיום", [a.utm_source, a.utm_medium].filter(Boolean).join(" / ")]);
+  const clickId = a.gclid || a.gbraid || a.wbraid;
+  if (clickId) rows.push(["מזהה קליק (Google Ads)", clickId]);
+  return rows;
+}
+
 async function sendEmail(lead: {
   name: string;
   phone: string;
@@ -108,6 +124,7 @@ async function sendEmail(lead: {
   project: string;
   source: string;
   receivedAt: string;
+  attribution: Attribution;
 }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("RESEND_API_KEY is not set");
@@ -120,6 +137,7 @@ async function sendEmail(lead: {
   ];
   if (lead.email) rows.push(["אימייל", lead.email]);
   if (lead.project) rows.push(["על הפרויקט", lead.project]);
+  rows.push(...attributionRows(lead.attribution));
 
   const rowsHtml = rows
     .map(
@@ -156,6 +174,9 @@ async function sendEmail(lead: {
   ];
   if (lead.email) textLines.push(`אימייל: ${lead.email}`);
   if (lead.project) textLines.push(`על הפרויקט: ${lead.project}`);
+  for (const [label, value] of attributionRows(lead.attribution)) {
+    textLines.push(`${label}: ${value}`);
+  }
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -191,14 +212,18 @@ async function appendToSheet(lead: {
   source: string;
   receivedAt: string;
   receivedAtIso: string;
+  attribution: Attribution;
 }): Promise<void> {
   const webhook = process.env.LEADS_SHEET_WEBHOOK_URL;
   if (!webhook) throw new Error("LEADS_SHEET_WEBHOOK_URL is not set");
 
+  // Attribution is flattened to top-level fields (gclid, utm_campaign, …) so
+  // the Apps Script reads them like any other column — see LEADS_SETUP.md.
+  const { attribution, ...rest } = lead;
   const res = await fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(lead),
+    body: JSON.stringify({ ...rest, ...attribution }),
   });
 
   if (!res.ok) {
@@ -261,6 +286,7 @@ export async function POST(request: NextRequest) {
     source: leadSourceLabel(body.source),
     receivedAt: formatIsraelTime(now),
     receivedAtIso: now.toISOString(),
+    attribution: sanitizeAttribution(body.attribution),
   };
 
   const [emailResult, sheetResult] = await Promise.allSettled([

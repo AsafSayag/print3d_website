@@ -3,7 +3,8 @@
 import { useRef, useState } from "react";
 import { CONTACT_CTA } from "@/lib/content";
 import { submitLead } from "@/lib/submitLead";
-import { trackEvent } from "@/lib/analyticsClient";
+import { trackAdsConversion, trackEvent } from "@/lib/analyticsClient";
+import { readAttribution } from "@/lib/attribution";
 import { ThankYouModal } from "./ThankYouModal";
 import type { LeadSource } from "@/lib/leadSources";
 
@@ -12,16 +13,20 @@ type Errors = Partial<Record<"name" | "phone" | "email", string>>;
 const PHONE_RE = /^0\d{1,2}-?\d{7}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(values: {
-  name: string;
-  phone: string;
-  email: string;
-}): Errors {
+function validate(
+  values: {
+    name: string;
+    phone: string;
+    email: string;
+  },
+  emailOptional: boolean,
+): Errors {
   const errors: Errors = {};
   if (values.name.trim().length < 2) errors.name = "נא להזין שם מלא";
   if (!PHONE_RE.test(values.phone.trim().replace(/\s/g, "")))
     errors.phone = "נא להזין מספר טלפון תקין";
-  if (!EMAIL_RE.test(values.email.trim()))
+  const email = values.email.trim();
+  if (!(emailOptional && !email) && !EMAIL_RE.test(email))
     errors.email = "נא להזין כתובת אימייל תקינה";
   return errors;
 }
@@ -40,6 +45,7 @@ export function LeadForm({
   formName = "lead_form",
   location,
   source = "website",
+  emailOptional = false,
 }: {
   /** Identifies the form itself. There is currently only one across the site. */
   formName?: string;
@@ -47,6 +53,9 @@ export function LeadForm({
   location: string;
   /** Lead origin recorded in the email + sheet. Defaults to the main site. */
   source?: LeadSource;
+  /** Email becomes optional (name + phone suffice) — used on the paid landing
+   *  page, where every required field costs conversions. */
+  emailOptional?: boolean;
 }) {
   const [values, setValues] = useState({
     name: "",
@@ -83,15 +92,16 @@ export function LeadForm({
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const found = validate(values);
+    const found = validate(values, emailOptional);
     setErrors(found);
     if (Object.keys(found).length > 0) return;
     setStatus("sending");
     try {
-      await submitLead({ ...values, source });
+      await submitLead({ ...values, source, attribution: readAttribution() });
       // Only a lead that actually reached the intake endpoint counts as a
       // submission — a failed POST leaves the visitor on the form, retrying.
       trackEvent("form_submit", { form_name: formName, location });
+      trackAdsConversion();
       // Close the round. The form stays mounted and is cleared below, so a
       // visitor sending a second lead starts a genuinely new fill and gets its
       // own `form_start`. Reset only on success: after a failed POST the
@@ -157,6 +167,7 @@ export function LeadForm({
       />
       <Field
         label={CONTACT_CTA.fields.email}
+        optional={emailOptional}
         value={values.email}
         onChange={update("email")}
         error={errors.email}
@@ -206,17 +217,26 @@ function Field({
   error,
   className,
   dir,
+  optional = false,
   ...rest
 }: {
   label: string;
   error?: string;
   className?: string;
+  /** Appends the same "(רשות)" hint the project textarea carries. */
+  optional?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   const id = `field-${label}`;
   return (
     <div className={className}>
       <label htmlFor={id} className="block mb-2 text-sm font-semibold text-white/85">
         {label}
+        {optional && (
+          <>
+            {" "}
+            <span className="font-normal text-white/40">(רשות)</span>
+          </>
+        )}
       </label>
       <input
         id={id}

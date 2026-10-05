@@ -1,4 +1,5 @@
 import type { LeadSource } from "./leadSources";
+import type { Attribution } from "./attribution";
 
 export type Lead = {
   name: string;
@@ -7,6 +8,8 @@ export type Lead = {
   project?: string;
   /** Which surface the lead came from — see lib/leadSources.ts. */
   source?: LeadSource;
+  /** Ad click id / UTMs captured on landing — see lib/attribution.ts. */
+  attribution?: Attribution;
   /** Honeypot — must stay empty. Real visitors never see or fill this field. */
   company?: string;
 };

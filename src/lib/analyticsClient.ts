@@ -108,3 +108,26 @@ export function trackEvent<E extends AnalyticsEventName>(
   pending.push(send);
   scheduleDrain();
 }
+
+/** `AW-…/label` of the Google Ads "lead" conversion action, if configured. */
+const ADS_LEAD_SEND_TO =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && process.env.NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL
+    ? `${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}/${process.env.NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL}`
+    : null;
+
+/**
+ * Reports a successful lead submission to Google Ads as a conversion, so Smart
+ * Bidding learns which clicks turn into leads. A no-op until both
+ * `NEXT_PUBLIC_GOOGLE_ADS_ID` and `NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL` are set.
+ * Carries no visitor data — only the conversion action's id.
+ */
+export function trackAdsConversion(): void {
+  if (typeof window === "undefined" || !ADS_LEAD_SEND_TO) return;
+  const send = () => window.gtag?.("event", "conversion", { send_to: ADS_LEAD_SEND_TO });
+  if (analyticsReady()) {
+    send();
+    return;
+  }
+  pending.push(send);
+  scheduleDrain();
+}

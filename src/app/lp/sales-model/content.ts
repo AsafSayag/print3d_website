@@ -3,7 +3,7 @@
  *
  * Everything factual here is taken from claims the site already makes
  * elsewhere (lib/content.ts: BUSINESS_VALUE stats, FAQ answers, the one-business-
- * day quote promise, the 3–6 week production window). Nothing new is invented —
+ * day quote promise). Nothing new is invented —
  * if a number changes on the main site, change it here too.
  */
 
@@ -34,24 +34,12 @@ export const LP_HERO = {
   },
 } as const;
 
-export const LP_PROBLEM = {
-  eyebrow: "בואו נדבר בכנות",
-  title: "הדמיה יפה כבר לא מבדלת. כולם מציגים אותה.",
-  text: "רוכש שמגיע למשרד המכירות כבר ראה עשרות הדמיות ברשת. הן נראות אותו דבר, והוא יודע שהן מוחמאות. מה שחסר לו זה לא עוד תמונה. חסרה לו ודאות.",
-  pains: [
-    { text: "הוא מתקשה לקרוא תוכנית ולהבין איפה בדיוק הדירה שלו" },
-    { text: "הוא משווה מחיר למ״ר, כי הוא לא רואה את הערך" },
-    { text: "הוא אומר ״נחשוב על זה״, ולא חוזר" },
-  ],
-  closing: "מודל פיזי פותר את שלושתם, בבת אחת.",
-} as const;
-
 export const LP_JOURNEY = {
   eyebrow: "מה קורה במשרד מכירות עם מודל",
   title: "ככה נראית פגישת מכירה שזורמת",
   steps: [
     {
-      title: "הוא נכנס ורואה הכל",
+      title: "הלקוח נכנס ורואה הכל",
       text: "הפרויקט עומד מולו בשלמותו: הבניינים, הרחובות, הגינות והאור. לא צריך להסביר. הוא מבין לבד.",
       image: {
         src: "/project_pages/aura_natania_project/IMG_01.webp",
@@ -61,7 +49,7 @@ export const LP_JOURNEY = {
       },
     },
     {
-      title: "הוא מוצא את הבית שלו",
+      title: "הלקוח מוצא את הבית שלו",
       text: "הוא מצביע על הקומה, רואה לאן פונה המרפסת ומה נשקף מהחלון. התוכנית הופכת למקום אמיתי.",
       image: {
         src: "/project_pages/avisror_ramat_hasharon_project/bg.webp",
@@ -71,7 +59,7 @@ export const LP_JOURNEY = {
       },
     },
     {
-      title: "הוא מרגיש את הסביבה",
+      title: "הלקוח מרגיש את הסביבה",
       text: "שבילים, גינות, תאורה ודמויות. הוא כבר מדמיין את הבוקר הראשון שלו שם.",
       image: {
         src: "/project_pages/dafna_tidhar_project/bg.webp",
@@ -81,7 +69,7 @@ export const LP_JOURNEY = {
       },
     },
     {
-      title: "הוא מחליט בביטחון",
+      title: "הלקוח מחליט בביטחון",
       text: "פחות שאלות פתוחות, פחות חשש, פחות לחץ על המחיר. השיחה עוברת מ״האם״ ל״איזו דירה״.",
       image: {
         src: "/project_pages/sarfati_arnona_jerusalem_project/bg.webp",
@@ -112,30 +100,72 @@ export const LP_NUMBERS = {
   },
 } as const;
 
+/**
+ * Showcase carousel — one project per slide. Photos picked for clean, lit,
+ * landscape shots; only projects that are public on the main site (none in
+ * HIDDEN_PROJECT_SLUGS). `client` is the large caption, `project` the small one.
+ */
 export const LP_SHOWCASE = {
   eyebrow: "מהשטח",
   title: "מה שהיזמים המובילים כבר מציבים במשרדי המכירות",
+  ctaLead: "רוצים שגם הפרויקט שלכם ייראה ככה?",
+  cta: "קבלו הצעה לפרויקט שלכם",
   items: [
     {
-      src: "/project_pages/ashdar_tagor_project/IMG_01.webp",
-      alt: "מודל אדריכלי של מגדלי מגורים מוארים, אשדר תג׳ור",
-      w: 2000,
-      h: 1209,
-      caption: "אשדר · תג׳ור",
-    },
-    {
-      src: "/project_pages/shbiro_rishon_letzion_project/bg.webp",
-      alt: "מודל שכונה עם מגדלים, רחובות ופארק, שבירו ראשון לציון",
+      src: "/project_pages/avisror_costa_rica_jerusalem_project/IMG_01.webp",
+      alt: "מגדלי מגורים מוארים ופארק שכונתי במודל אדריכלי, אביסרור קוסטה ריקה ירושלים",
       w: 2000,
       h: 1500,
-      caption: "שבירו · ראשון לציון",
+      client: "אביסרור",
+      project: "קוסטה ריקה, ירושלים",
     },
     {
-      src: "/project_pages/sela_baitar_hadera_project/IMG_01.webp",
-      alt: "מגדלי מגורים מוארים במודל אדריכלי, סלע ביתר חדרה",
-      w: 1841,
-      h: 1528,
-      caption: "סלע ביתר · חדרה",
+      src: "/project_pages/levinstein_project/GAL_02.webp",
+      alt: "מגדל מגורים מואר עם מרפסות ובריכת גג במודל אדריכלי, מגדלי לוינשטיין",
+      w: 2048,
+      h: 1536,
+      client: "לוינשטיין הנדסה",
+      project: "מגדלי לוינשטיין",
+    },
+    {
+      src: "/project_pages/shbiro_rishon_letzion_project/IMG_02.webp",
+      alt: "מודל שכונה שלמה עם מגדלים, רחובות ופארקים במשרד המכירות של שבירו",
+      w: 2048,
+      h: 1536,
+      client: "שבירו",
+      project: "ראשון לציון",
+    },
+    {
+      src: "/project_pages/dafna_tidhar_project/IMG_06.webp",
+      alt: "בנייני מגורים מוארים סביב חצר פנימית מגוננת במודל אדריכלי, תדהר דפנה",
+      w: 2048,
+      h: 1536,
+      client: "תדהר",
+      project: "דפנה",
+    },
+    {
+      src: "/project_pages/maoz_daniel_bat_yam_project/IMG_11.webp",
+      alt: "שלושה מגדלי מגורים מוארים מעל גן משחקים במודל אדריכלי, מעוז דניאל בת ים",
+      w: 2000,
+      h: 1500,
+      client: "מעוז דניאל",
+      project: "כצנלסון, בת ים",
+    },
+    {
+      src: "/project_pages/sela_baitar_hadera_project/IMG_07.webp",
+      alt: "זוג מגדלים מוארים מעל קומת מסחר וצומת רחובות במודל אדריכלי, סלע ביתר חדרה",
+      w: 1600,
+      h: 1200,
+      client: "סלע ביתר",
+      project: "חדרה",
+    },
+    {
+      src: "/project_pages/ram_aderet_givat_hamatos_project/IMG_01.webp",
+      alt: "שכונת מגורים מוארת עם פארק ומגרשי משחק במודל אדריכלי, רם אדרת גבעת המטוס",
+      w: 2000,
+      h: 1500,
+      client: "רם אדרת",
+      project: "גבעת המטוס, ירושלים",
     },
   ],
 } as const;
@@ -154,7 +184,7 @@ export const LP_PROCESS = {
     },
     {
       title: "המודל מגיע למשרד המכירות",
-      text: "רוב המודלים השיווקיים נמסרים תוך 3–6 שבועות מקבלת הקבצים ואישור דוגמת הייצור. יש גם מסלול מזורז.",
+      text: "זמן הייצור נקבע לפי גודל הפרויקט וסוגו, ותקבלו לוח זמנים מדויק כבר בהצעה. מה שלא משתנה הוא האיכות: גימור ללא פשרות, בכל פרט ובכל קנה מידה.",
     },
   ],
 } as const;
@@ -170,7 +200,7 @@ export const LP_FAQ = {
     },
     {
       q: "כמה זמן לוקח לייצר מודל?",
-      a: "רוב המודלים השיווקיים נמסרים תוך 3–6 שבועות מקבלת הקבצים האדריכליים ואישור דוגמת הייצור, בהתאם להיקף. ללוחות זמנים דחופים יש מסלול מזורז.",
+      a: "זה תלוי בגודל הפרויקט ובסוג המודל, ולכן כל פרויקט מקבל לוח זמנים משלו כבר בהצעת המחיר. דבר אחד לא משתנה: אנחנו לא מקצרים תהליכים על חשבון האיכות. כל מודל עובר דוגמת ייצור ואישור שלכם לפני הייצור המלא, ומגיע בגימור ללא פשרות.",
     },
     {
       q: "מה צריך כדי לקבל הצעת מחיר?",
@@ -192,3 +222,9 @@ export const LP_FINAL = {
 } as const;
 
 export const LP_HEADER_CTA = "קבלו הצעה";
+
+/** Slim bottom rail on phones (LpMobileBar) — kept short so it stays one line. */
+export const LP_MOBILE_BAR = {
+  text: "הצעת מחיר תוך יום עסקים",
+  cta: "קבלו הצעה",
+} as const;
