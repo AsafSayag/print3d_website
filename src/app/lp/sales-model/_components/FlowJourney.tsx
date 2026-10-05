@@ -41,7 +41,7 @@ export function FlowJourney() {
   });
 
   return (
-    <section className="lp-journey surface-navy-950 section-lp" aria-labelledby="lp-journey-title">
+    <section id="lp-journey" className="lp-journey surface-navy-950 section-lp" aria-labelledby="lp-journey-title">
       <div aria-hidden="true" className="lp-journey-bg" />
       <div className="container-x relative">
         <motion.div

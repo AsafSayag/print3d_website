@@ -59,7 +59,11 @@ const nextConfig: NextConfig = {
     // sources" button in the footer (see components/PreferredSource.tsx). It
     // needs script-src to load, connect-src to fetch the button's config, and
     // frame-src because the widget renders itself into an iframe.
-    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://news.google.com${
+    // Google Ads (optional NEXT_PUBLIC_GOOGLE_ADS_ID): the conversion tag loads
+    // helper scripts and beacons to googleadservices / doubleclick / google.com
+    // (and the visitor's local google ccTLD), and runs its conversion linker in
+    // a td.doubleclick.net iframe — hosts per Google's tag CSP guide.
+    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://news.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com${
       isDev ? " 'unsafe-eval'" : ""
     }`;
     const csp = [
@@ -68,8 +72,8 @@ const nextConfig: NextConfig = {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
-      "frame-src https://www.google.com https://news.google.com",
-      "connect-src 'self' https://news.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
+      "frame-src https://www.google.com https://news.google.com https://td.doubleclick.net https://www.googletagmanager.com",
+      "connect-src 'self' https://news.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.il https://pagead2.googlesyndication.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

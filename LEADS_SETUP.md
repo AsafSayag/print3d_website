@@ -35,13 +35,22 @@
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
 
-  // כותרות בפעם הראשונה
+  // עמודות G ואילך: מאיזו מודעה/קמפיין הגיע הליד (נשמר אוטומטית מה-URL של הפרסום)
+  var HEADERS = [
+    "תאריך ושעה", "שם", "טלפון", "אימייל", "על הפרויקט", "מקור",
+    "gclid", "gbraid", "wbraid",
+    "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+    "זמן המרה (ISO)"
+  ];
+  // כותרות בפעם הראשונה, ובגיליון קיים — משלימים כותרות חסרות בלי לגעת בנתונים
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(["תאריך ושעה", "שם", "טלפון", "אימייל", "על הפרויקט", "מקור"]);
-  }
-  // גיליון קיים שנוצר לפני עמודת "מקור" — מוסיפים לו את הכותרת בעמודה F
-  if (sheet.getRange(1, 6).getValue() === "") {
-    sheet.getRange(1, 6).setValue("מקור");
+    sheet.appendRow(HEADERS);
+  } else {
+    for (var i = 0; i < HEADERS.length; i++) {
+      if (sheet.getRange(1, i + 1).getValue() === "") {
+        sheet.getRange(1, i + 1).setValue(HEADERS[i]);
+      }
+    }
   }
 
   var data = JSON.parse(e.postData.contents);
@@ -51,7 +60,16 @@ function doPost(e) {
     data.phone || "",
     data.email || "",
     data.project || "",
-    data.source || ""
+    data.source || "",
+    data.gclid || "",
+    data.gbraid || "",
+    data.wbraid || "",
+    data.utm_source || "",
+    data.utm_medium || "",
+    data.utm_campaign || "",
+    data.utm_term || "",
+    data.utm_content || "",
+    data.receivedAtIso || ""
   ]);
 
   // מייל התראה ל-frank, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
@@ -65,6 +83,8 @@ function doPost(e) {
     ];
     if (data.email) lines.push("אימייל: " + data.email);
     if (data.project) lines.push("על הפרויקט: " + data.project);
+    if (data.utm_campaign) lines.push("קמפיין: " + data.utm_campaign);
+    if (data.utm_term) lines.push("מילת מפתח: " + data.utm_term);
     lines.push("תאריך ושעה: " + (data.receivedAt || ""));
 
     var subject = "ליד חדש - Print3D" + (data.source && data.source !== "אתר" ? " · " + data.source : "");
@@ -121,3 +141,30 @@ Vercel → הפרויקט → **Settings → Environment Variables**, והוסף
 
 אם משהו לא עובד — האתר עדיין שומר את הליד כל עוד לפחות אחד משני הערוצים (מייל/גיליון)
 פעיל, ומדפיס שגיאה בלוגים של Vercel (Deployments → Functions) שמסבירה מה חסר.
+
+---
+
+## חלק ד׳ — מעקב קמפיינים בגוגל אדס
+
+כל ליד נשמר אוטומטית עם הפרמטרים של המודעה שממנה הגיע: `gclid` (מזהה הקליק של גוגל)
+ו-`utm_*` (קמפיין, מילת מפתח, מודעה). הם מופיעים בעמודות G–O בגיליון ובמייל ההתראה.
+
+- **gclid** נוסף לבד כשמפעילים Auto-tagging בחשבון Google Ads (ברירת המחדל).
+- כדי לראות גם שם קמפיין ומילת מפתח, מגדירים ב-Google Ads (רמת החשבון → Tracking template / Final URL suffix):
+  `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&utm_content={creative}`
+
+### המרה ישירה ב-Google Ads (אופציונלי)
+ב-Google Ads → Goals → Conversions → New → Website → המרה ידנית מסוג "Submit lead form".
+מעתיקים מה-Event snippet את שני הערכים מתוך `send_to: 'AW-XXXXXXXXX/abcDEF123'`, ומוסיפים ל-Vercel:
+
+```
+NEXT_PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXXX
+NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL=abcDEF123
+```
+
+ואז Redeploy. מעכשיו כל שליחת טופס מוצלחת מדווחת לגוגל אדס כהמרה.
+(חלופה בלי משתנים: לסמן את האירוע `form_submit` כ-Key event ב-GA4 ולייבא אותו ל-Google Ads.)
+
+### דיווח לידים שנסגרו (Offline conversions)
+כשליד הופך ללקוח, אפשר להעלות ל-Google Ads קובץ עם ה-`gclid` שלו ועמודת "זמן המרה (ISO)",
+כך שהבידינג ילמד אילו קליקים מביאים עסקאות ולא רק פניות.

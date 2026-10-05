@@ -3,14 +3,13 @@ import dynamic from "next/dynamic";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { LpHeader } from "./_components/LpHeader";
 import { LpHero } from "./_components/LpHero";
+import { LpMobileBar } from "./_components/LpMobileBar";
 import {
   LpFaq,
   LpFinal,
   LpFooter,
   LpNumbers,
-  LpProblem,
   LpProcess,
-  LpShowcase,
 } from "./_components/Sections";
 import { LP_META, LP_PATH } from "./content";
 
@@ -32,6 +31,9 @@ export const metadata: Metadata = buildPageMeta({
 const FlowJourney = dynamic(() =>
   import("./_components/FlowJourney").then((m) => m.FlowJourney),
 );
+const ShowcaseCarousel = dynamic(() =>
+  import("./_components/ShowcaseCarousel").then((m) => m.ShowcaseCarousel),
+);
 const ClientLogos = dynamic(() =>
   import("@/components/ClientLogos").then((m) => m.ClientLogos),
 );
@@ -45,15 +47,15 @@ export default function SalesModelLandingPage() {
         <div className="lp-logos">
           <ClientLogos />
         </div>
-        <LpProblem />
         <FlowJourney />
         <LpNumbers />
-        <LpShowcase />
+        <ShowcaseCarousel />
         <LpProcess />
         <LpFaq />
         <LpFinal />
       </main>
       <LpFooter />
+      <LpMobileBar />
     </>
   );
 }
