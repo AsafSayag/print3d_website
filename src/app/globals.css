@@ -1883,12 +1883,14 @@ html.a11y-motion .a11y-panel {
 /* ============================================================
    Business value ("הערך העסקי של מודל אדריכלי") — blueprint surface
    with a fine engineering grid, soft steel glows, and glass value
-   cards that fly in from the sides in 3D (see BusinessValue.tsx).
+   cards that slide in from the sides (see BusinessValue.tsx).
    ============================================================ */
 .bizval {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* clip, not hidden: `overflow: hidden` makes the section a scroll container,
+     which would capture the cards' view() timeline and freeze their entrance. */
+  overflow: clip;
 }
 /* Cinematic background — the full layer stack lives inside .bizval-bg. */
 .bizval-bg {
@@ -1982,8 +1984,11 @@ html.a11y-motion .a11y-panel {
     rgba(20, 52, 72, 0.14)
   );
   border: 1px solid rgba(95, 154, 192, 0.4);
-  backdrop-filter: blur(18px) saturate(160%);
+  /* Prefixed FIRST: the CSS minifier (Lightning CSS) treats a later
+     -webkit-backdrop-filter as overriding the standard one and drops the
+     standard declaration — which left Chrome/Android with no glass at all. */
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 0 0 1px rgba(95, 154, 192, 0.12),
@@ -1993,7 +1998,36 @@ html.a11y-motion .a11y-panel {
     transform 0.5s var(--ease-brand),
     border-color 0.5s var(--ease-brand),
     box-shadow 0.5s var(--ease-brand);
-  will-change: transform;
+}
+/* Scroll-driven entrance: each card slides in from its own side as it enters
+   the viewport, its progress tied to the scroll position. No JS — the cards are
+   visible in the SSR HTML and never wait on hydration. Animates the individual
+   `translate` / `scale` properties, so the hover lift (on `transform`) still
+   works. Unsupported browsers just show the cards. */
+.bizval-card--from-right { --bizval-from: 110px; }
+.bizval-card--from-left { --bizval-from: -110px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .bizval-card {
+      animation: bizvalFlyIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    /* The left column follows a beat behind the right, as before. */
+    .bizval-card--from-left { animation-range: entry 8% cover 36%; }
+  }
+}
+@keyframes bizvalFlyIn {
+  from {
+    opacity: 0;
+    translate: var(--bizval-from) 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
 }
 @supports not (
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
