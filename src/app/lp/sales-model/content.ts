@@ -32,6 +32,13 @@ export const LP_HERO = {
     src: "/project_pages/avisror_costa_rica_jerusalem_project/bg.webp",
     alt: "מודל אדריכלי מואר של מגדלי מגורים, אביסרור קוסטה ריקה ירושלים",
   },
+  /** Portrait crop of `image` for phones: x 263–1388 of the 2000×1500 source
+   *  (the strip object-position 30% shows), resized to 900×1200. The same 30%
+   *  object-position frames it identically. Lives outside project_pages/,
+   *  whose folders only accept the project-page file names. */
+  imageMobile: {
+    src: "/landing/sales-model-hero-mobile.webp",
+  },
 } as const;
 
 export const LP_JOURNEY = {

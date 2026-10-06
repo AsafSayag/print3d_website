@@ -11,6 +11,9 @@ type Props = {
   className?: string;
   href?: string | null;
   ariaLabel?: string;
+  /** Forwarded to next/link. Off on the ad landing page, where prefetching the
+   *  homepage (~75KB of RSC + JS) is wasted on almost every visitor. */
+  prefetch?: boolean;
 };
 
 /**
@@ -24,6 +27,7 @@ export function Logo({
   className,
   href = "/",
   ariaLabel = "Print3D — לעמוד הבית",
+  prefetch,
 }: Props) {
   // Intrinsic file dimensions — passed as width/height so the browser reserves
   // the correct box from the aspect ratio (no layout shift). `style` still sets
@@ -58,7 +62,7 @@ export function Logo({
   if (!href) return <span aria-hidden="true">{img}</span>;
 
   return (
-    <Link href={href} aria-label={ariaLabel} style={{ display: "inline-flex" }}>
+    <Link href={href} aria-label={ariaLabel} prefetch={prefetch} style={{ display: "inline-flex" }}>
       {img}
     </Link>
   );

@@ -45,7 +45,7 @@ export function LpHeader() {
   return (
     <header className={`lp-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="container-x flex items-center justify-between gap-4 h-16 md:h-[72px]">
-        <Logo size={28} href="/" />
+        <Logo size={28} href="/" prefetch={false} />
         <div className="flex items-center gap-2 sm:gap-4">
           <a
             href={CONTACT.phoneHref}

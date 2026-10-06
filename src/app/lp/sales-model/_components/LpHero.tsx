@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { CONTACT } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
@@ -7,26 +7,30 @@ import { LP_HERO, LP_LOCATION } from "../content";
 /**
  * Landing hero. A server component with pure-CSS entrances (see .lp-hero-*):
  * the H1 is the LCP element, so it must paint from the SSR HTML on the first
- * frame — never gated behind hydration.
+ * frame — never gated behind hydration. The stagger is kept tight (all within
+ * 0.35s) so the CTAs arrive with the headline, not a second after it.
  */
 export function LpHero() {
   const waHref = `https://wa.me/${CONTACT.whatsappNumber}`;
 
+  // Art direction: phones get a portrait crop of the photo (the strip a
+  // portrait hero actually shows at object-position 30% — see
+  // LP_HERO.imageMobile), desktop the full landscape frame. The phone used to
+  // download the whole 4:3 photo at 1920w (~320KB) only to crop two-thirds of
+  // it away; the crop is ~130–160KB at the same on-screen sharpness.
+  const common = { alt: "", sizes: "100vw", fill: true, loading: "eager", fetchPriority: "high" } as const;
+  const { props: desktopImg } = getImageProps({ ...common, src: LP_HERO.image.src });
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...common, src: LP_HERO.imageMobile.src });
+
   return (
     <section className="lp-hero surface-navy-950" aria-labelledby="lp-hero-title">
       <div aria-hidden="true" className="lp-hero-media">
-        <Image
-          src={LP_HERO.image.src}
-          alt=""
-          fill
-          preload
-          fetchPriority="high"
-          // On a phone the 4:3 photo is cropped to the hero's height, so it
-          // renders ~2.5x the viewport width; 100vw fetched a file far too
-          // small and the photo came out soft.
-          sizes="(max-width: 767px) 150vw, 100vw"
-          className="lp-hero-img"
-        />
+        <picture>
+          <source media="(max-width: 767px)" srcSet={mobileSrcSet} sizes="100vw" />
+          <img {...desktopImg} alt="" className="lp-hero-img" />
+        </picture>
         {/* Ambient life over the still photo (all pure CSS, see .lp-hero-*):
             a warm glow that breathes and drifts, and a slow light sweep —
             under the scrim so they never cost the copy its contrast — plus
@@ -40,29 +44,29 @@ export function LpHero() {
 
       <div className="container-x relative z-10 lp-hero-inner">
         <div className="max-w-3xl">
-          <p className="lp-rise eyebrow text-white" style={{ animationDelay: "0.05s" }}>
+          <p className="lp-rise eyebrow text-white" style={{ animationDelay: "0s" }}>
             {LP_HERO.eyebrow}
           </p>
 
           <h1 id="lp-hero-title" className="lp-hero-title mt-5">
-            <span className="lp-rise block" style={{ animationDelay: "0.15s" }}>
+            <span className="lp-rise block" style={{ animationDelay: "0.05s" }}>
               {LP_HERO.titleTop}
             </span>
-            <span className="lp-rise block lp-hero-title-accent" style={{ animationDelay: "0.32s" }}>
+            <span className="lp-rise block lp-hero-title-accent" style={{ animationDelay: "0.12s" }}>
               {LP_HERO.titleBottom}
             </span>
           </h1>
 
           <p
             className="lp-rise lp-hero-sub mt-6 text-white/80 text-lg md:text-xl leading-relaxed max-w-2xl text-pretty"
-            style={{ animationDelay: "0.5s" }}
+            style={{ animationDelay: "0.2s" }}
           >
             {LP_HERO.subtitle}
           </p>
 
           <div
             className="lp-rise lp-hero-ctas mt-9 flex flex-col sm:flex-row gap-3 sm:items-center"
-            style={{ animationDelay: "0.66s" }}
+            style={{ animationDelay: "0.25s" }}
           >
             <GlassButton
               href="#lead"
@@ -87,13 +91,13 @@ export function LpHero() {
             </GlassButton>
           </div>
 
-          <p className="lp-rise lp-hero-micro mt-4 caption text-white/60" style={{ animationDelay: "0.78s" }}>
+          <p className="lp-rise lp-hero-micro mt-4 caption text-white/60" style={{ animationDelay: "0.3s" }}>
             {LP_HERO.microcopy}
           </p>
 
           <ul
             className="lp-rise lp-hero-trust mt-10 flex flex-wrap gap-x-6 gap-y-2 text-white/75 text-[15px]"
-            style={{ animationDelay: "0.9s" }}
+            style={{ animationDelay: "0.35s" }}
           >
             {LP_HERO.trust.map((t) => (
               <li key={t} className="flex items-center gap-2">
