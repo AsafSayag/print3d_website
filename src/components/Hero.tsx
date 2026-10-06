@@ -1,30 +1,16 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "@/lib/useReducedMotion";
 import { GlassButton } from "./ui/GlassButton";
 import { HeroVideo } from "./ui/HeroVideo";
-import { HERO, MOTION } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { HERO_COPY } from "@/lib/content";
 
+/**
+ * Home hero. A Server Component: the headline, subtitle and CTAs enter with
+ * pure-CSS animations that start on the first paint (.hero-drop / .hero-rise /
+ * .hero-scrim / .hero-hint in globals.css). They used to wait on a React state
+ * flipped after hydration, so on a first mobile visit the hero showed the photo
+ * with no headline and no buttons for ~3s while the JS loaded.
+ */
 export function Hero() {
-  const reduce = useReducedMotion();
-
-  // Content (logo/text/buttons) only enters once this is true.
-  const [revealed, setRevealed] = useState(false);
-
-  // The hero is a single static image (the showroom of models). Reveal the
-  // copy shortly after entry — immediately when reduced motion is requested.
-  useEffect(() => {
-    if (reduce) {
-      setRevealed(true);
-      return;
-    }
-    const t = window.setTimeout(() => setRevealed(true), HERO.revealDelayMs);
-    return () => window.clearTimeout(t);
-  }, [reduce]);
-
   return (
     <section
       // The hero takes the exact aspect ratio of its background video — the
@@ -50,13 +36,12 @@ export function Hero() {
       </div>
 
       {/* Scrim — lighter than before so the brighter footage reads through;
-          still deepens a touch once content is revealed for legibility. */}
+          still deepens a touch as the copy enters, for legibility. */}
       <div
-        className="absolute inset-0 transition-opacity duration-700"
+        className="hero-scrim absolute inset-0"
         style={{
           background:
             "radial-gradient(120% 90% at 50% 30%, rgba(7,13,23,0.04), rgba(7,13,23,0.3) 70%, rgba(7,13,23,0.5))",
-          opacity: revealed ? 1 : 0.5,
         }}
       />
 
@@ -66,14 +51,9 @@ export function Hero() {
           royal-blue accent rule. Mobile is untouched: there the heading stays
           in the bottom group (see HeroContent). */}
       <div
-        className="hidden md:flex flex-col items-center absolute z-20 top-[5rem] inset-x-0 lg:top-[6rem]"
+        className="hero-drop hidden md:flex flex-col items-center absolute z-20 top-[5rem] inset-x-0 lg:top-[6rem]"
         style={{
-          opacity: revealed ? 1 : 0,
-          transform: revealed || reduce ? "none" : "translateY(-1.75rem)",
-          transition: reduce
-            ? "none"
-            : "opacity 0.85s var(--ease-brand) 0.15s, transform 0.95s var(--ease-brand) 0.15s",
-          willChange: "opacity, transform",
+          ["--hero-from" as string]: "-1.75rem",
           // Glass panel removed — the copy sits directly on the footage, so a
           // strong multi-layer text-shadow carries the legibility.
           textShadow:
@@ -138,15 +118,7 @@ export function Hero() {
           top row above; this one is md:hidden. */}
       <div
         dir="rtl"
-        className="md:hidden absolute z-20 top-[5.25rem] inset-x-0 px-4 flex justify-center"
-        style={{
-          opacity: revealed ? 1 : 0,
-          transform: revealed || reduce ? "none" : "translateY(-1.25rem)",
-          transition: reduce
-            ? "none"
-            : "opacity 0.85s var(--ease-brand) 0.15s, transform 0.95s var(--ease-brand) 0.15s",
-          willChange: "opacity, transform",
-        }}
+        className="hero-drop md:hidden absolute z-20 top-[5.25rem] inset-x-0 px-4 flex justify-center"
       >
         {/* Very subtle transparent glass panel — a hairline frosted frame that
             lets the footage read clearly through it (kept light so it never
@@ -179,39 +151,24 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Content layer — always in the DOM (SEO/LCP), revealed on cue.
+      {/* Content layer — always in the DOM (SEO/LCP), animated in by CSS.
           Top-aligned so the headline sits just beneath the navbar rather than
           floating in the vertical centre. */}
       <div className="relative z-10 h-full container-x flex flex-col items-center justify-start text-center pt-32 md:pt-28">
-        <HeroContent revealed={revealed} reduce={!!reduce} />
+        <HeroContent />
       </div>
 
       {/* Scroll hint */}
-      <AnimatedScrollHint revealed={revealed} reduce={!!reduce} />
+      <AnimatedScrollHint />
     </section>
   );
 }
 
-function HeroContent({
-  revealed,
-  reduce,
-}: {
-  revealed: boolean;
-  reduce: boolean;
-}) {
-  // Reveal is driven by pure CSS transitions toggled on `revealed` — this
-  // animates reliably on a delayed state change (unlike a late framer update),
-  // keeps the H1 in the DOM from first paint (SEO/LCP), and is GPU-cheap.
-  const item = (i: number): React.CSSProperties => {
-    const dur = reduce ? 0 : MOTION.revealDuration;
-    const delay = revealed && !reduce ? i * 0.12 : 0;
-    return {
-      opacity: revealed ? 1 : 0,
-      transform: revealed || reduce ? "none" : `translateY(${MOTION.revealDistance}px)`,
-      transition: `opacity ${dur}s var(--ease-brand) ${delay}s, transform ${dur}s var(--ease-brand) ${delay}s`,
-      willChange: "opacity, transform",
-    };
-  };
+function HeroContent() {
+  // Staggered fade+rise (.hero-rise), timed from the first paint.
+  const item = (i: number): React.CSSProperties => ({
+    animationDelay: `${0.15 + i * 0.12}s`,
+  });
 
   return (
     <>
@@ -227,7 +184,7 @@ function HeroContent({
             md:hidden so desktop (which shows the H2 in its top row) stays
             untouched. Carries the same blue accent rule beneath it as the H1. */}
         <div
-          className="md:hidden flex flex-col items-center"
+          className="hero-rise md:hidden flex flex-col items-center"
           style={item(1)}
         >
           <h2
@@ -255,7 +212,7 @@ function HeroContent({
             the section bottom, so mb lifts the buttons off the bottom edge). */}
         <div
           style={item(2)}
-          className="mb-6 sm:mb-8 md:mb-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
+          className="hero-rise mb-6 sm:mb-8 md:mb-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5"
         >
           <GlassButton
             href="#contact"
@@ -285,21 +242,11 @@ function HeroContent({
   );
 }
 
-function AnimatedScrollHint({
-  revealed,
-  reduce,
-}: {
-  revealed: boolean;
-  reduce: boolean;
-}) {
+function AnimatedScrollHint() {
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-x-0 bottom-7 z-10 hidden md:flex justify-center"
-      style={{
-        opacity: revealed ? 1 : 0,
-        transition: `opacity 0.6s var(--ease-brand) ${reduce ? 0 : 0.4}s`,
-      }}
+      className="hero-hint absolute inset-x-0 bottom-7 z-10 hidden md:flex justify-center"
     >
       <div className="h-9 w-[22px] rounded-full border border-white/40 flex justify-center pt-2">
         <span className="hint-dot block h-1.5 w-1 rounded-full bg-white/70" />

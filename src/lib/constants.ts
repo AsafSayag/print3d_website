@@ -73,10 +73,6 @@ export const MOTION = {
 export const HERO = {
   /** Source duration is 5.04s; 1.45x → ≈3.5s runtime. */
   playbackRate: 1.45,
-  /** Content enters this long after the site loads (independent of the video).
-      Kept short so the headline + primary CTA appear promptly over the playing
-      video (which remains the cinematic layer) rather than being withheld. */
-  revealDelayMs: 175,
   /** Pause this many seconds before the natural end to avoid the EOS flash. */
   freezeLeadSec: 0.12,
   /** Fallback: if the video has not started within this window, reveal anyway. */

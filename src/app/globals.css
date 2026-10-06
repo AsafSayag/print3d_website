@@ -127,6 +127,45 @@ body {
   }
 }
 
+/* Scroll reveal (<Reveal>, components/ui/Reveal.tsx). Visible by default; only
+   once the inline bootstrap has armed the page does a not-yet-seen element
+   start hidden, then fade+rise in (transition is inline on the element) when
+   the bootstrap marks it data-revealed. */
+html.reveal-armed [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Home hero entrance (Hero.tsx) — pure CSS from the first paint, no
+   hydration gate. Headline drops in from above; subtitle + CTAs rise with a
+   stagger (inline animation-delay); the scrim deepens; the scroll hint fades. */
+@keyframes heroDrop {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hero-from, -1.25rem));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes heroFade {
+  from { opacity: var(--hero-fade-from, 0); }
+  to { opacity: 1; }
+}
+.hero-drop { animation: heroDrop 0.9s var(--ease-brand) 0.15s both; }
+.hero-rise { animation: revealRise 0.7s var(--ease-brand) both; }
+.hero-scrim { --hero-fade-from: 0.5; animation: heroFade 0.7s var(--ease-brand) both; }
+.hero-hint { animation: heroFade 0.6s var(--ease-brand) 0.55s both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-drop,
+  .hero-rise,
+  .hero-scrim,
+  .hero-hint {
+    animation: none;
+  }
+}
+
 ::selection {
   background: color-mix(in srgb, var(--gold-500) 35%, transparent);
   color: var(--ink-950);
@@ -401,8 +440,12 @@ body {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: var(--_bg);
-  backdrop-filter: blur(18px) saturate(160%);
+  /* Site-wide rule for glass: the -webkit- declaration goes FIRST. Lightning
+     CSS (the production minifier) treats a prefixed declaration that follows
+     the standard one as overriding it and drops the standard one — which left
+     Chrome/Android with no backdrop blur at all. */
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 8px 32px rgba(7, 13, 23, 0.35);
@@ -735,8 +778,8 @@ body {
     rgba(255, 255, 255, 0.09),
     rgba(255, 255, 255, 0.028)
   );
-  backdrop-filter: blur(22px) saturate(150%);
   -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -835,8 +878,8 @@ body {
   padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.75rem);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow:
     0 30px 70px -30px rgba(0, 0, 0, 0.5),
@@ -860,8 +903,8 @@ body {
   padding: clamp(2rem, 5vw, 3.25rem);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -1140,8 +1183,8 @@ body {
   position: relative;
   border-radius: 26px;
   background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(22px) saturate(150%);
   -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
@@ -1736,8 +1779,8 @@ html.a11y-motion .a11y-panel {
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(255, 255, 255, 0.06),
     0 14px 34px -16px rgba(7, 13, 23, 0.65);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   transition:
     transform 0.5s var(--ease-brand),
     box-shadow 0.5s var(--ease-brand),
@@ -2378,8 +2421,8 @@ html.a11y-motion .a11y-panel {
 }
 .lp-header.is-scrolled {
   background: rgba(14, 26, 44, 0.72);
-  backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 30px -18px rgba(0, 0, 0, 0.6);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -2417,8 +2460,8 @@ html.a11y-motion .a11y-panel {
   height: calc(var(--lp-mbar-h) + env(safe-area-inset-bottom, 0px));
   padding: 0 16px env(safe-area-inset-bottom, 0px);
   background: rgba(14, 26, 44, 0.82);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   transform: translateY(100%);
   visibility: hidden;
@@ -2865,8 +2908,8 @@ html.a11y-motion .a11y-panel {
   border-radius: 20px;
   background: linear-gradient(155deg, rgba(62, 121, 159, 0.3), rgba(20, 52, 72, 0.16));
   border: 1px solid rgba(95, 154, 192, 0.38);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 24px 50px -30px rgba(0, 0, 0, 0.85);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

@@ -10,6 +10,7 @@ import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { InPageAnchorScroll } from "@/components/ui/InPageAnchorScroll";
+import { REVEAL_BOOTSTRAP } from "@/components/ui/Reveal";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -104,6 +105,11 @@ export default function RootLayout({
       className={`${openSans.variable} ${assistant.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Scroll-reveal bootstrap — a plain inline <script> (not next/script,
+            whose inline App Router scripts only run once the Next runtime has
+            loaded) so it executes while the HTML is still parsing, before any
+            content paints. See REVEAL_BOOTSTRAP in components/ui/Reveal.tsx. */}
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOTSTRAP }} />
         <JsonLd />
         <InPageAnchorScroll />
         {children}
