@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
 import { GlassButton } from "@/components/ui/GlassButton";
@@ -12,6 +11,7 @@ import {
   LP_LOCATION,
   LP_NUMBERS,
   LP_PROCESS,
+  LP_THANK_YOU_PATH,
 } from "../content";
 
 /* ------------------------------------------------------------------ */
@@ -201,7 +201,12 @@ export function LpFinal() {
             <div className="lp-form-card">
               <h3 className="h3 text-[color:var(--ink-950)]">{LP_FINAL.formTitle}</h3>
               <div className="mt-6">
-                <LeadForm location={LP_LOCATION} source="lp_sales_model" emailOptional />
+                <LeadForm
+                  location={LP_LOCATION}
+                  source="lp_sales_model"
+                  emailOptional
+                  successRedirectPath={LP_THANK_YOU_PATH}
+                />
               </div>
             </div>
           </Reveal>
@@ -222,9 +227,9 @@ export function LpFooter() {
           © {new Date().getFullYear()} Print3D · {CONTACT.address}
         </p>
         <nav aria-label="קישורים משפטיים" className="flex gap-5">
-          <Link href="/legal/privacy" className="hover:text-white transition-colors">מדיניות פרטיות</Link>
-          <Link href="/legal/terms" className="hover:text-white transition-colors">תנאי שימוש</Link>
-          <Link href="/legal/accessibility" className="hover:text-white transition-colors">הצהרת נגישות</Link>
+          <a href="/legal/privacy" className="hover:text-white transition-colors">מדיניות פרטיות</a>
+          <a href="/legal/terms" className="hover:text-white transition-colors">תנאי שימוש</a>
+          <a href="/legal/accessibility" className="hover:text-white transition-colors">הצהרת נגישות</a>
         </nav>
       </div>
     </footer>

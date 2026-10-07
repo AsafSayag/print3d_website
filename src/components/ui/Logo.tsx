@@ -11,8 +11,7 @@ type Props = {
   className?: string;
   href?: string | null;
   ariaLabel?: string;
-  /** Forwarded to next/link. Off on the ad landing page, where prefetching the
-   *  homepage (~75KB of RSC + JS) is wasted on almost every visitor. */
+  /** Forwarded to next/link when the logo is a link. */
   prefetch?: boolean;
 };
 
@@ -59,7 +58,7 @@ export function Logo({
     />
   );
 
-  if (!href) return <span aria-hidden="true">{img}</span>;
+  if (!href) return <span role="img" aria-label={ariaLabel}>{img}</span>;
 
   return (
     <Link href={href} aria-label={ariaLabel} prefetch={prefetch} style={{ display: "inline-flex" }}>

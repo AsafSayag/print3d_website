@@ -7,9 +7,9 @@ import { trackEvent } from "@/lib/analyticsClient";
 /**
  * Reports every `page_view` on the site, mounted once in the root layout.
  *
- * This is the *only* source of page_view. The GA4 Google tag in GTM is
+ * This is the *only* source of page_view. The direct GA4 tag is
  * configured with `send_page_view: false`, so it contributes none of its own —
- * not on first load, and not on history changes (see TRACKING.md). One code
+ * not on first load, and not on history changes. One code
  * path means one hit per view.
  *
  * Both halves are covered here: the first commit reports the landing view, and

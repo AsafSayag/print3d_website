@@ -10,9 +10,7 @@ import { LP_HEADER_CTA, LP_LOCATION } from "../content";
 /**
  * Stripped-down header for paid traffic: no navigation (every exit link is a
  * leak from the funnel) — just the brand, a phone line and the single CTA.
- * The one deliberate exit is the logo, which follows the universal convention
- * of leading to the main site's homepage (the site itself never links back
- * here — this page is ad-only and noindex).
+ * The logo is displayed without a link to keep the visitor in the funnel.
  * Transparent over the hero, turns to dark glass once the visitor scrolls.
  * The thin progress rail along its bottom edge is the page's "you're moving
  * forward" cue.
@@ -45,7 +43,7 @@ export function LpHeader() {
   return (
     <header className={`lp-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="container-x flex items-center justify-between gap-4 h-16 md:h-[72px]">
-        <Logo size={28} href="/" prefetch={false} />
+        <Logo size={28} href={null} ariaLabel="Print3D" />
         <div className="flex items-center gap-2 sm:gap-4">
           <a
             href={CONTACT.phoneHref}

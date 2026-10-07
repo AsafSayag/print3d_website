@@ -154,8 +154,9 @@ Vercel → הפרויקט → **Settings → Environment Variables**, והוסף
   `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&utm_content={creative}`
 
 ### המרות ב-Google Ads
-ההמרות (שליחת טופס, לחיצה על וואטסאפ, לחיצה על טלפון) מוגדרות ב-Google Tag Manager,
-לא בקוד האתר. הפרטים וההוראות להפעלה: [TRACKING.md](TRACKING.md).
+האתר שולח אירועי טופס, וואטסאפ וטלפון ישירות ל-GA4. בדף הקמפיין הממומן ובדף התודה שלו נטען
+גם Google Tag Manager לניהול תגי המרה; בקוד האתר עצמו אין תגי Google Ads.
+פירוט האירועים: [ANALYTICS.md](ANALYTICS.md).
 
 ### דיווח לידים שנסגרו (Offline conversions)
 כשליד הופך ללקוח, אפשר להעלות ל-Google Ads קובץ עם ה-`gclid` שלו ועמודת "זמן המרה (ISO)",

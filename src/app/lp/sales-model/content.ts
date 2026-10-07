@@ -8,6 +8,7 @@
  */
 
 export const LP_PATH = "/lp/sales-model";
+export const LP_THANK_YOU_PATH = `${LP_PATH}/thank-you`;
 
 /** Stable id for this surface in GA4 (`location` param) and the lead form. */
 export const LP_LOCATION = "lp_sales_model";

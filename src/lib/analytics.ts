@@ -1,7 +1,6 @@
 /**
  * Analytics event catalog — the single source of truth for every event this
- * site pushes to the Google Tag Manager data layer (and, through GTM, to GA4
- * and Google Ads). The data layer contract is documented in TRACKING.md.
+ * site sends directly to GA4. The event catalog is documented in ANALYTICS.md.
  *
  * ## Architecture
  *
@@ -23,17 +22,16 @@
  *
  * This module is isomorphic on purpose: it must stay importable from Server
  * Components, so it may never import anything marked `"use client"`. The
- * data layer transport lives in `analyticsClient.ts` for exactly that reason.
+ * browser-side transport lives in `analyticsClient.ts` for exactly that reason.
  *
  * ## page_view
  *
  * Sent entirely from here, by `PageViewTracker` — both the landing view and
  * every soft navigation.
  *
- * In GTM the GA4 Google tag is configured with `send_page_view: false`, and a
- * GA4 event tag forwards our `page_view` pushes — so there is exactly one
- * producer of the event. (GA4 Enhanced Measurement's "page changes based on
- * browser history events" must stay OFF in the GA4 property, or soft
+ * The direct GA4 tag is configured with `send_page_view: false`, so there is
+ * exactly one producer of the event. (GA4 Enhanced Measurement's "page changes
+ * based on browser history events" must stay OFF in the GA4 property, or soft
  * navigations would be counted twice.)
  *
  * ## Privacy

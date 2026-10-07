@@ -4,6 +4,7 @@ import { buildPageMeta } from "@/lib/pageMeta";
 import { LpHeader } from "./_components/LpHeader";
 import { LpHero } from "./_components/LpHero";
 import { LpMobileBar } from "./_components/LpMobileBar";
+import { CampaignTagManager } from "./_components/CampaignTagManager";
 import {
   LpFaq,
   LpFinal,
@@ -41,6 +42,7 @@ const ClientLogos = dynamic(() =>
 export default function SalesModelLandingPage() {
   return (
     <>
+      <CampaignTagManager />
       <LpHeader />
       <main id="main" className="flex-1">
         <LpHero />

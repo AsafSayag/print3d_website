@@ -7,8 +7,8 @@
  *    prior consent).
  *  - Everyone else (in practice: Israel) starts GRANTED — notice + opt-out —
  *    and can decline in the banner, which switches everything to denied.
- * Google tags in GTM (GA4, Google Ads) read these signals natively; with
- * consent denied they send cookieless pings only.
+ * The direct GA4 tag reads these signals; with consent denied it sends
+ * cookieless pings only.
  *
  * Isomorphic on purpose (no "use client"): the inline bootstrap string is
  * rendered by the root layout on the server, and the helpers are used by the
@@ -35,14 +35,17 @@ const consentState = (v: ConsentChoice) => ({
 });
 
 /**
- * Inline bootstrap, rendered as a plain <script> at the top of <body> so it
- * runs before anything else can push to the data layer: creates `dataLayer` +
+ * Inline bootstrap, rendered as a plain <script> at the top of <body> (or in
+ * the campaign page's head before GTM) so it runs before either tag: creates `dataLayer` +
  * `gtag`, declares the consent defaults (the region-specific one first, as
  * Google requires), and immediately re-applies a choice the visitor made on an
  * earlier visit. Consent "default" must precede every tag and every "update",
- * which is why this is not left to GTM or to the (later-hydrating) banner.
+ * which is why this is not left to the (later-hydrating) banner. The bootstrap
+ * is idempotent because the campaign page renders it in both places.
  */
 export const CONSENT_BOOTSTRAP = `(function(){
+if(window.__p3dConsentInitialized)return;
+window.__p3dConsentInitialized=true;
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 window.gtag=window.gtag||gtag;
@@ -56,6 +59,7 @@ if(c==='granted'||c==='denied'){gtag('consent','update',{ad_storage:c,ad_user_da
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
   }
 }
 
@@ -70,8 +74,7 @@ export function readConsent(): ConsentChoice | null {
 }
 
 /**
- * Records the visitor's choice and pushes it to Consent Mode, plus a
- * `consent_update` event GTM can trigger on. If storage is blocked the choice
+ * Records the visitor's choice and updates Consent Mode. If storage is blocked the choice
  * still applies for this page view; the banner simply returns next time.
  */
 export function setConsent(choice: ConsentChoice): void {
@@ -81,5 +84,4 @@ export function setConsent(choice: ConsentChoice): void {
     /* storage blocked — apply for this page only */
   }
   window.gtag?.("consent", "update", consentState(choice));
-  (window.dataLayer = window.dataLayer || []).push({ event: "consent_update", consent: choice });
 }

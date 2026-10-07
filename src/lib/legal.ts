@@ -316,7 +316,7 @@ const PRIVACY: LegalDoc = {
           type: "cards",
           cards: [
             { title: "Google Analytics", text: "ניתוח סטטיסטי אנונימי של דפוסי השימוש באתר" },
-            { title: "Google Tag Manager", text: "ניהול תגיות המדידה והכלים הפועלים באתר" },
+            { title: "Google Tag Manager", text: "ניהול תגיות מדידה בדף הקמפיין הממומן ובדף התודה שלו בלבד" },
             { title: "Meta Pixel", text: "מדידת ביצועים ופילוח קהלים למטרות שיווק" },
           ],
         },
@@ -421,7 +421,7 @@ const COOKIES: LegalDoc = {
           type: "cards",
           cards: [
             { title: "Google Analytics", text: "מדידה וניתוח אנונימי של התנהגות המבקרים באתר" },
-            { title: "Google Tag Manager", text: "מערכת לניהול והפעלה של תגיות המדידה באתר" },
+            { title: "Google Tag Manager", text: "הפעלת תגיות בדף הקמפיין הממומן ובדף התודה שלו בלבד" },
             { title: "Meta Pixel", text: "כלי מדידה ושיווק של Meta (פייסבוק ואינסטגרם)" },
           ],
         },

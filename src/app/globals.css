@@ -3264,7 +3264,7 @@ html.a11y-motion .a11y-panel {
 /* A bright, solid card so the form is the unmistakable focal point of the
    dark closing section. The shared LeadForm is styled for dark surfaces
    (white text, translucent inputs), so it's re-skinned here — scoped to the
-   <form> so the thank-you modal rendered alongside it is untouched. */
+   <form> so the other lead forms keep their styling. */
 .lp-form-card {
   position: relative;
   padding: clamp(1.5rem, 3.5vw, 2.4rem);
