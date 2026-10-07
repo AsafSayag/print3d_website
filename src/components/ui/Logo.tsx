@@ -11,6 +11,8 @@ type Props = {
   className?: string;
   href?: string | null;
   ariaLabel?: string;
+  /** Forwarded to next/link when the logo is a link. */
+  prefetch?: boolean;
 };
 
 /**
@@ -24,6 +26,7 @@ export function Logo({
   className,
   href = "/",
   ariaLabel = "Print3D — לעמוד הבית",
+  prefetch,
 }: Props) {
   // Intrinsic file dimensions — passed as width/height so the browser reserves
   // the correct box from the aspect ratio (no layout shift). `style` still sets
@@ -55,10 +58,10 @@ export function Logo({
     />
   );
 
-  if (!href) return <span aria-hidden="true">{img}</span>;
+  if (!href) return <span role="img" aria-label={ariaLabel}>{img}</span>;
 
   return (
-    <Link href={href} aria-label={ariaLabel} style={{ display: "inline-flex" }}>
+    <Link href={href} aria-label={ariaLabel} prefetch={prefetch} style={{ display: "inline-flex" }}>
       {img}
     </Link>
   );

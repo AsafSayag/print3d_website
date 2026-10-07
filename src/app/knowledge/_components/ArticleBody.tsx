@@ -83,7 +83,15 @@ export function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
             );
           case "image":
             return (
-              <figure key={i} className="mt-10 -mx-6 md:-mx-16">
+              // Bleeds past the text column, but never past the viewport:
+              // full-bleed to the page gutter on phones, and from md up at most
+              // 4rem or the room left beside the 42rem column (minus 0.5rem).
+              // The old fixed -mx-6 / md:-mx-16 overshot the gutter, so every
+              // article could be dragged sideways (4px on phones, 16px at 768).
+              <figure
+                key={i}
+                className="mt-10 mx-[calc(var(--gutter)*-1)] md:mx-[max(-4rem,calc((42rem_-_100vw)/2_+_0.5rem))]"
+              >
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
                   <Image
                     src={block.src}

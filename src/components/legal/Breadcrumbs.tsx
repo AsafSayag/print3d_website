@@ -39,10 +39,11 @@ export function Breadcrumbs({
               {item.href && !last ? (
                 <Link
                   href={item.href}
+                  // -my-1 py-1: a ~28px-tall tap target that keeps the line height.
                   className={
                     isDark
-                      ? "hover:text-[color:var(--ink-950)] transition-colors"
-                      : "hover:text-white transition-colors"
+                      ? "-my-1 inline-block py-1 hover:text-[color:var(--ink-950)] transition-colors"
+                      : "-my-1 inline-block py-1 hover:text-white transition-colors"
                   }
                 >
                   {item.label}

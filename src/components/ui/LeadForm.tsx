@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { CONTACT_CTA } from "@/lib/content";
 import { submitLead } from "@/lib/submitLead";
-import { trackAdsConversion, trackEvent } from "@/lib/analyticsClient";
+import { trackEvent } from "@/lib/analyticsClient";
 import { readAttribution } from "@/lib/attribution";
 import { ThankYouModal } from "./ThankYouModal";
 import type { LeadSource } from "@/lib/leadSources";
@@ -46,6 +46,7 @@ export function LeadForm({
   location,
   source = "website",
   emailOptional = false,
+  successRedirectPath,
 }: {
   /** Identifies the form itself. There is currently only one across the site. */
   formName?: string;
@@ -56,6 +57,8 @@ export function LeadForm({
   /** Email becomes optional (name + phone suffice) — used on the paid landing
    *  page, where every required field costs conversions. */
   emailOptional?: boolean;
+  /** Full-page destination after a successful submission, for campaign forms. */
+  successRedirectPath?: string;
 }) {
   const [values, setValues] = useState({
     name: "",
@@ -100,8 +103,12 @@ export function LeadForm({
       await submitLead({ ...values, source, attribution: readAttribution() });
       // Only a lead that actually reached the intake endpoint counts as a
       // submission — a failed POST leaves the visitor on the form, retrying.
+      // GA4 receives this event after a successful submission.
       trackEvent("form_submit", { form_name: formName, location });
-      trackAdsConversion();
+      if (successRedirectPath) {
+        window.location.assign(successRedirectPath);
+        return;
+      }
       // Close the round. The form stays mounted and is cleared below, so a
       // visitor sending a second lead starts a genuinely new fill and gets its
       // own `form_start`. Reset only on success: after a failed POST the
@@ -207,7 +214,9 @@ export function LeadForm({
       </div>
     </form>
 
-    <ThankYouModal open={showThankYou} onClose={() => setShowThankYou(false)} />
+    {!successRedirectPath && (
+      <ThankYouModal open={showThankYou} onClose={() => setShowThankYou(false)} />
+    )}
     </>
   );
 }

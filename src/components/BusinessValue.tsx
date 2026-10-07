@@ -1,8 +1,5 @@
-"use client";
-
-// Homepage "business value" module — cinematic model background + 3D fly-in cards.
+// Homepage "business value" module — cinematic model background + fly-in cards.
 import Image from "next/image";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { BUSINESS_VALUE } from "@/lib/content";
 import { analyticsAttrs } from "@/lib/analytics";
 import { Reveal } from "./ui/Reveal";
@@ -11,48 +8,22 @@ import { GlassButton } from "./ui/GlassButton";
 type Card = (typeof BUSINESS_VALUE.cards)[number];
 
 /**
- * A single value card. Flies in from the side with a 3D perspective tilt when
- * scrolled into view — on both desktop and mobile. The right-column cards enter
- * from the right, the left-column cards from the left.
+ * A single value card. Slides in from its own side as it scrolls into view —
+ * right-column cards from the right, left-column cards from the left.
+ *
+ * The entrance is a pure-CSS scroll-driven animation (see .bizval-card in
+ * globals.css), not JS: the cards are in the SSR HTML fully visible and never
+ * wait on hydration. They used to start at opacity:0 behind a framer-motion
+ * `whileInView`, so on a first visit — this module's JS is a lazy chunk — a
+ * visitor who scrolled down early saw the background with an empty hole where
+ * the cards belonged for a couple of seconds. Browsers without scroll-driven
+ * animations simply show the cards, unanimated.
  */
-function ValueCard({
-  card,
-  index,
-  reduce,
-}: {
-  card: Card;
-  index: number;
-  reduce: boolean;
-}) {
+function ValueCard({ card }: { card: Card }) {
   const isRight = card.side === "right";
-  const dir = isRight ? 1 : -1;
-  const variants: Variants = {
-    hidden: reduce
-      ? { opacity: 0 }
-      : { opacity: 0, x: dir * 130, rotateY: dir * -30, scale: 0.92 },
-    shown: { opacity: 1, x: 0, rotateY: 0, scale: 1 },
-  };
 
   return (
-    <motion.article
-      className="bizval-card"
-      variants={variants}
-      initial="hidden"
-      whileInView="shown"
-      viewport={{ once: true, amount: 0.25 }}
-      transition={
-        reduce
-          ? { duration: 0.4 }
-          : {
-              type: "spring",
-              stiffness: 90,
-              damping: 13,
-              mass: 0.9,
-              delay: (index % 2) * 0.12 + Math.floor(index / 2) * 0.16,
-            }
-      }
-      style={{ transformStyle: "preserve-3d" }}
-    >
+    <article className={`bizval-card ${isRight ? "bizval-card--from-right" : "bizval-card--from-left"}`}>
       {/* On phones the icon shares the number's row (compact, less scrolling);
           from md up it becomes the side-by-side layout. */}
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-center md:h-full md:flex-nowrap md:justify-start md:text-start md:gap-6">
@@ -84,7 +55,7 @@ function ValueCard({
           {ICONS[card.icon]}
         </span>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -255,12 +226,11 @@ const ICONS: Record<string, React.ReactNode> = {
 
 /**
  * "הערך העסקי של מודל אדריכלי" — sits directly after the hero. Four value
- * cards fly in from the sides with a 3D perspective tilt; the two right-column
- * cards enter from the right, the two left-column cards from the left.
+ * cards slide in from the sides; the two right-column cards enter from the
+ * right, the two left-column cards from the left. A Server Component: the only
+ * client JS left here is the shared <Reveal> on the heading and banner.
  */
 export function BusinessValue() {
-  const reduce = useReducedMotion() ?? false;
-
   return (
     <section
       className="bizval surface-navy-950 section"
@@ -292,7 +262,7 @@ export function BusinessValue() {
           </Reveal>
         </div>
 
-        {/* Cards — 3D fly-in from the sides. The wrapper is the reference box
+        {/* Cards — fly-in from the sides. The wrapper is the reference box
             for the two flanking model towers: they span exactly the cards'
             height ("at the height of the cubes"), sit behind the cards as part
             of the ambient backdrop, and show only from lg up (desktop). */}
@@ -300,12 +270,9 @@ export function BusinessValue() {
           <TowerAside side="start" />
           <TowerAside side="end" />
 
-          <div
-            className="relative z-10 grid gap-4 md:gap-5 md:grid-cols-2 md:max-w-4xl md:mx-auto"
-            style={{ perspective: "1400px" }}
-          >
-            {BUSINESS_VALUE.cards.map((card, i) => (
-              <ValueCard key={card.title} card={card} index={i} reduce={reduce} />
+          <div className="relative z-10 grid gap-4 md:gap-5 md:grid-cols-2 md:max-w-4xl md:mx-auto">
+            {BUSINESS_VALUE.cards.map((card) => (
+              <ValueCard key={card.title} card={card} />
             ))}
           </div>
         </div>

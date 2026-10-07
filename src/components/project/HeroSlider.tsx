@@ -194,7 +194,9 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
           </button>
 
           {/* Dots */}
-          <div className="absolute inset-x-0 bottom-24 sm:bottom-28 z-20 flex justify-center gap-2">
+          {/* Each dot is a 24px-tall button (min tap target) wrapping the small
+              visual pill; the buttons sit flush, so the pills keep their look. */}
+          <div className="absolute inset-x-0 bottom-24 sm:bottom-28 z-20 flex justify-center">
             {slides.map((s, i) => (
               <button
                 key={s}
@@ -205,13 +207,19 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
                   setPaused(true);
                   setIdx(i);
                 }}
-                className="h-2.5 rounded-full transition-all duration-300"
-                style={{
-                  width: i === idx ? 26 : 10,
-                  background:
-                    i === idx ? "var(--gold-400)" : "rgba(255,255,255,0.55)",
-                }}
-              />
+                className="flex h-6 items-center justify-center transition-all duration-300"
+                style={{ width: i === idx ? 40 : 24 }}
+              >
+                <span
+                  aria-hidden="true"
+                  className="block h-2.5 rounded-full transition-all duration-300"
+                  style={{
+                    width: i === idx ? 26 : 10,
+                    background:
+                      i === idx ? "var(--gold-400)" : "rgba(255,255,255,0.55)",
+                  }}
+                />
+              </button>
             ))}
           </div>
         </>

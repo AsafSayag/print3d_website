@@ -4,18 +4,18 @@ import localFont from "next/font/local";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { CookieConsent } from "@/components/analytics/CookieConsent";
+import { CONSENT_BOOTSTRAP } from "@/components/analytics/consent";
 import { AnalyticsClickTracker } from "@/components/analytics/AnalyticsClickTracker";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { AttributionCapture } from "@/components/analytics/AttributionCapture";
 import { AccessibilityWidget } from "@/components/ui/AccessibilityWidget";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { InPageAnchorScroll } from "@/components/ui/InPageAnchorScroll";
+import { REVEAL_BOOTSTRAP } from "@/components/ui/Reveal";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-/** Google Ads tag id (AW-…). Optional — when set, gtag also configures Ads so
- *  lead submissions report as Ads conversions (see GoogleAnalytics.tsx). */
-const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
 /* Display — Open Sans Bold for all headings */
 const openSans = Open_Sans({
@@ -104,6 +104,18 @@ export default function RootLayout({
       className={`${openSans.variable} ${assistant.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Scroll-reveal bootstrap — a plain inline <script> (not next/script,
+            whose inline App Router scripts only run once the Next runtime has
+            loaded) so it executes while the HTML is still parsing, before any
+            content paints. See REVEAL_BOOTSTRAP in components/ui/Reveal.tsx. */}
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOTSTRAP }} />
+        {GA_MEASUREMENT_ID && (
+          <>
+            {/* Set consent defaults before the GA4 configuration runs. */}
+            <script dangerouslySetInnerHTML={{ __html: CONSENT_BOOTSTRAP }} />
+            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+          </>
+        )}
         <JsonLd />
         <InPageAnchorScroll />
         {children}
@@ -114,13 +126,12 @@ export default function RootLayout({
         <AttributionCapture />
         {GA_MEASUREMENT_ID && (
           <>
-            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} adsId={GOOGLE_ADS_ID} />
             {/* One delegated listener serves every tracked link and button on
                 the site — see `analyticsAttrs` in lib/analytics.ts. */}
             <AnalyticsClickTracker />
-            {/* The sole source of page_view — the bootstrap sets
-                send_page_view:false so gtag sends none of its own. */}
+            {/* GA4's automatic page view is disabled in GoogleAnalytics. */}
             <PageViewTracker />
+            <CookieConsent />
           </>
         )}
       </body>

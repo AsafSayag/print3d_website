@@ -47,33 +47,30 @@ const nextConfig: NextConfig = {
      the remaining gap, but that's a separate, larger change (needs
      middleware.ts to mint a nonce and every JsonLd usage to receive it). */
   async headers() {
-    // React's dev runtime uses eval() for debugging features (never in a
-    // production build), so 'unsafe-eval' is added to script-src ONLY in
-    // development. The production CSP stays tight and identical to before.
-    const isDev = process.env.NODE_ENV !== "production";
-    // Google Analytics 4 (via @next/third-parties): gtag.js loads from
-    // googletagmanager.com, then beacons hits go to google-analytics.com /
-    // its regional subdomains (e.g. region1.google-analytics.com). Scoped to
-    // exactly those two host patterns — nothing broader.
+    // React's development runtime uses eval() for debugging. GA4's gtag.js and
+    // the campaign page's GTM container load from googletagmanager.com.
     // news.google.com serves publisher.js, which renders the "preferred
     // sources" button in the footer (see components/PreferredSource.tsx). It
     // needs script-src to load, connect-src to fetch the button's config, and
     // frame-src because the widget renders itself into an iframe.
-    // Google Ads (optional NEXT_PUBLIC_GOOGLE_ADS_ID): the conversion tag loads
-    // helper scripts and beacons to googleadservices / doubleclick / google.com
-    // (and the visitor's local google ccTLD), and runs its conversion linker in
-    // a td.doubleclick.net iframe — hosts per Google's tag CSP guide.
-    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://news.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com${
-      isDev ? " 'unsafe-eval'" : ""
-    }`;
+    const isDev = process.env.NODE_ENV !== "production";
+    const scriptSrc = `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://news.google.com${isDev ? " 'unsafe-eval'" : ""}`;
     const csp = [
       "default-src 'self'",
       scriptSrc,
-      "style-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://tagmanager.google.com https://fonts.googleapis.com",
       "img-src 'self' data: https:",
-      "font-src 'self' data:",
-      "frame-src https://www.google.com https://news.google.com https://td.doubleclick.net https://www.googletagmanager.com",
-      "connect-src 'self' https://news.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.il https://pagead2.googlesyndication.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "frame-src https://www.google.com https://news.google.com https://www.googletagmanager.com https://td.doubleclick.net",
+      [
+        "connect-src 'self'",
+        "https://www.googletagmanager.com",
+        "https://tagmanager.google.com",
+        "https://*.google-analytics.com https://*.analytics.google.com",
+        "https://www.googleadservices.com https://*.g.doubleclick.net https://ad.doubleclick.net https://pagead2.googlesyndication.com",
+        "https://*.google.com https://*.google.co.il",
+        "https://news.google.com",
+      ].join(" "),
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

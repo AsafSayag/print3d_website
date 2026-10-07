@@ -1,6 +1,6 @@
 /**
- * Analytics event catalog — the single source of truth for everything this site
- * reports to Google Analytics 4.
+ * Analytics event catalog — the single source of truth for every event this
+ * site sends directly to GA4. The event catalog is documented in ANALYTICS.md.
  *
  * ## Architecture
  *
@@ -21,25 +21,18 @@
  *     submission resolving successfully.
  *
  * This module is isomorphic on purpose: it must stay importable from Server
- * Components, so it may never import anything marked `"use client"`. The gtag
- * transport lives in `analyticsClient.ts` for exactly that reason.
+ * Components, so it may never import anything marked `"use client"`. The
+ * browser-side transport lives in `analyticsClient.ts` for exactly that reason.
  *
  * ## page_view
  *
  * Sent entirely from here, by `PageViewTracker` — both the landing view and
  * every soft navigation.
  *
- * That required taking the snippet over: `<GoogleAnalytics>` from
- * `@next/third-parties` hardcodes `gtag('config', id)`, which always sends its
- * own `page_view` and offers no way to suppress it. Our `GoogleAnalytics`
- * component passes `send_page_view: false` instead, so gtag contributes nothing
- * and there is exactly one producer of the event.
- *
- * The discarded alternative was to let gtag do it: `config` covers the first
- * load, and GA4 Enhanced Measurement's "page changes based on browser history
- * events" covers soft navigations. That does work — but it puts half the
- * measurement in a remote setting that can be toggled off without anyone
- * touching this repository, and it cannot be tested here.
+ * The direct GA4 tag is configured with `send_page_view: false`, so there is
+ * exactly one producer of the event. (GA4 Enhanced Measurement's "page changes
+ * based on browser history events" must stay OFF in the GA4 property, or soft
+ * navigations would be counted twice.)
  *
  * ## Privacy
  *
@@ -60,7 +53,7 @@
  */
 export type AnalyticsParams = {
   /**
-   * A route was viewed. Carries no parameters: gtag fills `page_location`,
+   * A route was viewed. Carries no parameters: GA4 fills `page_location`,
    * `page_title` and `page_referrer` from the document at send time, which is
    * both more accurate than anything we could pass and immune to the 100-char
    * truncation in {@link sanitizeParams}.

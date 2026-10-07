@@ -13,7 +13,12 @@ import { CONTACT } from "./constants";
  */
 export const NOT_FOUND_METADATA: Metadata = {
   title: "משהו השתבש | Print3D",
-  robots: { index: false, follow: true },
+  // Next already emits <meta name="robots" content="noindex"> on every 404, so
+  // ours only duplicated it; null also stops the root layout's index:true from
+  // being inherited. The canonical is reset for the same reason — inherited
+  // from the root layout, it pointed every 404 at the homepage.
+  robots: null,
+  alternates: { canonical: null },
 };
 
 /**

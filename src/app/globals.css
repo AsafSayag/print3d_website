@@ -127,6 +127,45 @@ body {
   }
 }
 
+/* Scroll reveal (<Reveal>, components/ui/Reveal.tsx). Visible by default; only
+   once the inline bootstrap has armed the page does a not-yet-seen element
+   start hidden, then fade+rise in (transition is inline on the element) when
+   the bootstrap marks it data-revealed. */
+html.reveal-armed [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Home hero entrance (Hero.tsx) — pure CSS from the first paint, no
+   hydration gate. Headline drops in from above; subtitle + CTAs rise with a
+   stagger (inline animation-delay); the scrim deepens; the scroll hint fades. */
+@keyframes heroDrop {
+  from {
+    opacity: 0;
+    transform: translateY(var(--hero-from, -1.25rem));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes heroFade {
+  from { opacity: var(--hero-fade-from, 0); }
+  to { opacity: 1; }
+}
+.hero-drop { animation: heroDrop 0.9s var(--ease-brand) 0.15s both; }
+.hero-rise { animation: revealRise 0.7s var(--ease-brand) both; }
+.hero-scrim { --hero-fade-from: 0.5; animation: heroFade 0.7s var(--ease-brand) both; }
+.hero-hint { animation: heroFade 0.6s var(--ease-brand) 0.55s both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-drop,
+  .hero-rise,
+  .hero-scrim,
+  .hero-hint {
+    animation: none;
+  }
+}
+
 ::selection {
   background: color-mix(in srgb, var(--gold-500) 35%, transparent);
   color: var(--ink-950);
@@ -401,8 +440,12 @@ body {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: var(--_bg);
-  backdrop-filter: blur(18px) saturate(160%);
+  /* Site-wide rule for glass: the -webkit- declaration goes FIRST. Lightning
+     CSS (the production minifier) treats a prefixed declaration that follows
+     the standard one as overriding it and drops the standard one — which left
+     Chrome/Android with no backdrop blur at all. */
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 8px 32px rgba(7, 13, 23, 0.35);
@@ -735,8 +778,8 @@ body {
     rgba(255, 255, 255, 0.09),
     rgba(255, 255, 255, 0.028)
   );
-  backdrop-filter: blur(22px) saturate(150%);
   -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -835,8 +878,8 @@ body {
   padding: clamp(1.25rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.75rem);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.65);
   box-shadow:
     0 30px 70px -30px rgba(0, 0, 0, 0.5),
@@ -860,8 +903,8 @@ body {
   padding: clamp(2rem, 5vw, 3.25rem);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -1140,8 +1183,8 @@ body {
   position: relative;
   border-radius: 26px;
   background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(22px) saturate(150%);
   -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
@@ -1527,6 +1570,79 @@ html.a11y-contrast footer {
   z-index: 60;
   transition: bottom 0.35s var(--ease-brand);
 }
+/* ---------- Cookie notice (CookieConsent.tsx) ----------
+   Deliberately small: a compact dark strip, one line on desktop, two on a
+   phone, sliding in 1.5s after load. Above the floating buttons in z-order;
+   sits above the LP mobile CTA rail when that is showing. */
+.cookie-bar {
+  position: fixed;
+  z-index: 70;
+  inset-inline: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px) + var(--lp-bar-offset, 0px));
+  margin-inline: auto;
+  max-width: 560px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 9px 12px 9px 10px;
+  border-radius: 14px;
+  background: rgba(14, 26, 44, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  animation: cookieIn 0.5s var(--ease-brand) 1.5s both;
+}
+@media (min-width: 768px) {
+  .cookie-bar { width: fit-content; flex-wrap: nowrap; }
+}
+.cookie-bar-text { margin: 0; flex: 1 1 180px; }
+.cookie-bar-link {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cookie-bar-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.cookie-btn {
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cookie-btn--ok { background: #fff; color: var(--ink-950); }
+.cookie-btn--no { color: rgba(255, 255, 255, 0.72); }
+@media (hover: hover) { .cookie-btn--no:hover { color: #fff; } }
+.cookie-btn:focus-visible,
+.cookie-bar-link:focus-visible { outline: 2px solid var(--gold-400); outline-offset: 2px; }
+@keyframes cookieIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cookie-bar { animation: none; }
+}
+
+/* ---------- Bottom-edge UI stacking (phones) ----------
+   The floating WhatsApp / accessibility buttons rise above whatever is pinned
+   to the bottom edge: the LP mobile CTA rail (--lp-bar-offset, set under
+   html.lp-bar-on) and the cookie notice (--consent-h, published by
+   CookieConsent while html.consent-on). */
+@media (max-width: 767px) {
+  html.consent-on { --consent-offset: calc(var(--consent-h, 0px) + 10px + env(safe-area-inset-bottom, 0px)); }
+  html.lp-bar-on .wa-fab,
+  html.lp-bar-on .a11y-widget,
+  html.consent-on .wa-fab,
+  html.consent-on .a11y-widget {
+    bottom: calc(1rem + var(--lp-bar-offset, 0px) + var(--consent-offset, 0px));
+  }
+}
+
 /* At the very bottom of the page on small screens, lift the whole widget clear
    of the footer's action buttons so it never covers them — mirrors the
    WhatsApp button's raise on the opposite corner. */
@@ -1736,8 +1852,8 @@ html.a11y-motion .a11y-panel {
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -1px 0 rgba(255, 255, 255, 0.06),
     0 14px 34px -16px rgba(7, 13, 23, 0.65);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   transition:
     transform 0.5s var(--ease-brand),
     box-shadow 0.5s var(--ease-brand),
@@ -1883,12 +1999,14 @@ html.a11y-motion .a11y-panel {
 /* ============================================================
    Business value ("הערך העסקי של מודל אדריכלי") — blueprint surface
    with a fine engineering grid, soft steel glows, and glass value
-   cards that fly in from the sides in 3D (see BusinessValue.tsx).
+   cards that slide in from the sides (see BusinessValue.tsx).
    ============================================================ */
 .bizval {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* clip, not hidden: `overflow: hidden` makes the section a scroll container,
+     which would capture the cards' view() timeline and freeze their entrance. */
+  overflow: clip;
 }
 /* Cinematic background — the full layer stack lives inside .bizval-bg. */
 .bizval-bg {
@@ -1982,8 +2100,11 @@ html.a11y-motion .a11y-panel {
     rgba(20, 52, 72, 0.14)
   );
   border: 1px solid rgba(95, 154, 192, 0.4);
-  backdrop-filter: blur(18px) saturate(160%);
+  /* Prefixed FIRST: the CSS minifier (Lightning CSS) treats a later
+     -webkit-backdrop-filter as overriding the standard one and drops the
+     standard declaration — which left Chrome/Android with no glass at all. */
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 0 0 1px rgba(95, 154, 192, 0.12),
@@ -1993,7 +2114,36 @@ html.a11y-motion .a11y-panel {
     transform 0.5s var(--ease-brand),
     border-color 0.5s var(--ease-brand),
     box-shadow 0.5s var(--ease-brand);
-  will-change: transform;
+}
+/* Scroll-driven entrance: each card slides in from its own side as it enters
+   the viewport, its progress tied to the scroll position. No JS — the cards are
+   visible in the SSR HTML and never wait on hydration. Animates the individual
+   `translate` / `scale` properties, so the hover lift (on `transform`) still
+   works. Unsupported browsers just show the cards. */
+.bizval-card--from-right { --bizval-from: 110px; }
+.bizval-card--from-left { --bizval-from: -110px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .bizval-card {
+      animation: bizvalFlyIn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    /* The left column follows a beat behind the right, as before. */
+    .bizval-card--from-left { animation-range: entry 8% cover 36%; }
+  }
+}
+@keyframes bizvalFlyIn {
+  from {
+    opacity: 0;
+    translate: var(--bizval-from) 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
 }
 @supports not (
   (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
@@ -2344,8 +2494,8 @@ html.a11y-motion .a11y-panel {
 }
 .lp-header.is-scrolled {
   background: rgba(14, 26, 44, 0.72);
-  backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 30px -18px rgba(0, 0, 0, 0.6);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -2383,8 +2533,8 @@ html.a11y-motion .a11y-panel {
   height: calc(var(--lp-mbar-h) + env(safe-area-inset-bottom, 0px));
   padding: 0 16px env(safe-area-inset-bottom, 0px);
   background: rgba(14, 26, 44, 0.82);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   transform: translateY(100%);
   visibility: hidden;
@@ -2430,12 +2580,10 @@ html.a11y-motion .a11y-panel {
   color: rgba(255, 255, 255, 0.75);
 }
 .lp-mbar-call svg { width: 17px; height: 17px; }
-/* Lift the floating WhatsApp / accessibility buttons above the rail. */
+/* The floating WhatsApp / accessibility buttons are lifted above this rail
+   via --lp-bar-offset — see "Bottom-edge UI stacking" (near .cookie-bar). */
 @media (max-width: 767px) {
-  html.lp-bar-on .wa-fab,
-  html.lp-bar-on .a11y-widget {
-    bottom: calc(1rem + 44px + env(safe-area-inset-bottom, 0px));
-  }
+  html.lp-bar-on { --lp-bar-offset: calc(44px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .lp-mbar, .lp-mbar.is-visible { transition: none; }
@@ -2445,7 +2593,9 @@ html.a11y-motion .a11y-panel {
 .lp-hero {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* clip, not hidden: hidden would make this a scroll container and freeze
+     the view() timelines of .lp-hero-media / .lp-hero-inner. */
+  overflow: clip;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -2813,7 +2963,9 @@ html.a11y-motion .a11y-panel {
 }
 
 /* ---------- Numbers ---------- */
-.lp-numbers { position: relative; isolation: isolate; overflow: hidden; }
+/* overflow: clip (not hidden) keeps .lp-stat / .lp-banner / .lp-numbers-img
+   view() timelines tied to the page scroll instead of this section. */
+.lp-numbers { position: relative; isolation: isolate; overflow: clip; }
 .lp-numbers-bg { position: absolute; inset: 0; z-index: -1; }
 .lp-numbers-img {
   object-fit: cover;
@@ -2831,8 +2983,8 @@ html.a11y-motion .a11y-panel {
   border-radius: 20px;
   background: linear-gradient(155deg, rgba(62, 121, 159, 0.3), rgba(20, 52, 72, 0.16));
   border: 1px solid rgba(95, 154, 192, 0.38);
-  backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 24px 50px -30px rgba(0, 0, 0, 0.85);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -3112,7 +3264,7 @@ html.a11y-motion .a11y-panel {
 /* A bright, solid card so the form is the unmistakable focal point of the
    dark closing section. The shared LeadForm is styled for dark surfaces
    (white text, translucent inputs), so it's re-skinned here — scoped to the
-   <form> so the thank-you modal rendered alongside it is untouched. */
+   <form> so the other lead forms keep their styling. */
 .lp-form-card {
   position: relative;
   padding: clamp(1.5rem, 3.5vw, 2.4rem);

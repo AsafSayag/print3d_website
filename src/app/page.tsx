@@ -9,6 +9,7 @@ import { Articles } from "@/components/Articles";
 import { ContactCta } from "@/components/ContactCta";
 import { Footer } from "@/components/Footer";
 import { FaqJsonLd } from "@/components/JsonLd";
+import { BusinessValue } from "@/components/BusinessValue";
 
 // Below-the-fold sections that carry heavy CLIENT JS are code-split so their
 // hydration bundles load on demand instead of in the initial route JS — this
@@ -22,6 +23,8 @@ import { FaqJsonLd } from "@/components/JsonLd";
 //   ClientLogos    — rAF/observer-driven logo marquee
 //   WhySection     — CountUp counters
 //   Portfolio      — the 312-line ProjectShowcase client grid
+// BusinessValue is a Server Component (its card entrance is pure CSS), so it is
+// imported statically: nothing about it should wait on a lazy chunk.
 const ScrollSequence = dynamic(() =>
   import("@/components/ScrollSequence").then((m) => m.ScrollSequence),
 );
@@ -34,9 +37,6 @@ const WhySection = dynamic(() =>
 );
 const Portfolio = dynamic(() =>
   import("@/components/Portfolio").then((m) => m.Portfolio),
-);
-const BusinessValue = dynamic(() =>
-  import("@/components/BusinessValue").then((m) => m.BusinessValue),
 );
 
 export default function Home() {

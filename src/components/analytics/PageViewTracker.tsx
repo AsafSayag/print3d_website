@@ -7,10 +7,10 @@ import { trackEvent } from "@/lib/analyticsClient";
 /**
  * Reports every `page_view` on the site, mounted once in the root layout.
  *
- * This is the *only* source of page_view. The GA bootstrap deliberately
- * configures the tag with `send_page_view: false`, so gtag contributes none of
- * its own — not on first load, and not on history changes. One code path means
- * one hit per view, and it cannot drift with a remote GA4 setting.
+ * This is the *only* source of page_view. The direct GA4 tag is
+ * configured with `send_page_view: false`, so it contributes none of its own —
+ * not on first load, and not on history changes. One code
+ * path means one hit per view.
  *
  * Both halves are covered here: the first commit reports the landing view, and
  * each later pathname change reports a soft navigation. A repeated pathname is

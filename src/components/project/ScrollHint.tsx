@@ -11,6 +11,10 @@ function scrollToId(id: string) {
  * גלריה (jumps to the gallery section) and מפרט טכני (jumps to the spec
  * section right after the hero) — styled like SCROLL and separated by
  * thin vertical dividers.
+ *
+ * On phones the "SCROLL" word is dropped (the mouse pill stays) so the row is
+ * narrow enough to sit between the floating WhatsApp / accessibility buttons
+ * in the bottom corners instead of underneath them.
  */
 export function ScrollHint() {
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -19,14 +23,14 @@ export function ScrollHint() {
   }
 
   return (
-    <div className="absolute inset-x-0 bottom-7 z-10 flex items-center justify-center gap-4">
+    <div className="absolute inset-x-0 bottom-7 z-10 flex items-center justify-center gap-3 sm:gap-4">
       <button
         type="button"
         onClick={handleClick}
         aria-label="גלול לקטע הבא"
         className="flex items-center gap-3 cursor-pointer"
       >
-        <span className="eyebrow text-white/70">SCROLL</span>
+        <span className="eyebrow text-white/70 hidden sm:inline">SCROLL</span>
         <div className="h-9 w-[22px] rounded-full border border-white/40 flex justify-center pt-2">
           <span className="hint-dot block h-1.5 w-1 rounded-full bg-white/70" />
         </div>
@@ -37,7 +41,7 @@ export function ScrollHint() {
       <button
         type="button"
         onClick={() => scrollToId("gallery")}
-        className="eyebrow text-white/70 cursor-pointer"
+        className="eyebrow text-white/70 cursor-pointer py-2"
       >
         גלריה
       </button>
@@ -47,7 +51,7 @@ export function ScrollHint() {
       <button
         type="button"
         onClick={() => scrollToId("technical-spec")}
-        className="eyebrow text-white/70 cursor-pointer"
+        className="eyebrow text-white/70 cursor-pointer py-2"
       >
         מפרט טכני
       </button>
