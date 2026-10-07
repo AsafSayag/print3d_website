@@ -1570,6 +1570,79 @@ html.a11y-contrast footer {
   z-index: 60;
   transition: bottom 0.35s var(--ease-brand);
 }
+/* ---------- Cookie notice (CookieConsent.tsx) ----------
+   Deliberately small: a compact dark strip, one line on desktop, two on a
+   phone, sliding in 1.5s after load. Above the floating buttons in z-order;
+   sits above the LP mobile CTA rail when that is showing. */
+.cookie-bar {
+  position: fixed;
+  z-index: 70;
+  inset-inline: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px) + var(--lp-bar-offset, 0px));
+  margin-inline: auto;
+  max-width: 560px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 9px 12px 9px 10px;
+  border-radius: 14px;
+  background: rgba(14, 26, 44, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  animation: cookieIn 0.5s var(--ease-brand) 1.5s both;
+}
+@media (min-width: 768px) {
+  .cookie-bar { width: fit-content; flex-wrap: nowrap; }
+}
+.cookie-bar-text { margin: 0; flex: 1 1 180px; }
+.cookie-bar-link {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cookie-bar-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.cookie-btn {
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cookie-btn--ok { background: #fff; color: var(--ink-950); }
+.cookie-btn--no { color: rgba(255, 255, 255, 0.72); }
+@media (hover: hover) { .cookie-btn--no:hover { color: #fff; } }
+.cookie-btn:focus-visible,
+.cookie-bar-link:focus-visible { outline: 2px solid var(--gold-400); outline-offset: 2px; }
+@keyframes cookieIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cookie-bar { animation: none; }
+}
+
+/* ---------- Bottom-edge UI stacking (phones) ----------
+   The floating WhatsApp / accessibility buttons rise above whatever is pinned
+   to the bottom edge: the LP mobile CTA rail (--lp-bar-offset, set under
+   html.lp-bar-on) and the cookie notice (--consent-h, published by
+   CookieConsent while html.consent-on). */
+@media (max-width: 767px) {
+  html.consent-on { --consent-offset: calc(var(--consent-h, 0px) + 10px + env(safe-area-inset-bottom, 0px)); }
+  html.lp-bar-on .wa-fab,
+  html.lp-bar-on .a11y-widget,
+  html.consent-on .wa-fab,
+  html.consent-on .a11y-widget {
+    bottom: calc(1rem + var(--lp-bar-offset, 0px) + var(--consent-offset, 0px));
+  }
+}
+
 /* At the very bottom of the page on small screens, lift the whole widget clear
    of the footer's action buttons so it never covers them — mirrors the
    WhatsApp button's raise on the opposite corner. */
@@ -2507,12 +2580,10 @@ html.a11y-motion .a11y-panel {
   color: rgba(255, 255, 255, 0.75);
 }
 .lp-mbar-call svg { width: 17px; height: 17px; }
-/* Lift the floating WhatsApp / accessibility buttons above the rail. */
+/* The floating WhatsApp / accessibility buttons are lifted above this rail
+   via --lp-bar-offset — see "Bottom-edge UI stacking" (near .cookie-bar). */
 @media (max-width: 767px) {
-  html.lp-bar-on .wa-fab,
-  html.lp-bar-on .a11y-widget {
-    bottom: calc(1rem + 44px + env(safe-area-inset-bottom, 0px));
-  }
+  html.lp-bar-on { --lp-bar-offset: calc(44px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .lp-mbar, .lp-mbar.is-visible { transition: none; }

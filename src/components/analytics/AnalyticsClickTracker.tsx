@@ -45,7 +45,7 @@ export function AnalyticsClickTracker() {
 
     // Capture phase: some interactive elements stop propagation on click, and a
     // hit should never depend on the bubble path staying clear. Passive because
-    // this only reads — navigation is left entirely alone (gtag beacons the hit
+    // this only reads — navigation is left entirely alone (GA4 beacons the hit
     // via `navigator.sendBeacon`, which survives the page unloading).
     document.addEventListener("click", onClick, { capture: true, passive: true });
     return () =>

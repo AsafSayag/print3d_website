@@ -3,7 +3,9 @@ import { Open_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/analytics/GoogleTagManager";
+import { CookieConsent } from "@/components/analytics/CookieConsent";
+import { CONSENT_BOOTSTRAP } from "@/components/analytics/consent";
 import { AnalyticsClickTracker } from "@/components/analytics/AnalyticsClickTracker";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { AttributionCapture } from "@/components/analytics/AttributionCapture";
@@ -13,10 +15,10 @@ import { InPageAnchorScroll } from "@/components/ui/InPageAnchorScroll";
 import { REVEAL_BOOTSTRAP } from "@/components/ui/Reveal";
 import "./globals.css";
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-/** Google Ads tag id (AW-…). Optional — when set, gtag also configures Ads so
- *  lead submissions report as Ads conversions (see GoogleAnalytics.tsx). */
-const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+/** Google Tag Manager container (GTM-…). GA4 and Google Ads live inside the
+ *  container; with this unset (local dev, previews) nothing is tracked and no
+ *  cookie notice is shown. See TRACKING.md. */
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 /* Display — Open Sans Bold for all headings */
 const openSans = Open_Sans({
@@ -110,6 +112,14 @@ export default function RootLayout({
             loaded) so it executes while the HTML is still parsing, before any
             content paints. See REVEAL_BOOTSTRAP in components/ui/Reveal.tsx. */}
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOTSTRAP }} />
+        {GTM_ID && (
+          <>
+            {/* Consent Mode defaults + dataLayer, before anything can push to
+                it (same plain-<script> reasoning as above). consent.ts. */}
+            <script dangerouslySetInnerHTML={{ __html: CONSENT_BOOTSTRAP }} />
+            <GoogleTagManagerNoScript gtmId={GTM_ID} />
+          </>
+        )}
         <JsonLd />
         <InPageAnchorScroll />
         {children}
@@ -118,15 +128,16 @@ export default function RootLayout({
         {/* Independent of GA: the lead form records the ad click id / UTMs
             even where no analytics ID is configured. */}
         <AttributionCapture />
-        {GA_MEASUREMENT_ID && (
+        {GTM_ID && (
           <>
-            <GoogleAnalytics gaId={GA_MEASUREMENT_ID} adsId={GOOGLE_ADS_ID} />
+            <GoogleTagManager gtmId={GTM_ID} />
             {/* One delegated listener serves every tracked link and button on
                 the site — see `analyticsAttrs` in lib/analytics.ts. */}
             <AnalyticsClickTracker />
-            {/* The sole source of page_view — the bootstrap sets
-                send_page_view:false so gtag sends none of its own. */}
+            {/* The sole source of page_view — the GA4 Google tag in GTM is set
+                to send_page_view:false (TRACKING.md). */}
             <PageViewTracker />
+            <CookieConsent />
           </>
         )}
       </body>

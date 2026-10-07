@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { CONTACT_CTA } from "@/lib/content";
 import { submitLead } from "@/lib/submitLead";
-import { trackAdsConversion, trackEvent } from "@/lib/analyticsClient";
+import { trackEvent } from "@/lib/analyticsClient";
 import { readAttribution } from "@/lib/attribution";
 import { ThankYouModal } from "./ThankYouModal";
 import type { LeadSource } from "@/lib/leadSources";
@@ -100,8 +100,8 @@ export function LeadForm({
       await submitLead({ ...values, source, attribution: readAttribution() });
       // Only a lead that actually reached the intake endpoint counts as a
       // submission — a failed POST leaves the visitor on the form, retrying.
+      // Also the Google Ads lead conversion — fired by GTM on this event.
       trackEvent("form_submit", { form_name: formName, location });
-      trackAdsConversion();
       // Close the round. The form stays mounted and is cleared below, so a
       // visitor sending a second lead starts a genuinely new fill and gets its
       // own `form_start`. Reset only on success: after a failed POST the

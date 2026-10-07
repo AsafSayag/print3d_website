@@ -153,17 +153,9 @@ Vercel → הפרויקט → **Settings → Environment Variables**, והוסף
 - כדי לראות גם שם קמפיין ומילת מפתח, מגדירים ב-Google Ads (רמת החשבון → Tracking template / Final URL suffix):
   `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&utm_content={creative}`
 
-### המרה ישירה ב-Google Ads (אופציונלי)
-ב-Google Ads → Goals → Conversions → New → Website → המרה ידנית מסוג "Submit lead form".
-מעתיקים מה-Event snippet את שני הערכים מתוך `send_to: 'AW-XXXXXXXXX/abcDEF123'`, ומוסיפים ל-Vercel:
-
-```
-NEXT_PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXXX
-NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL=abcDEF123
-```
-
-ואז Redeploy. מעכשיו כל שליחת טופס מוצלחת מדווחת לגוגל אדס כהמרה.
-(חלופה בלי משתנים: לסמן את האירוע `form_submit` כ-Key event ב-GA4 ולייבא אותו ל-Google Ads.)
+### המרות ב-Google Ads
+ההמרות (שליחת טופס, לחיצה על וואטסאפ, לחיצה על טלפון) מוגדרות ב-Google Tag Manager,
+לא בקוד האתר. הפרטים וההוראות להפעלה: [TRACKING.md](TRACKING.md).
 
 ### דיווח לידים שנסגרו (Offline conversions)
 כשליד הופך ללקוח, אפשר להעלות ל-Google Ads קובץ עם ה-`gclid` שלו ועמודת "זמן המרה (ISO)",
