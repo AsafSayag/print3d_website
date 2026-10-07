@@ -2522,7 +2522,9 @@ html.a11y-motion .a11y-panel {
 .lp-hero {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* clip, not hidden: hidden would make this a scroll container and freeze
+     the view() timelines of .lp-hero-media / .lp-hero-inner. */
+  overflow: clip;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -2890,7 +2892,9 @@ html.a11y-motion .a11y-panel {
 }
 
 /* ---------- Numbers ---------- */
-.lp-numbers { position: relative; isolation: isolate; overflow: hidden; }
+/* overflow: clip (not hidden) keeps .lp-stat / .lp-banner / .lp-numbers-img
+   view() timelines tied to the page scroll instead of this section. */
+.lp-numbers { position: relative; isolation: isolate; overflow: clip; }
 .lp-numbers-bg { position: absolute; inset: 0; z-index: -1; }
 .lp-numbers-img {
   object-fit: cover;

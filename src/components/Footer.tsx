@@ -30,7 +30,9 @@ export function Footer({
             <p className="text-white/75 text-sm mt-4 leading-relaxed max-w-xs max-md:mx-auto">
               {FOOTER.tagline}
             </p>
-            <ul className="mt-5 space-y-2 text-sm">
+            {/* Links get py-1 so each tap target is ~28px tall (was 18px);
+                the list spacing shrinks by the same amount to keep the rhythm. */}
+            <ul className="mt-5 space-y-0 text-sm">
               <li>
                 <a
                   href={CONTACT.phoneHref}
@@ -38,18 +40,18 @@ export function Footer({
                     location: "footer",
                     phone_type: "office",
                   })}
-                  className="text-white/85 hover:text-white transition-colors"
+                  className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   dir="ltr"
                 >
                   {CONTACT.phone}
                 </a>
               </li>
               <li>
-                <a href={CONTACT.emailHref} className="text-white/85 hover:text-white transition-colors" dir="ltr">
+                <a href={CONTACT.emailHref} className="inline-block py-1 text-white/85 hover:text-white transition-colors" dir="ltr">
                   {CONTACT.email}
                 </a>
               </li>
-              <li className="text-white/75">{CONTACT.address}</li>
+              <li className="py-1 text-white/75">{CONTACT.address}</li>
             </ul>
           </div>
 
@@ -171,7 +173,7 @@ function FooterColumn({
       <h3 className="font-display text-lg text-white mb-4">
         {title}
       </h3>
-      <ul className="space-y-2.5">{children}</ul>
+      <ul className="space-y-0.5">{children}</ul>
     </div>
   );
 }
@@ -191,7 +193,7 @@ function FooterLink({
     <li>
       <a
         href={resolved}
-        className="text-white/80 hover:text-white text-sm transition-colors"
+        className="inline-block py-1 text-white/80 hover:text-white text-sm transition-colors"
       >
         {children}
       </a>
