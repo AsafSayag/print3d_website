@@ -18,24 +18,26 @@ import {
 /* 2 · Numbers + ROI banner                                            */
 /* ------------------------------------------------------------------ */
 export function LpNumbers() {
+  // A light surface (no photo) between the dark logos band and the dark
+  // journey: the stats read at a glance, and the change of surface marks
+  // where one section ends and the next begins.
   return (
-    <section className="lp-numbers surface-navy-950 section-lp" aria-labelledby="lp-numbers-title">
-      <div aria-hidden="true" className="lp-numbers-bg">
-        {/* On a phone the section is far taller than the photo's 3:2, so it's
-            cropped to height — request the full-resolution file there. */}
-        <Image src={LP_NUMBERS.image.src} alt="" fill sizes="(max-width: 767px) 200vw, 100vw" className="lp-numbers-img" />
-        <span className="lp-numbers-scrim" />
-      </div>
-
-      <div className="container-x relative">
+    <section id="lp-numbers" className="lp-numbers surface-ice section-lp" aria-labelledby="lp-numbers-title">
+      <div className="container-x">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
-            <p className="eyebrow text-white">{LP_NUMBERS.eyebrow}</p>
+            <p className="eyebrow text-[color:var(--gold-700)]">{LP_NUMBERS.eyebrow}</p>
           </Reveal>
           <Reveal index={1}>
-            <h2 id="lp-numbers-title" className="h2 mt-4 text-white text-balance">
-              {LP_NUMBERS.title}
+            <h2 id="lp-numbers-title" className="h2 mt-4 text-[color:var(--ink-950)] text-balance">
+              <span className="block">{LP_NUMBERS.titleTop}</span>
+              <span className="block">{LP_NUMBERS.titleBottom}</span>
             </h2>
+          </Reveal>
+          <Reveal index={2}>
+            <p className="mt-4 text-[color:var(--ink-950)]/65 text-lg leading-relaxed text-pretty">
+              {LP_NUMBERS.intro}
+            </p>
           </Reveal>
         </div>
 
@@ -43,11 +45,15 @@ export function LpNumbers() {
           {LP_NUMBERS.stats.map((s, i) => (
             <Reveal as="li" key={s.label} index={i}>
               <div className="lp-stat">
-                <div className="lp-stat-num num" dir="ltr">
-                  <CountUp end={s.end} suffix={s.suffix} />
+                {/* The figure is LTR ("20%") inside an RTL card; the whole card
+                    is centred so number and copy share one axis. */}
+                <div className="lp-stat-num num">
+                  <span dir="ltr">
+                    <CountUp end={s.end} suffix={s.suffix} />
+                  </span>
                 </div>
                 <p className="lp-stat-label">{s.label}</p>
-                <p className="mt-2 text-white/60 text-[15px] leading-snug">{s.text}</p>
+                <p className="mt-2 text-[color:var(--ink-950)]/60 text-[15px] leading-snug">{s.text}</p>
               </div>
             </Reveal>
           ))}
@@ -57,7 +63,7 @@ export function LpNumbers() {
           <Reveal>
             <p className="lp-banner">
               {LP_NUMBERS.bannerTop}
-              <span className="block text-[color:var(--steel-300)]">{LP_NUMBERS.bannerBottom}</span>
+              <span className="block text-[color:var(--gold-500)]">{LP_NUMBERS.bannerBottom}</span>
             </p>
           </Reveal>
           <Reveal index={1} className="mt-8">

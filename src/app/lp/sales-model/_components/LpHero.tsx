@@ -18,8 +18,14 @@ export function LpHero() {
   // LP_HERO.imageMobile), desktop the full landscape frame. The phone used to
   // download the whole 4:3 photo at 1920w (~320KB) only to crop two-thirds of
   // it away; the crop is ~130–160KB at the same on-screen sharpness.
+  // From 1024px the photo is contained in a ~52%-wide panel, so it never
+  // needs more than ~60vw of pixels.
   const common = { alt: "", sizes: "100vw", fill: true, loading: "eager", fetchPriority: "high" } as const;
-  const { props: desktopImg } = getImageProps({ ...common, src: LP_HERO.image.src });
+  const { props: desktopImg } = getImageProps({
+    ...common,
+    sizes: "(min-width: 1024px) 60vw, 100vw",
+    src: LP_HERO.image.src,
+  });
   const {
     props: { srcSet: mobileSrcSet },
   } = getImageProps({ ...common, src: LP_HERO.imageMobile.src });
@@ -27,15 +33,19 @@ export function LpHero() {
   return (
     <section className="lp-hero surface-navy-950" aria-labelledby="lp-hero-title">
       <div aria-hidden="true" className="lp-hero-media">
-        <picture>
-          <source media="(max-width: 767px)" srcSet={mobileSrcSet} sizes="100vw" />
-          <img {...desktopImg} alt="" className="lp-hero-img" />
-        </picture>
+        {/* On desktop the photo is a panel beside the copy (see
+            .lp-hero-photo), so the whole model reads in full instead of half
+            of it sitting under the headline. */}
+        <span className="lp-hero-photo">
+          <picture>
+            <source media="(max-width: 767px)" srcSet={mobileSrcSet} sizes="100vw" />
+            <img {...desktopImg} alt="" className="lp-hero-img" />
+          </picture>
+        </span>
         {/* Ambient life over the still photo (all pure CSS, see .lp-hero-*):
-            a warm glow that breathes and drifts, and a slow light sweep —
-            under the scrim so they never cost the copy its contrast — plus
-            faint rising specks of light above it. */}
-        <span className="lp-hero-glow" />
+            a slow light sweep — under the scrim so it never costs the copy its
+            contrast — plus faint rising specks of light above it. (A screen-
+            blended glow used to sit here too; it hazed the photo.) */}
         <span className="lp-hero-sweep" />
         <span className="lp-hero-scrim" />
         <span className="lp-hero-specks" />
@@ -43,7 +53,7 @@ export function LpHero() {
       </div>
 
       <div className="container-x relative z-10 lp-hero-inner">
-        <div className="max-w-3xl">
+        <div className="lp-hero-copy max-w-3xl">
           <p className="lp-rise eyebrow text-white" style={{ animationDelay: "0s" }}>
             {LP_HERO.eyebrow}
           </p>
@@ -95,12 +105,11 @@ export function LpHero() {
             {LP_HERO.microcopy}
           </p>
 
-          <ul
-            className="lp-rise lp-hero-trust mt-10 flex flex-wrap gap-x-6 gap-y-2 text-white/75 text-[15px]"
-            style={{ animationDelay: "0.35s" }}
-          >
+          {/* One framed strip (not three loose lines) so it reads as part of
+              the offer — loose at the foot of the hero it read as a footer. */}
+          <ul className="lp-rise lp-hero-trust mt-8" style={{ animationDelay: "0.35s" }}>
             {LP_HERO.trust.map((t) => (
-              <li key={t} className="flex items-center gap-2">
+              <li key={t} className="lp-trust-item">
                 <span aria-hidden="true" className="lp-check">
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="m3.5 8.5 3 3 6-7" />
@@ -115,7 +124,7 @@ export function LpHero() {
 
       {/* The "path" begins here: a glowing line with a light pulse flowing
           down into the next section — the page's guiding motif. */}
-      <a href="#lp-journey" className="lp-flow-hint" aria-label="המשיכו לגלול">
+      <a href="#lp-numbers" className="lp-flow-hint" aria-label="המשיכו לגלול">
         <span className="lp-flow-line" aria-hidden="true">
           <span className="lp-flow-pulse" />
         </span>

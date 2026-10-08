@@ -20,25 +20,38 @@ export const LP_META = {
 } as const;
 
 export const LP_HERO = {
-  eyebrow: "מיועד למשרדי מכירות של פרויקטי נדל״ן",
-  titleTop: "הרוכש לא קונה תוכנית.",
-  titleBottom: "הוא קונה את מה שהוא מצליח לדמיין.",
+  /** Names the product, not one kind of buyer — an "only for sales offices"
+   *  line made everyone without one feel the page wasn't for them. */
+  eyebrow: "מודלים אדריכליים פיזיים לפרויקטי נדל״ן",
+  /** Leads with what sets a model apart from the renders every project
+   *  already has, instead of a promise a render studio could make too. */
+  titleTop: "הדמיה מסבירה את הפרויקט.",
+  titleBottom: "מודל מוכר אותו.",
   subtitle:
-    "מודל פיזי מציג לרוכש את כל הפרויקט במבט אחד, והוא מחליט מהר יותר ובביטחון.",
+    "מודל פיזי מציג לרוכש את כל חווית המגורים במבט אחד, והוא מחליט מהר יותר ובביטחון.",
   primaryCta: "קבלו הצעה לפרויקט שלכם",
   secondaryCta: "דברו איתנו בוואטסאפ",
   microcopy: "הצעת מחיר מסודרת תוך יום עסקים · בלי התחייבות",
-  trust: ["15+ שנות ניסיון", "גימור יד אומן", "מדן ועד אילת"],
+  /** Concrete service promises (all from the main site's FAQ). Experience and
+   *  project count live in the logos line right below, so they aren't
+   *  repeated here. */
+  trust: ["גימור ידני בכל פרט", "אישור שלכם לפני הייצור", "הובלה והצבה בכל הארץ"],
+  /** A retouched copy of project_pages/bonei_binyan_hahagana_raanana_project/
+   *  IMG_06.webp: the grey wall behind the model is replaced with the page's
+   *  dark navy (with a soft warm spill), and the model itself is sharpened and
+   *  given more local contrast — so the lit model glows like in a dark
+   *  showroom. Lives outside project_pages/, whose folders only accept the
+   *  project-page file names. */
   image: {
-    src: "/project_pages/avisror_costa_rica_jerusalem_project/bg.webp",
-    alt: "מודל אדריכלי מואר של מגדלי מגורים, אביסרור קוסטה ריקה ירושלים",
+    src: "/landing/sales-model-hero-raanana-desktop.webp",
+    alt: "מודל אדריכלי מואר של שני בנייני מגורים עם גינה וחניה, בוני בניין ההגנה רעננה",
   },
-  /** Portrait crop of `image` for phones: x 263–1388 of the 2000×1500 source
-   *  (the strip object-position 30% shows), resized to 900×1200. The same 30%
-   *  object-position frames it identically. Lives outside project_pages/,
-   *  whose folders only accept the project-page file names. */
+  /** `image` is cropped to x 300–1900, y 120–1380 of the 2000×1500 retouch
+   *  (room on the copy side so the fade never reaches the towers). Phones get
+   *  a portrait crop of the retouch instead: x 700–1825, full height (centred
+   *  on the right-hand building), resized to 900×1200. */
   imageMobile: {
-    src: "/landing/sales-model-hero-mobile.webp",
+    src: "/landing/sales-model-hero-raanana-mobile.webp",
   },
 } as const;
 
@@ -47,8 +60,8 @@ export const LP_JOURNEY = {
   title: "ככה נראית פגישת מכירה שזורמת",
   steps: [
     {
-      title: "הלקוח נכנס ורואה הכל",
-      text: "הפרויקט עומד מולו בשלמותו: הבניינים, הרחובות, הגינות והאור. לא צריך להסביר. הוא מבין לבד.",
+      title: "הלקוח נכנס ומבין הכל ברגע",
+      text: "זה רגע ה-WOW. מולו עומדת חווית המגורים עצמה: הבניינים, הרחובות והגינות, כיווני האוויר והשמש, איפה השכנים ומה נשקף מכל כיוון. מה שכלים וירטואליים מסבירים לאורך זמן, הוא מבין במבט אחד.",
       image: {
         src: "/project_pages/aura_natania_project/IMG_01.webp",
         alt: "מודל אדריכלי מוצב במרכז משרד המכירות של אאורה נתניה",
@@ -57,8 +70,8 @@ export const LP_JOURNEY = {
       },
     },
     {
-      title: "הלקוח מוצא את הבית שלו",
-      text: "הוא מצביע על הקומה, רואה לאן פונה המרפסת ומה נשקף מהחלון. התוכנית הופכת למקום אמיתי.",
+      title: "הלקוח בוחר את הבית שלו",
+      text: "הוא לא מצביע על קומה, הוא בוחר אותה. רואה את עצמו במרפסת עם כוס קפה, ומבין איזה שדרוג מחכה לחיים שלו בבית החדש שהרגע בחר לעצמו.",
       image: {
         src: "/project_pages/avisror_ramat_hasharon_project/bg.webp",
         alt: "מבט מקרוב על חזית ומרפסות במודל אדריכלי, אביסרור רמת השרון",
@@ -89,12 +102,21 @@ export const LP_JOURNEY = {
   ],
 } as const;
 
-/** Same four figures as the homepage BUSINESS_VALUE module. */
+/** Same four figures as the homepage BUSINESS_VALUE module. Framed as what
+ *  clients report: these are the numbers developers measure on their own
+ *  projects, and the reason they come back for the next one. */
 export const LP_NUMBERS = {
-  eyebrow: "מה זה עושה למכירות",
-  title: "השקעה קטנה ביחס לפרויקט. השפעה גדולה על המכירה.",
+  eyebrow: "הלקוחות שלנו מספרים",
+  /** Two sentences, each kept on its own line(s) so a phone never breaks
+   *  between "לפרויקט." and "השפעה". */
+  titleTop: "השקעה קטנה ביחס לפרויקט.",
+  titleBottom: "השפעה גדולה על המכירה.",
+  intro:
+    "אלה המדדים שהיזמים שעובדים איתנו מודדים בפרויקטים שלהם, ובגללם הם חוזרים אלינו בכל פרויקט חדש.",
   stats: [
-    { end: 20, suffix: "%", label: "תקופת מכירה קצרה יותר", text: "החלטה מהירה יותר, פחות עלויות מימון ושיווק" },
+    // "Financing costs" was dropped from the first card: it read as ambiguous
+    // (the buyer's mortgage? the sales office?).
+    { end: 20, suffix: "%", label: "תקופת מכירה קצרה יותר", text: "החלטה מהירה יותר ופחות עלויות שיווק" },
     { end: 10, suffix: "%", label: "פוטנציאל השבחה", text: "תפיסת ערך חזקה יותר, פחות צורך בהנחות" },
     { end: 85, suffix: "%", label: "מעדיפים מוחשי על הדמיה", text: "הרוכש רואה, מבין ומתחבר" },
     { end: 81, suffix: "%", label: "יותר ביטחון בהחלטה", text: "הצוות מפסיק להסביר ומתמקד בסגירה" },
@@ -102,16 +124,17 @@ export const LP_NUMBERS = {
   bannerTop: "לעיתים די בשיפור של עסקה אחת",
   bannerBottom: "כדי להחזיר את מלוא ההשקעה במודל.",
   cta: "בואו נבדוק את זה על הפרויקט שלכם",
-  image: {
-    src: "/project_pages/maoz_daniel_bat_yam_project/IMG_01.webp",
-    alt: "",
-  },
 } as const;
 
 /**
- * Showcase carousel — one project per slide. Photos picked for clean, lit,
- * landscape shots; only projects that are public on the main site (none in
- * HIDDEN_PROJECT_SLUGS). `client` is the large caption, `project` the small one.
+ * Showcase carousel — one project per slide, chosen to show range rather
+ * than seven variations of one shot: the slides alternate between the whole
+ * model seen from afar, a close-up on a detail, lit buildings, and the
+ * landscaping that tells the living story — and between angles, distances and
+ * day/night light, so no two neighbours look alike. Only projects that are
+ * public on the main site (none in HIDDEN_PROJECT_SLUGS), and none of the
+ * photos already used elsewhere on this page. `client` is the large caption,
+ * `project` the small one.
  */
 export const LP_SHOWCASE = {
   eyebrow: "מהשטח",
@@ -119,14 +142,16 @@ export const LP_SHOWCASE = {
   ctaLead: "רוצים שגם הפרויקט שלכם ייראה ככה?",
   cta: "קבלו הצעה לפרויקט שלכם",
   items: [
+    // Whole model, from afar — a full neighbourhood in the sales office.
     {
-      src: "/project_pages/avisror_costa_rica_jerusalem_project/IMG_01.webp",
-      alt: "מגדלי מגורים מוארים ופארק שכונתי במודל אדריכלי, אביסרור קוסטה ריקה ירושלים",
-      w: 2000,
-      h: 1500,
-      client: "אביסרור",
-      project: "קוסטה ריקה, ירושלים",
+      src: "/project_pages/shbiro_rishon_letzion_project/IMG_01.webp",
+      alt: "מודל של שכונה שלמה מוצב במשרד המכירות של שבירו, ראשון לציון",
+      w: 2048,
+      h: 1536,
+      client: "שבירו",
+      project: "ראשון לציון",
     },
+    // Lighting — a tower at night.
     {
       src: "/project_pages/levinstein_project/GAL_02.webp",
       alt: "מגדל מגורים מואר עם מרפסות ובריכת גג במודל אדריכלי, מגדלי לוינשטיין",
@@ -135,22 +160,35 @@ export const LP_SHOWCASE = {
       client: "לוינשטיין הנדסה",
       project: "מגדלי לוינשטיין",
     },
+    // Close-up — a courtyard at eye level.
     {
-      src: "/project_pages/shbiro_rishon_letzion_project/IMG_02.webp",
-      alt: "מודל שכונה שלמה עם מגדלים, רחובות ופארקים במשרד המכירות של שבירו",
-      w: 2048,
-      h: 1536,
-      client: "שבירו",
-      project: "ראשון לציון",
-    },
-    {
-      src: "/project_pages/dafna_tidhar_project/IMG_06.webp",
-      alt: "בנייני מגורים מוארים סביב חצר פנימית מגוננת במודל אדריכלי, תדהר דפנה",
-      w: 2048,
-      h: 1536,
+      src: "/project_pages/dafna_tidhar_project/IMG_08.webp",
+      alt: "מבט קרוב על חצר פנימית עם דקלים, שבילים ופנסים במודל אדריכלי, תדהר דפנה",
+      w: 1600,
+      h: 1200,
       client: "תדהר",
       project: "דפנה",
     },
+    // Landscaping — the park and playgrounds that sell the neighbourhood.
+    {
+      src: "/project_pages/ram_aderet_givat_hamatos_project/IMG_01.webp",
+      alt: "שכונת מגורים מוארת עם פארק ומגרשי משחק במודל אדריכלי, רם אדרת גבעת המטוס",
+      w: 2000,
+      h: 1500,
+      client: "רם אדרת",
+      project: "גבעת המטוס, ירושלים",
+    },
+    // Close-up at street level — shopfronts, trees and pavement.
+    // (Not IMG_04: that one is a phone photo of a render on a screen.)
+    {
+      src: "/project_pages/rotem_shani_beit_shemesh_project/IMG_01.webp",
+      alt: "מבט מגובה הרחוב על חזיתות מסחר, עצים ומדרכה במודל אדריכלי, רותם שני בית שמש",
+      w: 2000,
+      h: 1125,
+      client: "רותם שני",
+      project: "בית שמש",
+    },
+    // Lighting + landscaping, straight on — towers over the playground.
     {
       src: "/project_pages/maoz_daniel_bat_yam_project/IMG_11.webp",
       alt: "שלושה מגדלי מגורים מוארים מעל גן משחקים במודל אדריכלי, מעוז דניאל בת ים",
@@ -159,21 +197,14 @@ export const LP_SHOWCASE = {
       client: "מעוז דניאל",
       project: "כצנלסון, בת ים",
     },
+    // Daylight — street, gardens and buildings together.
     {
-      src: "/project_pages/sela_baitar_hadera_project/IMG_07.webp",
-      alt: "זוג מגדלים מוארים מעל קומת מסחר וצומת רחובות במודל אדריכלי, סלע ביתר חדרה",
-      w: 1600,
-      h: 1200,
-      client: "סלע ביתר",
-      project: "חדרה",
-    },
-    {
-      src: "/project_pages/ram_aderet_givat_hamatos_project/IMG_01.webp",
-      alt: "שכונת מגורים מוארת עם פארק ומגרשי משחק במודל אדריכלי, רם אדרת גבעת המטוס",
+      src: "/project_pages/avney_derech_beit_shemesh_project/bg.webp",
+      alt: "רחוב מתעקל, גינות ובנייני מגורים באור יום במודל אדריכלי, אבני דרך בית שמש",
       w: 2000,
-      h: 1500,
-      client: "רם אדרת",
-      project: "גבעת המטוס, ירושלים",
+      h: 1125,
+      client: "אבני דרך",
+      project: "בית שמש",
     },
   ],
 } as const;
@@ -184,15 +215,15 @@ export const LP_PROCESS = {
   steps: [
     {
       title: "שולחים לנו מה שיש",
-      text: "תוכניות, הדמיות, או רק שם הפרויקט ולוח הזמנים. גם בלי קבצים מלאים נוכל לתת הערכה ראשונית.",
+      text: "תוכניות, הדמיות, או תיאור של הפרויקט, לוח הזמנים וסדרי הגודל. גם בלי קבצים מלאים נוכל לתת הערכה ראשונית.",
     },
     {
       title: "מקבלים הצעה תוך יום עסקים",
-      text: "קנה מידה מומלץ, רמת פירוט, לוח זמנים ומחיר. הכל כתוב ומסודר.",
+      text: "המלצה מקצועית על קנה המידה ורמת הפירוט שיתאימו לפרויקט, לצד לוח זמנים ומחיר. הכל כתוב ומסודר.",
     },
     {
-      title: "המודל מגיע למשרד המכירות",
-      text: "זמן הייצור נקבע לפי גודל הפרויקט וסוגו, ותקבלו לוח זמנים מדויק כבר בהצעה. מה שלא משתנה הוא האיכות: גימור ללא פשרות, בכל פרט ובכל קנה מידה.",
+      title: "המודל מגיע מוכן להצגה",
+      text: "אנחנו מייצרים, אורזים, מובילים ומציבים את המודל בכל מקום בארץ. ולאורך כל הדרך: איכות ללא פשרות ושירות מהיר ומקצועי.",
     },
   ],
 } as const;

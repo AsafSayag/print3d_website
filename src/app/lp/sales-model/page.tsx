@@ -49,8 +49,10 @@ export default function SalesModelLandingPage() {
         <div className="lp-logos">
           <ClientLogos />
         </div>
-        <FlowJourney />
+        {/* The proof (numbers) comes straight after the logos, before the
+            story of the sales meeting. */}
         <LpNumbers />
+        <FlowJourney />
         <ShowcaseCarousel />
         <LpProcess />
         <LpFaq />
