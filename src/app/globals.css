@@ -2596,7 +2596,10 @@ html.a11y-motion .a11y-panel {
   /* clip, not hidden: hidden would make this a scroll container and freeze
      the view() timelines of .lp-hero-media / .lp-hero-inner. */
   overflow: clip;
-  min-height: 100svh;
+  /* Just short of a full screen, so the logos heading peeks in at the bottom
+     of the first view — the cue that the page goes on (a full-height hero
+     with the trust strip at its foot read as the end of the page). */
+  min-height: calc(100svh - 5.75rem);
   display: flex;
   align-items: center;
 }
@@ -2608,42 +2611,63 @@ html.a11y-motion .a11y-panel {
   inset: 0;
   z-index: -1;
 }
+/* Clips the photo's drift/zoom to its own box. Full-bleed on phones and
+   tablets. From 1024px it's a panel on the inline-end side (left in RTL),
+   beside a narrower copy column: the photo's background is the page's own
+   navy (see LP_HERO.image), so the whole model is shown (contain) and its
+   edges simply melt into the hero. */
+.lp-hero-photo {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+@media (min-width: 1024px) {
+  .lp-hero-photo {
+    inset-inline-start: auto;
+    width: 50%;
+    /* Fade only toward the copy and at the top/bottom of the contained image;
+       the inline-end edge runs off the viewport. */
+    -webkit-mask-image:
+      linear-gradient(to left, transparent 0%, #000 12%),
+      linear-gradient(to bottom, transparent 6%, #000 20%, #000 76%, transparent 90%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to left, transparent 0%, #000 12%),
+      linear-gradient(to bottom, transparent 6%, #000 20%, #000 76%, transparent 90%);
+    mask-composite: intersect;
+  }
+  .lp-hero-copy { max-width: 38rem; }
+}
 .lp-hero-img {
   object-fit: cover;
   object-position: 30% 40%;
-  /* A touch richer than the raw photo so the lit model glows. */
-  filter: saturate(1.2) contrast(1.06) brightness(1.04);
+  /* The file is already graded (see LP_HERO.image) — only a light lift. */
+  filter: saturate(1.06) contrast(1.03);
   /* Entrance settle, then a slow endless camera drift — the photo never
      freezes, which is what makes the hero feel alive. */
   animation:
     lpHeroSettle 2.4s var(--ease-brand) both,
     lpHeroDrift 28s ease-in-out 2.4s infinite alternate;
 }
+@media (min-width: 1024px) {
+  .lp-hero-img {
+    object-fit: contain;
+    object-position: 50% 50%;
+  }
+}
 @keyframes lpKenBurns {
   from { transform: scale(1.12); }
   to { transform: scale(1); }
 }
+/* Kept close to 1:1 — every bit of zoom upscales the 2000px photo and
+   softens it. */
 @keyframes lpHeroSettle {
-  from { transform: scale(1.14); }
-  to { transform: scale(1.06); }
+  from { transform: scale(1.08); }
+  to { transform: scale(1.02); }
 }
 @keyframes lpHeroDrift {
-  from { transform: scale(1.06) translate3d(0, 0, 0); }
-  to { transform: scale(1.16) translate3d(-2.5%, -1.5%, 0); }
-}
-/* Warm window-light glow, breathing and wandering across the model. */
-.lp-hero-glow {
-  position: absolute;
-  inset: -20%;
-  background:
-    radial-gradient(38% 30% at 62% 46%, rgba(255, 196, 120, 0.34), transparent 70%),
-    radial-gradient(34% 28% at 28% 62%, rgba(120, 176, 230, 0.26), transparent 70%);
-  mix-blend-mode: screen;
-  animation: lpGlow 11s ease-in-out infinite alternate;
-}
-@keyframes lpGlow {
-  from { transform: translate3d(-4%, 2%, 0) scale(1); opacity: 0.55; }
-  to { transform: translate3d(5%, -3%, 0) scale(1.12); opacity: 1; }
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to { transform: scale(1.07) translate3d(-1.5%, -1%, 0); }
 }
 /* A soft diagonal beam that glides across every few seconds. */
 .lp-hero-sweep {
@@ -2695,6 +2719,16 @@ html.a11y-motion .a11y-panel {
     linear-gradient(to left, rgba(10, 18, 31, 0.92) 0%, rgba(10, 18, 31, 0.72) 42%, rgba(10, 18, 31, 0.25) 100%),
     linear-gradient(180deg, rgba(10, 18, 31, 0.55) 0%, transparent 28%, transparent 70%, rgba(14, 26, 44, 1) 100%);
 }
+/* Desktop: the copy sits on navy, so the scrim only needs to be dark behind
+   it — over the photo panel it clears almost completely, letting the model
+   show at full strength. */
+@media (min-width: 1024px) {
+  .lp-hero-scrim {
+    background:
+      linear-gradient(to left, rgba(10, 18, 31, 0.94) 0%, rgba(10, 18, 31, 0.82) 34%, rgba(10, 18, 31, 0.18) 56%, transparent 70%),
+      linear-gradient(180deg, rgba(10, 18, 31, 0.4) 0%, transparent 16%, transparent 76%, rgba(14, 26, 44, 1) 100%);
+  }
+}
 @media (max-width: 767px) {
   /* Phone hero. The photo stays visible at the very top (behind the header and
      eyebrow), then the scrim deepens behind the copy so the text reads cleanly,
@@ -2736,9 +2770,9 @@ html.a11y-motion .a11y-panel {
     text-align: center;
     font-weight: 700;
   }
-  /* The logos heading right below already says "350+ projects · 15+ years",
-     so the trust row is dropped here to keep the first screen light. */
-  .lp-hero-trust { display: none; }
+  /* The portrait crop (LP_HERO.imageMobile) is cut around the building, so
+     keep it centred. */
+  .lp-hero-img { object-position: 50% 40%; }
 
   /* One clear action: the quote CTA is the big glowing button; WhatsApp stays
      available but steps back to a quiet secondary. */
@@ -2795,6 +2829,37 @@ html.a11y-motion .a11y-panel {
   0%, 100% { transform: translateY(-1px); }
   50% { transform: translateY(3px); }
 }
+/* Trust strip: one glass bar with hairline dividers, set bright enough to
+   read as part of the offer rather than fine print. */
+.lp-hero-trust {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem;
+  background: rgba(10, 18, 31, 0.45);
+  border: 1px solid rgba(166, 195, 220, 0.22);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.lp-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 1rem;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.lp-trust-item + .lp-trust-item {
+  border-inline-start: 1px solid rgba(166, 195, 220, 0.22);
+}
+/* Phones: the strip is dropped to keep the first screen light; the logos
+   heading right below already carries the proof. */
+@media (max-width: 767px) {
+  .lp-hero-trust { display: none; }
+}
 .lp-check {
   display: inline-grid;
   place-items: center;
@@ -2843,8 +2908,16 @@ html.a11y-motion .a11y-panel {
   to { top: 100%; }
 }
 /* Logo bar sits flush under the hero and hands straight over to the journey
-   section — trim its padding. */
-.lp-logos .framer-logos-section { padding-block: clamp(1.5rem, 3vw, 2.5rem); }
+   section — trim its padding. A lighter band framed by hairlines sets it apart
+   from the navy-950 sections on both sides; on one shared background the logos
+   and the journey heading ran together. */
+.lp-logos .framer-logos-section {
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(110, 147, 184, 0.12), transparent 60%),
+    var(--navy-900);
+  border-block: 1px solid rgba(166, 195, 220, 0.14);
+}
 /* ---------- Journey ---------- */
 .lp-journey {
   position: relative;
@@ -2963,47 +3036,29 @@ html.a11y-motion .a11y-panel {
 }
 
 /* ---------- Numbers ---------- */
-/* overflow: clip (not hidden) keeps .lp-stat / .lp-banner / .lp-numbers-img
-   view() timelines tied to the page scroll instead of this section. */
-.lp-numbers { position: relative; isolation: isolate; overflow: clip; }
-.lp-numbers-bg { position: absolute; inset: 0; z-index: -1; }
-.lp-numbers-img {
-  object-fit: cover;
-  filter: brightness(0.5) saturate(0.8);
-}
-.lp-numbers-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, var(--navy-950) 0%, rgba(14, 26, 44, 0.72) 30%, rgba(14, 26, 44, 0.78) 70%, var(--navy-950) 100%);
-}
+/* Light section: white stat cards on ice, everything centred on one axis. */
 .lp-stat {
   height: 100%;
-  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+  padding: clamp(1.25rem, 2.6vw, 1.85rem) clamp(1rem, 2vw, 1.4rem);
   border-radius: 20px;
-  background: linear-gradient(155deg, rgba(62, 121, 159, 0.3), rgba(20, 52, 72, 0.16));
-  border: 1px solid rgba(95, 154, 192, 0.38);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 24px 50px -30px rgba(0, 0, 0, 0.85);
-}
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .lp-stat { background: rgba(35, 72, 104, 0.88); }
+  text-align: center;
+  background: #fff;
+  border: 1px solid rgba(29, 51, 80, 0.1);
+  box-shadow: 0 1px 2px rgba(14, 26, 44, 0.04), 0 22px 44px -30px rgba(14, 26, 44, 0.45);
 }
 .lp-stat-num {
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
   line-height: 1;
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
-  color: var(--gold-400);
-  text-align: start;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--gold-500);
 }
 .lp-stat-label {
-  margin-top: 0.7rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid rgba(166, 195, 220, 0.22);
-  color: #fff;
-  font-weight: 600;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(29, 51, 80, 0.1);
+  color: var(--ink-950);
+  font-weight: 700;
   line-height: 1.35;
 }
 .lp-banner {
@@ -3011,7 +3066,7 @@ html.a11y-motion .a11y-panel {
   font-weight: 700;
   line-height: 1.22;
   font-size: clamp(1.5rem, 3.4vw, 2.3rem);
-  color: #fff;
+  color: var(--ink-950);
   text-wrap: balance;
 }
 
@@ -3315,26 +3370,11 @@ html.a11y-motion .a11y-panel {
   box-shadow: 0 14px 30px -14px rgba(29, 51, 80, 0.8);
 }
 
-/* ---------- Photo sections (numbers + closing) ----------
-   Both sit on photos that were dimmed to ~50% under heavy navy scrims and read
-   as flat dark panels. They're shown bright here, on every breakpoint: the
-   photos get full brightness and richer colour, the scrims only fade the
-   section edges into navy (plus a light wash behind the copy), and legibility
-   comes from a soft text shadow and deeper-tinted glass cards instead. */
-.lp-numbers-img {
-  filter: brightness(0.95) saturate(1.15) contrast(1.05);
-}
-.lp-numbers-scrim {
-  background:
-    linear-gradient(180deg, var(--navy-950) 0%, rgba(14, 26, 44, 0.3) 14%, rgba(14, 26, 44, 0.24) 50%, rgba(14, 26, 44, 0.34) 86%, var(--navy-950) 100%);
-}
-.lp-stat {
-  background: linear-gradient(155deg, rgba(20, 40, 64, 0.66), rgba(10, 18, 31, 0.56));
-}
-.lp-stat p:not(.lp-stat-label) { color: rgba(255, 255, 255, 0.82); }
-.lp-numbers h2,
-.lp-numbers .eyebrow,
-.lp-banner,
+/* ---------- Photo section (closing) ----------
+   It sat on a photo dimmed to ~50% under a heavy navy scrim and read as a flat
+   dark panel. It's shown bright here, on every breakpoint: the photo gets full
+   brightness and richer colour, and legibility comes from a soft text shadow
+   instead. */
 .lp-final .eyebrow,
 .lp-final-title,
 .lp-final-text,
@@ -3402,12 +3442,6 @@ html.a11y-motion .a11y-panel {
       animation-range: entry 0% cover 35%;
     }
 
-    /* Background photos drift against the scroll. */
-    .lp-numbers-img {
-      animation: lpBgDrift linear both;
-      animation-timeline: view();
-    }
-
     /* Process step numbers pop in as each step arrives. */
     .lp-process-n {
       animation: lpPop linear both;
@@ -3426,10 +3460,6 @@ html.a11y-motion .a11y-panel {
   from { transform: translateY(18px) scale(0.94); }
   to { transform: none; }
 }
-@keyframes lpBgDrift {
-  from { transform: scale(1.1) translateY(-4%); }
-  to { transform: scale(1.1) translateY(4%); }
-}
 @keyframes lpPop {
   from { transform: scale(0.55); }
   to { transform: scale(1); }
@@ -3437,7 +3467,6 @@ html.a11y-motion .a11y-panel {
 
 @media (prefers-reduced-motion: reduce) {
   .lp-hero-img,
-  .lp-hero-glow,
   .lp-hero-sweep::before,
   .lp-hero-specks,
   .lp-final-img,
