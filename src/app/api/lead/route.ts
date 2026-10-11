@@ -1,5 +1,5 @@
-import type { NextRequest } from "next/server";
-import { LEAD_SOURCES, leadSourceLabel } from "@/lib/leadSources";
+import { after, type NextRequest } from "next/server";
+import { LEAD_SOURCES, leadSourceLabel, trafficType } from "@/lib/leadSources";
 import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
 
 /**
@@ -10,10 +10,12 @@ import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
  *   2. Google Sheet — an append-only record of every lead (via an Apps Script
  *      web-app webhook), so there is always one file with the full history.
  *
- * Both channels are best-effort and run in parallel. As long as ONE of them
- * succeeds we consider the lead captured and return `{ ok: true }`; only if
- * both fail do we return an error, so the visitor is told to try again rather
- * than silently losing their details.
+ * Both channels are best-effort and run in parallel. As soon as ONE of them
+ * succeeds the lead is captured and we answer `{ ok: true }`; the other keeps
+ * running after the response (`after`). Only if both fail do we return an
+ * error, so the visitor is told to try again rather than silently losing
+ * their details. (Waiting for both made visitors sit through the slow Apps
+ * Script webhook — 10+ seconds — before reaching the thank-you page.)
  *
  * Abuse protection: a `company` honeypot field (silently accepted, never
  * sent) plus a per-IP in-memory rate limit (5 requests/minute/instance).
@@ -210,6 +212,8 @@ async function appendToSheet(lead: {
   email: string;
   project: string;
   source: string;
+  /** "ממומן" / "אורגני" — the sheet's "מקור" column. */
+  channel: string;
   receivedAt: string;
   receivedAtIso: string;
   attribution: Attribution;
@@ -278,36 +282,34 @@ export async function POST(request: NextRequest) {
   }
 
   const now = new Date();
+  const attribution = sanitizeAttribution(body.attribution);
   const lead = {
     name,
     phone,
     email,
     project,
     source: leadSourceLabel(body.source),
+    channel: trafficType(body.source, attribution),
     receivedAt: formatIsraelTime(now),
     receivedAtIso: now.toISOString(),
-    attribution: sanitizeAttribution(body.attribution),
+    attribution,
   };
 
-  const [emailResult, sheetResult] = await Promise.allSettled([
-    sendEmail(lead),
-    appendToSheet(lead),
-  ]);
+  const emailSent = sendEmail(lead);
+  const sheetAppended = appendToSheet(lead);
+  emailSent.catch((err) => console.error("[lead] email notification failed:", err));
+  sheetAppended.catch((err) => console.error("[lead] sheet append failed:", err));
+  // Keep the function alive until both channels finish, even after we answer.
+  after(() => Promise.allSettled([emailSent, sheetAppended]));
 
-  if (emailResult.status === "rejected") {
-    console.error("[lead] email notification failed:", emailResult.reason);
-  }
-  if (sheetResult.status === "rejected") {
-    console.error("[lead] sheet append failed:", sheetResult.reason);
-  }
-
-  // As long as the lead reached at least one channel, treat it as captured.
-  if (emailResult.status === "fulfilled" || sheetResult.status === "fulfilled") {
+  // Answer as soon as the lead reached at least one channel.
+  try {
+    await Promise.any([emailSent, sheetAppended]);
     return Response.json({ ok: true });
+  } catch {
+    return Response.json(
+      { ok: false, error: "delivery_failed" },
+      { status: 502 },
+    );
   }
-
-  return Response.json(
-    { ok: false, error: "delivery_failed" },
-    { status: 502 },
-  );
 }

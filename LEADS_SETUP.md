@@ -35,7 +35,7 @@
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
 
-  // עמודות G ואילך: מאיזו מודעה/קמפיין הגיע הליד (נשמר אוטומטית מה-URL של הפרסום)
+  // A–E: פרטי הליד · F: מקור (ממומן / אורגני) · G ואילך: מאיזו מודעה/קמפיין הגיע הליד
   var HEADERS = [
     "תאריך ושעה", "שם", "טלפון", "אימייל", "על הפרויקט", "מקור",
     "gclid", "gbraid", "wbraid",
@@ -46,11 +46,13 @@ function doPost(e) {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
   } else {
+    var headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
+    var current = headerRange.getValues()[0];
+    var changed = false;
     for (var i = 0; i < HEADERS.length; i++) {
-      if (sheet.getRange(1, i + 1).getValue() === "") {
-        sheet.getRange(1, i + 1).setValue(HEADERS[i]);
-      }
+      if (current[i] === "") { current[i] = HEADERS[i]; changed = true; }
     }
+    if (changed) headerRange.setValues([current]);
   }
 
   var data = JSON.parse(e.postData.contents);
@@ -60,7 +62,7 @@ function doPost(e) {
     data.phone || "",
     data.email || "",
     data.project || "",
-    data.source || "",
+    data.channel || "",
     data.gclid || "",
     data.gbraid || "",
     data.wbraid || "",
@@ -72,14 +74,14 @@ function doPost(e) {
     data.receivedAtIso || ""
   ]);
 
-  // מייל התראה ל-frank, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
+  // מייל התראה לפרנק, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
   try {
     var lines = [
       "ליד חדש נכנס לגיליון:",
       "",
       "שם: " + (data.name || ""),
       "טלפון: " + (data.phone || ""),
-      "מקור: " + (data.source || "")
+      "מקור: " + (data.channel || "")
     ];
     if (data.email) lines.push("אימייל: " + data.email);
     if (data.project) lines.push("על הפרויקט: " + data.project);
@@ -87,7 +89,7 @@ function doPost(e) {
     if (data.utm_term) lines.push("מילת מפתח: " + data.utm_term);
     lines.push("תאריך ושעה: " + (data.receivedAt || ""));
 
-    var subject = "ליד חדש - Print3D" + (data.source && data.source !== "אתר" ? " · " + data.source : "");
+    var subject = "ליד חדש - Print3D" + (data.channel ? " · " + data.channel : "");
     MailApp.sendEmail("frank@print3d.co.il", subject, lines.join("\n"));
   } catch (err) {
     // לא לחסום את השמירה בגיליון אם שליחת המייל נכשלה
@@ -98,6 +100,15 @@ function doPost(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
+
+> **עמודת "מקור"** מתמלאת אוטומטית ב‑**ממומן** או **אורגני**. ממומן = הליד הגיע מדף
+> הנחיתה של הפרסום הממומן (`/lp/sales-model`), או מקליק על מודעת Google Ads (`gclid`),
+> או מקישור עם `utm_medium` של פרסום ממומן (`cpc`, `paid_social` וכו׳). כל השאר — אורגני.
+> הלוגיקה נמצאת ב‑`src/lib/leadSources.ts`.
+>
+> **מייל לפרנק:** הסקריפט גם שולח מייל התראה ל‑`frank@print3d.co.il` על כל ליד, מחשבון
+> ה‑Google שהגיליון שייך לו. בפריסה הראשונה של הגרסה הזו Google יבקש לאשר הרשאה
+> לשליחת מיילים — יש לאשר. המייל לא מעכב את המבקר: האתר עונה לו ברגע שהליד נשמר.
 
 > **חשוב:** אחרי שמדביקים את הקוד המעודכן, צריך לפרסם מחדש כדי שהוא ייכנס לתוקף
 > על אותו URL קיים: **Deploy → Manage deployments** → לחצו על עיפרון העריכה ליד
