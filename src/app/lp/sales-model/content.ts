@@ -23,10 +23,9 @@ export const LP_HERO = {
   /** Names the product, not one kind of buyer — an "only for sales offices"
    *  line made everyone without one feel the page wasn't for them. */
   eyebrow: "מודלים אדריכליים פיזיים לפרויקטי נדל״ן",
-  /** Leads with what sets a model apart from the renders every project
-   *  already has, instead of a promise a render studio could make too. */
-  titleTop: "הדמיה מסבירה את הפרויקט.",
-  titleBottom: "מודל מוכר אותו.",
+  /** One sentence over two lines; the second (accented) line is the payoff. */
+  titleTop: "תנו למודל",
+  titleBottom: "למכור בשבילכם",
   subtitle:
     "מודל פיזי מציג לרוכש את כל חווית המגורים במבט אחד, והוא מחליט מהר יותר ובביטחון.",
   primaryCta: "קבלו הצעה לפרויקט שלכם",

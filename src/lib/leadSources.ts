@@ -1,3 +1,5 @@
+import type { Attribution } from "@/lib/attribution";
+
 /**
  * Where a lead came from — sent with every submission and recorded in both
  * lead channels (notification email + Google Sheet "מקור" column).
@@ -17,4 +19,23 @@ export function leadSourceLabel(source: unknown): string {
   return typeof source === "string" && Object.hasOwn(LEAD_SOURCES, source)
     ? LEAD_SOURCES[source as LeadSource]
     : LEAD_SOURCES.website;
+}
+
+/** Surfaces reached only from ads — every lead from them is paid traffic. */
+const PAID_SOURCES: ReadonlySet<string> = new Set<LeadSource>(["lp_sales_model"]);
+
+/** utm_medium values that mark a paid click (Google Ads, Meta, display…). */
+const PAID_MEDIUM_RE = /^(cpc|ppc|cpm|cpv|paid|paid[_-]?social|paidsocial|display|ads?)$/i;
+
+/**
+ * "ממומן" (paid) or "אורגני" (organic) — the sheet's "מקור" column. Paid when
+ * the lead came through a paid-only landing page, carries a Google Ads click
+ * id, or was tagged with a paid utm_medium; organic otherwise.
+ */
+export function trafficType(source: unknown, attribution: Attribution): "ממומן" | "אורגני" {
+  const paid =
+    (typeof source === "string" && PAID_SOURCES.has(source)) ||
+    Boolean(attribution.gclid || attribution.gbraid || attribution.wbraid) ||
+    PAID_MEDIUM_RE.test(attribution.utm_medium ?? "");
+  return paid ? "ממומן" : "אורגני";
 }
