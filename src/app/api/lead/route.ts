@@ -18,12 +18,15 @@ import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
  * Script webhook — 10+ seconds — before reaching the thank-you page.)
  *
  * Abuse protection: a `company` honeypot field (silently accepted, never
- * sent) plus a per-IP in-memory rate limit (5 requests/minute/instance).
+ * sent), a per-IP in-memory rate limit (5 requests/minute/instance), and a
+ * same-origin + JSON-only gate so other websites can't submit leads through
+ * their visitors' browsers. Values bound for the Sheet are neutralised so a
+ * visitor can't plant a spreadsheet formula.
  *
  * Configuration (environment variables — see LEADS_SETUP.md):
  *   RESEND_API_KEY          Resend API key (required for the email channel).
  *   LEAD_NOTIFY_TO          Recipient of the notification. Default: frank@print3d.co.il.
- *   LEAD_NOTIFY_FROM        Verified sender. Default: Print3D <leads@print3d.ltd>.
+ *   LEAD_NOTIFY_FROM        Verified sender. Default: Print3D <leads@print3d.co.il>.
  *   LEADS_SHEET_WEBHOOK_URL Apps Script web-app URL (required for the Sheet channel).
  */
 
@@ -76,14 +79,54 @@ function getClientIp(request: NextRequest): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 }
 
+/**
+ * True when the request was sent by a page on another site. Browsers always
+ * attach `Origin` (and `Sec-Fetch-Site`) to a cross-site POST, so this blocks
+ * a foreign page from pushing leads through its visitors' browsers — the
+ * per-IP rate limit can't stop that, since every visitor has a different IP.
+ * Requests without `Origin` (curl, server-to-server) pass: they can't be
+ * forged from a browser, and the remaining checks still apply to them.
+ * Compares against the request's own host, so preview deployments and
+ * localhost work unchanged.
+ */
+function isCrossSite(request: NextRequest): boolean {
+  if (request.headers.get("sec-fetch-site") === "cross-site") return true;
+  const origin = request.headers.get("origin");
+  if (!origin) return false;
+  const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host"))
+    ?.split(",")[0]
+    ?.trim();
+  try {
+    return new URL(origin).host !== host;
+  } catch {
+    // `Origin: null` (sandboxed iframe, file://) — never our own form.
+    return true;
+  }
+}
+
 const NOTIFY_TO = process.env.LEAD_NOTIFY_TO || "frank@print3d.co.il";
-// Sends from the verified print3d.ltd domain so notifications can reach any
-// inbox (e.g. frank@print3d.co.il), not just the Resend account owner. This
-// REQUIRES print3d.ltd to be verified in Resend (add the DKIM/SPF DNS records
-// from the Resend dashboard). Until then, override with the shared sender
-// "Print3D <onboarding@resend.dev>" via LEAD_NOTIFY_FROM — but note that shared
-// sender only delivers to the Resend account owner's address.
-const NOTIFY_FROM = process.env.LEAD_NOTIFY_FROM || "Print3D <leads@print3d.ltd>";
+// Sends from the business domain so notifications can reach any inbox (e.g.
+// frank@print3d.co.il), not just the Resend account owner. This REQUIRES
+// print3d.co.il to be verified in Resend (add the DKIM/SPF DNS records from the
+// Resend dashboard — see LEADS_SETUP.md). Until then, override with the shared
+// sender "Print3D <onboarding@resend.dev>" via LEAD_NOTIFY_FROM — but note that
+// shared sender only delivers to the Resend account owner's address.
+// (print3d.ltd is a separate WordPress site whose DNS we don't control, so it
+// can't be verified as a sender.)
+const NOTIFY_FROM = process.env.LEAD_NOTIFY_FROM || "Print3D <leads@print3d.co.il>";
+
+/**
+ * Google Sheets evaluates a cell that starts with = + - or @ as a formula, so
+ * a visitor could plant one (e.g. `=IMPORTXML(...)` or `=HYPERLINK(...)`) via
+ * the name or project field. A leading apostrophe makes Sheets store the value
+ * as plain text, and the apostrophe itself isn't shown in the cell. Applied to
+ * the Sheet payload only; the email shows the values as typed.
+ */
+const FORMULA_TRIGGER_RE = /^[=+\-@\t\r]/;
+
+function sheetSafe(value: string): string {
+  return FORMULA_TRIGGER_RE.test(value) ? `'${value}` : value;
+}
 
 function clean(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
@@ -224,10 +267,16 @@ async function appendToSheet(lead: {
   // Attribution is flattened to top-level fields (gclid, utm_campaign, …) so
   // the Apps Script reads them like any other column — see LEADS_SETUP.md.
   const { attribution, ...rest } = lead;
+  const row = Object.fromEntries(
+    Object.entries({ ...rest, ...attribution }).map(([key, value]) => [
+      key,
+      typeof value === "string" ? sheetSafe(value) : value,
+    ]),
+  );
   const res = await fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...rest, ...attribution }),
+    body: JSON.stringify(row),
   });
 
   if (!res.ok) {
@@ -237,6 +286,17 @@ async function appendToSheet(lead: {
 }
 
 export async function POST(request: NextRequest) {
+  if (isCrossSite(request)) {
+    return Response.json({ ok: false, error: "forbidden" }, { status: 403 });
+  }
+  // Our form always posts JSON. Rejecting everything else also rules out the
+  // "simple" request types (text/plain, form-encoded) that a foreign page can
+  // send without a CORS preflight.
+  const contentType = request.headers.get("content-type")?.toLowerCase() ?? "";
+  if (!contentType.startsWith("application/json")) {
+    return Response.json({ ok: false, error: "unsupported_media_type" }, { status: 415 });
+  }
+
   if (isRateLimited(getClientIp(request))) {
     return Response.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }

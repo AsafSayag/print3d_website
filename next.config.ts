@@ -45,7 +45,10 @@ const nextConfig: NextConfig = {
      object from a third-party origin, clickjacking (frame-ancestors), and
      form-hijacking (form-action). Tightening it to nonces later would close
      the remaining gap, but that's a separate, larger change (needs
-     middleware.ts to mint a nonce and every JsonLd usage to receive it). */
+     middleware.ts to mint a nonce and every JsonLd usage to receive it) — and
+     a per-request nonce makes every page render on demand instead of being
+     served prerendered from the CDN, which would cost load speed. With no
+     user-generated content rendered anywhere, that trade isn't worth it. */
   async headers() {
     // React's development runtime uses eval() for debugging. GA4's gtag.js and
     // the campaign page's GTM container load from googletagmanager.com.
@@ -86,8 +89,10 @@ const nextConfig: NextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
+            // Two years — the same value Vercel itself sends on the www
+            // redirect. No `preload`: that's a separate, hard-to-undo opt-in.
             key: "Strict-Transport-Security",
-            value: "max-age=15552000; includeSubDomains",
+            value: "max-age=63072000; includeSubDomains",
           },
           {
             key: "Permissions-Policy",
