@@ -21,8 +21,11 @@
 > (`onboarding@resend.dev`). היא מצליחה להגיע רק לכתובת שאיתה נרשמת ל‑Resend —
 > ולכן ההרשמה עם `asaf00500@gmail.com` חשובה.
 >
-> **מומלץ בהמשך:** לאמת את הדומיין `print3d.ltd` ב‑Resend (Domains → Add Domain),
-> ואז להגדיר `LEAD_NOTIFY_FROM=Print3D <leads@print3d.ltd>` כדי לשלוח מכתובת רשמית.
+> **מומלץ בהמשך:** לאמת את הדומיין `print3d.co.il` ב‑Resend (Domains → Add Domain),
+> להוסיף ב‑DNS של print3d.co.il את הרשומות ש‑Resend מציג (DKIM ב‑`resend._domainkey`,
+> ו‑MX + SPF על תת‑הדומיין `send` — הן לא נוגעות ב‑MX של Google Workspace),
+> ואז להגדיר `LEAD_NOTIFY_FROM=Print3D <leads@print3d.co.il>` כדי לשלוח מכתובת רשמית.
+> (את `print3d.ltd` אי אפשר לאמת — אין לנו גישה ל‑DNS שלו.)
 
 ---
 
@@ -56,23 +59,29 @@ function doPost(e) {
   }
 
   var data = JSON.parse(e.postData.contents);
+  // ערך שמתחיל ב- = + - @ גוגל שיטס מריץ כנוסחה — גרש בהתחלה שומר אותו כטקסט
+  // (השרת כבר מנטרל את זה; כאן זו שכבת הגנה נוספת)
+  function safe(v) {
+    v = v == null ? "" : String(v);
+    return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+  }
   sheet.appendRow([
-    data.receivedAt || "",
-    data.name || "",
-    data.phone || "",
-    data.email || "",
-    data.project || "",
-    data.channel || "",
-    data.gclid || "",
-    data.gbraid || "",
-    data.wbraid || "",
-    data.utm_source || "",
-    data.utm_medium || "",
-    data.utm_campaign || "",
-    data.utm_term || "",
-    data.utm_content || "",
-    data.receivedAtIso || ""
-  ]);
+    data.receivedAt,
+    data.name,
+    data.phone,
+    data.email,
+    data.project,
+    data.channel,
+    data.gclid,
+    data.gbraid,
+    data.wbraid,
+    data.utm_source,
+    data.utm_medium,
+    data.utm_campaign,
+    data.utm_term,
+    data.utm_content,
+    data.receivedAtIso
+  ].map(safe));
 
   // מייל התראה לפרנק, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
   try {
