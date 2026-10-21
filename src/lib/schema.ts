@@ -21,6 +21,14 @@ const BRAND_NAME_HE = "פרינט תלת מימד";
 export const absoluteUrl = (path: string) => `${CONTACT.siteUrl}${path}`;
 
 /**
+ * A content date ("2026-07-17") as a full ISO 8601 date-time. Google's Article
+ * check flags a bare date as invalid and asks for a time zone; midnight UTC
+ * falls on the same calendar day in Israel.
+ */
+export const isoDateTime = (date: string) =>
+  date.includes("T") ? date : `${date}T00:00:00Z`;
+
+/**
  * The square cube mark. Google shows the organization logo on a white
  * background, which rules out the wordmark files — their lettering is white.
  */
@@ -59,7 +67,7 @@ export const organizationSchema = {
     },
   ],
   areaServed: { "@type": "Country", name: "Israel" },
-  sameAs: Object.values(SOCIAL_PROFILES),
+  sameAs: SOCIAL_PROFILES.map((profile) => profile.href),
   knowsAbout: [
     "מודלים אדריכליים",
     "מודלים אדריכליים למשרדי מכירות",

@@ -4,6 +4,7 @@ import type { Crumb } from "@/components/legal/Breadcrumbs";
 import {
   absoluteUrl,
   breadcrumbListSchema,
+  isoDateTime,
   organizationRef,
 } from "@/lib/schema";
 import type { HubFaqItem } from "../hub-faq";
@@ -41,8 +42,8 @@ export function HubJsonLd({
     inLanguage: "he-IL",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    datePublished: publishDate,
-    dateModified: updatedDate,
+    datePublished: isoDateTime(publishDate),
+    dateModified: isoDateTime(updatedDate),
     author: { "@type": "Organization", name: "צוות Print3D", url: CONTACT.siteUrl },
     publisher: organizationRef,
   };
