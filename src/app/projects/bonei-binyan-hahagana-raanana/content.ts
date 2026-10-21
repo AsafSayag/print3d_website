@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט בוני בניין, ההגנה רעננה — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט בוני בניין, ההגנה ברעננה: שני בנייני מגורים, מרפסות גג מרוהטות וגינה משותפת. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "בוני בניין, ההגנה",

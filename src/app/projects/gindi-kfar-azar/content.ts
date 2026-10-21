@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   'מודל אדריכלי בקנה מידה 1:100 של פרויקט מגורים גינדי בכפר אז"ר — הדפסת תלת מימד וחיתוך לייזר';
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  'מודל אדריכלי בקנה מידה 1:100 של פרויקט גינדי בכפר אז"ר: מגדל מגורים מעל קומת מסחר, פארק שכונתי מפורט ורחוב עם מסילת רכבת קלה. נבנה לתצוגה במשרד המכירות.';
+
 export const HERO = {
   eyebrow: "",
   title: 'גינדי, כפר אז"ר',

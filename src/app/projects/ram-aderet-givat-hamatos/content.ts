@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי אורבני בקנה מידה 1:200 של פרויקט רם אדרת, גבעת המטוס — מגדלי מגורים מוארים, מערך כבישים ופיתוח נוף";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי אורבני בקנה מידה 1:200 של פרויקט רם אדרת בגבעת המטוס: אשכולות מגדלים מוארים, כבישים עם כיכרות ופארק שכונתי. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "רם אדרת, גבעת המטוס",

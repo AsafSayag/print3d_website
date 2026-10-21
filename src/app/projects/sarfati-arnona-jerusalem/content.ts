@@ -16,6 +16,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים צרפתי, ארנונה ירושלים מתחם 10 — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט צרפתי בארנונה, ירושלים (מתחם 10): שישה בנייני מגורים, פארק עירוני ופיתוח סביבתי מלא. מוצג בוויטרינה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "צרפתי, ארנונה ירושלים",

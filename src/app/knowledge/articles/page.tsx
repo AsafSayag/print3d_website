@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { ContactBand } from "@/components/ContactBand";
 import { Breadcrumbs, type Crumb } from "@/components/legal/Breadcrumbs";
 import { LegalJsonLd } from "@/components/legal/LegalJsonLd";
+import { JsonLdScript } from "@/components/JsonLd";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
 import { BLOG_2 } from "../content";
@@ -48,10 +49,7 @@ export default function ArticlesPage() {
         path="/knowledge/articles"
         breadcrumbs={breadcrumbs}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
-      />
+      <JsonLdScript data={itemList} />
       <a href="#main" className="skip-link">
         דלגו לתוכן הראשי
       </a>

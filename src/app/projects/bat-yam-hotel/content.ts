@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:125 של מגדל מלון על קו החוף בבת ים — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:125 של מגדל מלון על קו החוף בבת ים: מפלס לובי ובריכות, חוף עם שמשיות ודקלים ומרפסת נוף. נבנה להצגת הפרויקט ליזם ולרשויות.";
+
 export const HERO = {
   eyebrow: "",
   title: "מלון בת ים",

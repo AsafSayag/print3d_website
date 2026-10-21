@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט מגורים תדהר דפנה — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט תדהר דפנה: מגדל מגורים ובניין נמוך צמוד, חצר פנימית מפורטת ותאורת LED בכל הדירות. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "תדהר, דפנה",

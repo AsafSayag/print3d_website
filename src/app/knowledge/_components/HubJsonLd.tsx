@@ -1,5 +1,11 @@
 import { CONTACT } from "@/lib/constants";
+import { FaqPageJsonLd, JsonLdScript } from "@/components/JsonLd";
 import type { Crumb } from "@/components/legal/Breadcrumbs";
+import {
+  absoluteUrl,
+  breadcrumbListSchema,
+  organizationRef,
+} from "@/lib/schema";
 import type { HubFaqItem } from "../hub-faq";
 
 /**
@@ -24,64 +30,28 @@ export function HubJsonLd({
   breadcrumbs: Crumb[];
   faq: HubFaqItem[];
 }) {
-  const url = `${CONTACT.siteUrl}${path}`;
-  const imageUrl = `${CONTACT.siteUrl}/og-image.jpg`;
+  const url = absoluteUrl(path);
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,
     description,
-    image: [imageUrl],
+    image: [absoluteUrl("/og-image.jpg")],
     inLanguage: "he-IL",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
     datePublished: publishDate,
     dateModified: updatedDate,
     author: { "@type": "Organization", name: "צוות Print3D", url: CONTACT.siteUrl },
-    publisher: {
-      "@type": "Organization",
-      name: "Print3D",
-      url: CONTACT.siteUrl,
-      logo: { "@type": "ImageObject", url: imageUrl },
-    },
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: breadcrumbs.map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: c.label,
-      ...(c.href ? { item: `${CONTACT.siteUrl}${c.href}` } : {}),
-    })),
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
+    publisher: organizationRef,
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLdScript data={articleSchema} />
+      <JsonLdScript data={breadcrumbListSchema(breadcrumbs)} />
+      <FaqPageJsonLd items={faq} />
     </>
   );
 }

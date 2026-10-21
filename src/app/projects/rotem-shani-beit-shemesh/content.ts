@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים רותם שני, בית שמש — הדפסת תלת מימד, תאורת LED וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט רותם שני בבית שמש: מגדל מגורים לצד בניינים נמוכים, קומת מסחר מוארת ורחוב עם שדרת עצים. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "רותם שני, בית שמש",

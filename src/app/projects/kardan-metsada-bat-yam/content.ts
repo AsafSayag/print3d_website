@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט מגורים כרדן מצדה, בת ים — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט כרדן, מצדה בבת ים: שני מגדלי מגורים תאומים מעל קומות מסחר מוארות ורחוב מסחרי. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "כרדן, מצדה בת ים",

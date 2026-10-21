@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים פרשקובסקי, אשדוד — הדפסת תלת מימד, תאורת LED וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט פרשקובסקי באשדוד: ארבעה מגדלי מגורים סביב חצר משותפת, גני משחקים ותאורת LED חמה. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "פרשקובסקי, אשדוד",

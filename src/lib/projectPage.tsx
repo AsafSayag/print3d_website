@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { TrackProjectView } from "@/components/analytics/TrackView";
+import { ProjectJsonLd } from "@/components/project/ProjectJsonLd";
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 import { buildProjectMeta, NOT_FOUND_METADATA } from "@/lib/pageMeta";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
@@ -33,14 +34,20 @@ export function createProjectPage({
   slug,
   title,
   description,
+  specs,
+  images,
   view: View,
 }: {
   /** Bare slug, e.g. "levinstein" — must match the directory name. */
   slug: string;
   /** The project's SEO_TITLE_TAG (already brand-suffixed). */
   title: string;
-  /** The project's IMAGE_ALT, used as the meta description. */
+  /** The project's META_DESCRIPTION — the search-result snippet. */
   description: string;
+  /** The project's SPECS, which the structured data reads the model's name from. */
+  specs: readonly { label: string; value?: string }[];
+  /** The project's HERO_SLIDES, listed as the model's images in the structured data. */
+  images: readonly string[];
   /** The project's view component, from its own _components directory. */
   view: ComponentType;
 }): { metadata: Metadata; ProjectPage: () => React.ReactElement } {
@@ -62,6 +69,13 @@ export function createProjectPage({
 
     return (
       <div className="relative">
+        <ProjectJsonLd
+          slug={slug}
+          name={catalogEntry?.title ?? slug}
+          description={description}
+          specs={specs}
+          images={images}
+        />
         <TrackProjectView
           projectName={catalogEntry?.title ?? slug}
           projectCategory={catalogEntry?.type}

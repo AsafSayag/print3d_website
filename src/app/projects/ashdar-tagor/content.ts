@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים אשדר, תג'ור — הדפסת תלת מימד, תאורת LED וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט אשדר, תג'ור: מגדל מגורים לצד שני בניינים נמוכים, חצר משותפת ותאורת LED בדירות, במרפסות ובגגות. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אשדר, תג'ור",

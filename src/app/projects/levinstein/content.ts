@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:75 של מגדלי לוינשטיין בשדה דב — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:75 של מגדלי לוינשטיין בשדה דב: חצר משותפת עם מזרקה ומתקני משחק, שדרת דקלים ותאורת LED חמה בדירות. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "מגדלי לוינשטיין",

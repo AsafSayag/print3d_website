@@ -1,33 +1,32 @@
-import { CONTACT } from "@/lib/constants";
 import { FAQ } from "@/lib/content";
+import {
+  organizationSchema,
+  serializeJsonLd,
+  websiteSchema,
+} from "@/lib/schema";
 
-/**
- * Site-wide structured data: LocalBusiness (which extends Organization).
- * Emitted in the root layout, so it applies to every page.
- */
-export function JsonLd() {
-  const business = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "Print3D",
-    description:
-      "ייצור מודלים אדריכליים פיזיים לפרויקטי נדל״ן — טכנולוגיות מתקדמות וגימור יד אומן.",
-    url: CONTACT.siteUrl,
-    telephone: "+972-3-6473338",
-    email: CONTACT.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: CONTACT.addressStreet,
-      addressLocality: CONTACT.addressCity,
-      addressCountry: "IL",
-    },
-    areaServed: "IL",
-  };
-
+/** One inline `<script type="application/ld+json">` block. */
+export function JsonLdScript({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(business) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
+    />
+  );
+}
+
+/**
+ * Site-wide structured data: the business (LocalBusiness, which extends
+ * Organization) and the WebSite, as one graph. Emitted in the root layout, so
+ * it applies to every page — page-level markup references both by `@id`.
+ */
+export function JsonLd() {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@graph": [organizationSchema, websiteSchema],
+      }}
     />
   );
 }
@@ -46,20 +45,17 @@ export function FaqPageJsonLd({
 }: {
   items: readonly { q: string; a: string }[];
 }) {
-  const faqPage = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
-
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: items.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      }}
     />
   );
 }

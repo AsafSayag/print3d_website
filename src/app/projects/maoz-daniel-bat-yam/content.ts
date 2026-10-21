@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:75 של פרויקט מעוז דניאל, כצנלסון בת ים — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:75 של פרויקט מעוז דניאל, כצנלסון בבת ים: מגדלי מגורים סביב חצר מוגבהת, מרפסות מרוהטות ושני גני משחקים. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "מעוז דניאל, כצנלסון בת ים",

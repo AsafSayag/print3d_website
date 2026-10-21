@@ -16,6 +16,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי עירוני בקנה מידה 1:200 של פרויקט המגורים שבירו בראשון לציון — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי עירוני בקנה מידה 1:200 של פרויקט שבירו בראשון לציון: מגדלי מגורים רבים, כבישים וצמתים, פארק מרכזי ומגרשי ספורט. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   /** Large display line shown centered over the hero slider. */
