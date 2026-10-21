@@ -4,6 +4,7 @@ import type { Crumb } from "@/components/legal/Breadcrumbs";
 import {
   absoluteUrl,
   breadcrumbListSchema,
+  isoDateTime,
   organizationRef,
 } from "@/lib/schema";
 import type { BlogArticle } from "../content";
@@ -31,8 +32,8 @@ export function ArticleJsonLd({
     inLanguage: "he-IL",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    datePublished: article.publishDate,
-    dateModified: article.updatedDate,
+    datePublished: isoDateTime(article.publishDate),
+    dateModified: isoDateTime(article.updatedDate),
     keywords: article.keywords.join(", "),
     author: { "@type": "Organization", name: article.author, url: CONTACT.siteUrl },
     publisher: organizationRef,

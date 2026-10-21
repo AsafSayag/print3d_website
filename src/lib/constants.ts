@@ -38,17 +38,29 @@ export const CONTACT = {
 } as const;
 
 /**
- * The business's public social profiles. They feed the site-wide structured
- * data's `sameAs`, which is how search engines and AI assistants tie these
- * accounts to Print3D as one entity. Public page URLs only — never an
- * admin/dashboard link, which is what the LinkedIn address bar shows to a
- * page admin.
+ * The business's public social profiles — the footer's icon links, in display
+ * order, and the site-wide structured data's `sameAs`, which is how search
+ * engines and AI assistants tie these accounts to Print3D as one entity.
+ * Public page URLs only — never an admin/dashboard link, which is what the
+ * LinkedIn address bar shows to a page admin.
  */
-export const SOCIAL_PROFILES = {
-  linkedin: "https://www.linkedin.com/company/145233673/",
-  instagram: "https://www.instagram.com/print3d.israel/",
-  facebook: "https://www.facebook.com/profile.php?id=61594742918778",
-} as const;
+export const SOCIAL_PROFILES = [
+  {
+    name: "Facebook",
+    label: "פייסבוק",
+    href: "https://www.facebook.com/profile.php?id=61594742918778",
+  },
+  {
+    name: "Instagram",
+    label: "אינסטגרם",
+    href: "https://www.instagram.com/print3d.israel/",
+  },
+  {
+    name: "LinkedIn",
+    label: "לינקדאין",
+    href: "https://www.linkedin.com/company/145233673/",
+  },
+] as const;
 
 /**
  * Opening hours. `days` (schema.org day names) feeds the LocalBusiness
