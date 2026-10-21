@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:150 של פרויקט אביסרור, קוסטה ריקה ירושלים — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:150 של אביסרור, קוסטה ריקה בירושלים: מגדלי מגורים מוארים, פארק שכונתי, בית ספר ומערך כבישים עם כיכרות. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אביסרור, קוסטה ריקה",

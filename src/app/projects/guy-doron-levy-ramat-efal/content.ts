@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:75 של פרויקט המגורים גיא דורון לוי, רמת אפעל — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:75 של פרויקט גיא דורון לוי ברמת אפעל: בניין מגורים בן שני אגפים, פארק ציבורי צמוד, בריכה וחצר פנימית. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "גיא דורון לוי, רמת אפעל",

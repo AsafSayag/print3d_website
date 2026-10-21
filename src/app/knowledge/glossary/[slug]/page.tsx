@@ -5,8 +5,10 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ContactBand } from "@/components/ContactBand";
 import { Breadcrumbs, type Crumb } from "@/components/legal/Breadcrumbs";
+import { JsonLdScript } from "@/components/JsonLd";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
+import { breadcrumbListSchema } from "@/lib/schema";
 import {
   GLOSSARY_TERMS,
   getGlossaryTerm,
@@ -66,27 +68,10 @@ export default async function GlossaryTermPage({ params }: { params: Params }) {
     },
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: breadcrumbs.map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: c.label,
-      ...(c.href ? { item: `${CONTACT.siteUrl}${c.href}` } : {}),
-    })),
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTerm) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLdScript data={definedTerm} />
+      <JsonLdScript data={breadcrumbListSchema(breadcrumbs)} />
       <a href="#main" className="skip-link">
         דלגו לתוכן הראשי
       </a>

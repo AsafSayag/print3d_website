@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:75 של מגדל המשרדים והמגורים Up Town של סלע בינוי — הדפסת תלת מימד, חזית זכוכית ותאורת LED";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:75 של מגדל Up Town של סלע בינוי: כ־25 קומות בחזית מסך זכוכית, תאורת LED מאחורי כל הקומות וכיכר עירונית. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "סלע בינוי · Up Town",

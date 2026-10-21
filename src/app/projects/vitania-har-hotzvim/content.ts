@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:250 של מתחם המשרדים ויטניה, הר חוצבים ירושלים — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:250 של מתחם המשרדים ויטניה בהר חוצבים, ירושלים: מבני משרדים בגבהים משתנים ומערך כבישים. נבנה להצגת המתחם ליזם ולרשויות.";
+
 export const HERO = {
   eyebrow: "",
   title: "ויטניה, הר חוצבים",

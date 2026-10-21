@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים הירייה, קרית ים — הדפסת תלת מימד, תאורת LED וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט הירייה בקרית ים: מגדלי מגורים מעל קומת מסחר מוארת וכיכר עירונית עם מזרקה. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "הירייה, קרית ים",

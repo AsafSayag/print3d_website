@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:150 של פרויקט אאורה, נתניה — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:150 של פרויקט אאורה בנתניה: אשכול מגדלי מגורים ובנייני בוטיק, רחוב ראשי וכיכר, חצר פנימית ותאורת LED חמה. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אאורה, נתניה",

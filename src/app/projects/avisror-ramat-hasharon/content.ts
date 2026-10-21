@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:150 של פרויקט אביסרור, רמת השרון — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:150 של פרויקט אביסרור ברמת השרון: שני אגפי מגורים סביב חצר משותפת, רמפה לחניון ופיתוח סביבתי מלא. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אביסרור, רמת השרון",

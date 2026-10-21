@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:200 של פרויקט המגורים פרשקובסקי, רמת הנשיא — מגדלי מגורים, חורש טבעי ופיתוח נוף";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:200 של פרויקט פרשקובסקי ברמת הנשיא: שדרת מגדלי מגורים, חורש טבעי, פארק שכונתי ומגרשי ספורט. מוצג בוויטרינה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "פרשקובסקי, רמת הנשיא",

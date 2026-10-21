@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:200 של פרויקט המגורים אזורים, בית הכרם — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:200 של פרויקט אזורים בבית הכרם: מגדל מגורים מעל קומות בסיס מזוגגות, פארק מדורג עם טרסות אבן ותאורת LED. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אזורים, בית הכרם",

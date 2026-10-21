@@ -37,6 +37,30 @@ export const CONTACT = {
   whatsappNumber: "972537247958",
 } as const;
 
+/**
+ * The business's public social profiles. They feed the site-wide structured
+ * data's `sameAs`, which is how search engines and AI assistants tie these
+ * accounts to Print3D as one entity. Public page URLs only — never an
+ * admin/dashboard link, which is what the LinkedIn address bar shows to a
+ * page admin.
+ */
+export const SOCIAL_PROFILES = {
+  linkedin: "https://www.linkedin.com/company/145233673/",
+  instagram: "https://www.instagram.com/print3d.israel/",
+  facebook: "https://www.facebook.com/profile.php?id=61594742918778",
+} as const;
+
+/**
+ * Opening hours. `days` (schema.org day names) feeds the LocalBusiness
+ * structured data; `daysLabel` is the same range in Hebrew, for text.
+ */
+export const BUSINESS_HOURS = {
+  days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+  daysLabel: "א׳–ה׳",
+  opens: "09:00",
+  closes: "18:00",
+} as const;
+
 /** Brand palette — mirrors the CSS variables declared in globals.css. */
 export const COLORS = {
   navy950: "#0E1A2C",

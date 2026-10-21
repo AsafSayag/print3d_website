@@ -14,6 +14,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט מגורים סלע ביתר בחדרה — הדפסת תלת מימד וחיתוך לייזר";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט סלע ביתר בחדרה: שני מגדלי מגורים, תשתית עירונית מלאה ותאורת LED בכל הדירות. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "סלע ביתר, חדרה",

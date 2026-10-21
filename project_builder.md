@@ -199,10 +199,16 @@ track is intentional before shipping. Videos never enter the hero carousel.
    homepage — it must never be left at full source resolution (this has
    happened before: a project shipped with a 3024×4032, ~2MB "thumbnail").
 3. **Create `src/app/projects/<slug>/`:**
-   - `content.ts` — exports `SEO_TITLE_TAG`, `IMAGE_ALT`, `HERO` (with
-     `eyebrow`, `title`, `scale`), **`SPEC_BG`**, `SpecRow` type, `SPECS`,
-     `ABOUT` (if used), `GALLERY_ITEMS`, `HERO_SLIDES` (per the rule above).
-     Copy the shape from `dafna-tidhar/content.ts`.
+   - `content.ts` — exports `SEO_TITLE_TAG`, `IMAGE_ALT`, `META_DESCRIPTION`,
+     `HERO` (with `eyebrow`, `title`, `scale`), **`SPEC_BG`**, `SpecRow` type,
+     `SPECS`, `ABOUT` (if used), `GALLERY_ITEMS`, `HERO_SLIDES` (per the rule
+     above). Copy the shape from `dafna-tidhar/content.ts`.
+
+     **`META_DESCRIPTION` is written for the page, not copied from
+     `IMAGE_ALT`.** It is the snippet under the title in Google: 140–160
+     characters, built from the project's own `SPECS` — scale, place, two or
+     three standout elements from אלמנטים במודל, then the ייעוד (e.g. "נבנה
+     לתצוגה במשרד המכירות."). State only what the page shows.
 
      **No image paths are written by hand.** The only per-project image input is
      the asset folder name passed to `projectImages()`; everything else is
@@ -221,9 +227,12 @@ track is intentional before shipping. Videos never enter the hero carousel.
      from `../content` itself, so it takes no props. The hero (`HeroSlider`) and
      its scroll cue (`ScrollHint`) are **shared** — import `HeroSlider` from
      `@/components/project/HeroSlider`; do not copy them per project.
-   - `page.tsx` — a plain server component: `Header` + `ProjectView`, with
-     `metadata` from `SEO_TITLE_TAG` / `IMAGE_ALT`. (`shbiro` passes
-     `<Header transparent />` so the dark carousel reads under the header.)
+   - `page.tsx` — calls `createProjectPage` (`src/lib/projectPage.tsx`) with
+     `slug`, `title: SEO_TITLE_TAG`, `description: META_DESCRIPTION`,
+     `specs: SPECS`, `images: HERO_SLIDES` and the view. That one call gives
+     the page its metadata, the hidden-project 404 guard, and its structured
+     data (the model as a CreativeWork + breadcrumbs) — copy any existing
+     project's `page.tsx` and change the slug.
 4. **Register the project** in both catalog sources, plus the slug reference:
    - `src/lib/portfolioContent.ts` — add to `PORTFOLIO_PROJECTS`
      (`id`, `title`, `client`, `scale`, `type`, `image`, `href`).

@@ -13,6 +13,10 @@ export const SEO_TITLE_TAG =
 export const IMAGE_ALT =
   "מודל אדריכלי בקנה מידה 1:100 של פרויקט המגורים אבני דרך, בית שמש — הדפסת תלת מימד, חיפוי אבן וגגות רעפים";
 
+/** The page's meta description — its snippet in search results. */
+export const META_DESCRIPTION =
+  "מודל אדריכלי בקנה מידה 1:100 של פרויקט אבני דרך בבית שמש: בנייני מגורים על מדרון עם קירות תמך וטרסות, רחוב ראשי ושביל אופניים. נבנה לתצוגה במשרד המכירות.";
+
 export const HERO = {
   eyebrow: "",
   title: "אבני דרך, בית שמש",
