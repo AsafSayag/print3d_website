@@ -105,7 +105,17 @@ export function Services() {
           ))}
         </ul>
 
-        <div className="mt-9 text-center">
+        <div className="mt-9 flex flex-col items-center justify-center gap-4 text-center sm:flex-row sm:gap-8">
+          <Link
+            href="/services/architectural-models"
+            className="wb-catalog-link"
+            {...analyticsAttrs("cta_click", {
+              cta_name: "architectural_models_service",
+              location: "home_services",
+            })}
+          >
+            איך אנחנו מייצרים מודלים אדריכליים
+          </Link>
           <Link
             href="/projects"
             className="wb-catalog-link"

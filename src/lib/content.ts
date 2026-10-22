@@ -454,6 +454,7 @@ export const FOOTER = {
         { label: "בית", href: "/" },
         { label: "אודות", href: "/about" },
         { label: "שירותים", href: "#services" },
+        { label: "ייצור מודלים אדריכליים", href: "/services/architectural-models" },
         { label: "לקוחות", href: "#clients" },
         { label: "קטלוג", href: "/projects" },
       ],
