@@ -157,6 +157,7 @@ function attributionRows(a: Attribution): [string, string][] {
   if (a.utm_content) rows.push(["מודעה", a.utm_content]);
   if (a.utm_source || a.utm_medium)
     rows.push(["מקור / מדיום", [a.utm_source, a.utm_medium].filter(Boolean).join(" / ")]);
+  if (a.search_referrer) rows.push(["מנוע חיפוש מפנה", a.search_referrer]);
   const clickId = a.gclid || a.gbraid || a.wbraid;
   if (clickId) rows.push(["מזהה קליק (Google Ads)", clickId]);
   return rows;
@@ -255,7 +256,7 @@ async function appendToSheet(lead: {
   email: string;
   project: string;
   source: string;
-  /** "ממומן" / "אורגני" — the sheet's "מקור" column. */
+  /** "ממומן" / "אורגני" / "לא ידוע" — the sheet's "מקור" column. */
   channel: string;
   receivedAt: string;
   receivedAtIso: string;

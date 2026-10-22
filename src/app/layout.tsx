@@ -101,6 +101,8 @@ export default function RootLayout({
       lang="he"
       dir="rtl"
       data-scroll-behavior="smooth"
+      // Reveal and consent scripts add classes before React hydrates.
+      suppressHydrationWarning
       className={`${openSans.variable} ${assistant.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">

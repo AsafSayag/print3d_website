@@ -27,16 +27,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const entry = (
     path: string,
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
-    priority: number
+    priority: number,
+    lastModified = LAST_MODIFIED,
   ): MetadataRoute.Sitemap[number] => ({
     url: `${base}${path}`,
-    lastModified: LAST_MODIFIED,
+    lastModified,
     changeFrequency,
     priority,
   });
 
   const staticPages: MetadataRoute.Sitemap = [
-    entry("/", "weekly", 1),
+    entry("/", "weekly", 1, "2026-10-22"),
+    entry("/services/architectural-models", "monthly", 0.9, "2026-10-22"),
     entry("/about", "monthly", 0.7),
     entry("/contact", "yearly", 0.6),
     entry("/projects", "weekly", 0.9),

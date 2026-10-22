@@ -1,5 +1,5 @@
 /**
- * Ad-click attribution — which ad / campaign / keyword brought a lead.
+ * Lead attribution — ad click parameters and a verified organic-search referrer.
  *
  * When a visitor lands from a Google Ads click the URL carries a click id
  * (`gclid`, or `gbraid`/`wbraid` on iOS) and, if the campaign is tagged, UTM
@@ -15,7 +15,7 @@
  * used by the API route to validate what arrives.
  */
 
-export const ATTRIBUTION_KEYS = [
+const URL_ATTRIBUTION_KEYS = [
   "gclid",
   "gbraid",
   "wbraid",
@@ -26,6 +26,8 @@ export const ATTRIBUTION_KEYS = [
   "utm_content",
 ] as const;
 
+export const ATTRIBUTION_KEYS = [...URL_ATTRIBUTION_KEYS, "search_referrer"] as const;
+
 export type AttributionKey = (typeof ATTRIBUTION_KEYS)[number];
 export type Attribution = Partial<Record<AttributionKey, string>>;
 
@@ -35,6 +37,21 @@ const MAX_VALUE_LENGTH = 200;
 /** Click ids and UTM values are URL tokens — letters (any script, so Hebrew
  *  campaign names pass), digits and a few separators. Anything else is dropped. */
 const VALUE_RE = /^[\p{L}\p{N} _.\-:|+~/]+$/u;
+
+/** Search engines we can identify from the landing page's referrer host. */
+export function isOrganicSearchHost(host: string): boolean {
+  const domains = ["google.com", "google.co.il", "bing.com", "duckduckgo.com", "search.yahoo.com"];
+  return domains.some((domain) => host === domain || host.endsWith(`.${domain}`));
+}
+
+function organicSearchHost(referrer: string): string | null {
+  try {
+    const host = new URL(referrer).hostname.toLowerCase();
+    return isOrganicSearchHost(host) ? host : null;
+  } catch {
+    return null;
+  }
+}
 
 /** Keeps only known keys with short, token-shaped string values. */
 export function sanitizeAttribution(raw: unknown): Attribution {
@@ -49,13 +66,15 @@ export function sanitizeAttribution(raw: unknown): Attribution {
   return out;
 }
 
-/** Stores the current URL's attribution params, if it has any. Browser only. */
+/** Stores tagged traffic or a search referrer from the landing page. Browser only. */
 export function captureAttribution(): void {
   try {
     const params = new URLSearchParams(window.location.search);
     const found = sanitizeAttribution(
-      Object.fromEntries(ATTRIBUTION_KEYS.map((k) => [k, params.get(k)])),
+      Object.fromEntries(URL_ATTRIBUTION_KEYS.map((k) => [k, params.get(k)])),
     );
+    const searchReferrer = organicSearchHost(document.referrer);
+    if (searchReferrer) found.search_referrer = searchReferrer;
     if (Object.keys(found).length === 0) return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ at: Date.now(), data: found }));
   } catch {
