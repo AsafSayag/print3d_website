@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -89,6 +89,22 @@ function Select({
   );
 }
 
+// The last-used filter, read from sessionStorage as an external store rather
+// than set from an effect. The server snapshot is "all", so the server and the
+// hydrating client render match; React then re-renders with the saved choice.
+// The grid sits below the fold, so that one-tick correction is unseen.
+const subscribeToNothing = () => () => {};
+function readSavedScale(): string {
+  try {
+    const saved = sessionStorage.getItem(CATALOG_SCALE_KEY);
+    if (saved && (saved === ALL || SCALES.includes(saved))) return saved;
+  } catch {
+    /* sessionStorage unavailable (private mode) — fall back to "all". */
+  }
+  return ALL;
+}
+const readServerScale = () => ALL;
+
 /**
  * Elegant, minimal filter bar (brand / scale / type) driving a project grid.
  * Filters are three plain selects — deliberately not a heavy faceted-search
@@ -96,24 +112,15 @@ function Select({
  * portfolio-card visual language as the homepage.
  */
 export function ProjectFilterGrid() {
-  const [scale, setScale] = useState<string>(ALL);
-
-  // Restore the last-used filter on mount. Kept in an effect (not a lazy state
-  // initializer) so the server/first-client render stays "all" and hydration
-  // matches; the grid sits below the fold, so the one-tick correction is unseen.
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem(CATALOG_SCALE_KEY);
-      if (saved && (saved === ALL || SCALES.includes(saved))) setScale(saved);
-    } catch {
-      /* sessionStorage unavailable (private mode / SSR) — ignore. */
-    }
-  }, []);
+  const savedScale = useSyncExternalStore(subscribeToNothing, readSavedScale, readServerScale);
+  // A choice made on this page wins over the restored one.
+  const [picked, setPicked] = useState<string | null>(null);
+  const scale = picked ?? savedScale;
 
   // Every change is persisted so the selection survives navigating into a
   // project and back.
   const changeScale = (v: string) => {
-    setScale(v);
+    setPicked(v);
     try {
       sessionStorage.setItem(CATALOG_SCALE_KEY, v);
     } catch {

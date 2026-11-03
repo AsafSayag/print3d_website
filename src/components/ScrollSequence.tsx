@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SEQUENCE } from "@/lib/constants";
 import { SEQUENCE_EYEBROW, SEQUENCE_STAGES } from "@/lib/content";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 // Source frame dimensions (desktop). Frames are encoded at the full 1920px
 // source width; these must match so the canvas caps its backing store at the
@@ -60,7 +61,7 @@ export function ScrollSequence() {
   const layoutRef = useRef({ elemTop: 0, scrollable: 0 });
 
   const [isMobile, setIsMobile] = useState(false);
-  const [reduced, setReduced] = useState(false);
+  const reduced = useReducedMotion();
   const [ready, setReady] = useState(false); // first frame painted (internal)
   // True only once the core buffer of frames is fully downloaded AND decoded
   // (img.decode() resolved). Until then a loading overlay masks the canvas so
@@ -77,7 +78,6 @@ export function ScrollSequence() {
     const onChange = () => setIsMobile(mq.matches);
     onChange();
     mq.addEventListener("change", onChange);
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     return () => mq.removeEventListener("change", onChange);
   }, []);
 

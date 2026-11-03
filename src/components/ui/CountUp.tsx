@@ -31,18 +31,11 @@ export function CountUp({
   // HTML (SEO) and shows correctly even without JS. Once the element scrolls
   // into view the animation restarts from 0 and counts up over it.
   const [value, setValue] = useState(end);
-  const [reduce, setReduce] = useState(false);
-
-  useEffect(() => {
-    setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
 
   useEffect(() => {
     if (!inView) return;
-    if (reduce) {
-      setValue(end);
-      return;
-    }
+    // Reduced motion: no count-up — the final value is already on screen.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
@@ -53,7 +46,7 @@ export function CountUp({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, reduce, end, duration]);
+  }, [inView, end, duration]);
 
   return (
     // With a Hebrew prefix the whole stat reads RTL (prefix first, number to its
