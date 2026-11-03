@@ -132,7 +132,7 @@ function GlossaryIndexCard({ term }: { term: GlossaryTerm }) {
       </p>
       <Link
         href={`/knowledge/glossary/${term.slug}`}
-        className="mt-3 inline-block text-sm font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
+        className="mt-2 inline-block py-1 text-sm font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
       >
         קראו עוד על המושג ←
       </Link>

@@ -233,9 +233,9 @@ export function LpFooter() {
           © {new Date().getFullYear()} Print3D · {CONTACT.address}
         </p>
         <nav aria-label="קישורים משפטיים" className="flex gap-5">
-          <a href="/legal/privacy" className="hover:text-white transition-colors">מדיניות פרטיות</a>
-          <a href="/legal/terms" className="hover:text-white transition-colors">תנאי שימוש</a>
-          <a href="/legal/accessibility" className="hover:text-white transition-colors">הצהרת נגישות</a>
+          <a href="/legal/privacy" className="-my-1 inline-block py-1 hover:text-white transition-colors">מדיניות פרטיות</a>
+          <a href="/legal/terms" className="-my-1 inline-block py-1 hover:text-white transition-colors">תנאי שימוש</a>
+          <a href="/legal/accessibility" className="-my-1 inline-block py-1 hover:text-white transition-colors">הצהרת נגישות</a>
         </nav>
       </div>
     </footer>
