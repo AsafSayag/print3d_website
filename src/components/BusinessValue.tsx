@@ -68,11 +68,16 @@ function ValueCard({ card }: { card: Card }) {
 function BackgroundScene() {
   return (
     <div aria-hidden="true" className="bizval-bg">
+      {/* On a phone the hero is short enough that this section's top edge is
+          in the first viewport, so Chrome would boost this ambient backdrop to
+          high priority and split the slow-link bandwidth with the hero poster
+          (the LCP image). `low` keeps it loading right away, just after it. */}
       <Image
         src="/projects/maoz-daniel-bat-yam.webp"
         alt=""
         fill
         sizes="100vw"
+        fetchPriority="low"
         className="bizval-bg-img"
       />
       <span className="bizval-bg-scrim" />
