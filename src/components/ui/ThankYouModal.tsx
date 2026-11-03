@@ -19,8 +19,8 @@ type Props = {
 export function ThankYouModal({
   open,
   onClose,
-  title = "תודה שהשארת פרטים !",
-  subtitle = "נחזור אלייך בהקדם האפשרי.",
+  title = "תודה שהשארתם פרטים!",
+  subtitle = "נחזור אליכם בהקדם האפשרי.",
 }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
