@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
      the Hebrew accessibility widget. Dev-only; has no effect in production. */
   devIndicators: false,
 
+  /* Don't advertise the framework in an `X-Powered-By` response header. */
+  poweredByHeader: false,
+
   images: {
     /* Next 16 only serves qualities on this allowlist (anything else is coerced
        to the nearest entry). 90 is for the project-page hero slider, whose
