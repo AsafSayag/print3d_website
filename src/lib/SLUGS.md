@@ -20,6 +20,7 @@ To hide a project: copy its slug, add it to `HIDDEN_PROJECT_SLUGS` in
 | `avisror-sde-dov` | אביסרור, שדה דב | אביסרור | |
 | `avney-derech-beit-shemesh` | אבני דרך, בית שמש | אבני דרך | |
 | `azorim-beit-hakerem` | אזורים, בית הכרם | אזורים | |
+| `balilius-jerusalem` | בליליוס, ירושלים | בליליוס | |
 | `bat-yam-hotel` | מלון בת ים | פרויקט מלונאות | ✅ |
 | `beit-hakerem` | בית הכרם | אלעד ישראל מגורים | |
 | `bonei-binyan-hahagana-raanana` | בוני בניין, ההגנה | בוני בניין | |
@@ -38,6 +39,7 @@ To hide a project: copy its slug, add it to `HIDDEN_PROJECT_SLUGS` in
 | `rotem-shani-beit-shemesh` | רותם שני, בית שמש | רותם שני | |
 | `rotem-shani-petach-tikva` | רותם שני, פתח תקווה | רותם שני | |
 | `sarfati-arnona-jerusalem` | צרפתי, ארנונה ירושלים | צרפתי | |
+| `sarfati-arnona-migrash-12` | צרפתי, ארנונה מגרש 12 | צרפתי | |
 | `sela-baitar-hadera` | סלע ביתר · חדרה | סלע ביתר | |
 | `sela-binui-up-town` | סלע בינוי · Up Town | סלע בינוי | |
 | `shbiro-rishon-letzion` | שבירו, ראשון לציון | שבירו | |
