@@ -3171,15 +3171,27 @@ html.a11y-motion .a11y-panel {
 @media (hover: hover) { .lp-car-arrow:hover { transform: scale(1.06); background: #f4f7fa; } }
 .lp-car-arrow:focus-visible,
 .lp-car-dot:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 3px; }
-.lp-car-dots { display: flex; align-items: center; gap: 8px; }
+.lp-car-dots { display: flex; align-items: center; }
+/* The button is a 24px tap target (WCAG target size); the visible 8px dot is
+   drawn by ::before, so the dots look the same but are easy to hit on a phone. */
 .lp-car-dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  transition: width 0.35s var(--ease-brand);
+}
+.lp-car-dot::before {
+  content: "";
   width: 8px;
   height: 8px;
   border-radius: 999px;
   background: rgba(14, 26, 44, 0.2);
   transition: width 0.35s var(--ease-brand), background 0.35s var(--ease-brand);
 }
-.lp-car-dot.is-active { width: 28px; background: var(--gold-500); }
+.lp-car-dot.is-active { width: 36px; }
+.lp-car-dot.is-active::before { width: 28px; background: var(--gold-500); }
 .lp-car-cta-lead {
   font-family: var(--font-display), sans-serif;
   font-weight: 700;

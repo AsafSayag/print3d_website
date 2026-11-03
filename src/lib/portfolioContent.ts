@@ -41,6 +41,33 @@ export type Project = {
 /** Real models from the Print3D archive — same source as Portfolio.tsx. */
 const ALL_PORTFOLIO_PROJECTS: Project[] = [
   {
+    id: "gindi-colors",
+    title: "גינדי קולורס",
+    client: "גינדי",
+    scale: "1:125",
+    type: "residential",
+    image: "/projects/gindi-colors.webp",
+    href: "/projects/gindi-colors",
+  },
+  {
+    id: "sarfati-arnona-migrash-12",
+    title: "צרפתי, ארנונה מגרש 12",
+    client: "צרפתי",
+    scale: "1:100",
+    type: "residential",
+    image: "/projects/sarfati-arnona-migrash-12.webp",
+    href: "/projects/sarfati-arnona-migrash-12",
+  },
+  {
+    id: "balilius-jerusalem",
+    title: "בליליוס, ירושלים",
+    client: "בליליוס",
+    scale: "1:150",
+    type: "residential",
+    image: "/projects/balilius-jerusalem.webp",
+    href: "/projects/balilius-jerusalem",
+  },
+  {
     id: "levinstein",
     title: "מגדלי לוינשטיין",
     client: "לוינשטיין הנדסה",

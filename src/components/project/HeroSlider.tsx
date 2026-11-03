@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,6 +13,21 @@ type Props = {
   eyebrow?: string;
   title: string;
 };
+
+// "חזרה לקטלוג" target, chosen from the catalog filter remembered in
+// sessionStorage (key mirrors ProjectFilterGrid's CATALOG_SCALE_KEY).
+const SHOWCASE_HREF = "/projects#showcase";
+const subscribeToNothing = () => () => {};
+function readCatalogHref(): string {
+  try {
+    const saved = sessionStorage.getItem("catalog:scale");
+    if (saved && saved !== "all") return "/projects#filters";
+  } catch {
+    /* ignore */
+  }
+  return SHOWCASE_HREF;
+}
+const readServerCatalogHref = () => SHOWCASE_HREF;
 
 /**
  * Full-bleed hero image slider for the project page. Crossfades between the
@@ -38,15 +53,14 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   // reached this project with an active scale filter, send them back to the
   // filter grid instead — where that selection is still applied — so their
   // filtering context is preserved. (Key mirrors ProjectFilterGrid's.)
-  const [catalogHref, setCatalogHref] = useState("/projects#showcase");
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("catalog:scale");
-      if (saved && saved !== "all") setCatalogHref("/projects#filters");
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  // Read from sessionStorage as an external store: the server snapshot keeps
+  // the server and hydrating client renders identical, then React re-renders
+  // with the stored value.
+  const catalogHref = useSyncExternalStore(
+    subscribeToNothing,
+    readCatalogHref,
+    readServerCatalogHref,
+  );
 
   // Title placement: it starts large & vertically centered (settled=false),
   // then after a short hold settles up to the small top-middle position.

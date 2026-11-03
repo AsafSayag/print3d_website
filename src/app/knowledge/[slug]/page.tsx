@@ -175,7 +175,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-[color:var(--ink-950)]/70 hover:text-[color:var(--gold-700)]"
+                    className="-my-1 inline-block py-1 text-[color:var(--ink-950)]/70 hover:text-[color:var(--gold-700)]"
                   >
                     {link.label}
                   </Link>

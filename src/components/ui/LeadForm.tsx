@@ -97,7 +97,13 @@ export function LeadForm({
     e.preventDefault();
     const found = validate(values, emailOptional);
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
+    if (Object.keys(found).length > 0) {
+      // Take the visitor straight to the first problem — on a phone the error
+      // can sit above the fold while the submit button is in view.
+      const first = (["name", "phone", "email"] as const).find((k) => found[k]);
+      if (first) document.getElementById(`field-${CONTACT_CTA.fields[first]}`)?.focus();
+      return;
+    }
     setStatus("sending");
     try {
       await submitLead({ ...values, source, attribution: readAttribution() });
@@ -187,7 +193,7 @@ export function LeadForm({
       <div className="sm:col-span-2">
         <label htmlFor="lead-project" className="block mb-2 text-sm font-semibold text-white/85">
           {CONTACT_CTA.fields.project}{" "}
-          <span className="font-normal text-white/40">(רשות)</span>
+          <span className="font-normal text-white/60">(רשות)</span>
         </label>
         <textarea
           id="lead-project"
@@ -243,7 +249,7 @@ function Field({
         {optional && (
           <>
             {" "}
-            <span className="font-normal text-white/40">(רשות)</span>
+            <span className="font-normal text-white/60">(רשות)</span>
           </>
         )}
       </label>

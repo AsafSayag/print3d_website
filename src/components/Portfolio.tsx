@@ -17,6 +17,27 @@ const PROJECTS: {
   href?: string;
 }[] = [
   {
+    src: "/projects/gindi-colors.webp",
+    title: "גינדי קולורס",
+    scale: "1:125",
+    span: "",
+    href: "/projects/gindi-colors",
+  },
+  {
+    src: "/projects/sarfati-arnona-migrash-12.webp",
+    title: "צרפתי, ארנונה מגרש 12",
+    scale: "1:100",
+    span: "",
+    href: "/projects/sarfati-arnona-migrash-12",
+  },
+  {
+    src: "/projects/balilius-jerusalem.webp",
+    title: "בליליוס, ירושלים",
+    scale: "1:150",
+    span: "",
+    href: "/projects/balilius-jerusalem",
+  },
+  {
     src: "/projects/gindi_kfar_azar.webp",
     title: 'גינדי כפר אז"ר',
     scale: "1:100",

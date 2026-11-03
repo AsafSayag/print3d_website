@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CONTACT } from "@/lib/constants";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
-import { blogArticleSlugs } from "./knowledge/content";
+import { blogArticleSlugs, getBlogArticle } from "./knowledge/content";
 import { glossaryTermSlugs } from "./knowledge/glossary";
 
 /**
@@ -37,13 +37,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   const staticPages: MetadataRoute.Sitemap = [
-    entry("/", "weekly", 1, "2026-10-22"),
+    entry("/", "weekly", 1, "2026-11-03"),
     entry("/services/architectural-models", "monthly", 0.9, "2026-10-22"),
     entry("/about", "monthly", 0.7),
     entry("/contact", "yearly", 0.6),
-    entry("/projects", "weekly", 0.9),
-    entry("/knowledge", "weekly", 0.9),
-    entry("/knowledge/articles", "weekly", 0.8),
+    entry("/projects", "weekly", 0.9, "2026-11-03"),
+    entry("/knowledge", "weekly", 0.9, "2026-11-03"),
+    entry("/knowledge/articles", "weekly", 0.8, "2026-11-03"),
     entry("/knowledge/glossary", "weekly", 0.8),
     entry("/faq", "monthly", 0.6),
     entry("/legal", "yearly", 0.3),
@@ -55,8 +55,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const projects = PROJECT_PATHS.map((path) => entry(path, "monthly", 0.7));
 
+  // Each article carries its own update date, so a new or edited article tells
+  // Google it changed without bumping every other entry.
   const articles = blogArticleSlugs().map((slug) =>
-    entry(`/knowledge/${slug}`, "monthly", 0.8)
+    entry(`/knowledge/${slug}`, "monthly", 0.8, getBlogArticle(slug)?.updatedDate)
   );
 
   const glossary = glossaryTermSlugs().map((slug) =>

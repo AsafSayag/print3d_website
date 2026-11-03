@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import { CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
@@ -17,13 +16,28 @@ import "./globals.css";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-/* Display — Open Sans Bold for all headings */
-const openSans = Open_Sans({
+/* Display — Open Sans for all headings, self-hosted like Assistant below.
+   Files vendored from @fontsource-variable/open-sans 5.3.0 (OFL-licensed); see
+   src/fonts/open-sans/OFL.txt. Importing that package's CSS directly broke in
+   `next dev`: Turbopack rewrote its url()s to /static/media/… (no /_next
+   prefix), so the Hebrew face 404'd and headings fell back to sans-serif.
+   One variable file per subset covers every heading weight (300–800). */
+const openSans = localFont({
   variable: "--font-display",
-  subsets: ["hebrew", "latin"],
-  weight: ["600", "700"],
   display: "swap",
   preload: true,
+  src: [
+    {
+      path: "../fonts/open-sans/open-sans-hebrew-wght-normal.woff2",
+      weight: "300 800",
+      style: "normal",
+    },
+    {
+      path: "../fonts/open-sans/open-sans-latin-wght-normal.woff2",
+      weight: "300 800",
+      style: "normal",
+    },
+  ],
 });
 
 /* Body & UI — self-hosted (Google Fonts CDN for Assistant started 404ing on

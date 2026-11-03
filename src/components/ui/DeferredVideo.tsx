@@ -1,9 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 // Phones get the `-mobile` poster cut (see the <picture> below).
 const POSTER_MOBILE_QUERY = "(max-width: 767px)";
+
+// Whether the window `load` event has fired, read as an external store so an
+// already-loaded page needs no setState inside an effect. The server snapshot
+// is `false`, matching the first client render during hydration.
+const subscribeToLoad = (onChange: () => void) => {
+  window.addEventListener("load", onChange);
+  return () => window.removeEventListener("load", onChange);
+};
+const isPageLoaded = () => document.readyState === "complete";
+const isPageLoadedOnServer = () => false;
 
 type Source = { src: string; type: string };
 
@@ -69,7 +79,9 @@ export function DeferredVideo({
   const [load, setLoad] = useState(false);
   // Gate that holds the video's bytes until the LCP poster is painted. Only
   // meaningful in `priority` (hero) mode; for ambient videos it opens at mount.
-  const [posterReady, setPosterReady] = useState(!priority);
+  const pageLoaded = useSyncExternalStore(subscribeToLoad, isPageLoaded, isPageLoadedOnServer);
+  const [loadTimedOut, setLoadTimedOut] = useState(false);
+  const posterReady = !priority || pageLoaded || loadTimedOut;
 
   // Proximity gate. Polls until the element is within ~2 viewports, then flips
   // `load` on for good. `active` lets a carousel hold non-neighbour slides back:
@@ -126,19 +138,10 @@ export function DeferredVideo({
   // where `load` is delayed. The poster is already showing, so the deferred clip
   // just fades in a beat later.
   useEffect(() => {
-    if (!priority) return;
-    if (document.readyState === "complete") {
-      setPosterReady(true);
-      return;
-    }
-    const done = () => setPosterReady(true);
-    window.addEventListener("load", done, { once: true });
-    const t = window.setTimeout(done, 5000);
-    return () => {
-      window.removeEventListener("load", done);
-      window.clearTimeout(t);
-    };
-  }, [priority]);
+    if (!priority || pageLoaded) return;
+    const t = window.setTimeout(() => setLoadTimedOut(true), 5000);
+    return () => window.clearTimeout(t);
+  }, [priority, pageLoaded]);
 
   // Sources were just attached — load and start the loop. Waits for both the
   // proximity gate (`load`) and, in hero mode, the poster gate (`posterReady`).
