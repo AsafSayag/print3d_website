@@ -26,15 +26,13 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
         תוכן העניינים
       </h2>
       <ol className="mt-4 space-y-2.5">
-        {entries.map((entry, i) => (
+        {entries.map((entry) => (
           <li key={entry.id} className="flex gap-3 leading-snug">
+            {/* Plain bullet — the list never shows zero-padded numbers. */}
             <span
-              className="num shrink-0 pt-[2px] text-sm font-bold text-[color:var(--gold-500)]"
-              dir="ltr"
+              className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--gold-500)]"
               aria-hidden="true"
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
+            />
             <a
               href={`#${entry.id}`}
               className="text-[color:var(--ink-950)]/80 transition-colors hover:text-[color:var(--gold-700)]"

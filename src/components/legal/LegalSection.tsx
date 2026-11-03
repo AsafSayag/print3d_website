@@ -6,25 +6,14 @@ import type { LegalBlock, LegalSectionData } from "@/lib/legal";
  * followed by its content blocks. `scroll-mt` keeps the heading clear of the
  * fixed header when navigated to via an in-page anchor.
  */
-export function LegalSection({
-  section,
-  index,
-}: {
-  section: LegalSectionData;
-  index: number;
-}) {
+export function LegalSection({ section }: { section: LegalSectionData }) {
   return (
     <section
       id={section.id}
       className="scroll-mt-28 md:scroll-mt-32 pt-10 first:pt-0"
     >
       <Reveal>
-        <h2 className="h3 heading-accent">
-          <span className="text-[color:var(--gold-700)] num me-2 text-base font-[var(--font-num)]">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          {section.title}
-        </h2>
+        <h2 className="h3 heading-accent">{section.title}</h2>
         <div className="legal-prose mt-5">
           {section.blocks.map((block, i) => (
             <Block key={i} block={block} />

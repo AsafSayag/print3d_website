@@ -63,8 +63,8 @@ export function LegalLayout({ doc }: { doc: LegalDoc }) {
                   <LegalTableOfContents items={tocItems} variant="mobile" />
                 </div>
 
-                {doc.sections.map((section, i) => (
-                  <LegalSection key={section.id} section={section} index={i} />
+                {doc.sections.map((section) => (
+                  <LegalSection key={section.id} section={section} />
                 ))}
 
                 <LegalNavigation prev={prev} next={next} />

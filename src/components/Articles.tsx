@@ -77,15 +77,6 @@ export function Articles() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
                     />
-                    {/* Bottom gradient only — keeps the white number legible
-                        without washing the photo in colour. */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)",
-                      }}
-                    />
                     {/* Small icon badge — a neutral dark disc keeps it legible
                         over any part of the photo, no colour tint involved. */}
                     <span
@@ -104,12 +95,6 @@ export function Articles() {
                       >
                         <path d={art.icon} />
                       </svg>
-                    </span>
-                    <span
-                      className="absolute bottom-3 start-4 num text-white/80 text-4xl font-bold"
-                      dir="ltr"
-                    >
-                      {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <div className="p-5 flex flex-col gap-3 flex-1">
