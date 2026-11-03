@@ -17,6 +17,13 @@ const PROJECTS: {
   href?: string;
 }[] = [
   {
+    src: "/projects/gindi-colors.webp",
+    title: "גינדי קולורס",
+    scale: "1:125",
+    span: "",
+    href: "/projects/gindi-colors",
+  },
+  {
     src: "/projects/gindi_kfar_azar.webp",
     title: 'גינדי כפר אז"ר',
     scale: "1:100",

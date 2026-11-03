@@ -24,6 +24,7 @@ To hide a project: copy its slug, add it to `HIDDEN_PROJECT_SLUGS` in
 | `beit-hakerem` | בית הכרם | אלעד ישראל מגורים | |
 | `bonei-binyan-hahagana-raanana` | בוני בניין, ההגנה | בוני בניין | |
 | `dafna-tidhar` | תדהר דפנה | תדהר | |
+| `gindi-colors` | גינדי קולורס | גינדי | |
 | `gindi-kfar-azar` | גינדי כפר אז"ר | גינדי | |
 | `guy-doron-levy-ramat-efal` | גיא דורון לוי, רמת אפעל | גיא דורון לוי | ✅ |
 | `guy-doron-levy-tsur-hadassa` | גיא דורון לוי, צור הדסה | גיא דורון לוי | ✅ |

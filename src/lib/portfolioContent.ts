@@ -41,6 +41,15 @@ export type Project = {
 /** Real models from the Print3D archive — same source as Portfolio.tsx. */
 const ALL_PORTFOLIO_PROJECTS: Project[] = [
   {
+    id: "gindi-colors",
+    title: "גינדי קולורס",
+    client: "גינדי",
+    scale: "1:125",
+    type: "residential",
+    image: "/projects/gindi-colors.webp",
+    href: "/projects/gindi-colors",
+  },
+  {
     id: "levinstein",
     title: "מגדלי לוינשטיין",
     client: "לוינשטיין הנדסה",
