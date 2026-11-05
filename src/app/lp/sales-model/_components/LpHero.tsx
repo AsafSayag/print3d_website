@@ -1,6 +1,6 @@
 import { getImageProps } from "next/image";
 import { GlassButton } from "@/components/ui/GlassButton";
-import { CONTACT } from "@/lib/constants";
+import { whatsappHref } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { LP_HERO, LP_LOCATION } from "../content";
 
@@ -11,7 +11,7 @@ import { LP_HERO, LP_LOCATION } from "../content";
  * 0.35s) so the CTAs arrive with the headline, not a second after it.
  */
 export function LpHero() {
-  const waHref = `https://wa.me/${CONTACT.whatsappNumber}`;
+  const waHref = whatsappHref();
 
   // Art direction: phones get a portrait crop of the photo (the strip a
   // portrait hero actually shows at object-position 30% — see
@@ -94,6 +94,7 @@ export function LpHero() {
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${LP_HERO.secondaryCta} (נפתח בחלון חדש)`}
               className="lp-cta-lg lp-cta-dark lp-cta-alt"
               {...analyticsAttrs("whatsapp_click", { location: `${LP_LOCATION}_hero` })}
             >

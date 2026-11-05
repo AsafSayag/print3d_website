@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+/* Element defaults. Inside @layer base so any utility class still overrides. */
+@layer base {
+  /* Tailwind v4's preflight sets buttons to cursor:default. Every button here
+     is an action (FAQ toggles, carousel arrows and dots, gallery zoom), so
+     show the hand like links do. */
+  button:not(:disabled),
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  /* Keep a lone word off a heading's last line ("…הבא / שלכם"), and give
+     paragraphs a less ragged last line. Both are progressive enhancements. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
 /* ============================================================
    Print3D — Design tokens
    ============================================================ */
@@ -217,7 +239,9 @@ html.reveal-armed [data-reveal]:not([data-revealed]) {
   font-family: var(--font-body), sans-serif;
   font-weight: 600;
   font-size: 0.8125rem;
-  letter-spacing: 0.14em;
+  /* Hebrew has no capitals, so wide caps-style tracking (was 0.14em) pulls
+     the letters of a word apart ("ג ל ר י ה"). Keep it barely open. */
+  letter-spacing: 0.02em;
 }
 
 /* Hero H1 — sized up on small screens for presence; allowed to wrap since it
@@ -2993,7 +3017,7 @@ html.a11y-motion .a11y-panel {
 .lp-step-kicker {
   font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.02em; /* see .eyebrow: wide tracking breaks Hebrew words apart */
   color: var(--steel-300);
 }
 .lp-step-media {
@@ -3192,6 +3216,7 @@ html.a11y-motion .a11y-panel {
 }
 .lp-car-dot.is-active { width: 36px; }
 .lp-car-dot.is-active::before { width: 28px; background: var(--gold-500); }
+.lp-car-dot:not(.is-active):hover::before { background: rgba(14, 26, 44, 0.45); }
 .lp-car-cta-lead {
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
@@ -3276,6 +3301,8 @@ html.a11y-motion .a11y-panel {
   color: var(--ink-950);
 }
 .lp-faq summary::-webkit-details-marker { display: none; }
+.lp-faq summary { transition: color 0.2s var(--ease-brand); }
+.lp-faq summary:hover { color: var(--gold-700); }
 .lp-faq summary:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; border-radius: 18px; }
 .lp-faq p {
   padding: 0 1.15rem 1rem;

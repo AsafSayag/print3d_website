@@ -254,7 +254,7 @@ const WHO_NEEDS_ARTICLE: BlogArticle = {
   relatedLinks: [
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מתכננים פרויקט חדש?",
@@ -570,7 +570,7 @@ const MATERIALS_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "תהליך העבודה", href: "/#process" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מחפשים מודל אדריכלי ברמת גימור גבוהה?",
@@ -840,7 +840,7 @@ const PRODUCTION_TIME_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "תהליך העבודה", href: "/#process" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מתלבטים באיזה קנה מידה לבחור?",
@@ -1068,7 +1068,7 @@ const WHY_STILL_MATTER_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "פרויקטים", href: "/projects" },
     { label: "תהליך העבודה", href: "/#process" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מתכננים להציג פרויקט חדש?",
@@ -1372,7 +1372,7 @@ const PRODUCTION_PROCESS_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "פרויקטים", href: "/projects" },
     { label: "מאמרים נוספים", href: "/knowledge" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "רוצים להפוך את הפרויקט שלכם למודל מרשים?",
@@ -1612,7 +1612,7 @@ const MODEL_COST_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "פרויקטים", href: "/projects" },
     { label: "תהליך העבודה", href: "/#process" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "רוצים לדעת כמה יעלה המודל האדריכלי לפרויקט שלכם?",
@@ -1960,7 +1960,7 @@ const MARKETING_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "איך לבחור חברה לייצור מודלים", href: "/knowledge/how-to-choose-architectural-model-company" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "רוצים מודל שיווקי שממש מוכר?",
@@ -2314,7 +2314,7 @@ const CHOOSE_COMPANY_ARTICLE: BlogArticle = {
     { label: "מודלים אדריכליים", href: "/#services" },
     { label: "מודלים לשיווק נדל״ן", href: "/knowledge/architectural-models-real-estate-marketing" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מחפשים שותף מקצועי לייצור מודל אדריכלי?",
@@ -2625,7 +2625,7 @@ const INCREASE_SALES_ARTICLE: BlogArticle = {
     { label: "מודלים למשרדי מכירות", href: "/services/architectural-models" },
     { label: "מודל אדריכלי בשיווק נדל״ן", href: "/knowledge/architectural-models-real-estate-marketing" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "פותחים משרד מכירות לפרויקט חדש?",
@@ -2886,7 +2886,7 @@ const AI_ERA_ARTICLE: BlogArticle = {
     { label: "למה מודל אדריכלי עדיין חיוני", href: "/knowledge/why-architectural-models-still-matter" },
     { label: "מודלים אדריכליים", href: "/services/architectural-models" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "רוצים להציג משהו שאי אפשר להפיק בלחיצת כפתור?",
@@ -3149,7 +3149,7 @@ const OFF_PLAN_ARTICLE: BlogArticle = {
     { label: "איך להגדיל מכירות בפרויקט נדל״ן", href: "/knowledge/how-to-increase-real-estate-project-sales" },
     { label: "מודלים למשרדי מכירות", href: "/services/architectural-models" },
     { label: "פרויקטים", href: "/projects" },
-    { label: "צור קשר", href: "/contact" },
+    { label: "צרו קשר", href: "/contact" },
   ],
   cta: {
     title: "מוכרים פרויקט שעוד לא נבנה?",

@@ -20,14 +20,18 @@ export default function NotFound() {
           <p className="error-code legal-rise" aria-hidden="true">
             404
           </p>
+          {/* Copy is "not found", not the error boundary's "try again later":
+              a visitor here followed a stale or mistyped link (the site moved
+              /blog → /knowledge and /portfolio → /projects), so the page says
+              so and offers the main destinations instead of a retry. */}
           <h1 className="h2 text-white mt-2 legal-rise" style={{ animationDelay: "0.1s" }}>
-            סליחה, משהו לא עבר תקין בתהליך
+            הדף שחיפשתם לא נמצא
           </h1>
           <p
             className="text-white/70 text-lg mt-5 leading-relaxed legal-rise"
             style={{ animationDelay: "0.18s" }}
           >
-            מוזמנים לנסות שוב מאוחר יותר, או לפנות אלינו בטלפון{" "}
+            ייתכן שהקישור השתנה או שהדף הועבר. אפשר להמשיך לאחד הדפים המרכזיים, או להתקשר אלינו{" "}
             <a
               href={CONTACT.mobilePhoneHref}
               dir="ltr"
@@ -48,15 +52,11 @@ export default function NotFound() {
             <GlassButton href="/" variant="primary">
               חזרה לעמוד הבית
             </GlassButton>
-            <GlassButton
-              href={CONTACT.mobilePhoneHref}
-              variant="secondary"
-              {...analyticsAttrs("phone_click", {
-                location: "not_found_page",
-                phone_type: "mobile",
-              })}
-            >
-              חייגו אלינו
+            <GlassButton href="/projects" variant="secondary">
+              לכל הפרויקטים
+            </GlassButton>
+            <GlassButton href="/services/architectural-models" variant="secondary">
+              ייצור מודלים אדריכליים
             </GlassButton>
           </div>
         </div>

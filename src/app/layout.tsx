@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { CONTACT } from "@/lib/constants";
+import { COLORS, CONTACT } from "@/lib/constants";
 import { JsonLd } from "@/components/JsonLd";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
@@ -74,6 +74,12 @@ const assistant = localFont({
 const SITE_TITLE = "Print3D — מודלים אדריכליים פיזיים לפרויקטי נדל״ן";
 const SITE_DESCRIPTION =
   "Print3D מייצרת מודלים אדריכליים פיזיים ברמת גימור יוצאת דופן לפרויקטי נדל״ן — טכנולוגיות ייצור מתקדמות וגימור יד אומן, כבר יותר מ-15 שנה.";
+
+/** Tints the mobile browser bar with the brand navy. Icons come from the
+ *  file conventions in this folder: icon.png, apple-icon.png, favicon.ico. */
+export const viewport: Viewport = {
+  themeColor: COLORS.navy950,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONTACT.siteUrl),

@@ -15,7 +15,7 @@ import { buildPageMeta } from "@/lib/pageMeta";
 import { PORTFOLIO_HERO } from "@/lib/portfolioContent";
 
 export const metadata: Metadata = buildPageMeta({
-  title: "קטלוג",
+  title: "פרויקטים: מודלים אדריכליים ליזמי נדל״ן",
   description: PORTFOLIO_HERO.subtitle,
   path: "/projects",
 });

@@ -31,13 +31,13 @@ export function Faq() {
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between gap-4 py-5 text-start"
+                    className="group w-full flex items-center justify-between gap-4 py-5 text-start"
                   >
-                    <span className="font-display text-lg md:text-xl text-[color:var(--ink-950)]">
+                    <span className="font-display text-lg md:text-xl text-[color:var(--ink-950)] transition-colors group-hover:text-[color:var(--gold-700)]">
                       {item.q}
                     </span>
                     <span
-                      className="shrink-0 grid place-items-center w-8 h-8 rounded-full border border-black/15 text-[color:var(--gold-700)] transition-transform duration-300"
+                      className="shrink-0 grid place-items-center w-8 h-8 rounded-full border border-black/15 text-[color:var(--gold-700)] transition-[transform,border-color] duration-300 group-hover:border-[color:var(--gold-500)]"
                       style={{ transform: isOpen ? "rotate(45deg)" : "none" }}
                       aria-hidden="true"
                     >

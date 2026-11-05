@@ -37,19 +37,24 @@ export const CONTACT = {
   whatsappNumber: "972537247958",
 } as const;
 
+/** First message pre-filled in every WhatsApp chat the site opens, so the
+ *  visitor lands in a conversation that already says what they need. */
+export const WHATSAPP_TEXT = "היי, אשמח לקבל הצעת מחיר למודל אדריכלי לפרויקט שלי";
+
+/** wa.me link for the business number with the pre-filled message. */
+export const whatsappHref = (text: string = WHATSAPP_TEXT): string =>
+  `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(text)}`;
+
 /**
  * The business's public social profiles — the footer's icon links, in display
  * order, and the site-wide structured data's `sameAs`, which is how search
  * engines and AI assistants tie these accounts to Print3D as one entity.
  * Public page URLs only — never an admin/dashboard link, which is what the
  * LinkedIn address bar shows to a page admin.
+ * Facebook was removed (Nov 2026): the page showed "content isn't available"
+ * to logged-out visitors. Re-add it here only once the page is public.
  */
 export const SOCIAL_PROFILES = [
-  {
-    name: "Facebook",
-    label: "פייסבוק",
-    href: "https://www.facebook.com/profile.php?id=61594742918778",
-  },
   {
     name: "Instagram",
     label: "אינסטגרם",
@@ -90,7 +95,7 @@ export const COLORS = {
 
 /** Header navigation, right-to-left order (first item sits right-most). */
 export const NAV_ITEMS = [
-  { label: "שירותים", href: "#services" },
+  { label: "שירותים", href: "/services/architectural-models" },
   { label: "קטלוג", href: "/projects" },
   { label: "לקוחות", href: "#clients" },
   { label: "אודות", href: "/about" },

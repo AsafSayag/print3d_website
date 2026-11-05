@@ -27,10 +27,10 @@ export function ScrollHint() {
       <button
         type="button"
         onClick={handleClick}
-        aria-label="גלול לקטע הבא"
+        aria-label="גלילה לקטע הבא"
         className="flex items-center gap-3 cursor-pointer"
       >
-        <span className="eyebrow text-white/70 hidden sm:inline">SCROLL</span>
+        <span className="eyebrow text-white/70 hidden sm:inline">גלילה</span>
         <div className="h-9 w-[22px] rounded-full border border-white/40 flex justify-center pt-2">
           <span className="hint-dot block h-1.5 w-1 rounded-full bg-white/70" />
         </div>

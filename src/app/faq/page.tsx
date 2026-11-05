@@ -12,7 +12,9 @@ import { buildPageMeta } from "@/lib/pageMeta";
 import { FAQ_PAGE, FAQ_ALL, CONTACT_CTA } from "@/lib/content";
 
 export const metadata: Metadata = buildPageMeta({
-  title: FAQ_PAGE.eyebrow,
+  // The tab/search title names the topic; the short eyebrow stays for the
+  // breadcrumb and the hero label.
+  title: "שאלות נפוצות על מודלים אדריכליים",
   description: FAQ_PAGE.subtitle,
   path: "/faq",
 });

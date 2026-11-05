@@ -25,6 +25,20 @@ const breadcrumbs: Crumb[] = [
   { label: "מרכז הידע" },
 ];
 
+/** The hub is as fresh as its newest article, so "updated" (visible and in the
+ *  JSON-LD dateModified) follows the latest article instead of a fixed date. */
+const HUB_PUBLISHED = "2026-07-17";
+const HUB_UPDATED = BLOG_2.items.reduce(
+  (latest, a) => (a.updatedDate > latest ? a.updatedDate : latest),
+  HUB_PUBLISHED,
+);
+const HUB_UPDATED_LABEL = new Intl.DateTimeFormat("he-IL", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(new Date(`${HUB_UPDATED}T00:00:00Z`));
+
 export default function KnowledgePage() {
   return (
     <>
@@ -33,8 +47,8 @@ export default function KnowledgePage() {
         title={TITLE}
         description={DESCRIPTION}
         path="/knowledge"
-        publishDate="2026-07-17"
-        updatedDate="2026-07-17"
+        publishDate={HUB_PUBLISHED}
+        updatedDate={HUB_UPDATED}
         breadcrumbs={breadcrumbs}
         faq={HUB_FAQ}
       />
@@ -43,7 +57,12 @@ export default function KnowledgePage() {
       </a>
       <Header />
       <main id="main" className="flex-1">
-        <KnowledgeHub articles={[...BLOG_2.items]} terms={GLOSSARY_TERMS} faq={HUB_FAQ} />
+        <KnowledgeHub
+          articles={[...BLOG_2.items]}
+          terms={GLOSSARY_TERMS}
+          faq={HUB_FAQ}
+          updated={{ iso: HUB_UPDATED, label: HUB_UPDATED_LABEL }}
+        />
       </main>
       <Footer />
     </>

@@ -34,26 +34,23 @@ const projects = projectIds.flatMap((id) => {
 
 const useCases = [
   {
-    number: "01",
     title: "מודלים למשרדי מכירות",
     text: "הצגה מוחשית של המבנים, הפיתוח והסביבה כדי שרוכשים יוכלו להבין את הפרויקט במבט אחד.",
   },
   {
-    number: "02",
     title: "מודלים לתצוגה ומשקיעים",
     text: "מודל שמציג את הרעיון האדריכלי בלובי, במשרד או בפגישה עם שותפים ומשקיעים.",
   },
   {
-    number: "03",
     title: "מודלים עירוניים ותכנוניים",
     text: "המחשת תוכניות, מתחמים ומבני ציבור לצד ההקשר שלהם לסביבה העירונית.",
   },
 ] as const;
 
 const steps = [
-  { number: "01", title: "מבינים את הפרויקט", text: "מגדירים את מטרת המודל, קהל היעד, מקום התצוגה ורמת הפירוט הרצויה." },
-  { number: "02", title: "מתכננים את המודל", text: "עוברים על התוכניות והקבצים, בוחרים קנה מידה ומתאימים את שיטת הייצור." },
-  { number: "03", title: "מייצרים ומסיימים", text: "משלבים ייצור מדויק, הרכבה וגימור ידני, עד למסירה ולהצבה של המודל." },
+  { title: "מבינים את הפרויקט", text: "מגדירים את מטרת המודל, קהל היעד, מקום התצוגה ורמת הפירוט הרצויה." },
+  { title: "מתכננים את המודל", text: "עוברים על התוכניות והקבצים, בוחרים קנה מידה ומתאימים את שיטת הייצור." },
+  { title: "מייצרים ומסיימים", text: "משלבים ייצור מדויק, הרכבה וגימור ידני, עד למסירה ולהצבה של המודל." },
 ] as const;
 
 const questions = [
@@ -147,9 +144,8 @@ export default function ArchitecturalModelsPage() {
             <h2 id="service-uses" className="h2 heading-accent max-w-xl text-balance">המודל הנכון למקום שבו תציגו אותו</h2>
             <div className="mt-9 grid gap-4 md:grid-cols-3">
               {useCases.map((item) => (
-                <article key={item.number} className="rounded-2xl border border-[color:var(--navy-950)]/10 bg-white p-7 shadow-[0_14px_36px_-30px_rgba(10,21,38,0.4)]">
-                  <span className="font-display text-sm text-[color:var(--gold-700)]">{item.number}</span>
-                  <h3 className="h3 mt-5 text-[color:var(--navy-950)]">{item.title}</h3>
+                <article key={item.title} className="rounded-2xl border border-[color:var(--navy-950)]/10 bg-white p-7 shadow-[0_14px_36px_-30px_rgba(10,21,38,0.4)]">
+                  <h3 className="h3 text-[color:var(--navy-950)]">{item.title}</h3>
                   <p className="mt-3 leading-relaxed text-[color:var(--ink-950)]/65">{item.text}</p>
                 </article>
               ))}
@@ -189,9 +185,8 @@ export default function ArchitecturalModelsPage() {
             <h2 id="service-process" className="h2 heading-accent max-w-xl text-balance text-white">תהליך ברור, שלב אחרי שלב</h2>
             <div className="mt-9 grid gap-7 md:grid-cols-3">
               {steps.map((step) => (
-                <div key={step.number} className="border-t border-white/20 pt-5">
-                  <span className="font-display text-sm text-[color:var(--steel-300)]">{step.number}</span>
-                  <h3 className="h3 mt-4 text-white">{step.title}</h3>
+                <div key={step.title} className="border-t border-white/20 pt-5">
+                  <h3 className="h3 text-white">{step.title}</h3>
                   <p className="mt-3 leading-relaxed text-white/65">{step.text}</p>
                 </div>
               ))}
@@ -212,7 +207,7 @@ export default function ArchitecturalModelsPage() {
             <div className="space-y-3">
               {questions.map((item) => (
                 <details key={item.q} className="group rounded-2xl border border-[color:var(--navy-950)]/10 bg-white p-5 open:shadow-[0_18px_38px_-30px_rgba(10,21,38,0.3)]">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-[color:var(--navy-950)] [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-[color:var(--navy-950)] transition-colors hover:text-[color:var(--gold-700)] [&::-webkit-details-marker]:hidden">
                     {item.q}<span aria-hidden className="text-2xl leading-none text-[color:var(--gold-700)] group-open:rotate-45 transition-transform">+</span>
                   </summary>
                   <p className="mt-4 leading-relaxed text-[color:var(--ink-950)]/65">{item.a}</p>
@@ -228,7 +223,7 @@ export default function ArchitecturalModelsPage() {
               <p className="eyebrow mb-3 text-[color:var(--steel-300)]">מתחילים בפרויקט שלכם</p>
               <h2 id="service-contact-title" className="h2 heading-accent max-w-md text-balance text-white">בואו נראה מה נכון לבנות</h2>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-white/70">ספרו לנו בקצרה על הפרויקט ועל השימוש המתוכנן במודל. נחזור אליכם כדי להבין את הצורך ולהתקדם להצעה מתאימה.</p>
-              <p className="mt-7 text-sm text-white/60">מעדיפים לדבר? <a href={CONTACT.phoneHref} className="font-semibold text-white underline underline-offset-4" dir="ltr">{CONTACT.phone}</a></p>
+              <p className="mt-7 text-sm text-white/60">מעדיפים לדבר? <a href={CONTACT.phoneHref} {...analyticsAttrs("phone_click", { location: "service_contact", phone_type: "office" })} className="font-semibold text-white underline underline-offset-4" dir="ltr">{CONTACT.phone}</a></p>
             </div>
             <div className="rounded-3xl border border-white/15 bg-white/[0.04] p-6 shadow-[0_30px_70px_-40px_rgba(0,0,0,0.55)] sm:p-9">
               <h3 className="h3 mb-2 text-white">השאירו פרטים ונחזור אליכם</h3>

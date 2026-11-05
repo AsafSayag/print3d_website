@@ -1,6 +1,12 @@
 import { after, type NextRequest } from "next/server";
 import { LEAD_SOURCES, leadSourceLabel, trafficType } from "@/lib/leadSources";
 import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
+import {
+  EMAIL_RE,
+  LEAD_LIMITS,
+  formatIsraeliPhone,
+  normalizeIsraeliPhone,
+} from "@/lib/leadValidation";
 
 /**
  * Lead intake endpoint.
@@ -17,8 +23,10 @@ import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
  * their details. (Waiting for both made visitors sit through the slow Apps
  * Script webhook — 10+ seconds — before reaching the thank-you page.)
  *
- * Abuse protection: a `company` honeypot field (silently accepted, never
- * sent), a per-IP in-memory rate limit (5 requests/minute/instance), and a
+ * Abuse protection: an `hp` honeypot field (silently accepted, never sent,
+ * logged without any visitor data), a per-IP in-memory rate limit (5
+ * requests/minute/instance — a platform-level limit belongs in the Vercel
+ * Firewall, since this one doesn't span instances), and a
  * same-origin + JSON-only gate so other websites can't submit leads through
  * their visitors' browsers. Values bound for the Sheet are neutralised so a
  * visitor can't plant a spreadsheet formula.
@@ -42,20 +50,21 @@ type LeadPayload = {
   source?: unknown;
   /** Ad click id / UTMs captured on landing (see lib/attribution.ts). */
   attribution?: unknown;
-  /** Honeypot — real visitors never see or fill this field. */
-  company?: unknown;
+  /** Honeypot — real visitors never see or fill this field. Renamed from
+   *  `company`, which browser autofill filled for visitors with a saved
+   *  company name, silently dropping their lead. */
+  hp?: unknown;
 };
 
-const PHONE_RE = /^0\d{1,2}-?\d{7}$/;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Field length bounds, enforced before any data reaches Resend or the Sheet webhook.
+// Field rules (lengths, email, phone) live in lib/leadValidation.ts, shared
+// with the form so the two can't disagree again.
 const MAX_BODY_BYTES = 10 * 1024; // 10KB
-const NAME_MIN = 2;
-const NAME_MAX = 100;
-const PHONE_MAX = 20;
-const EMAIL_MAX = 254;
-const PROJECT_MAX = 1000;
+
+// Per-channel time limits. Resend normally answers in about a second; the
+// Apps Script webhook is slow (10s+ is normal) but must not hold the function
+// open indefinitely. The browser waits 30s (lib/submitLead.ts), longer than both.
+const EMAIL_TIMEOUT_MS = 10_000;
+const SHEET_TIMEOUT_MS = 25_000;
 
 // Best-effort in-memory rate limit: caps repeat submissions from the same IP.
 // Only shared across requests that land on the same warm serverless instance
@@ -67,6 +76,13 @@ const submissionsByIp = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+  // Drop IPs with no recent requests so a long-lived instance doesn't keep an
+  // entry for every address it has ever seen.
+  if (submissionsByIp.size > 1000) {
+    for (const [key, times] of submissionsByIp) {
+      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) submissionsByIp.delete(key);
+    }
+  }
   const recent = (submissionsByIp.get(ip) ?? []).filter(
     (t) => now - t < RATE_LIMIT_WINDOW_MS,
   );
@@ -226,6 +242,7 @@ async function sendEmail(lead: {
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
+    signal: AbortSignal.timeout(EMAIL_TIMEOUT_MS),
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -276,6 +293,7 @@ async function appendToSheet(lead: {
   );
   const res = await fetch(webhook, {
     method: "POST",
+    signal: AbortSignal.timeout(SHEET_TIMEOUT_MS),
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(row),
   });
@@ -316,31 +334,35 @@ export async function POST(request: NextRequest) {
 
   // Honeypot tripped — a bot filled a field real visitors never see. Report
   // success without actually sending anything, so scripts don't learn to
-  // leave it blank.
-  if (clean(body.company)) {
+  // leave it blank. Logged (count only, no visitor data) so a sudden run of
+  // these — or a real visitor being caught — shows up in the function logs.
+  if (clean(body.hp)) {
+    console.warn("[lead] honeypot tripped; submission dropped", {
+      source: leadSourceLabel(body.source),
+    });
     return Response.json({ ok: true });
   }
 
   const name = clean(body.name);
-  const phone = clean(body.phone);
+  const phoneRaw = clean(body.phone);
   const email = clean(body.email);
   const project = clean(body.project);
 
-  // Mirror the client-side validation so the endpoint is safe on its own.
-  if (
-    name.length < NAME_MIN ||
-    name.length > NAME_MAX ||
-    phone.length > PHONE_MAX ||
-    !PHONE_RE.test(phone.replace(/\s/g, ""))
-  ) {
+  // Same rules as the form (lib/leadValidation.ts), so the endpoint is safe
+  // on its own and never rejects what the form accepted.
+  const phoneDigits =
+    phoneRaw.length <= LEAD_LIMITS.phoneMax ? normalizeIsraeliPhone(phoneRaw) : null;
+  if (name.length < LEAD_LIMITS.nameMin || name.length > LEAD_LIMITS.nameMax || !phoneDigits) {
     return Response.json({ ok: false, error: "invalid_lead" }, { status: 400 });
   }
-  if (email && (email.length > EMAIL_MAX || !EMAIL_RE.test(email))) {
+  if (email && (email.length > LEAD_LIMITS.emailMax || !EMAIL_RE.test(email))) {
     return Response.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
-  if (project.length > PROJECT_MAX) {
+  if (project.length > LEAD_LIMITS.projectMax) {
     return Response.json({ ok: false, error: "invalid_project" }, { status: 400 });
   }
+  // One consistent format in the email and the sheet, however it was typed.
+  const phone = formatIsraeliPhone(phoneDigits);
 
   const now = new Date();
   const attribution = sanitizeAttribution(body.attribution);

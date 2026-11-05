@@ -9,12 +9,12 @@ import { LeadForm } from "@/components/ui/LeadForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { buildPageMeta } from "@/lib/pageMeta";
-import { CONTACT } from "@/lib/constants";
+import { BUSINESS_HOURS, CONTACT, whatsappHref } from "@/lib/constants";
 import { analyticsAttrs, type AnalyticsAttrs } from "@/lib/analytics";
 import { CONTACT_PAGE } from "@/lib/content";
 
 export const metadata: Metadata = buildPageMeta({
-  title: CONTACT_PAGE.eyebrow,
+  title: "צרו קשר והצעת מחיר למודל אדריכלי",
   description: CONTACT_PAGE.subtitle,
   path: "/contact",
 });
@@ -96,11 +96,29 @@ export default function ContactPage() {
                       })}
                     />
                     <DetailRow
+                      icon={<ChatIcon />}
+                      label={CONTACT_PAGE.labels.whatsapp}
+                      value={CONTACT.mobilePhone}
+                      href={whatsappHref()}
+                      ltr
+                      external
+                      trackAttrs={analyticsAttrs("whatsapp_click", {
+                        location: "contact_page_details",
+                      })}
+                    />
+                    <DetailRow
                       icon={<MailIcon />}
                       label={CONTACT_PAGE.labels.email}
                       value={CONTACT.email}
                       href={CONTACT.emailHref}
                       ltr
+                    />
+                    {/* Hours were only in the JSON-LD; "within a business day"
+                        means little to a visitor who can't see the days. */}
+                    <DetailRow
+                      icon={<ClockIcon />}
+                      label={CONTACT_PAGE.labels.hours}
+                      value={`${BUSINESS_HOURS.daysLabel}, ${BUSINESS_HOURS.opens}–${BUSINESS_HOURS.closes}`}
                     />
                   </ul>
                 </div>
@@ -130,6 +148,7 @@ export default function ContactPage() {
                     href={CONTACT.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${CONTACT_PAGE.map.button} (נפתח בחלון חדש)`}
                   >
                     {CONTACT_PAGE.map.button}
                   </GlassButton>
@@ -186,6 +205,7 @@ function DetailRow({
       dir={ltr ? "ltr" : undefined}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
+      aria-label={external ? `${label}: ${value} (נפתח בחלון חדש)` : undefined}
       {...trackAttrs}
       className="font-display text-lg text-[color:var(--ink-950)] hover:text-[color:var(--gold-700)] transition-colors break-words"
     >
@@ -252,6 +272,21 @@ function MailIcon() {
     <svg {...iconProps}>
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="m3.5 7 8.5 6 8.5-6" />
+    </svg>
+  );
+}
+function ChatIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.6-4.3A8.5 8.5 0 1 1 20.5 11.5Z" />
+    </svg>
+  );
+}
+function ClockIcon() {
+  return (
+    <svg {...iconProps}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
     </svg>
   );
 }

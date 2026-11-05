@@ -28,7 +28,7 @@ export function ArticleCard({
         />
       </div>
       <div className="caption mt-3 flex items-center justify-end gap-2 text-[color:var(--ink-950)]/55">
-        <span className="font-semibold uppercase tracking-[0.12em] text-[color:var(--gold-700)]">
+        <span className="font-semibold text-[color:var(--gold-700)]">
           {article.category}
         </span>
         <span aria-hidden="true">·</span>

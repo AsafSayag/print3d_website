@@ -164,7 +164,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
             aria-current={pathname === CONTACT.contactPath ? "page" : undefined}
             className="nav-link text-[15px] font-[var(--font-body)] text-white/85 hover:text-white aria-[current=page]:text-white transition-colors"
           >
-            צור קשר
+            צרו קשר
           </a>
         </nav>
 
@@ -297,7 +297,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
                 : `opacity 0.35s var(--ease-brand) ${open ? 0.05 * (NAV_ITEMS.length + 1) + 0.05 : 0}s, transform 0.35s var(--ease-brand) ${open ? 0.05 * (NAV_ITEMS.length + 1) + 0.05 : 0}s`,
             }}
           >
-            צור קשר
+            צרו קשר
           </a>
           <div className="pt-6">
             <GlassButton
