@@ -20,6 +20,11 @@
   p {
     text-wrap: pretty;
   }
+  /* A phone number must never break across lines ("053-" / "724-7958"),
+     which happened mid-sentence on the 404 page on narrow phones. */
+  a[href^="tel:"] {
+    white-space: nowrap;
+  }
 }
 
 /* ============================================================
@@ -1593,6 +1598,15 @@ html.a11y-contrast footer {
   width: max-content; /* shrink to the FAB so the panel anchors correctly */
   z-index: 60;
   transition: bottom 0.35s var(--ease-brand);
+}
+/* While the mobile menu is open (Header sets data-menu-open on <html>) the
+   floating WhatsApp and accessibility buttons step aside: on short phones
+   they sat on top of the drawer's "קבלו הצעת מחיר" button. */
+html[data-menu-open] .wa-fab,
+html[data-menu-open] .a11y-widget {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 /* ---------- Cookie notice (CookieConsent.tsx) ----------
    Deliberately small: a compact dark strip, one line on desktop, two on a
