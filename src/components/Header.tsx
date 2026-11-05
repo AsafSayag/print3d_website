@@ -87,11 +87,15 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile drawer is open.
+  // Lock body scroll while the mobile drawer is open, and flag it on <html> so
+  // the floating WhatsApp/accessibility buttons (rendered in the layout,
+  // outside this component) can hide instead of covering the drawer.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    document.documentElement.toggleAttribute("data-menu-open", open);
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.removeAttribute("data-menu-open");
     };
   }, [open]);
 
