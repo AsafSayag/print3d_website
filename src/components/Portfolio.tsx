@@ -259,13 +259,13 @@ export function Portfolio() {
             <Reveal index={2} className="lg:hidden mt-6">
               <GlassButton
                 href="/projects"
-                variant="primary"
+                variant="secondary"
                 {...analyticsAttrs("cta_click", {
                   cta_name: "view_projects",
                   location: "home_portfolio",
                 })}
               >
-                לחץ לקטלוג
+                לכל הפרויקטים
               </GlassButton>
             </Reveal>
             <Reveal index={2}>
@@ -281,13 +281,13 @@ export function Portfolio() {
             <div className="hidden lg:block mb-6">
               <GlassButton
                 href="/projects"
-                variant="primary"
+                variant="secondary"
                 {...analyticsAttrs("cta_click", {
                   cta_name: "view_projects",
                   location: "home_portfolio",
                 })}
               >
-                לחץ לקטלוג
+                לכל הפרויקטים
               </GlassButton>
             </div>
             <div className="flex items-stretch gap-8 lg:gap-10 max-md:justify-center">
@@ -369,7 +369,7 @@ export function Portfolio() {
             {...analyticsAttrs("cta_click", {
               cta_name: "view_projects",
               // Below the grid, and it lands on the catalog's filter module —
-              // a different intent from the section's "לחץ לקטלוג" buttons,
+              // a different intent from the section's "לכל הפרויקטים" buttons,
               // which already report `home_portfolio`.
               location: "home_portfolio_more",
             })}

@@ -556,5 +556,5 @@ export function getLegalDoc(slug: string): LegalDoc | undefined {
 export const LEGAL_CTA = {
   title: "יש לכם שאלה? נשמח לעזור",
   text: "הצוות שלנו כאן לכל שאלה בנוגע למסמכים, לפרטיות או לשירות. נשמח לחזור אליכם.",
-  button: "צור קשר",
+  button: "צרו קשר",
 } as const;

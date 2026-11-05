@@ -24,7 +24,7 @@ export type Stat = {
 
 export const STATS: Stat[] = [
   { value: 15, suffix: "+", label: "שנות ניסיון" },
-  { value: 250, suffix: "+", label: "פרויקטים" },
+  { value: 350, suffix: "+", label: "פרויקטים" },
   { value: null, display: "1:75–1:1000", label: "טווח קני מידה" },
   { value: null, display: "מדן ועד אילת", label: "כיסוי ארצי" },
 ];
@@ -121,9 +121,9 @@ export const BUSINESS_VALUE = {
     {
       icon: "signature",
       side: "left",
-      title: "פחות הסברים יותר חתימות",
+      title: "פחות הסברים, יותר חתימות",
       stat: "81%",
-      statLabel: "יותר בטחון",
+      statLabel: "יותר ביטחון",
       text: "המודל מחזק ביטחון ומאפשר לצוות להתמקד בסגירה",
     },
   ],
@@ -193,51 +193,13 @@ export const WHO_FOR = {
 } as const;
 
 /**
- * Homepage blog teaser — the 4 most recent articles that have full written
- * content on /knowledge (title/readingTime mirror src/app/knowledge/content.ts
- * verbatim, so clicking a card always lands on a real, complete article
- * rather than the "coming soon" placeholder some other blog entries fall
- * back to). Card art is a generated colour treatment (see Articles.tsx),
- * not a photo, so no `image` field is needed here.
+ * Homepage blog teaser labels. The cards themselves are the four newest
+ * articles, read straight from src/app/knowledge/content.ts in Articles.tsx,
+ * so a new article reaches the homepage without editing a second list.
  */
 export const ARTICLES = {
   heading: "מאמרים אחרונים",
   allLink: "לכל המאמרים",
-  items: [
-    {
-      slug: "architectural-model-cost",
-      title:
-        "כמה עולה מודל אדריכלי? מדריך מלא להבנת העלויות והגורמים שמשפיעים על המחיר",
-      readingTime: "11 דקות קריאה",
-    },
-    {
-      slug: "architectural-model-production-process",
-      title: "תהליך ייצור מודל אדריכלי — מהתכנון הראשוני ועד למסירת המודל המוגמר",
-      readingTime: "11 דקות קריאה",
-    },
-    {
-      slug: "why-architectural-models-still-matter",
-      title: "למה מודל אדריכלי עדיין חיוני גם בעידן ההדמיות התלת־ממדיות?",
-      readingTime: "12 דקות קריאה",
-    },
-    {
-      slug: "model-production-time-scale",
-      title: "כמה זמן לוקח לייצר מודל אדריכלי ואיך בוחרים את קנה המידה הנכון?",
-      readingTime: "11 דקות קריאה",
-    },
-    {
-      slug: "architectural-model-materials",
-      title:
-        "מאילו חומרים מיוצרים מודלים אדריכליים? המדריך המלא לחומרי הגלם ולטכנולוגיות הייצור",
-      readingTime: "12 דקות קריאה",
-    },
-    {
-      slug: "who-needs-architectural-models",
-      title:
-        "למי מיועדים מודלים אדריכליים? המדריך המלא ליזמים, אדריכלים, חברות שיווק ורשויות",
-      readingTime: "9 דקות קריאה",
-    },
-  ],
 } as const;
 
 export const CALLBACK_CTA = {
@@ -264,10 +226,10 @@ export const FAQ = {
     },
     {
       q: "האם המודל כולל את הסביבה הסובבת?",
-      a: "בהחלט! כל המודלים כוללים טופוגרפיה מדויקת, כבישים, בינוי קיים ומגוון אלמנטיים סביבתיים, כי הלקוחות קונים חווית מגורים, לא רק בניין.",
+      a: "בהחלט! כל המודלים כוללים טופוגרפיה מדויקת, כבישים, בינוי קיים ומגוון אלמנטים סביבתיים, כי הלקוחות קונים חוויית מגורים, לא רק בניין.",
     },
     {
-      q: "איזה חומרים משמשים לבניית המודל?",
+      q: "אילו חומרים משמשים לבניית המודל?",
       a: "שילוב של חומרי הדפסת תלת-ממד, פרספקס, עץ, PVC וחומרי גימור ייעודיים, כל אחד במקומו, הכול צבוע ומוגמר ידנית לרמת גימור אחידה.",
       more: {
         label: "מאילו חומרים מיוצרים מודלים אדריכליים",
@@ -393,23 +355,25 @@ export const HOME_CONTACT_BAND = {
   eyebrow: "מוכנים להתחיל?",
   title: "בואו נבנה את המודל הבא שלכם",
   text: "ספרו לנו על הפרויקט ונחזור אליכם עם הצעה מסודרת תוך יום עסקים.",
-  button: "צור קשר",
+  button: "קבלו הצעת מחיר",
 } as const;
 
 export const CONTACT_PAGE = {
-  eyebrow: "צור קשר",
+  eyebrow: "צרו קשר",
   title: "בואו נדבר על הפרויקט הבא שלכם",
   subtitle:
     "צוות Print3D כאן כדי ללוות אתכם משלב הרעיון ועד המודל שעומד במשרד המכירות. השאירו פרטים ונחזור אליכם עם הצעה מסודרת תוך יום עסקים.",
   detailsTitle: "פרטי החברה",
-  detailsSubtitle: "נשמח לענות על כל שאלה, בטלפון, במייל או פנים אל פנים.",
+  detailsSubtitle: "נשמח לענות על כל שאלה, בטלפון, בוואטסאפ, במייל או בפגישה בסטודיו.",
   formTitle: "השאירו פרטים",
-  formSubtitle: "מלאו את הטופס ונחזור אליכם בהקדם.",
+  formSubtitle: "מלאו את הטופס ונחזור אליכם תוך יום עסקים.",
   labels: {
     company: "שם החברה",
     address: "כתובת",
     phone: "טלפון",
+    whatsapp: "וואטסאפ",
     email: 'דוא"ל',
+    hours: "שעות פעילות",
   },
   companyName: "Print3D Ltd · מודלים אדריכליים",
   map: {
@@ -466,7 +430,7 @@ export const FOOTER = {
         { label: "מאמרים", href: "/knowledge/articles" },
         { label: "מילון מונחים", href: "/knowledge/glossary" },
         { label: "שאלות נפוצות", href: "/faq" },
-        { label: "צור קשר", href: CONTACT.contactPath },
+        { label: "צרו קשר", href: CONTACT.contactPath },
       ],
     },
   },
@@ -475,6 +439,8 @@ export const FOOTER = {
   /** Accessible name when the CTA leads to the contact page — distinguishes it
    *  from the same-text in-page CTAs that scroll to the form (#contact). */
   ctaButtonToContactPage: "קבלו הצעת מחיר בעמוד יצירת קשר",
-  copyright: "© Print3D Ltd 2026",
+  /** Rendered as "© Print3D Ltd <current year>" — the year is computed in
+   *  Footer.tsx so it never goes stale on January 1st. */
+  copyrightHolder: "Print3D Ltd",
   a11yLink: "הצהרת נגישות",
 } as const;

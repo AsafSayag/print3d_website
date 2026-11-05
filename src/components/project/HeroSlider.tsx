@@ -221,12 +221,14 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
                   setPaused(true);
                   setIdx(i);
                 }}
-                className="flex h-6 items-center justify-center transition-all duration-300"
+                className="group flex h-6 items-center justify-center transition-all duration-300"
                 style={{ width: i === idx ? 40 : 24 }}
               >
+                {/* The inline background wins over a class, so the hover tint
+                    needs the important modifier; the active dot keeps its gold. */}
                 <span
                   aria-hidden="true"
-                  className="block h-2.5 rounded-full transition-all duration-300"
+                  className={`block h-2.5 rounded-full transition-all duration-300${i === idx ? "" : " group-hover:!bg-white/90"}`}
                   style={{
                     width: i === idx ? 26 : 10,
                     background:

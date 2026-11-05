@@ -12,7 +12,7 @@ import { CONTACT } from "./constants";
  * still ship inside the 404 response.
  */
 export const NOT_FOUND_METADATA: Metadata = {
-  title: "משהו השתבש | Print3D",
+  title: "הדף לא נמצא | Print3D",
   // Next already emits <meta name="robots" content="noindex"> on every 404, so
   // ours only duplicated it; null also stops the root layout's index:true from
   // being inherited. The canonical is reset for the same reason — inherited

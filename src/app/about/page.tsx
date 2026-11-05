@@ -8,6 +8,7 @@ import { ClientLogos } from "@/components/ClientLogos";
 import { LeadForm } from "@/components/ui/LeadForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { WhyIcon } from "@/components/ui/WhyIcon";
 import { LegalJsonLd } from "@/components/legal/LegalJsonLd";
 import type { Crumb } from "@/components/legal/Breadcrumbs";
 import { buildPageMeta } from "@/lib/pageMeta";
@@ -21,7 +22,7 @@ import {
 } from "@/lib/content";
 
 export const metadata: Metadata = buildPageMeta({
-  title: ABOUT.hero.eyebrow,
+  title: "אודות: מודלים אדריכליים מעל 15 שנה",
   description:
     "מי אנחנו ולמה מובילי הנדל״ן בישראל בוחרים ב־Print3D: מודלים אדריכליים ברמת גימור יוצאת דופן, ייצור מתקדם וגימור יד אומן, כבר יותר מ־15 שנה.",
   path: "/about",
@@ -152,19 +153,10 @@ export default function AboutPage() {
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-px bg-[color:var(--gold-500)]/40 sm:bg-[color:var(--ink-950)]/15 transition-colors duration-700 sm:group-hover:bg-[color:var(--gold-500)]/70"
                     />
-                    <span className="why-arrow" aria-hidden="true">
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="34"
-                        height="34"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M19 12H5M11 6l-6 6 6 6" />
-                      </svg>
+                    {/* Same topic icons as the homepage's WhySection. The old
+                        forward arrow read as a link on cards that aren't one. */}
+                    <span className="why-icon inline-flex max-sm:justify-center max-sm:w-full" aria-hidden="true">
+                      <WhyIcon name={card.icon} />
                     </span>
                     <h3 className="h3 mt-4 mb-2 text-[color:var(--ink-950)] text-lg">
                       {card.title}

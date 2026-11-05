@@ -115,7 +115,7 @@ export function Footer({
               href={CONTACT.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`המיקום שלנו, ${CONTACT.address}, פתיחה ב־Google Maps`}
+              aria-label={`המיקום שלנו, ${CONTACT.address}, פתיחה ב־Google Maps (נפתח בחלון חדש)`}
               className="group mt-6 block w-56 max-w-full overflow-hidden rounded-xl border border-white/12 bg-white/[0.03] shadow-[0_18px_40px_-30px_rgba(0,0,0,0.8)] transition-colors hover:border-white/25 max-md:mx-auto"
             >
               <iframe
@@ -146,7 +146,7 @@ export function Footer({
             keeps the button vertically centred against the legal links rather
             than sitting below them. */}
         <div className="mt-14 pt-6 border-t border-white/10 flex flex-col items-center gap-4 text-center text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between sm:text-start">
-          <span dir="ltr">{FOOTER.copyright}</span>
+          <span dir="ltr">© {FOOTER.copyrightHolder} {new Date().getFullYear()}</span>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
             <nav aria-label="קישורים משפטיים">
               <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-end">
@@ -217,20 +217,10 @@ function FooterLink({
 }
 
 /** Official brand marks in their real colours, so each network is instantly
- *  recognisable (Facebook's blue disc, Instagram's gradient, LinkedIn's blue tile). */
+ *  recognisable (Instagram's gradient, LinkedIn's blue tile). */
 function SocialIcon({ name }: { name: (typeof SOCIAL_PROFILES)[number]["name"] }) {
   const common = { viewBox: "0 0 24 24", className: "h-8 w-8", "aria-hidden": true } as const;
   switch (name) {
-    case "Facebook":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="11.5" fill="#fff" />
-          <path
-            fill="#0866FF"
-            d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"
-          />
-        </svg>
-      );
     case "Instagram":
       return (
         <svg {...common}>

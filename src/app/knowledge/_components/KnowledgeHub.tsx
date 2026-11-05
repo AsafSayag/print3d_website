@@ -32,10 +32,14 @@ export function KnowledgeHub({
   articles,
   terms,
   faq,
+  updated,
 }: {
   articles: BlogArticle[];
   terms: GlossaryTerm[];
   faq: HubFaqItem[];
+  /** Newest article's date: ISO for <time>, Hebrew label pre-formatted on the
+   *  server so client and server render the same text. */
+  updated: { iso: string; label: string };
 }) {
   const [query, setQuery] = useState("");
   const q = norm(query);
@@ -86,7 +90,7 @@ export function KnowledgeHub({
             <span>18 דקות עיון</span>
             <span aria-hidden="true">·</span>
             <span>
-              עודכן ב־<time dateTime="2026-07-17">17 ביולי 2026</time>
+              עודכן ב־<time dateTime={updated.iso}>{updated.label}</time>
             </span>
           </div>
 
@@ -94,7 +98,7 @@ export function KnowledgeHub({
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               { id: "articles", title: "מאמרים", text: "מדריכים מעמיקים על ייצור, תמחור ושיווק." },
-              { id: "glossary", title: "מילון מושגים", text: `למעלה מ-${terms.length} מונחים מוסברים לפי א׳-ת׳.` },
+              { id: "glossary", title: "מילון מונחים", text: `למעלה מ-${terms.length} מונחים מוסברים לפי א׳-ת׳.` },
               { id: "faq", title: "שאלות נפוצות", text: "תשובות מהירות לשאלות הנפוצות ביותר." },
             ].map((card) => (
               <a
@@ -159,7 +163,7 @@ export function KnowledgeHub({
       <section id="glossary" className="section scroll-mt-24 border-t border-black/10">
         <div className="container-x">
           <h2 className="font-display text-2xl font-bold text-[color:var(--ink-950)] md:text-3xl">
-            מילון מושגים למודלים אדריכליים
+            מילון מונחים למודלים אדריכליים
           </h2>
           <p className="mt-3 max-w-2xl text-[color:var(--ink-950)]/65">
             {terms.length} מונחים מעולם המודלים האדריכליים, תהליכי הייצור
@@ -250,7 +254,7 @@ export function KnowledgeHub({
                   location: "knowledge_hub",
                 })}
               >
-                צור קשר
+                קבלו הצעת מחיר לפרויקט שלכם
               </GlassButton>
             </div>
           </div>

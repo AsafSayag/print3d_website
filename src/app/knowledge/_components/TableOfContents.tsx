@@ -22,7 +22,7 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
       aria-label="תוכן העניינים"
       className="rounded-2xl border border-black/10 bg-[color:var(--ice-050)] p-6 md:p-7"
     >
-      <h2 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-[color:var(--gold-700)]">
+      <h2 className="font-display text-sm font-bold text-[color:var(--gold-700)]">
         תוכן העניינים
       </h2>
       <ol className="mt-4 space-y-2.5">

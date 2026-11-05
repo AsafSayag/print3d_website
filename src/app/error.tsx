@@ -1,7 +1,7 @@
 "use client";
 
 // Runtime error boundary — shown when a page throws unexpectedly, so a visitor
-// never hits a blank screen. Same friendly copy as the 404 page.
+// never hits a blank screen. The 404 page has its own "not found" copy.
 
 import { useEffect } from "react";
 import { Header } from "@/components/Header";

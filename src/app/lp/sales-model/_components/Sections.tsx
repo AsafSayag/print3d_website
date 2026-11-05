@@ -3,7 +3,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { LeadForm } from "@/components/ui/LeadForm";
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, whatsappHref } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import {
   LP_FAQ,
@@ -153,7 +153,7 @@ export function LpFaq() {
 /* 6 · Final CTA + form                                                */
 /* ------------------------------------------------------------------ */
 export function LpFinal() {
-  const waHref = `https://wa.me/${CONTACT.whatsappNumber}`;
+  const waHref = whatsappHref();
   return (
     <section id="lead" className="lp-final surface-navy-950 section-lp" aria-labelledby="lp-final-title">
       <div aria-hidden="true" className="lp-final-bg">
@@ -194,6 +194,7 @@ export function LpFinal() {
                     href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="וואטסאפ (נפתח בחלון חדש)"
                     {...analyticsAttrs("whatsapp_click", { location: `${LP_LOCATION}_final` })}
                   >
                     וואטסאפ

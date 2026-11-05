@@ -1,6 +1,6 @@
 "use client";
 
-import { CONTACT } from "@/lib/constants";
+import { CONTACT, whatsappHref } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
 
@@ -15,7 +15,7 @@ import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
 export function FloatingWhatsApp() {
   const hasNumber = CONTACT.whatsappNumber.length > 0;
   const href = hasNumber
-    ? `https://wa.me/${CONTACT.whatsappNumber}`
+    ? whatsappHref()
     : CONTACT.contactPath;
   const compact = useNearFooter();
   const atBottom = useAtPageBottom();
@@ -25,7 +25,7 @@ export function FloatingWhatsApp() {
       href={href}
       target={hasNumber ? "_blank" : undefined}
       rel={hasNumber ? "noopener noreferrer" : undefined}
-      aria-label="דברו איתנו בוואטסאפ"
+      aria-label={hasNumber ? "דברו איתנו בוואטסאפ (נפתח בחלון חדש)" : "דברו איתנו בוואטסאפ"}
       {...analyticsAttrs("whatsapp_click", { location: "floating_button" })}
       className={`wa-fab${compact ? " wa-fab--compact" : ""}${
         atBottom ? " wa-fab--raised" : ""
