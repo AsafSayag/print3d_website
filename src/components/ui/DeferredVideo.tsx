@@ -5,6 +5,30 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 // Phones get the `-mobile` poster cut (see the <picture> below).
 const POSTER_MOBILE_QUERY = "(max-width: 767px)";
 
+type SaveDataConnection = {
+  saveData?: boolean;
+  addEventListener?: (event: "change", listener: () => void) => void;
+  removeEventListener?: (event: "change", listener: () => void) => void;
+};
+const getConnection = () =>
+  (navigator as Navigator & { connection?: SaveDataConnection }).connection;
+
+// Bit 1 = mobile, bit 2 = Save Data; 4 is the server/hydration snapshot.
+const subscribeToVideoPreferences = (onChange: () => void) => {
+  const mq = window.matchMedia(POSTER_MOBILE_QUERY);
+  const connection = getConnection();
+  mq.addEventListener("change", onChange);
+  connection?.addEventListener?.("change", onChange);
+  return () => {
+    mq.removeEventListener("change", onChange);
+    connection?.removeEventListener?.("change", onChange);
+  };
+};
+const videoPreferences = () =>
+  (window.matchMedia(POSTER_MOBILE_QUERY).matches ? 1 : 0) |
+  (getConnection()?.saveData ? 2 : 0);
+const videoPreferencesOnServer = () => 4;
+
 // Whether the window `load` event has fired, read as an external store so an
 // already-loaded page needs no setState inside an effect. The server snapshot
 // is `false`, matching the first client render during hydration.
@@ -43,13 +67,16 @@ type Props = {
    * Carousel gate. In a horizontal slider every slide shares the same vertical
    * position, so the proximity check alone treats them all as "near" and fires
    * every clip at once — downloading the whole reel up front. Pass `false` for
-   * slides outside the active window to hold them on their poster; pass `true`
-   * for the active slide and its immediate neighbours, and the bytes load then
-   * — and stay loaded, so a slide reachable in one step always plays instantly
-   * and revisiting never re-downloads. Defaults to `true`, so the single-video
-   * callers (heroes, CTAs) are completely unaffected.
+   * slides outside the active window to hold them offscreen; pass `true`
+   * for the active slide and its immediate neighbours so their posters can
+   * preload. Use `videoActive` separately to limit which clips may download.
+   * Defaults to `true`, so single-video callers are unaffected.
    */
   active?: boolean;
+  /** Allow the poster to preload while holding the clip itself. */
+  videoActive?: boolean;
+  /** Keep the responsive still and skip decorative video on phones. */
+  posterOnlyOnMobile?: boolean;
 };
 
 /**
@@ -73,10 +100,19 @@ export function DeferredVideo({
   playDelayMs = 0,
   priority = false,
   active = true,
+  videoActive = true,
+  posterOnlyOnMobile = false,
 }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const posterRef = useRef<HTMLImageElement | null>(null);
   const [load, setLoad] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const preference = useSyncExternalStore(
+    subscribeToVideoPreferences,
+    videoPreferences,
+    videoPreferencesOnServer,
+  );
+  const videoAllowed = preference !== 4 && !(preference & 2) && !(posterOnlyOnMobile && (preference & 1));
   // Gate that holds the video's bytes until the LCP poster is painted. Only
   // meaningful in `priority` (hero) mode; for ambient videos it opens at mount.
   const pageLoaded = useSyncExternalStore(subscribeToLoad, isPageLoaded, isPageLoadedOnServer);
@@ -146,7 +182,7 @@ export function DeferredVideo({
   // Sources were just attached — load and start the loop. Waits for both the
   // proximity gate (`load`) and, in hero mode, the poster gate (`posterReady`).
   useEffect(() => {
-    if (!load || !posterReady) return;
+    if (!load || !posterReady || !videoAllowed || !videoActive) return;
     const el = ref.current;
     if (!el) return;
     el.load();
@@ -155,7 +191,17 @@ export function DeferredVideo({
       return () => clearTimeout(t);
     }
     el.play().catch(() => {});
-  }, [load, posterReady, playDelayMs]);
+  }, [load, posterReady, playDelayMs, videoAllowed, videoActive]);
+
+  // Stop an in-flight download when Save Data turns on or the viewport becomes
+  // mobile. The picture remains visible under the transparent video.
+  useEffect(() => {
+    if (videoAllowed && videoActive) return;
+    const el = ref.current;
+    if (!el) return;
+    el.pause();
+    el.load();
+  }, [videoAllowed, videoActive]);
 
   // The poster is served through a <picture> instead of the <video>'s `poster`
   // attribute so the browser can pick a phone-sized cut on mobile (the full
@@ -219,25 +265,22 @@ export function DeferredVideo({
       <video
         ref={ref}
         className={className}
-        // Hero mode: a full-bleed background <video> is unavoidably the LCP
-        // element (it's the largest paint the user sees). Without a `poster` its
-        // LCP paint is the first decoded video frame — which only arrives after
-        // the JS-injected, preload="none" clip downloads, so Lighthouse's LCP
-        // simulation projects it many seconds out and marks the resource
-        // "not discoverable". Giving it the poster (already in the initial HTML,
-        // loaded eagerly regardless of preload) makes the poster image the
-        // video's contentful paint: discoverable, fast, and identical to the
-        // <picture> still beneath it. Ambient videos keep no poster attr so their
-        // posters are never eagerly fetched below the fold.
-        poster={priority ? poster : undefined}
+        // The responsive <picture> above is the sole LCP poster. A video poster
+        // would fetch the desktop still again on phones. Keep the hero video
+        // transparent until a real frame plays, then fade it over the picture.
+        style={priority ? { opacity: videoAllowed && playing ? 1 : 0, transition: "opacity 0.7s ease-out" } : undefined}
         muted
         loop
         playsInline
         preload="none"
+        onPlaying={() => setPlaying(true)}
+        onEmptied={() => setPlaying(false)}
         aria-hidden="true"
       >
         {load &&
           posterReady &&
+          videoAllowed &&
+          videoActive &&
           sources.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
       </video>
     </>

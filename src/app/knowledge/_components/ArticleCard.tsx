@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import type { BlogArticle } from "../content";
 
+/** Only the fields a teaser renders; article bodies stay on the server. */
+export type ArticleTeaser = Pick<
+  BlogArticle,
+  "slug" | "image" | "category" | "readingTime" | "title" | "metaDescription"
+>;
+
 /**
  * Shared article teaser card — used both in the knowledge-hub preview grid and
  * on the full /knowledge/articles listing, so the two always look identical.
@@ -11,7 +17,7 @@ export function ArticleCard({
   article,
   priority = false,
 }: {
-  article: BlogArticle;
+  article: ArticleTeaser;
   priority?: boolean;
 }) {
   return (

@@ -61,6 +61,7 @@ export function ContactHero({
         posterVariants={video.posterVariants}
         sources={video.sources}
         priority
+        posterOnlyOnMobile
       />
 
       {/* Overlays for depth + legibility */}

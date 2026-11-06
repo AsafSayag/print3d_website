@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
@@ -14,6 +14,27 @@ import {
 
 /** Auto-advance interval (ms) for the showcase carousel. */
 const AUTOPLAY_MS = 9000;
+const MOBILE_QUERY = "(max-width: 767px)";
+const subscribeToViewport = (onChange: () => void) => {
+  const mq = window.matchMedia(MOBILE_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+const viewportMode = () => window.matchMedia(MOBILE_QUERY).matches ? "mobile" : "desktop";
+const viewportModeOnServer = () => "unknown";
+type SaveDataConnection = {
+  saveData?: boolean;
+  addEventListener?: (event: "change", listener: () => void) => void;
+  removeEventListener?: (event: "change", listener: () => void) => void;
+};
+const connection = () => (navigator as Navigator & { connection?: SaveDataConnection }).connection;
+const subscribeToSaveData = (onChange: () => void) => {
+  const c = connection();
+  c?.addEventListener?.("change", onChange);
+  return () => c?.removeEventListener?.("change", onChange);
+};
+const isSaveData = () => Boolean(connection()?.saveData);
+const noSaveDataOnServer = () => false;
 
 /** Our most select projects, in the curated order defined alongside the data.
  *  The carousel is a video reel, so we also guard on `p.video`: only projects
@@ -33,6 +54,10 @@ const SHOWCASE_PROJECTS: Project[] = SHOWCASE_PROJECT_IDS.map((id) =>
  */
 export function ProjectShowcase() {
   const viewportRef = useRef<HTMLDivElement | null>(null);
+  const [inViewport, setInViewport] = useState(false);
+  const mode = useSyncExternalStore(subscribeToViewport, viewportMode, viewportModeOnServer);
+  const saveData = useSyncExternalStore(subscribeToSaveData, isSaveData, noSaveDataOnServer);
+  const mobile = mode === "mobile";
   const draggingRef = useRef(false);
   const startXRef = useRef(0);
 
@@ -51,25 +76,36 @@ export function ProjectShowcase() {
   const next = () => setActive((a) => (a + 1) % total);
   const prev = () => setActive((a) => (a - 1 + total) % total);
 
-  // Which slides may load their video bytes: the active one plus its immediate
-  // neighbours (with wraparound). Every slide reachable in a single prev/next
-  // step is therefore already loaded, so playback stays instant — but the rest
-  // of the reel is held on its poster instead of all clips downloading at once.
+  // Desktop keeps clips for the active slide and its immediate neighbours
+  // ready. On mobile only their posters may preload; just the visible active
+  // slide downloads its 480p clip.
   const nearActive = (i: number) => {
     const d = (i - active + total) % total;
     return d <= 1 || d === total - 1;
   };
 
-  // Auto-advance every AUTOPLAY_MS. Re-arming on `active` means any manual
-  // navigation (button, drag or swipe) resets the timer, so the slide the user
-  // just picked gets its full dwell before the next auto step. Only an in-flight
-  // drag pauses it (so it never fights the user); disabled under reduced-motion.
+  // On phones the carousel may sit far below the hero. Until a meaningful
+  // portion enters view, neither poster neighbours nor video bytes are needed.
   useEffect(() => {
-    if (dragging || reduce) return;
+    const el = viewportRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInViewport(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-advance every AUTOPLAY_MS. Re-arming on `active` means any manual
+  // navigation resets the timer. Pause on mobile while offscreen, and whenever
+  // Save Data or reduced motion is enabled, so unseen clips do not download.
+  useEffect(() => {
+    if (dragging || reduce || saveData || (mobile && !inViewport)) return;
     const id = window.setTimeout(next, AUTOPLAY_MS);
     return () => window.clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, dragging, reduce, total]);
+  }, [active, dragging, reduce, total, saveData, mobile, inViewport]);
 
   // --- Video choreography ---
   // All slides sit side-by-side, so DeferredVideo's vertical proximity check
@@ -105,7 +141,10 @@ export function ProjectShowcase() {
     const vp = viewportRef.current;
     if (!vp) return;
     vp.querySelectorAll("video").forEach((vid) => {
-      if (slideIndexOf(vid) === active) {
+      if (slideIndexOf(vid) === active && !saveData && (!mobile || inViewport)) {
+        // On mobile DeferredVideo attaches and starts the sole active source;
+        // a second play()/seek here can trigger another range request.
+        if (mobile) return;
         try {
           vid.currentTime = 0;
         } catch {}
@@ -114,7 +153,7 @@ export function ProjectShowcase() {
         vid.pause();
       }
     });
-  }, [active]);
+  }, [active, saveData, mobile, inViewport]);
 
   // --- Manual drag / swipe ---
   const onPointerDown = (e: React.PointerEvent) => {
@@ -230,12 +269,17 @@ export function ProjectShowcase() {
                     className="absolute inset-0 h-full w-full object-cover"
                     poster={p.image}
                     posterVariants={p.posterVariants}
-                    playDelayMs={3000}
-                    active={nearActive(i)}
-                    sources={[
-                      { src: p.video.webm, type: "video/webm" },
-                      { src: p.video.mp4, type: "video/mp4" },
-                    ]}
+                    playDelayMs={mobile ? 0 : 3000}
+                    active={mode === "desktop" ? nearActive(i) : mobile && inViewport && nearActive(i)}
+                    // Desktop keeps already-loaded neighbour clips cached, as
+                    // before. Mobile tears down every inactive source.
+                    videoActive={mode === "desktop" ? true : mobile && inViewport && active === i}
+                    sources={mobile
+                      ? [{ src: p.video.mp4.replace(/\.mp4$/, "-mobile.mp4"), type: "video/mp4" }]
+                      : [
+                          { src: p.video.webm, type: "video/webm" },
+                          { src: p.video.mp4, type: "video/mp4" },
+                        ]}
                   />
                 ) : (
                   <Image

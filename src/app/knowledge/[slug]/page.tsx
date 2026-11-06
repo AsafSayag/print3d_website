@@ -105,7 +105,8 @@ export default async function ArticlePage({ params }: { params: Params }) {
               src={article.image}
               alt={article.imageAlt}
               fill
-              priority
+              loading="eager"
+              fetchPriority="high"
               sizes="100vw"
               className="object-cover"
             />

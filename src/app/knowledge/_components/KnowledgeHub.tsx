@@ -6,23 +6,11 @@ import { CONTACT } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { GlassButton } from "@/components/ui/GlassButton";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { ArticleCard } from "./ArticleCard";
-import type { BlogArticle } from "../content";
-import { glossaryShort, type GlossaryTerm } from "../glossary";
+import { ArticleCard, type ArticleTeaser } from "./ArticleCard";
 import type { HubFaqItem } from "../hub-faq";
 
-/** How many article teasers the hub previews before linking to the full list. */
-const ARTICLES_PREVIEW = 4;
-
-/** Foundational terms surfaced on the hub before linking to the full glossary. */
-const FEATURED_SLUGS = [
-  "architectural-model",
-  "scale",
-  "sales-office-model",
-  "marketing-model",
-  "3d-printing",
-  "bim",
-];
+type GlossaryTeaser = { slug: string; term: string; summary: string };
+type SearchTerm = GlossaryTeaser & { definition: string };
 
 function norm(s: string) {
   return s.trim().toLowerCase();
@@ -30,42 +18,47 @@ function norm(s: string) {
 
 export function KnowledgeHub({
   articles,
-  terms,
+  featuredTerms,
+  termCount,
   faq,
   updated,
 }: {
-  articles: BlogArticle[];
-  terms: GlossaryTerm[];
+  articles: ArticleTeaser[];
+  featuredTerms: GlossaryTeaser[];
+  termCount: number;
   faq: HubFaqItem[];
   /** Newest article's date: ISO for <time>, Hebrew label pre-formatted on the
    *  server so client and server render the same text. */
   updated: { iso: string; label: string };
 }) {
   const [query, setQuery] = useState("");
+  const [searchTerms, setSearchTerms] = useState<SearchTerm[]>([]);
+  const [searchStatus, setSearchStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const q = norm(query);
 
-  const termBySlug = useMemo(() => {
-    const map = new Map<string, GlossaryTerm>();
-    terms.forEach((t) => map.set(t.slug, t));
-    return map;
-  }, [terms]);
-
-  const previewArticles = articles.slice(0, ARTICLES_PREVIEW);
-
-  const featuredTerms = useMemo(
-    () =>
-      FEATURED_SLUGS.map((slug) => termBySlug.get(slug)).filter(
-        (t): t is GlossaryTerm => Boolean(t)
-      ),
-    [termBySlug]
-  );
+  const loadSearchIndex = async () => {
+    if (searchStatus === "loading" || searchStatus === "ready") return;
+    setSearchStatus("loading");
+    try {
+      const { GLOSSARY_TERMS, glossaryShort } = await import("../glossary");
+      setSearchTerms(GLOSSARY_TERMS.map((t) => ({
+        slug: t.slug,
+        term: t.term,
+        summary: glossaryShort(t.definition),
+        definition: t.definition,
+      })));
+      setSearchStatus("ready");
+    } catch {
+      setSearchStatus("error");
+    }
+  };
 
   const filteredTerms = useMemo(() => {
     if (!q) return [];
-    return terms.filter(
+    return searchTerms.filter(
       (t) => norm(t.term).includes(q) || norm(t.definition).includes(q)
     );
-  }, [terms, q]);
+  }, [searchTerms, q]);
 
   return (
     <div className="surface-white">
@@ -98,7 +91,7 @@ export function KnowledgeHub({
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               { id: "articles", title: "מאמרים", text: "מדריכים מעמיקים על ייצור, תמחור ושיווק." },
-              { id: "glossary", title: "מילון מונחים", text: `למעלה מ-${terms.length} מונחים מוסברים לפי א׳-ת׳.` },
+              { id: "glossary", title: "מילון מונחים", text: `למעלה מ-${termCount} מונחים מוסברים לפי א׳-ת׳.` },
               { id: "faq", title: "שאלות נפוצות", text: "תשובות מהירות לשאלות הנפוצות ביותר." },
             ].map((card) => (
               <a
@@ -140,7 +133,7 @@ export function KnowledgeHub({
           </div>
 
           <ul className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {previewArticles.map((article, i) => (
+            {articles.map((article, i) => (
               <li key={article.slug}>
                 <ArticleCard article={article} priority={i < 2} />
               </li>
@@ -166,7 +159,7 @@ export function KnowledgeHub({
             מילון מונחים למודלים אדריכליים
           </h2>
           <p className="mt-3 max-w-2xl text-[color:var(--ink-950)]/65">
-            {terms.length} מונחים מעולם המודלים האדריכליים, תהליכי הייצור
+            {termCount} מונחים מעולם המודלים האדריכליים, תהליכי הייצור
             והתכנון — כל מונח והסבר קצר, עם קישור לעמוד מורחב.
           </p>
 
@@ -178,7 +171,8 @@ export function KnowledgeHub({
               id="glossary-search"
               type="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => void loadSearchIndex()}
+              onChange={(e) => { setQuery(e.target.value); void loadSearchIndex(); }}
               placeholder="חיפוש מונח — לדוגמה: קנה מידה, CNC, מודל למשרד מכירות…"
               className="w-full max-w-xl rounded-full border border-black/15 bg-white py-3.5 px-5 text-[color:var(--ink-950)] shadow-sm outline-none transition-colors focus:border-[color:var(--gold-500)]"
             />
@@ -186,7 +180,13 @@ export function KnowledgeHub({
 
           <div className="mt-10">
             {q ? (
-              filteredTerms.length === 0 ? (
+              searchStatus === "error" ? (
+                <p className="text-[color:var(--ink-950)]/60" role="status">
+                  החיפוש לא נטען. <button type="button" onClick={() => void loadSearchIndex()} className="underline">נסו שוב</button>
+                </p>
+              ) : searchStatus !== "ready" ? (
+                <p className="text-[color:var(--ink-950)]/60" role="status">טוענים את המילון…</p>
+              ) : filteredTerms.length === 0 ? (
                 <p className="text-[color:var(--ink-950)]/60">
                   לא נמצאו מושגים התואמים את החיפוש &quot;{query}&quot;.
                 </p>
@@ -209,7 +209,7 @@ export function KnowledgeHub({
                     href="/knowledge/glossary"
                     className="inline-flex items-center gap-2 rounded-full border border-black/15 px-6 py-3 font-display font-semibold text-[color:var(--ink-950)] transition-colors hover:bg-black/[0.04]"
                   >
-                    לכל המושגים ({terms.length})
+                    לכל המושגים ({termCount})
                     <span aria-hidden="true">←</span>
                   </Link>
                 </div>
@@ -265,7 +265,7 @@ export function KnowledgeHub({
 }
 
 /** Hub glossary card: term name + one-line teaser + link to the full term page. */
-function GlossaryCard({ term }: { term: GlossaryTerm }) {
+function GlossaryCard({ term }: { term: GlossaryTeaser }) {
   return (
     <li className="rounded-2xl border border-black/10 bg-white p-6">
       <h3 className="font-display text-lg font-bold text-[color:var(--ink-950)]">
@@ -277,7 +277,7 @@ function GlossaryCard({ term }: { term: GlossaryTerm }) {
         </Link>
       </h3>
       <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-950)]/70">
-        {glossaryShort(term.definition)}
+        {term.summary}
       </p>
       <Link
         href={`/knowledge/glossary/${term.slug}`}
