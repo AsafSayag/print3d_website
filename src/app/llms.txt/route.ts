@@ -1,4 +1,4 @@
-import { BUSINESS_HOURS, CONTACT } from "@/lib/constants";
+import { BUSINESS_HOURS, CONTACT, PROJECT_COUNT } from "@/lib/constants";
 import { SERVICES, WHO_FOR } from "@/lib/content";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
 import { absoluteUrl } from "@/lib/schema";
@@ -30,6 +30,7 @@ const body = [
   "",
   "> Print3D מתכננת ומייצרת מודלים אדריכליים פיזיים לפרויקטי נדל״ן בישראל — למשרדי מכירות, לוועדות תכנון ולרשויות — בהדפסת תלת מימד, חיתוך לייזר וגימור יד אומן, כבר יותר מ־15 שנה.",
   "> Print3D designs and builds physical architectural scale models for real-estate projects in Israel.",
+  `> ${PROJECT_COUNT} פרויקטים שהושלמו.`,
   "",
   WHO_FOR.paragraph,
   "",

@@ -8,6 +8,8 @@ type Props = {
   breadcrumbs: Crumb[];
   /** Last-updated line is hidden on the hub page. */
   showUpdated?: boolean;
+  updated?: string;
+  updatedISO?: string;
 };
 
 /**
@@ -21,6 +23,8 @@ export function LegalHero({
   description,
   breadcrumbs,
   showUpdated = true,
+  updated = LEGAL_UPDATED,
+  updatedISO = LEGAL_UPDATED_ISO,
 }: Props) {
   return (
     <section className="legal-hero pt-28 pb-14 sm:pt-32 sm:pb-16 md:pt-36 md:pb-20">
@@ -37,8 +41,8 @@ export function LegalHero({
         {showUpdated && (
           <p className="mt-8 text-sm text-white/45">
             עודכן לאחרונה:{" "}
-            <time dateTime={LEGAL_UPDATED_ISO} className="text-white/70">
-              {LEGAL_UPDATED}
+            <time dateTime={updatedISO} className="text-white/70">
+              {updated}
             </time>
           </p>
         )}

@@ -22,7 +22,7 @@ export const metadata: Metadata = buildPageMeta({
 
 const breadcrumbs: Crumb[] = [
   { label: "בית", href: "/" },
-  { label: "קטלוג" },
+  { label: "פרויקטים" },
 ];
 
 export default function PortfolioPage() {

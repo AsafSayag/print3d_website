@@ -1,14 +1,13 @@
 # Project Page Builder
 
 Runbook for creating a new `/projects/<slug>` case-study page. Every project is
-its own hand-built folder — there is **no `[slug]` dynamic route**. All four
-existing projects (`gindi-kfar-azar`, `dafna-tidhar`, `sela-baitar-hadera`,
-`shbiro-rishon-letzion`) follow the one canonical design described here; copy the
-closest one and swap its values.
+its own folder — there is **no `[slug]` dynamic route**. All project pages use
+the shared layout described here; copy an existing `content.ts` and `page.tsx`
+and replace their project-specific values.
 
 ## The design — two signature sections
 
-Every project page is composed in `_components/ProjectView.tsx` as:
+Every project page is composed in `src/components/project/ProjectView.tsx` as:
 
 ```
 main
@@ -16,7 +15,7 @@ main
  ├─ TechnicalSpec ← SECTION 2: dark מפרט טכני over a bg image, with a
  │                             frosted-glass, centered spec panel (from shbiro)
  ├─ Gallery
- ├─ AboutProject  (optional — include when the project has "about" copy)
+ ├─ ProjectCta
  ├─ Faq
  └─ Footer
 ```
@@ -26,7 +25,7 @@ main
 and a scroll cue (`ScrollHint.tsx`). Any manual interaction pauses auto-advance.
 It's a `"use client"` component; props are `{ slides, alt, eyebrow, title }`.
 
-**Section 2 — `TechnicalSpec`** (`_components/TechnicalSpec.tsx`): a dark,
+**Section 2 — `TechnicalSpec`** (`src/components/project/TechnicalSpec.tsx`): a dark,
 full-bleed section. A background photo (`SPEC_BG`) sits behind a heavy navy
 shadow gradient; the spec rows render inside a **centered, frosted-glass panel**
 (`backdrop-filter: blur(18px) saturate(150%)`, translucent white, rounded border)
@@ -40,9 +39,9 @@ shared `HeroSlider` is a single animated hero: the title enters large and
 centered, then glides up to a small top-middle resting position (framer-motion
 `layout`, reduced-motion aware). It takes everything as data via its props.
 
-`TechnicalSpec.tsx` and `AboutProject.tsx` are still copied verbatim into each
-project's `_components/`. They take everything as data from the co-located
-`content.ts`.
+`TechnicalSpec.tsx` and `ProjectView.tsx` are shared. `createProjectPage`
+passes each project's images, spec rows and hero copy from its co-located
+`content.ts`; do not copy layout components into a project folder.
 
 ## Inputs required from the Builder
 
@@ -220,16 +219,10 @@ track is intentional before shipping. Videos never enter the hero carousel.
      never import `content.ts` from a `"use client"` file — Next would try to
      bundle `node:fs` for the browser. Images reach the client components as
      props via `ProjectView`, which is where that boundary lives.
-   - `_components/ProjectView.tsx` — the layout above. Copy from an existing
-     project; only the `content.ts` import path changes.
-   - `_components/TechnicalSpec.tsx`, `AboutProject.tsx` — copy unchanged from an
-     existing project. `TechnicalSpec.tsx` reads `SPEC_BG`, `SPECS`, `IMAGE_ALT`
-     from `../content` itself, so it takes no props. The hero (`HeroSlider`) and
-     its scroll cue (`ScrollHint`) are **shared** — import `HeroSlider` from
-     `@/components/project/HeroSlider`; do not copy them per project.
    - `page.tsx` — calls `createProjectPage` (`src/lib/projectPage.tsx`) with
      `slug`, `title: SEO_TITLE_TAG`, `description: META_DESCRIPTION`,
-     `specs: SPECS`, `images: HERO_SLIDES` and the view. That one call gives
+     `specs: SPECS`, `images: HERO_SLIDES`, `hero: HERO`, `imageAlt: IMAGE_ALT`,
+     `galleryItems: GALLERY_ITEMS` and `specBg: SPEC_BG`. That one call gives
      the page its metadata, the hidden-project 404 guard, and its structured
      data (the model as a CreativeWork + breadcrumbs) — copy any existing
      project's `page.tsx` and change the slug.

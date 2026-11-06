@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Logo } from "./ui/Logo";
@@ -16,6 +16,8 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const pathname = usePathname();
   const onHome = pathname === "/";
@@ -87,14 +89,55 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile drawer is open, and flag it on <html> so
-  // the floating WhatsApp/accessibility buttons (rendered in the layout,
-  // outside this component) can hide instead of covering the drawer.
+  // Keep keyboard focus inside the open drawer and make the covered page inert.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    document.documentElement.toggleAttribute("data-menu-open", open);
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const covered = Array.from(document.querySelectorAll<HTMLElement>("main, footer"));
+    const previousInert = covered.map((element) => element.inert);
+    document.body.style.overflow = "hidden";
+    document.documentElement.setAttribute("data-menu-open", "");
+    covered.forEach((element) => { element.inert = true; });
+    const focusables = () => [
+      menuButtonRef.current,
+      ...Array.from(drawerRef.current?.querySelectorAll<HTMLElement>("a, button") ?? []),
+    ].filter((element): element is HTMLElement => Boolean(element));
+    drawerRef.current?.querySelector<HTMLElement>("a")?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        requestAnimationFrame(() => menuButtonRef.current?.focus());
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = focusables();
+      if (!items.length) return;
+      const current = items.indexOf(document.activeElement as HTMLElement);
+      if (current < 0) {
+        event.preventDefault();
+        items[1]?.focus();
+      } else if (event.shiftKey && current === 0) {
+        event.preventDefault();
+        items[items.length - 1].focus();
+      } else if (event.shiftKey && current === 1) {
+        event.preventDefault();
+        items[0].focus();
+      } else if (!event.shiftKey && (current === 0 || current === items.length - 1)) {
+        event.preventDefault();
+        items[current === 0 ? 1 : 0]?.focus();
+      }
+    };
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onResize = () => { if (desktop.matches) setOpen(false); };
+    desktop.addEventListener("change", onResize);
+    document.addEventListener("keydown", onKeyDown, true);
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown, true);
+      desktop.removeEventListener("change", onResize);
+      covered.forEach((element, i) => { element.inert = previousInert[i]; });
+      document.body.style.overflow = previousOverflow;
       document.documentElement.removeAttribute("data-menu-open");
     };
   }, [open]);
@@ -192,6 +235,7 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
 
           {/* Mobile hamburger */}
           <button
+            ref={menuButtonRef}
             type="button"
             aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
             aria-expanded={open}
@@ -225,9 +269,11 @@ export function Header({ transparent = false }: { transparent?: boolean }) {
           that it spans the full viewport — it silently blocked every tap on the
           page. pointer-events:none + delayed visibility make "closed" inert. */}
       <div
+        ref={drawerRef}
         id="mobile-drawer"
         className="lg:hidden fixed inset-x-0 top-[72px] bottom-0 z-40"
         aria-hidden={!open}
+        inert={!open}
         style={{
           // Frosted glass: a strong dark tint obscures the hero even where
           // backdrop-filter is unavailable, while the blur adds the premium

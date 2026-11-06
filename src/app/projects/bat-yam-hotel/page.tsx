@@ -1,10 +1,13 @@
 import { createProjectPage } from "@/lib/projectPage";
-import { ProjectView } from "./_components/ProjectView";
 import {
   SEO_TITLE_TAG,
   META_DESCRIPTION,
   SPECS,
   HERO_SLIDES,
+  HERO,
+  IMAGE_ALT,
+  GALLERY_ITEMS,
+  SPEC_BG,
 } from "./content";
 
 const { metadata, ProjectPage } = createProjectPage({
@@ -13,7 +16,10 @@ const { metadata, ProjectPage } = createProjectPage({
   description: META_DESCRIPTION,
   specs: SPECS,
   images: HERO_SLIDES,
-  view: ProjectView,
+  hero: HERO,
+  imageAlt: IMAGE_ALT,
+  galleryItems: GALLERY_ITEMS,
+  specBg: SPEC_BG,
 });
 
 export { metadata };

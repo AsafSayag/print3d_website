@@ -1,4 +1,5 @@
 import { after, type NextRequest } from "next/server";
+import { checkBotId } from "botid/server";
 import { LEAD_SOURCES, leadSourceLabel, trafficType } from "@/lib/leadSources";
 import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
 import {
@@ -23,10 +24,9 @@ import {
  * their details. (Waiting for both made visitors sit through the slow Apps
  * Script webhook — 10+ seconds — before reaching the thank-you page.)
  *
- * Abuse protection: an `hp` honeypot field (silently accepted, never sent,
- * logged without any visitor data), a per-IP in-memory rate limit (5
- * requests/minute/instance — a platform-level limit belongs in the Vercel
- * Firewall, since this one doesn't span instances), and a
+ * Abuse protection: BotID Basic checks on Vercel, an `hp` honeypot field
+ * (silently accepted, never sent, logged without any visitor data), a per-IP
+ * in-memory rate limit (5 requests/minute/instance), and a
  * same-origin + JSON-only gate so other websites can't submit leads through
  * their visitors' browsers. Values bound for the Sheet are neutralised so a
  * visitor can't plant a spreadsheet formula.
@@ -341,6 +341,14 @@ export async function POST(request: NextRequest) {
       source: leadSourceLabel(body.source),
     });
     return Response.json({ ok: true });
+  }
+
+  // BotID verifies that the request came through a real browser session.
+  // Basic is selected explicitly so enabling Deep Analysis in the dashboard
+  // cannot silently add a paid check to every lead submission.
+  const verification = await checkBotId({ advancedOptions: { checkLevel: "basic" } });
+  if (verification.isBot) {
+    return Response.json({ ok: false, error: "forbidden" }, { status: 403 });
   }
 
   const name = clean(body.name);

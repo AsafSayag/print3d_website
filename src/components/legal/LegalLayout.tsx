@@ -47,6 +47,8 @@ export function LegalLayout({ doc }: { doc: LegalDoc }) {
           title={doc.title}
           description={doc.description}
           breadcrumbs={breadcrumbs}
+          updated={doc.updated}
+          updatedISO={doc.updatedISO}
         />
 
         <div className="surface-white section">

@@ -6,6 +6,7 @@ import { CountUp } from "./ui/CountUp";
 import { GlassButton } from "./ui/GlassButton";
 import { analyticsAttrs } from "@/lib/analytics";
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
+import { PROJECT_COUNT } from "@/lib/constants";
 
 // Real models from the Print3D archive, with their scales.
 // `href` marks a project that links through to its own case-study page.
@@ -241,7 +242,7 @@ const VISIBLE_PROJECTS = PROJECTS.filter(
 
 const STATS = [
   { end: 15, prefix: "", suffix: "+", label: "שנות ניסיון" },
-  { end: 350, prefix: "", suffix: "+", label: "פרויקטים מוגמרים" },
+  { end: PROJECT_COUNT, prefix: "", suffix: "", label: "פרויקטים מוגמרים" },
 ] as const;
 
 export function Portfolio() {
@@ -270,7 +271,7 @@ export function Portfolio() {
             </Reveal>
             <Reveal index={2}>
               <p className="mt-5 text-[color:var(--steel-300)] text-base md:text-lg leading-relaxed">
-                מעל 15 שנות ניסיון ולמעלה מ־350 פרויקטים מוגמרים, ממגדלי יוקרה
+                מעל 15 שנות ניסיון ו־{PROJECT_COUNT} פרויקטים מוגמרים, ממגדלי יוקרה
                 ושכונות שלמות ועד מודלים תכנוניים, עבור חברות הנדל״ן והאדריכלים
                 המובילים בישראל.
               </p>

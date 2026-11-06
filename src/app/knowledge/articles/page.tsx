@@ -67,8 +67,9 @@ export default function ArticlesPage() {
           </div>
         </section>
 
-        <section className="surface-white section">
+        <section className="surface-white section" aria-labelledby="articles-list-title">
           <div className="container-x">
+            <h2 id="articles-list-title" className="sr-only">כל המאמרים</h2>
             <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {articles.map((article, i) => (
                 <li key={article.slug}>

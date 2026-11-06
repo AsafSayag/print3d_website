@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { TrackProjectView } from "@/components/analytics/TrackView";
 import { ProjectJsonLd } from "@/components/project/ProjectJsonLd";
+import { ProjectView } from "@/components/project/ProjectView";
+import type { SpecRow } from "@/components/project/TechnicalSpec";
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 import { buildProjectMeta, NOT_FOUND_METADATA } from "@/lib/pageMeta";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
+import type { GalleryItem } from "@/lib/projectImages";
 
 /**
  * Builds a project case-study page — both its `metadata` and its component.
@@ -36,7 +38,10 @@ export function createProjectPage({
   description,
   specs,
   images,
-  view: View,
+  hero,
+  imageAlt,
+  galleryItems,
+  specBg,
 }: {
   /** Bare slug, e.g. "levinstein" — must match the directory name. */
   slug: string;
@@ -45,11 +50,14 @@ export function createProjectPage({
   /** The project's META_DESCRIPTION — the search-result snippet. */
   description: string;
   /** The project's SPECS, which the structured data reads the model's name from. */
-  specs: readonly { label: string; value?: string }[];
+  specs: readonly SpecRow[];
   /** The project's HERO_SLIDES, listed as the model's images in the structured data. */
   images: readonly string[];
-  /** The project's view component, from its own _components directory. */
-  view: ComponentType;
+  /** All project-specific display data; the page layout is shared. */
+  hero: { eyebrow?: string; title: string };
+  imageAlt: string;
+  galleryItems: GalleryItem[];
+  specBg: string;
 }): { metadata: Metadata; ProjectPage: () => React.ReactElement } {
   const hidden = HIDDEN_PROJECT_SLUGS.includes(slug);
 
@@ -82,7 +90,14 @@ export function createProjectPage({
           projectSlug={slug}
         />
         <Header />
-        <View />
+        <ProjectView
+          hero={hero}
+          heroSlides={[...images]}
+          imageAlt={imageAlt}
+          galleryItems={galleryItems}
+          specBg={specBg}
+          specs={specs}
+        />
       </div>
     );
   }
