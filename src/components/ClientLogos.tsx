@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { CLIENT_LOGOS, CLIENTS_HEADING } from "@/lib/content";
+import { PROJECT_COUNT } from "@/lib/constants";
 
 // Auto-scroll speed in px/second — time-based, so it's identical on 60Hz and
 // 120Hz displays (the old per-frame constant ran twice as fast on high-refresh
@@ -235,7 +236,7 @@ export function ClientLogos() {
     <section id="clients" className="framer-logos-section" aria-label="לקוחות">
       <p className="framer-logos-subtitle">{CLIENTS_HEADING}</p>
       <p className="framer-logos-stat">
-        מעל 350 פרויקטים · יותר מ-15 שנה · מבניין בודד ועד שכונה שלמה
+        {PROJECT_COUNT} פרויקטים · יותר מ-15 שנה · מבניין בודד ועד שכונה שלמה
       </p>
 
       <div className="framer-marquee-container">

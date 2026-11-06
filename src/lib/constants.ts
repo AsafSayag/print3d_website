@@ -41,6 +41,9 @@ export const CONTACT = {
  *  visitor lands in a conversation that already says what they need. */
 export const WHATSAPP_TEXT = "היי, אשמח לקבל הצעת מחיר למודל אדריכלי לפרויקט שלי";
 
+/** Confirmed number of completed projects, used across the site. */
+export const PROJECT_COUNT = 350;
+
 /** wa.me link for the business number with the pre-filled message. */
 export const whatsappHref = (text: string = WHATSAPP_TEXT): string =>
   `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(text)}`;

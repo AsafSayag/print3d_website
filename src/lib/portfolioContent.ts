@@ -8,8 +8,8 @@
 import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 
 export const PORTFOLIO_HERO = {
-  eyebrow: "קטלוג",
-  title: "כל פרויקט הוא סיפור שהופך למודל",
+  eyebrow: "פרויקטים",
+  title: "פרויקטים של מודלים אדריכליים",
   subtitle:
     "מבחר מהמודלים האדריכליים וההדמיות התלת־ממדיות שליווינו, ממגדלי יוקרה ושכונות שלמות ועד תוכניות עירוניות, בקנה מידה שמאפשר לראות את הפרויקט לפני שהוא נבנה.",
 } as const;

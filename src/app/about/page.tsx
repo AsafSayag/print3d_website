@@ -59,7 +59,7 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
               <div className="lg:col-span-5">
                 <Reveal className="max-md:text-center">
-                  <p className="eyebrow text-[color:var(--gold-700)] mb-3">
+                  <p className="eyebrow text-[color:var(--gold-400)] mb-3">
                     {ABOUT.story.eyebrow}
                   </p>
                   <h2 className="h2 heading-accent text-white">{WHY.heading}</h2>

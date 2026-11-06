@@ -15,9 +15,9 @@ import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
 import { absoluteUrl, organizationRef } from "@/lib/schema";
 
 const path = "/services/architectural-models";
-const title = "ייצור מודלים אדריכליים";
+const title = "ייצור מודלים אדריכליים בהדפסת תלת־ממד";
 const description =
-  "Print3D מתכננת ומייצרת מודלים אדריכליים לפרויקטי נדל״ן, ממודלים למשרדי מכירות ועד מודלים עירוניים. הכירו את התהליך, צפו בפרויקטים ובקשו הצעה לפרויקט שלכם.";
+  "תכנון וייצור מודלים אדריכליים בהדפסת תלת־ממד ובגימור ידני ליזמי נדל״ן, אדריכלים ורשויות. קני מידה, חומרים, תהליך ודוגמאות לפרויקטים.";
 
 export const metadata: Metadata = buildPageMeta({ title, description, path });
 
@@ -26,7 +26,7 @@ const breadcrumbs: Crumb[] = [
   { label: title },
 ];
 
-const projectIds = ["avisror-sde-dov", "levinstein", "beit-hakerem"];
+const projectIds = ["avisror-sde-dov", "levinstein", "beit-hakerem", "dafna-tidhar", "gindi-colors", "sarfati-arnona-migrash-12"];
 const projects = projectIds.flatMap((id) => {
   const project = PORTFOLIO_PROJECTS.find((item) => item.id === id);
   return project?.href ? [project] : [];
@@ -93,12 +93,15 @@ export default function ArchitecturalModelsPage() {
           <div className="container-x relative grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
             <div>
               <Breadcrumbs items={breadcrumbs} className="mb-9 text-sm" />
-              <p className="eyebrow mb-4 text-[color:var(--steel-300)]">מחשבה שהופכת למשהו שאפשר לראות</p>
+              <p className="eyebrow mb-4 text-[color:var(--steel-300)]">הדפסת תלת־ממד וגימור ידני</p>
               <h1 id="service-title" className="h1 heading-accent max-w-xl text-balance text-white">
-                ייצור מודלים אדריכליים לפרויקטים שרוצים להציג נכון
+                ייצור מודלים אדריכליים למשרדי מכירות, למשקיעים ולוועדות תכנון
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-relaxed text-white/75">
                 אנחנו מתכננים ומייצרים מודלים אדריכליים פיזיים עבור יזמים, חברות בנייה, אדריכלים ורשויות. כל מודל מותאם לפרויקט, למקום שבו יציגו אותו ולאנשים שצריכים להבין אותו.
+              </p>
+              <p className="mt-3 max-w-xl leading-relaxed text-white/70">
+                מבני המודל מיוצרים גם בהדפסת תלת־ממד, ולאחר מכן מורכבים ומקבלים גימור ידני, תאורה ופרטי סביבה לפי הצורך.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <GlassButton href="#service-contact" variant="primary" {...analyticsAttrs("cta_click", { cta_name: "quote_request", location: "service_hero" })}>
@@ -123,6 +126,31 @@ export default function ArchitecturalModelsPage() {
                 <figcaption className="text-sm font-semibold">אביסרור, שדה דב <span className="mx-2 text-white/45">/</span> מודל בקנה מידה 1:100</figcaption>
               </div>
             </figure>
+          </div>
+        </section>
+
+        <section className="surface-white py-10 sm:py-14" aria-labelledby="service-depth">
+          <div className="container-x">
+            <details className="group rounded-2xl border border-[color:var(--navy-950)]/10 bg-[color:var(--ice-050)] p-6 sm:p-8">
+              <summary id="service-depth" className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-[color:var(--navy-950)] transition-colors hover:text-[color:var(--gold-700)] [&::-webkit-details-marker]:hidden">
+                עוד על הדפסה, קני מידה ותמחור
+                <span aria-hidden className="text-2xl text-[color:var(--gold-700)] group-open:rotate-45">+</span>
+              </summary>
+              <div className="mt-6 grid gap-6 text-[color:var(--ink-950)]/75 lg:grid-cols-3">
+                <div>
+                  <h3 className="font-semibold text-[color:var(--navy-950)]">איך מייצרים את המודל?</h3>
+                  <p className="mt-2 leading-relaxed">הייצור משלב הדפסת תלת־ממד של מבנים ופרטים אדריכליים עם עבודת הרכבה וגימור ידנית. לפי אופי הפרויקט אפשר לשלב פרספקס, עץ, PVC, צבע, צמחייה ותאורה. שיטת הייצור והחומרים נקבעים אחרי בדיקת התוכניות והמקום שבו המודל יוצג.</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[color:var(--navy-950)]">איזה קנה מידה מתאים?</h3>
+                  <p className="mt-2 leading-relaxed">בפרויקטים המוצגים באתר יש מודלים בקני מידה כמו 1:75 ו־1:100 לבניינים, ו־1:200 עד 1:1000 למתחמים גדולים יותר. הבחירה תלויה בגודל השטח, במקום הפיזי לתצוגה ובפרטים שחשוב להראות. נבדוק יחד מה נשאר קריא גם מרחוק וגם מקרוב.</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[color:var(--navy-950)]">מה משפיע על מחיר וזמן הייצור?</h3>
+                  <p className="mt-2 leading-relaxed">ההיקף הפיזי, קנה המידה, רמת הפירוט, מספר המבנים, מורכבות הסביבה, תאורה, מעמד תצוגה ומוכנות הקבצים משפיעים על ההצעה. אין מחיר או זמן אחיד לכל פרויקט; אחרי קבלת התוכניות, מועד ההצבה והדרישות נוכל להציע היקף עבודה ולוח זמנים שמתאימים למודל שלכם.</p>
+                </div>
+              </div>
+            </details>
           </div>
         </section>
 
@@ -164,8 +192,8 @@ export default function ArchitecturalModelsPage() {
               <Link href="/projects" className="text-base font-semibold text-[color:var(--gold-700)] underline underline-offset-4 transition-colors hover:text-[color:var(--navy-950)]">לכל הפרויקטים ←</Link>
             </div>
             <div className="mt-9 grid gap-5 md:grid-cols-3">
-              {projects.map((project) => (
-                <Link key={project.id} href={project.href!} className="group overflow-hidden rounded-2xl border border-[color:var(--navy-950)]/10 bg-[color:var(--ice-050)] transition-shadow hover:shadow-[0_20px_50px_-30px_rgba(10,21,38,0.35)]">
+              {projects.map((project, index) => (
+                <Link key={project.id} href={project.href!} className={`group overflow-hidden rounded-2xl border border-[color:var(--navy-950)]/10 bg-[color:var(--ice-050)] transition-shadow hover:shadow-[0_20px_50px_-30px_rgba(10,21,38,0.35)] ${index > 2 ? "hidden md:block" : ""}`}>
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image src={project.image} alt={`מודל אדריכלי לפרויקט ${project.title}`} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
                   </div>

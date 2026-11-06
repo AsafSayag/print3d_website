@@ -1,12 +1,17 @@
 import Image from "next/image";
-import { SPEC_BG, SPECS, IMAGE_ALT } from "../content";
 
 /**
  * מפרט טכני — full-bleed, dark, atmospheric section.
  * The scale-model bg photo sits behind a heavy navy shadow; the spec rows are
  * centered inside a frosted-glass panel so the text reads clearly over the photo.
  */
-export function TechnicalSpec() {
+export type SpecRow = { label: string; value?: string; pending?: boolean; pendingHint?: string };
+
+export function TechnicalSpec({ specBg, specs, imageAlt }: {
+  specBg: string;
+  specs: readonly SpecRow[];
+  imageAlt: string;
+}) {
   return (
     <section
       id="technical-spec"
@@ -14,8 +19,8 @@ export function TechnicalSpec() {
     >
       {/* Background image */}
       <Image
-        src={SPEC_BG}
-        alt={IMAGE_ALT}
+        src={specBg}
+        alt={imageAlt}
         fill
         sizes="100vw"
         className="object-cover object-center"
@@ -49,7 +54,7 @@ export function TechnicalSpec() {
             </h2>
 
             <dl className="grid sm:grid-cols-2 gap-x-12 gap-y-8 text-center">
-              {SPECS.map((row) => (
+              {specs.map((row) => (
                 <div key={row.label} className="border-b border-white/12 pb-4">
                   <dt className="eyebrow text-[color:var(--steel-300)]">
                     {row.label}

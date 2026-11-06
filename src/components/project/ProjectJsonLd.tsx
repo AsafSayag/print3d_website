@@ -11,7 +11,7 @@ const MAX_IMAGES = 6;
 /**
  * Structured data for a project case-study page: the model itself as a
  * CreativeWork made by Print3D, plus the page's place in the site
- * (בית › קטלוג › project). Everything is read from data the page already
+ * (בית › פרויקטים › project). Everything is read from data the page already
  * shows — its מפרט טכני rows and its hero photos — so the markup can never
  * describe something the visitor cannot see.
  */
@@ -52,7 +52,7 @@ export function ProjectJsonLd({
       <JsonLdScript
         data={breadcrumbListSchema([
           { label: "בית", href: "/" },
-          { label: "קטלוג", href: "/projects" },
+          { label: "פרויקטים", href: "/projects" },
           { label: name },
         ])}
       />

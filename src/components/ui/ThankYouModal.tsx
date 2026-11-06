@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { analyticsAttrs } from "@/lib/analytics";
+import { BUSINESS_HOURS, CONTACT, whatsappHref } from "@/lib/constants";
 
 type Props = {
   open: boolean;
@@ -20,7 +22,7 @@ export function ThankYouModal({
   open,
   onClose,
   title = "תודה שהשארתם פרטים!",
-  subtitle = "נחזור אליכם בהקדם האפשרי.",
+  subtitle = `נחזור אליכם עם הצעה מסודרת תוך יום עסקים (${BUSINESS_HOURS.daysLabel}, ${BUSINESS_HOURS.opens}–${BUSINESS_HOURS.closes}).`,
 }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -76,7 +78,7 @@ export function ThankYouModal({
             aria-labelledby="thankyou-title"
             aria-describedby="thankyou-subtitle"
             dir="rtl"
-            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-[color:var(--gold-500)]/30 bg-[color:var(--navy-950)] px-8 py-10 text-center shadow-[0_40px_90px_-30px_rgba(10,21,38,0.85)]"
+            className="relative max-h-[calc(100dvh-2.5rem)] w-full max-w-md overflow-y-auto rounded-3xl border border-[color:var(--gold-500)]/30 bg-[color:var(--navy-950)] px-8 py-10 text-center shadow-[0_40px_90px_-30px_rgba(10,21,38,0.85)]"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
@@ -120,10 +122,32 @@ export function ThankYouModal({
               {subtitle}
             </p>
 
+            <p className="mt-4 text-sm text-white/65">
+              רוצים הצעה מדויקת יותר? שלחו לנו תוכניות או תיאור קצר של הפרויקט.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <a
+                href={whatsappHref("היי, השארתי פרטים באתר Print3D. אשמח לשלוח תוכניות של הפרויקט כדי לקבל הצעה מדויקת יותר.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                {...analyticsAttrs("whatsapp_click", { location: "form_thank_you" })}
+                className="glass-btn glass-btn--primary"
+              >
+                שלחו תוכניות בוואטסאפ
+              </a>
+              <a
+                href={CONTACT.phoneHref}
+                {...analyticsAttrs("phone_click", { location: "form_thank_you", phone_type: "office" })}
+                className="glass-btn"
+              >
+                התקשרו אלינו
+              </a>
+            </div>
+
             <button
               type="button"
               onClick={onClose}
-              className="glass-btn glass-btn--primary mt-8 min-w-[180px]"
+              className="mt-7 text-sm text-white/70 underline-offset-4 hover:underline"
             >
               סגירה
             </button>

@@ -46,9 +46,10 @@ export default function FaqPage() {
         {/* All questions */}
         <section
           className="surface-white section"
-          aria-label={FAQ_PAGE.eyebrow}
+          aria-labelledby="faq-questions-title"
         >
           <div className="container-x max-w-3xl">
+            <h2 id="faq-questions-title" className="sr-only">כל השאלות והתשובות</h2>
             <FaqAccordion items={FAQ_ALL} />
           </div>
         </section>

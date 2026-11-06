@@ -54,5 +54,32 @@ function Block({ block }: { block: LegalBlock }) {
           ))}
         </div>
       );
+    case "table":
+      return (
+        <div className="my-5 overflow-x-auto">
+          <table className="w-full min-w-[580px] border-collapse text-right text-sm">
+            <thead>
+              <tr>
+                {block.columns.map((column) => (
+                  <th key={column} scope="col" className="border-b border-[color:var(--ink-950)]/20 p-3 font-semibold">
+                    {column}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => (
+                    <td key={j} className="border-b border-[color:var(--ink-950)]/10 p-3 align-top">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
   }
 }

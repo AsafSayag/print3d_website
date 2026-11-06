@@ -1,34 +1,44 @@
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
-import { TechnicalSpec } from "./TechnicalSpec";
+import { TechnicalSpec, type SpecRow } from "@/components/project/TechnicalSpec";
 import { HeroSlider } from "@/components/project/HeroSlider";
 import { Gallery } from "@/components/project/Gallery";
-import { IMAGE_ALT, HERO, HERO_SLIDES, GALLERY_ITEMS } from "../content";
+import { ProjectCta } from "@/components/project/ProjectCta";
+import type { GalleryItem } from "@/lib/projectImages";
 
 /**
  * The project page layout: full-bleed hero, spec sheet and image gallery.
  */
-export function ProjectView() {
+export function ProjectView({ hero, heroSlides, imageAlt, galleryItems, specBg, specs }: {
+  hero: { eyebrow?: string; title: string };
+  heroSlides: string[];
+  imageAlt: string;
+  galleryItems: GalleryItem[];
+  specBg: string;
+  specs: readonly SpecRow[];
+}) {
   return (
     <main>
       {/* Hero — full-bleed image slider with manual arrows + auto-advance. */}
       <HeroSlider
-        slides={HERO_SLIDES}
-        alt={IMAGE_ALT}
-        eyebrow={HERO.eyebrow}
-        title={HERO.title}
+        slides={heroSlides}
+        alt={imageAlt}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
       />
 
       {/* מפרט טכני — dark, full-bleed section with a frosted-glass spec panel. */}
-      <TechnicalSpec />
+      <TechnicalSpec specBg={specBg} specs={specs} imageAlt={imageAlt} />
 
       {/* Gallery */}
       <section id="gallery" className="section surface-ice">
         <div className="container-x">
           <h2 className="h2 heading-accent mb-10">תמונות נוספות</h2>
-          <Gallery items={GALLERY_ITEMS} alt={IMAGE_ALT} />
+          <Gallery items={galleryItems} alt={imageAlt} />
         </div>
       </section>
+
+      <ProjectCta projectName={hero.title} />
 
       <Faq />
 

@@ -14,7 +14,7 @@ type Props = {
   title: string;
 };
 
-// "חזרה לקטלוג" target, chosen from the catalog filter remembered in
+// "חזרה לפרויקטים" target, chosen from the catalog filter remembered in
 // sessionStorage (key mirrors ProjectFilterGrid's CATALOG_SCALE_KEY).
 const SHOWCASE_HREF = "/projects#showcase";
 const subscribeToNothing = () => () => {};
@@ -49,7 +49,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  // "חזרה לקטלוג" normally returns to the showcase carousel. But if the visitor
+  // "חזרה לפרויקטים" normally returns to the showcase carousel. But if the visitor
   // reached this project with an active scale filter, send them back to the
   // filter grid instead — where that selection is still applied — so their
   // filtering context is preserved. (Key mirrors ProjectFilterGrid's.)
@@ -137,7 +137,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
           not the top of the page. */}
       <Link
         href={catalogHref}
-        aria-label="חזרה לקטלוג"
+        aria-label="חזרה לפרויקטים"
         className="back-to-catalog absolute z-30 top-[4.75rem] sm:top-24 start-3 sm:start-6 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold text-white"
       >
         <svg
@@ -154,7 +154,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
         >
           <path d="M15 6l-6 6 6 6" />
         </svg>
-        חזרה לקטלוג
+        חזרה לפרויקטים
       </Link>
 
       {/* Copy — horizontally centered always; only the vertical placement

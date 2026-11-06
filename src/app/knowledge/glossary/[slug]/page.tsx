@@ -8,7 +8,10 @@ import { Breadcrumbs, type Crumb } from "@/components/legal/Breadcrumbs";
 import { JsonLdScript } from "@/components/JsonLd";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
+import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
 import { breadcrumbListSchema } from "@/lib/schema";
+import { getBlogArticle } from "../../content";
+import { MODEL_CONTEXT, glossaryResources } from "../../glossaryContext";
 import {
   GLOSSARY_TERMS,
   getGlossaryTerm,
@@ -46,6 +49,11 @@ export default async function GlossaryTermPage({ params }: { params: Params }) {
   const related = term.related
     .map((s) => bySlug.get(s))
     .filter((t): t is NonNullable<typeof t> => Boolean(t));
+  const resources = glossaryResources(term.slug);
+  const articlePath = term.href ?? `/knowledge/${resources.article}`;
+  const article = getBlogArticle(articlePath.replace("/knowledge/", ""));
+  const project = PORTFOLIO_PROJECTS.find((p) => p.id === resources.project && p.href);
+  const modelContext = MODEL_CONTEXT[term.slug];
 
   const breadcrumbs: Crumb[] = [
     { label: "בית", href: "/" },
@@ -96,18 +104,35 @@ export default async function GlossaryTermPage({ params }: { params: Params }) {
                 {term.definition}
               </p>
 
-              {term.href && (
-                <div className="mt-8 rounded-2xl border border-black/10 bg-[color:var(--ice-050)] p-6">
-                  <p className="text-[color:var(--ink-950)]/80">
-                    רוצים להעמיק בנושא?{" "}
-                    <Link
-                      href={term.href}
-                      className="font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline"
-                    >
-                      קראו את המאמר המורחב ←
-                    </Link>
+              {modelContext && (
+                <section className="mt-8 rounded-2xl border border-black/10 bg-[color:var(--ice-050)] p-6">
+                  <h2 className="font-display text-xl font-bold text-[color:var(--ink-950)]">
+                    איך זה קשור למודל אדריכלי?
+                  </h2>
+                  <p className="mt-3 leading-relaxed text-[color:var(--ink-950)]/80">
+                    {modelContext}
                   </p>
-                </div>
+                </section>
+              )}
+
+              {(article || project) && (
+                <section className="mt-8 rounded-2xl border border-black/10 bg-[color:var(--ice-050)] p-6">
+                  <h2 className="font-display text-xl font-bold text-[color:var(--ink-950)]">
+                    להעמקה ודוגמאות
+                  </h2>
+                  <ul className="mt-3 space-y-2 text-[color:var(--ink-950)]/80">
+                    {article && (
+                      <li>
+                        מדריך: <Link href={articlePath} className="font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline">{article.title}</Link>
+                      </li>
+                    )}
+                    {project?.href && (
+                      <li>
+                        דוגמה למודל שביצענו: <Link href={project.href} className="font-semibold text-[color:var(--gold-700)] underline-offset-4 hover:underline">{project.title}</Link>
+                      </li>
+                    )}
+                  </ul>
+                </section>
               )}
 
               {related.length > 0 && (

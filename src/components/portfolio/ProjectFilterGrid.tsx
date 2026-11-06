@@ -64,7 +64,7 @@ function Select({
         aria-label={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none cursor-pointer rounded-full border border-[color:var(--ink-950)]/15 bg-white ps-4 pe-9 py-2.5 text-sm font-[var(--font-body)] text-[color:var(--ink-950)] transition-colors duration-300 hover:border-[color:var(--gold-500)]/60 focus-visible:outline-2 focus-visible:outline-[color:var(--steel-300)] focus-visible:outline-offset-2"
+        className="appearance-none cursor-pointer rounded-full border border-[color:var(--ink-950)]/15 bg-white ps-4 pe-9 py-2.5 text-sm font-[var(--font-body)] text-[color:var(--ink-950)] transition-colors duration-300 hover:border-[color:var(--gold-500)]/60 focus-visible:outline-2 focus-visible:outline-[color:var(--gold-500)] focus-visible:outline-offset-2"
       >
         <option value={ALL}>{label}</option>
         {options.map((o) => (
@@ -206,7 +206,7 @@ export function ProjectFilterGrid() {
                     <Link
                       href={p.href}
                       aria-label={`${p.title} — לצפייה בעמוד הפרויקט`}
-                      className="absolute inset-0 z-10 rounded-2xl ring-[color:var(--gold-400)]/0 transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2"
+                      className="absolute inset-0 z-10 rounded-2xl ring-transparent transition group-hover:ring-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold-500)]"
                     />
                   )}
                 </div>
