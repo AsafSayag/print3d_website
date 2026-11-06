@@ -114,7 +114,8 @@ export default function ArchitecturalModelsPage() {
                 src="/projects/avisror-sde-dov.webp"
                 alt="מודל אדריכלי מואר של פרויקט אביסרור בשדה דב"
                 fill
-                priority
+                loading="eager"
+                fetchPriority="high"
                 sizes="(max-width: 1024px) 100vw, 48vw"
                 className="object-cover object-center"
               />

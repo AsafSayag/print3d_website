@@ -28,9 +28,16 @@ export function normalizeIsraeliPhone(input: string): string | null {
   // Letters mean it isn't a phone number, not a number with noise around it.
   if (/[A-Za-z֐-׿]/.test(input)) return null;
   let digits = input.replace(/\D/g, "");
-  if (digits.startsWith("00972")) digits = digits.slice(5);
-  else if (digits.startsWith("972")) digits = digits.slice(3);
-  if (!digits.startsWith("0")) digits = `0${digits}`;
+  let international = false;
+  if (digits.startsWith("00972")) {
+    digits = digits.slice(5);
+    international = true;
+  } else if (digits.startsWith("972")) {
+    digits = digits.slice(3);
+    international = true;
+  }
+  // A missing leading zero is valid only after an Israeli country prefix.
+  if (international && !digits.startsWith("0")) digits = `0${digits}`;
   return /^0\d{8,9}$/.test(digits) ? digits : null;
 }
 

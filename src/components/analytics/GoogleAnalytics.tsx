@@ -11,7 +11,9 @@ window.dataLayer=window.dataLayer||[];
 window.gtag=window.gtag||function(){dataLayer.push(arguments);};
 gtag('js',new Date());
 gtag('config',${JSON.stringify(gaId)},{send_page_view:false});
-var done=0;function load(){if(done)return;done=1;var s=document.createElement('script');s.async=true;s.src=${JSON.stringify(src)};document.head.appendChild(s);}
+var done=0;function load(){if(done)return;done=1;var s=document.createElement('script');s.async=true;s.src=${JSON.stringify(src)};
+function ready(){window.__p3dGaReady=true;window.dispatchEvent(new Event('p3d:ga-ready'));}
+s.addEventListener('load',ready,{once:true});s.addEventListener('error',ready,{once:true});document.head.appendChild(s);}
 if(document.readyState==='complete'){load();}else{window.addEventListener('load',load,{once:true});setTimeout(load,3000);}
 })();`,
       }}
