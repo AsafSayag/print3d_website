@@ -4,18 +4,22 @@ import { TechnicalSpec, type SpecRow } from "@/components/project/TechnicalSpec"
 import { HeroSlider } from "@/components/project/HeroSlider";
 import { Gallery } from "@/components/project/Gallery";
 import { ProjectCta } from "@/components/project/ProjectCta";
+import { RelatedProjects } from "@/components/project/RelatedProjects";
+import type { Project } from "@/lib/portfolioContent";
 import type { GalleryItem } from "@/lib/projectImages";
 
 /**
  * The project page layout: full-bleed hero, spec sheet and image gallery.
  */
-export function ProjectView({ hero, heroSlides, imageAlt, galleryItems, specBg, specs }: {
+export function ProjectView({ hero, heroSlides, imageAlt, galleryItems, specBg, specs, related }: {
   hero: { eyebrow?: string; title: string };
   heroSlides: string[];
   imageAlt: string;
   galleryItems: GalleryItem[];
   specBg: string;
   specs: readonly SpecRow[];
+  /** Other case studies to link to after the gallery. */
+  related: Project[];
 }) {
   return (
     <main>
@@ -28,7 +32,7 @@ export function ProjectView({ hero, heroSlides, imageAlt, galleryItems, specBg, 
       />
 
       {/* מפרט טכני — dark, full-bleed section with a frosted-glass spec panel. */}
-      <TechnicalSpec specBg={specBg} specs={specs} imageAlt={imageAlt} />
+      <TechnicalSpec specBg={specBg} specs={specs} />
 
       {/* Gallery */}
       <section id="gallery" className="section surface-ice">
@@ -37,6 +41,8 @@ export function ProjectView({ hero, heroSlides, imageAlt, galleryItems, specBg, 
           <Gallery items={galleryItems} alt={imageAlt} />
         </div>
       </section>
+
+      <RelatedProjects projects={related} />
 
       <ProjectCta projectName={hero.title} />
 

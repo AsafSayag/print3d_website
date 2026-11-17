@@ -41,7 +41,9 @@ export function Gallery({ items, alt }: { items: GalleryItem[]; alt: string }) {
             >
               <Image
                 src={isVideo ? item.poster : item.src}
-                alt={alt}
+                // Each tile gets its own alt (one shared string on every photo
+                // reads as duplicate content to search engines and screen readers).
+                alt={isVideo ? `${alt} — סרטון` : `${alt} — תמונה ${i + 1} מתוך ${items.length}`}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transition-transform duration-500 ease-[var(--ease-brand)] group-hover:scale-[1.04]"

@@ -11,6 +11,8 @@ import { TrackArticleView } from "@/components/analytics/TrackView";
 import { buildPageMeta } from "@/lib/pageMeta";
 import { CONTACT } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
+import { projectsForArticle } from "@/lib/relatedProjects";
+import { RelatedProjects } from "@/components/project/RelatedProjects";
 import { getBlogArticle, blogArticleSlugs } from "../content";
 import { ArticleBody } from "../_components/ArticleBody";
 import { ArticleJsonLd } from "../_components/ArticleJsonLd";
@@ -185,6 +187,12 @@ export default async function ArticlePage({ params }: { params: Params }) {
             </div>
           </div>
         </section>
+        <RelatedProjects
+          projects={projectsForArticle(slug)}
+          title="מודלים שייצרנו"
+          intro="דוגמאות מפרויקטים אמיתיים שליווינו, עם המפרט והתמונות של כל מודל."
+          className="surface-ice section"
+        />
       </main>
       <Footer />
     </>
