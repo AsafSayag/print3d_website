@@ -58,6 +58,11 @@ export const organizationSchema = {
     addressLocality: CONTACT.addressCity,
     addressCountry: "IL",
   },
+  // A map link for the address. No `geo` coordinates yet: OpenStreetMap has no
+  // point for number 84 on this ~2km street, and a wrong pin is worse than
+  // none. Add `geo` (and the Google Business Profile URL to `sameAs`) once the
+  // exact coordinates are known — the Business Profile shows them.
+  hasMap: CONTACT.mapsUrl,
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",

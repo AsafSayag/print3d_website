@@ -102,7 +102,7 @@ export function HeroSlider({ slides, alt, eyebrow, title }: Props) {
           <Image
             key={src}
             src={src}
-            alt={i === idx ? alt : ""}
+            alt={i === idx ? (i === 0 ? alt : `${alt} — מבט ${i + 1}`) : ""}
             aria-hidden={i !== idx}
             fill
             sizes="100vw"

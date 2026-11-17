@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CONTACT } from "@/lib/constants";
-import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
+import { PORTFOLIO_PROJECTS, PROJECT_PAGES_LAST_MODIFIED } from "@/lib/portfolioContent";
 import { blogArticleSlugs, getBlogArticle } from "./knowledge/content";
 import { glossaryTermSlugs } from "./knowledge/glossary";
 
@@ -14,13 +14,18 @@ import { glossaryTermSlugs } from "./knowledge/glossary";
  * Derived rather than hand-listed: the previous hardcoded list had drifted to 6
  * slugs while 20 project pages were live, leaving 14 of them out of the sitemap.
  */
-const PROJECT_PATHS = PORTFOLIO_PROJECTS.map((p) => p.href).filter(
-  (href): href is string => Boolean(href)
+const PROJECT_PAGES = PORTFOLIO_PROJECTS.flatMap((p) =>
+  p.href ? [{ path: p.href, updated: p.updated ?? PROJECT_PAGES_LAST_MODIFIED }] : []
 );
 
 /** Fixed content-update stamp — keeps the sitemap fully static (no request-time
- *  API), so it stays SSG/cache-friendly. Bump when content changes materially. */
+ *  API), so it stays SSG/cache-friendly. The fallback for entries without their
+ *  own date below; give a page its own date when it changes materially, rather
+ *  than bumping this for everything. */
 const LAST_MODIFIED = "2026-07-17";
+
+/** Last material change to the glossary term pages (their shared template). */
+const GLOSSARY_LAST_MODIFIED = "2026-11-06";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = CONTACT.siteUrl;
@@ -39,13 +44,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     entry("/", "weekly", 1, "2026-11-03"),
     entry("/services/architectural-models", "monthly", 0.9, "2026-10-22"),
-    entry("/about", "monthly", 0.7),
-    entry("/contact", "yearly", 0.6),
+    entry("/about", "monthly", 0.7, "2026-11-06"),
+    entry("/contact", "yearly", 0.6, "2026-11-05"),
     entry("/projects", "weekly", 0.9, "2026-11-03"),
     entry("/knowledge", "weekly", 0.9, "2026-11-03"),
     entry("/knowledge/articles", "weekly", 0.8, "2026-11-03"),
-    entry("/knowledge/glossary", "weekly", 0.8),
-    entry("/faq", "monthly", 0.6),
+    entry("/knowledge/glossary", "weekly", 0.8, GLOSSARY_LAST_MODIFIED),
+    entry("/faq", "monthly", 0.6, "2026-11-06"),
     entry("/legal", "yearly", 0.3),
     entry("/legal/privacy", "yearly", 0.3),
     entry("/legal/terms", "yearly", 0.3),
@@ -53,7 +58,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/legal/accessibility", "yearly", 0.3),
   ];
 
-  const projects = PROJECT_PATHS.map((path) => entry(path, "monthly", 0.7));
+  const projects = PROJECT_PAGES.map(({ path, updated }) =>
+    entry(path, "monthly", 0.7, updated)
+  );
 
   // Each article carries its own update date, so a new or edited article tells
   // Google it changed without bumping every other entry.
@@ -62,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const glossary = glossaryTermSlugs().map((slug) =>
-    entry(`/knowledge/glossary/${slug}`, "monthly", 0.5)
+    entry(`/knowledge/glossary/${slug}`, "monthly", 0.5, GLOSSARY_LAST_MODIFIED)
   );
 
   return [...staticPages, ...projects, ...articles, ...glossary];

@@ -9,6 +9,7 @@ import { HIDDEN_PROJECT_SLUGS } from "@/lib/hiddenProjects";
 import { buildProjectMeta, NOT_FOUND_METADATA } from "@/lib/pageMeta";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolioContent";
 import type { GalleryItem } from "@/lib/projectImages";
+import { relatedProjectsFor } from "@/lib/relatedProjects";
 
 /**
  * Builds a project case-study page — both its `metadata` and its component.
@@ -97,6 +98,7 @@ export function createProjectPage({
           galleryItems={galleryItems}
           specBg={specBg}
           specs={specs}
+          related={relatedProjectsFor(slug)}
         />
       </div>
     );

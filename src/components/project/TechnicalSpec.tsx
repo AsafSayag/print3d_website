@@ -7,20 +7,20 @@ import Image from "next/image";
  */
 export type SpecRow = { label: string; value?: string; pending?: boolean; pendingHint?: string };
 
-export function TechnicalSpec({ specBg, specs, imageAlt }: {
+export function TechnicalSpec({ specBg, specs }: {
   specBg: string;
   specs: readonly SpecRow[];
-  imageAlt: string;
 }) {
   return (
     <section
       id="technical-spec"
       className="relative w-full overflow-hidden bg-[color:var(--navy-950)] text-white"
     >
-      {/* Background image */}
+      {/* Background image — a darkened backdrop behind the spec panel, so it's
+          decorative (empty alt) rather than a fourth copy of the project alt. */}
       <Image
         src={specBg}
-        alt={imageAlt}
+        alt=""
         fill
         sizes="100vw"
         className="object-cover object-center"

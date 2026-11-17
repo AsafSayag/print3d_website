@@ -36,7 +36,21 @@ export type Project = {
   video?: { mp4: string; webm: string };
   /** When present, the project card links through to its own case-study page. */
   href?: string;
+  /**
+   * The case-study page's last material content change ("YYYY-MM-DD"), for the
+   * sitemap's `lastmod`. Set it when you edit one project's copy or photos;
+   * when omitted, the page uses PROJECT_PAGES_LAST_MODIFIED below.
+   */
+  updated?: string;
 };
+
+/**
+ * Last change shared by every case-study page — their common layout (related
+ * projects, gallery alt text). Bump it when that shared layout changes; a single
+ * project's own edit goes in its `updated` field instead. Google only trusts
+ * `lastmod` when it tracks real changes, so never bump it without one.
+ */
+export const PROJECT_PAGES_LAST_MODIFIED = "2026-11-17";
 
 /** Real models from the Print3D archive — same source as Portfolio.tsx. */
 const ALL_PORTFOLIO_PROJECTS: Project[] = [
