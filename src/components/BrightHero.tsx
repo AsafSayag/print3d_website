@@ -32,6 +32,8 @@ type Props = {
   hideEyebrow?: boolean;
   /** Center the hero copy on mobile (<md); desktop is unchanged. */
   centerOnMobile?: boolean;
+  /** Center the hero copy at every breakpoint (the catalog's title). */
+  center?: boolean;
 };
 
 /**
@@ -50,6 +52,7 @@ export function BrightHero({
   hideBreadcrumbs,
   hideEyebrow,
   centerOnMobile,
+  center,
 }: Props) {
   return (
     <section
@@ -92,11 +95,11 @@ export function BrightHero({
         ))}
       </div>
 
-      <div className={`relative z-10 container-x w-full${centerOnMobile ? " max-md:text-center" : ""}`}>
+      <div className={`relative z-10 container-x w-full${center ? " text-center" : centerOnMobile ? " max-md:text-center" : ""}`}>
         {hideBreadcrumbs ? null : (
           <Reveal immediate className="mb-6 md:mb-8">
             <div
-              className={centerOnMobile ? "max-md:flex max-md:justify-center" : undefined}
+              className={center ? "flex justify-center" : centerOnMobile ? "max-md:flex max-md:justify-center" : undefined}
               style={{
                 textShadow:
                   "0 2px 18px rgba(255,255,255,0.9), 0 1px 4px rgba(255,255,255,0.8)",
@@ -147,12 +150,12 @@ export function BrightHero({
           <Reveal immediate delay={0.12}>
             {singleLineTitle ? (
               <h1
-                className="heading-accent max-w-none text-black font-display font-black tracking-[-0.02em] whitespace-normal text-[2.35rem] leading-[1.14] md:whitespace-nowrap md:text-[clamp(2rem,5.3vw,4.5rem)] md:leading-[1.1]"
+                className={`heading-accent${center ? " heading-accent--center" : ""} max-w-none text-black font-display font-black tracking-[-0.02em] whitespace-normal text-[2.35rem] leading-[1.14] md:whitespace-nowrap md:text-[clamp(2rem,5.3vw,4.5rem)] md:leading-[1.1]`}
               >
                 {title}
               </h1>
             ) : (
-              <h1 className="h1 heading-accent max-w-3xl md:max-w-none md:whitespace-nowrap text-black">
+              <h1 className={`h1 heading-accent${center ? " heading-accent--center" : ""} max-w-3xl md:max-w-none md:whitespace-nowrap text-black`}>
                 {title}
               </h1>
             )}
@@ -161,7 +164,7 @@ export function BrightHero({
 
         {description ? (
           <Reveal immediate delay={0.18}>
-            <div className="portfolio-hero-glass max-w-2xl mt-6">
+            <div className={`portfolio-hero-glass max-w-2xl mt-6${center ? " mx-auto" : ""}`}>
               <p className="text-black text-lg leading-relaxed font-medium">
                 {description}
               </p>
