@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { CONTACT, whatsappHref } from "@/lib/constants";
 import { analyticsAttrs } from "@/lib/analytics";
 import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
@@ -11,6 +12,10 @@ import { useNearFooter, useAtPageBottom } from "@/lib/useNearFooter";
  * is empty it routes to the contact form; once set it opens a WhatsApp chat.
  * Shrinks further once the footer is about to enter view, so it stops
  * crowding the page end.
+ *
+ * Not rendered on the paid landing pages (/lp/…): visitors there pass a
+ * screening question before they can reach us, and a floating chat button
+ * would bypass it. Their thank-you pages do show it.
  */
 export function FloatingWhatsApp() {
   const hasNumber = CONTACT.whatsappNumber.length > 0;
@@ -19,6 +24,8 @@ export function FloatingWhatsApp() {
     : CONTACT.contactPath;
   const compact = useNearFooter();
   const atBottom = useAtPageBottom();
+  const pathname = usePathname();
+  if (pathname.startsWith("/lp/") && !pathname.endsWith("/thank-you")) return null;
 
   return (
     <a

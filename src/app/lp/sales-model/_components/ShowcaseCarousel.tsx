@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { GlassButton } from "@/components/ui/GlassButton";
 import { Reveal } from "@/components/ui/Reveal";
-import { analyticsAttrs } from "@/lib/analytics";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-import { LP_LOCATION, LP_SHOWCASE } from "../content";
+import { LP_SHOWCASE } from "../content";
 
 /** Time each project stays on screen before auto-advancing. */
 const AUTOPLAY_MS = 5500;
@@ -263,20 +261,6 @@ export function ShowcaseCarousel() {
           </button>
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-5 text-center">
-          <p className="lp-car-cta-lead">{LP_SHOWCASE.ctaLead}</p>
-          <GlassButton
-            href="#lead"
-            variant="primary"
-            className="cta-glow lp-cta-lg"
-            {...analyticsAttrs("cta_click", {
-              cta_name: "quote_request",
-              location: `${LP_LOCATION}_showcase`,
-            })}
-          >
-            {LP_SHOWCASE.cta}
-          </GlassButton>
-        </div>
       </div>
     </section>
   );

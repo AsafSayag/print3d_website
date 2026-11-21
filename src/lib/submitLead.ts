@@ -1,5 +1,6 @@
 import type { LeadSource } from "./leadSources";
 import type { Attribution } from "./attribution";
+import type { LeadBudget } from "./leadBudgets";
 
 export type Lead = {
   name: string;
@@ -10,6 +11,8 @@ export type Lead = {
   source?: LeadSource;
   /** Ad click id / UTMs captured on landing — see lib/attribution.ts. */
   attribution?: Attribution;
+  /** Budget bracket picked on the landing page — see lib/leadBudgets.ts. */
+  budget?: LeadBudget;
   /** Honeypot — must stay empty. Real visitors never see or fill this field. */
   hp?: string;
 };

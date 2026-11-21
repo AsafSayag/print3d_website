@@ -1,10 +1,13 @@
 /**
  * Copy for the paid-traffic landing page (/lp/sales-model).
  *
+ * The page is deliberately short: hero with the budget screening question,
+ * client logos, four numbers, the project carousel and one closing line.
+ *
  * Everything factual here is taken from claims the site already makes
- * elsewhere (lib/content.ts: BUSINESS_VALUE stats, FAQ answers, the one-business-
- * day quote promise). Nothing new is invented —
- * if a number changes on the main site, change it here too.
+ * elsewhere (lib/content.ts: BUSINESS_VALUE stats, the one-business-day quote
+ * promise). Nothing new is invented — if a number changes on the main site,
+ * change it here too.
  */
 
 export const LP_PATH = "/lp/sales-model";
@@ -28,13 +31,6 @@ export const LP_HERO = {
   titleBottom: "למכור בשבילכם",
   subtitle:
     "מודל פיזי מציג לרוכש את כל חווית המגורים במבט אחד, והוא מחליט מהר יותר ובביטחון.",
-  primaryCta: "קבלו הצעה לפרויקט שלכם",
-  secondaryCta: "דברו איתנו בוואטסאפ",
-  microcopy: "הצעת מחיר מסודרת תוך יום עסקים · בלי התחייבות",
-  /** Concrete service promises (all from the main site's FAQ). Experience and
-   *  project count live in the logos line right below, so they aren't
-   *  repeated here. */
-  trust: ["גימור ידני בכל פרט", "אישור שלכם לפני הייצור", "הובלה והצבה בכל הארץ"],
   /** A retouched copy of project_pages/bonei_binyan_hahagana_raanana_project/
    *  IMG_06.webp: the grey wall behind the model is replaced with the page's
    *  dark navy (with a soft warm spill), and the model itself is sharpened and
@@ -54,51 +50,14 @@ export const LP_HERO = {
   },
 } as const;
 
-export const LP_JOURNEY = {
-  eyebrow: "מה קורה במשרד מכירות עם מודל",
-  title: "ככה נראית פגישת מכירה שזורמת",
-  steps: [
-    {
-      title: "הלקוח נכנס ומבין הכל ברגע",
-      text: "זה רגע ה-WOW. מולו עומדת חווית המגורים עצמה: הבניינים, הרחובות והגינות, כיווני האוויר והשמש, איפה השכנים ומה נשקף מכל כיוון. מה שכלים וירטואליים מסבירים לאורך זמן, הוא מבין במבט אחד.",
-      image: {
-        src: "/project_pages/aura_natania_project/IMG_01.webp",
-        alt: "מודל אדריכלי מוצב במרכז משרד המכירות של אאורה נתניה",
-        w: 1600,
-        h: 1200,
-      },
-    },
-    {
-      title: "הלקוח בוחר את הבית שלו",
-      text: "הוא לא מצביע על קומה, הוא בוחר אותה. רואה את עצמו במרפסת עם כוס קפה, ומבין איזה שדרוג מחכה לחיים שלו בבית החדש שהרגע בחר לעצמו.",
-      image: {
-        src: "/project_pages/avisror_ramat_hasharon_project/bg.webp",
-        alt: "מבט מקרוב על חזית ומרפסות במודל אדריכלי, אביסרור רמת השרון",
-        w: 2000,
-        h: 1500,
-      },
-    },
-    {
-      title: "הלקוח מרגיש את הסביבה",
-      text: "שבילים, גינות, תאורה ודמויות. הוא כבר מדמיין את הבוקר הראשון שלו שם.",
-      image: {
-        src: "/project_pages/dafna_tidhar_project/bg.webp",
-        alt: "חצר פנימית מגוננת ומוארת במודל אדריכלי, תדהר דפנה",
-        w: 2048,
-        h: 1536,
-      },
-    },
-    {
-      title: "הלקוח מחליט בביטחון",
-      text: "פחות שאלות פתוחות, פחות חשש, פחות לחץ על המחיר. השיחה עוברת מ״האם״ ל״איזו דירה״.",
-      image: {
-        src: "/project_pages/sarfati_arnona_jerusalem_project/bg.webp",
-        alt: "מודל אדריכלי על שולחן תצוגה במשרד מכירות, צרפתי ארנונה ירושלים",
-        w: 2000,
-        h: 1500,
-      },
-    },
-  ],
+/** The screening step in the hero (LpQualifier): one budget question before
+ *  any contact details. The brackets themselves live in lib/leadBudgets.ts. */
+export const LP_GATE = {
+  question: "מה סדר גודל התקציב למודל?",
+  hint: "שאלה אחת, ואז משאירים פרטים.",
+  formTitle: "מעולה. לאן לחזור אליכם?",
+  budgetLabel: "תקציב:",
+  change: "שינוי",
 } as const;
 
 /** Same four figures as the homepage BUSINESS_VALUE module. Framed as what
@@ -110,8 +69,6 @@ export const LP_NUMBERS = {
    *  between "לפרויקט." and "השפעה". */
   titleTop: "השקעה קטנה ביחס לפרויקט.",
   titleBottom: "השפעה גדולה על המכירה.",
-  intro:
-    "אלה המדדים שהיזמים שעובדים איתנו מודדים בפרויקטים שלהם, ובגללם הם חוזרים אלינו בכל פרויקט חדש.",
   stats: [
     // "Financing costs" was dropped from the first card: it read as ambiguous
     // (the buyer's mortgage? the sales office?).
@@ -122,7 +79,6 @@ export const LP_NUMBERS = {
   ],
   bannerTop: "לעיתים די בשיפור של עסקה אחת",
   bannerBottom: "כדי להחזיר את מלוא ההשקעה במודל.",
-  cta: "בואו נבדוק את זה על הפרויקט שלכם",
 } as const;
 
 /**
@@ -138,8 +94,6 @@ export const LP_NUMBERS = {
 export const LP_SHOWCASE = {
   eyebrow: "מהשטח",
   title: "מה שהיזמים המובילים כבר מציבים במשרדי המכירות",
-  ctaLead: "רוצים שגם הפרויקט שלכם ייראה ככה?",
-  cta: "קבלו הצעה לפרויקט שלכם",
   items: [
     // Whole model, from afar — a full neighbourhood in the sales office.
     {
@@ -208,61 +162,16 @@ export const LP_SHOWCASE = {
   ],
 } as const;
 
-export const LP_PROCESS = {
-  eyebrow: "פשוט להתחיל",
-  title: "שלושה צעדים, ואתם שם",
-  steps: [
-    {
-      title: "שולחים לנו מה שיש",
-      text: "תוכניות, הדמיות, או תיאור של הפרויקט, לוח הזמנים וסדרי הגודל. גם בלי קבצים מלאים נוכל לתת הערכה ראשונית.",
-    },
-    {
-      title: "מקבלים הצעה תוך יום עסקים",
-      text: "המלצה מקצועית על קנה המידה ורמת הפירוט שיתאימו לפרויקט, לצד לוח זמנים ומחיר. הכל כתוב ומסודר.",
-    },
-    {
-      title: "המודל מגיע מוכן להצגה",
-      text: "אנחנו מייצרים, אורזים, מובילים ומציבים את המודל בכל מקום בארץ. ולאורך כל הדרך: איכות ללא פשרות ושירות מהיר ומקצועי.",
-    },
-  ],
-} as const;
-
-/** Objection handling — answers mirror FAQ_PAGE on the main site. */
-export const LP_FAQ = {
-  eyebrow: "לפני שמשאירים פרטים",
-  title: "מה ששואלים אותנו הכי הרבה",
-  items: [
-    {
-      q: "כמה עולה מודל אדריכלי?",
-      a: "המחיר נגזר מהיקף הפרויקט, קנה המידה, רמת הפירוט והסביבה הנדרשת. מודל שיווקי למשרד מכירות מתומחר אחרת ממודל מתחם שלם. שלחו לנו את פרטי הפרויקט ותקבלו הצעת מחיר מסודרת תוך יום עסקים.",
-    },
-    {
-      q: "כמה זמן לוקח לייצר מודל?",
-      a: "זה תלוי בגודל הפרויקט ובסוג המודל, ולכן כל פרויקט מקבל לוח זמנים משלו כבר בהצעת המחיר. דבר אחד לא משתנה: אנחנו לא מקצרים תהליכים על חשבון האיכות. כל מודל עובר דוגמת ייצור ואישור שלכם לפני הייצור המלא, ומגיע בגימור ללא פשרות.",
-    },
-    {
-      q: "מה צריך כדי לקבל הצעת מחיר?",
-      a: "סוג הפרויקט, קנה המידה הרצוי אם ידוע, לוח הזמנים וקבצי התכנון אם יש. גם בלי קבצים מלאים נוכל לתת הערכה ראשונית.",
-    },
-  ],
-} as const;
-
 export const LP_FINAL = {
-  eyebrow: "הצעד הבא",
   title: "הפרויקט שלכם ראוי שיראו אותו.",
-  text: "ספרו לנו בכמה מילים על הפרויקט. נחזור אליכם תוך יום עסקים עם הצעה מסודרת, בלי התחייבות.",
-  formTitle: "השאירו פרטים ונחזור אליכם",
-  orCall: "מעדיפים לדבר עכשיו?",
-  image: {
-    src: "/project_pages/beit_hakerem_project/bg.webp",
-    alt: "",
-  },
+  text: "שאלה אחת על התקציב, פרטים, והצעה מסודרת תוך יום עסקים.",
+  cta: "בדקו התאמה לפרויקט שלכם",
 } as const;
 
-export const LP_HEADER_CTA = "קבלו הצעה";
+export const LP_HEADER_CTA = "בדיקת התאמה";
 
 /** Slim bottom rail on phones (LpMobileBar) — kept short so it stays one line. */
 export const LP_MOBILE_BAR = {
   text: "הצעת מחיר תוך יום עסקים",
-  cta: "קבלו הצעה",
+  cta: "בדיקת התאמה",
 } as const;

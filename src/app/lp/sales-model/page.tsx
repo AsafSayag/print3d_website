@@ -5,13 +5,7 @@ import { LpHeader } from "./_components/LpHeader";
 import { LpHero } from "./_components/LpHero";
 import { LpMobileBar } from "./_components/LpMobileBar";
 import { CampaignTagManager } from "./_components/CampaignTagManager";
-import {
-  LpFaq,
-  LpFinal,
-  LpFooter,
-  LpNumbers,
-  LpProcess,
-} from "./_components/Sections";
+import { LpFinal, LpFooter, LpNumbers } from "./_components/Sections";
 import { LP_META, LP_PATH } from "./content";
 
 /**
@@ -19,7 +13,10 @@ import { LP_META, LP_PATH } from "./content";
  *
  * noindex (and deliberately absent from sitemap.ts): it overlaps the homepage's
  * message, and ad landing pages shouldn't compete with it in organic search.
- * The header carries no navigation — one path, one goal: the lead form (#lead).
+ * The header carries no navigation — one path, one goal: the screening
+ * question in the hero (#lead, see LpQualifier), which is the only way to
+ * leave details. The page offers no phone number or WhatsApp link, so an
+ * enquiry can't skip the question.
  */
 export const metadata: Metadata = buildPageMeta({
   title: LP_META.title,
@@ -29,9 +26,6 @@ export const metadata: Metadata = buildPageMeta({
 });
 
 // Client-heavy, below the fold → code-split (SSR kept).
-const FlowJourney = dynamic(() =>
-  import("./_components/FlowJourney").then((m) => m.FlowJourney),
-);
 const ShowcaseCarousel = dynamic(() =>
   import("./_components/ShowcaseCarousel").then((m) => m.ShowcaseCarousel),
 );
@@ -49,13 +43,8 @@ export default function SalesModelLandingPage() {
         <div className="lp-logos">
           <ClientLogos />
         </div>
-        {/* The proof (numbers) comes straight after the logos, before the
-            story of the sales meeting. */}
         <LpNumbers />
-        <FlowJourney />
         <ShowcaseCarousel />
-        <LpProcess />
-        <LpFaq />
         <LpFinal />
       </main>
       <LpFooter />

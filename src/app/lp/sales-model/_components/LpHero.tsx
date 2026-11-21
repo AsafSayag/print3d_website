@@ -1,143 +1,72 @@
 import { getImageProps } from "next/image";
-import { GlassButton } from "@/components/ui/GlassButton";
-import { whatsappHref } from "@/lib/constants";
-import { analyticsAttrs } from "@/lib/analytics";
-import { LP_HERO, LP_LOCATION } from "../content";
+import { LP_HERO } from "../content";
+import { LpQualifier } from "./LpQualifier";
 
 /**
- * Landing hero. A server component with pure-CSS entrances (see .lp-hero-*):
- * the H1 is the LCP element, so it must paint from the SSR HTML on the first
- * frame — never gated behind hydration. The stagger is kept tight (all within
- * 0.35s) so the CTAs arrive with the headline, not a second after it.
+ * Landing hero — one centred column across the full width of the screen:
+ * headline, the screening question as a wide bar, and under them the model
+ * photo, large and untouched (no scrim, zoom or blend over it, so it stays as
+ * sharp as the file). The photo runs past the first screen on purpose: its top
+ * peeking in under the question is the cue to scroll.
+ *
+ * A server component with pure-CSS entrances (see .lp-rise): the H1 is the LCP
+ * element, so it must paint from the SSR HTML on the first frame — never gated
+ * behind hydration.
  */
 export function LpHero() {
-  const waHref = whatsappHref();
-
-  // Art direction: phones get a portrait crop of the photo (the strip a
-  // portrait hero actually shows at object-position 30% — see
-  // LP_HERO.imageMobile), desktop the full landscape frame. The phone used to
-  // download the whole 4:3 photo at 1920w (~320KB) only to crop two-thirds of
-  // it away; the crop is ~130–160KB at the same on-screen sharpness.
-  // From 1024px the photo is contained in a ~52%-wide panel, so it never
-  // needs more than ~60vw of pixels.
-  const common = { alt: "", sizes: "100vw", fill: true, loading: "eager", fetchPriority: "high" } as const;
+  // Art direction: phones get the portrait crop (LP_HERO.imageMobile), larger
+  // screens the landscape frame. The photo is never wider than 1280 CSS px.
+  const common = { alt: "", fill: true, quality: 90, loading: "eager", fetchPriority: "high" } as const;
   const { props: desktopImg } = getImageProps({
     ...common,
-    sizes: "(min-width: 1024px) 60vw, 100vw",
+    sizes: "(min-width: 1392px) 1280px, 92vw",
     src: LP_HERO.image.src,
   });
   const {
     props: { srcSet: mobileSrcSet },
-  } = getImageProps({ ...common, src: LP_HERO.imageMobile.src });
+  } = getImageProps({ ...common, sizes: "100vw", src: LP_HERO.imageMobile.src });
 
   return (
     <section className="lp-hero surface-navy-950" aria-labelledby="lp-hero-title">
       <div aria-hidden="true" className="lp-hero-media">
-        {/* On desktop the photo is a panel beside the copy (see
-            .lp-hero-photo), so the whole model reads in full instead of half
-            of it sitting under the headline. */}
-        <span className="lp-hero-photo">
-          <picture>
-            <source media="(max-width: 767px)" srcSet={mobileSrcSet} sizes="100vw" />
-            <img {...desktopImg} alt="" className="lp-hero-img" />
-          </picture>
-        </span>
-        {/* Ambient life over the still photo (all pure CSS, see .lp-hero-*):
-            a slow light sweep — under the scrim so it never costs the copy its
-            contrast — plus faint rising specks of light above it. (A screen-
-            blended glow used to sit here too; it hazed the photo.) */}
-        <span className="lp-hero-sweep" />
-        <span className="lp-hero-scrim" />
-        <span className="lp-hero-specks" />
+        <span className="lp-hero-glow" />
         <span className="lp-hero-grid" />
       </div>
 
-      <div className="container-x relative z-10 lp-hero-inner">
-        <div className="lp-hero-copy max-w-3xl">
-          <p className="lp-rise eyebrow text-white" style={{ animationDelay: "0s" }}>
-            {LP_HERO.eyebrow}
-          </p>
+      <div className="container-x lp-hero-inner">
+        <p className="lp-rise eyebrow text-white/80" style={{ animationDelay: "0s" }}>
+          {LP_HERO.eyebrow}
+        </p>
 
-          <h1 id="lp-hero-title" className="lp-hero-title mt-5">
-            <span className="lp-rise block" style={{ animationDelay: "0.05s" }}>
-              {LP_HERO.titleTop}
-            </span>
-            <span className="lp-rise block lp-hero-title-accent" style={{ animationDelay: "0.12s" }}>
-              {LP_HERO.titleBottom}
-            </span>
-          </h1>
-
-          <p
-            className="lp-rise lp-hero-sub mt-6 text-white/80 text-lg md:text-xl leading-relaxed max-w-2xl text-pretty"
-            style={{ animationDelay: "0.2s" }}
+        <h1 id="lp-hero-title" className="lp-hero-title mt-4">
+          <span className="lp-rise lp-hero-title-line" style={{ animationDelay: "0.05s" }}>
+            {LP_HERO.titleTop}
+          </span>{" "}
+          <span
+            className="lp-rise lp-hero-title-line lp-hero-title-accent"
+            style={{ animationDelay: "0.12s" }}
           >
-            {LP_HERO.subtitle}
-          </p>
+            {LP_HERO.titleBottom}
+          </span>
+        </h1>
 
-          <div
-            className="lp-rise lp-hero-ctas mt-9 flex flex-col sm:flex-row gap-3 sm:items-center"
-            style={{ animationDelay: "0.25s" }}
-          >
-            <GlassButton
-              href="#lead"
-              variant="primary"
-              className="cta-glow lp-cta-lg lp-cta-main"
-              {...analyticsAttrs("cta_click", {
-                cta_name: "quote_request",
-                location: `${LP_LOCATION}_hero`,
-              })}
-            >
-              {LP_HERO.primaryCta}
-              <ArrowDown />
-            </GlassButton>
-            <GlassButton
-              href={waHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${LP_HERO.secondaryCta} (נפתח בחלון חדש)`}
-              className="lp-cta-lg lp-cta-dark lp-cta-alt"
-              {...analyticsAttrs("whatsapp_click", { location: `${LP_LOCATION}_hero` })}
-            >
-              {LP_HERO.secondaryCta}
-            </GlassButton>
-          </div>
+        <p className="lp-rise lp-hero-sub" style={{ animationDelay: "0.2s" }}>
+          {LP_HERO.subtitle}
+        </p>
 
-          <p className="lp-rise lp-hero-micro mt-4 caption text-white/60" style={{ animationDelay: "0.3s" }}>
-            {LP_HERO.microcopy}
-          </p>
-
-          {/* One framed strip (not three loose lines) so it reads as part of
-              the offer — loose at the foot of the hero it read as a footer. */}
-          <ul className="lp-rise lp-hero-trust mt-8" style={{ animationDelay: "0.35s" }}>
-            {LP_HERO.trust.map((t) => (
-              <li key={t} className="lp-trust-item">
-                <span aria-hidden="true" className="lp-check">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m3.5 8.5 3 3 6-7" />
-                  </svg>
-                </span>
-                {t}
-              </li>
-            ))}
-          </ul>
+        {/* The screening question takes the place of the CTAs: it is the first
+            thing a visitor can act on, and the only way to reach us. */}
+        <div className="lp-rise lp-hero-gate" style={{ animationDelay: "0.25s" }}>
+          <LpQualifier />
         </div>
       </div>
 
-      {/* The "path" begins here: a glowing line with a light pulse flowing
-          down into the next section — the page's guiding motif. */}
-      <a href="#lp-numbers" className="lp-flow-hint" aria-label="המשיכו לגלול">
-        <span className="lp-flow-line" aria-hidden="true">
-          <span className="lp-flow-pulse" />
-        </span>
-      </a>
+      <div className="lp-rise lp-hero-stage" style={{ animationDelay: "0.3s" }}>
+        <picture>
+          <source media="(max-width: 767px)" srcSet={mobileSrcSet} sizes="100vw" />
+          <img {...desktopImg} alt={LP_HERO.image.alt} className="lp-hero-img" />
+        </picture>
+      </div>
     </section>
-  );
-}
-
-function ArrowDown() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" className="w-4 h-4 lp-arrow-bob" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10 4v12M5 11l5 5 5-5" />
-    </svg>
   );
 }

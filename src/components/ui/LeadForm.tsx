@@ -11,6 +11,7 @@ import { readAttribution } from "@/lib/attribution";
 import { EMAIL_RE, LEAD_LIMITS, normalizeIsraeliPhone } from "@/lib/leadValidation";
 import { ThankYouModal } from "./ThankYouModal";
 import type { LeadSource } from "@/lib/leadSources";
+import type { LeadBudget } from "@/lib/leadBudgets";
 
 type FieldKey = "name" | "phone" | "email" | "project";
 type Errors = Partial<Record<FieldKey, string>>;
@@ -54,6 +55,7 @@ export function LeadForm({
   source = "website",
   emailOptional = false,
   successRedirectPath,
+  budget,
 }: {
   /** Identifies the form itself. There is currently only one across the site. */
   formName?: string;
@@ -66,6 +68,8 @@ export function LeadForm({
   emailOptional?: boolean;
   /** Full-page destination after a successful submission, for campaign forms. */
   successRedirectPath?: string;
+  /** Budget bracket already picked in a screening step, recorded with the lead. */
+  budget?: LeadBudget;
 }) {
   // Field ids are derived from useId, not from the visible label: the label
   // "שם מלא" contains a space, which broke aria-describedby (a space-separated
@@ -127,7 +131,7 @@ export function LeadForm({
     setSlow(false);
     const slowTimer = window.setTimeout(() => setSlow(true), SLOW_AFTER_MS);
     try {
-      await submitLead({ ...values, source, attribution: readAttribution() });
+      await submitLead({ ...values, source, budget, attribution: readAttribution() });
       // Only a lead that actually reached the intake endpoint counts as a
       // submission — a failed POST leaves the visitor on the form, retrying.
       trackEvent("form_submit", { form_name: formName, location });
