@@ -2648,229 +2648,108 @@ html.a11y-motion .a11y-panel {
   .lp-mbar, .lp-mbar.is-visible { transition: none; }
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero ----------
+   One centred column across the full width: headline, the screening question
+   as a wide bar, then the model photo. The photo is in the flow (not a
+   background), with nothing laid over it and no zoom — it is shown at most at
+   its own pixel size, so it stays sharp. */
 .lp-hero {
   position: relative;
   isolation: isolate;
-  /* clip, not hidden: hidden would make this a scroll container and freeze
-     the view() timelines of .lp-hero-media / .lp-hero-inner. */
   overflow: clip;
-  /* Just short of a full screen, so the logos heading peeks in at the bottom
-     of the first view — the cue that the page goes on (a full-height hero
-     with the trust strip at its foot read as the end of the page). */
-  min-height: calc(100svh - 5.75rem);
-  display: flex;
-  align-items: center;
+  text-align: center;
 }
 .lp-hero-inner {
-  padding-block: clamp(7rem, 14vh, 9rem) clamp(6.5rem, 12vh, 8rem);
+  position: relative;
+  padding-block-start: clamp(6.5rem, 15vh, 9.5rem);
 }
 .lp-hero-media {
   position: absolute;
   inset: 0;
   z-index: -1;
 }
-/* Clips the photo's drift/zoom to its own box. Full-bleed on phones and
-   tablets. From 1024px it's a panel on the inline-end side (left in RTL),
-   beside a narrower copy column: the photo's background is the page's own
-   navy (see LP_HERO.image), so the whole model is shown (contain) and its
-   edges simply melt into the hero. */
-.lp-hero-photo {
-  position: absolute;
-  inset: 0;
-  overflow: clip;
-}
-@media (min-width: 1024px) {
-  .lp-hero-photo {
-    inset-inline-start: auto;
-    width: 50%;
-    /* Fade only toward the copy and at the top/bottom of the contained image;
-       the inline-end edge runs off the viewport. */
-    -webkit-mask-image:
-      linear-gradient(to left, transparent 0%, #000 12%),
-      linear-gradient(to bottom, transparent 6%, #000 20%, #000 76%, transparent 90%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to left, transparent 0%, #000 12%),
-      linear-gradient(to bottom, transparent 6%, #000 20%, #000 76%, transparent 90%);
-    mask-composite: intersect;
-  }
-  .lp-hero-copy { max-width: 38rem; }
-}
-.lp-hero-img {
-  object-fit: cover;
-  object-position: 30% 40%;
-  /* The file is already graded (see LP_HERO.image) — only a light lift. */
-  filter: saturate(1.06) contrast(1.03);
-  /* Entrance settle, then a slow endless camera drift — the photo never
-     freezes, which is what makes the hero feel alive. */
-  animation:
-    lpHeroSettle 2.4s var(--ease-brand) both,
-    lpHeroDrift 28s ease-in-out 2.4s infinite alternate;
-}
-@media (min-width: 1024px) {
-  .lp-hero-img {
-    object-fit: contain;
-    object-position: 50% 50%;
-  }
-}
-@keyframes lpKenBurns {
-  from { transform: scale(1.12); }
-  to { transform: scale(1); }
-}
-/* Kept close to 1:1 — every bit of zoom upscales the 2000px photo and
-   softens it. */
-@keyframes lpHeroSettle {
-  from { transform: scale(1.08); }
-  to { transform: scale(1.02); }
-}
-@keyframes lpHeroDrift {
-  from { transform: scale(1.02) translate3d(0, 0, 0); }
-  to { transform: scale(1.07) translate3d(-1.5%, -1%, 0); }
-}
-/* A soft diagonal beam that glides across every few seconds. */
-.lp-hero-sweep {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  mix-blend-mode: screen;
-}
-.lp-hero-sweep::before {
-  content: "";
-  position: absolute;
-  inset: -10% auto -10% 0;
-  width: 45%;
-  background: linear-gradient(100deg, transparent 0%, rgba(255, 244, 225, 0.2) 50%, transparent 100%);
-  transform: translate3d(-120%, 0, 0) skewX(-12deg);
-  animation: lpSweep 9s cubic-bezier(0.45, 0, 0.25, 1) 1.8s infinite;
-}
-@keyframes lpSweep {
-  0% { transform: translate3d(-120%, 0, 0) skewX(-12deg); }
-  55%, 100% { transform: translate3d(340%, 0, 0) skewX(-12deg); }
-}
-/* Faint specks of light drifting upward, like dust in a showroom spotlight. */
-.lp-hero-specks {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(2px 2px at 12% 78%, rgba(255, 226, 180, 0.9), transparent),
-    radial-gradient(1.5px 1.5px at 24% 34%, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(2px 2px at 41% 88%, rgba(190, 220, 255, 0.8), transparent),
-    radial-gradient(1.5px 1.5px at 57% 22%, rgba(255, 226, 180, 0.8), transparent),
-    radial-gradient(2.5px 2.5px at 73% 64%, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(1.5px 1.5px at 86% 40%, rgba(190, 220, 255, 0.8), transparent),
-    radial-gradient(2px 2px at 93% 84%, rgba(255, 226, 180, 0.8), transparent);
-  opacity: 0.6;
-  animation: lpSpecks 14s linear infinite;
-}
-@keyframes lpSpecks {
-  0% { transform: translate3d(0, 4%, 0); opacity: 0; }
-  15% { opacity: 0.6; }
-  85% { opacity: 0.6; }
-  100% { transform: translate3d(0, -10%, 0); opacity: 0; }
-}
-/* Heavy on the text side (right, RTL start), opening up toward the model. */
-.lp-hero-scrim {
+/* A cool light rising behind the model, and a faint drafting grid over the
+   whole width — the hero reads edge to edge even where it is plain navy. */
+.lp-hero-glow {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to left, rgba(10, 18, 31, 0.92) 0%, rgba(10, 18, 31, 0.72) 42%, rgba(10, 18, 31, 0.25) 100%),
-    linear-gradient(180deg, rgba(10, 18, 31, 0.55) 0%, transparent 28%, transparent 70%, rgba(14, 26, 44, 1) 100%);
-}
-/* Desktop: the copy sits on navy, so the scrim only needs to be dark behind
-   it — over the photo panel it clears almost completely, letting the model
-   show at full strength. */
-@media (min-width: 1024px) {
-  .lp-hero-scrim {
-    background:
-      linear-gradient(to left, rgba(10, 18, 31, 0.94) 0%, rgba(10, 18, 31, 0.82) 34%, rgba(10, 18, 31, 0.18) 56%, transparent 70%),
-      linear-gradient(180deg, rgba(10, 18, 31, 0.4) 0%, transparent 16%, transparent 76%, rgba(14, 26, 44, 1) 100%);
-  }
-}
-@media (max-width: 767px) {
-  /* Phone hero. The photo stays visible at the very top (behind the header and
-     eyebrow), then the scrim deepens behind the copy so the text reads cleanly,
-     opens up again in the copy-free band below the CTAs, and closes to solid
-     navy at the bottom for the section seam. */
-  .lp-hero-scrim {
-    background:
-      linear-gradient(180deg, rgba(10, 18, 31, 0.35) 0%, rgba(10, 18, 31, 0.62) 22%, rgba(10, 18, 31, 0.72) 62%, rgba(10, 18, 31, 0.5) 84%, rgba(14, 26, 44, 1) 100%);
-  }
-  .lp-hero-inner {
-    text-shadow: 0 2px 14px rgba(5, 9, 15, 0.75), 0 1px 3px rgba(5, 9, 15, 0.6);
-  }
-  /* Gradient-clipped text has a transparent fill, so a shadow would show
-     through and muddy the gradient. */
-  .lp-hero-title-accent { text-shadow: none; }
-  .lp-hero-sub { color: rgba(255, 255, 255, 0.92); }
-  .lp-hero-micro { color: rgba(255, 255, 255, 0.78); }
-  .lp-hero-trust { color: rgba(255, 255, 255, 0.88); }
-
-  /* Content-height instead of a full screen, so the next section already
-     peeks in on first load — that peek is the scroll cue, which is why the
-     animated hint line is dropped here. */
-  /* Sized so the logos section's heading lands at the bottom of the first
-     screen while the logo strip itself stays below the fold. Content still
-     wins on very short phones (min-height, not height). */
-  .lp-hero { min-height: calc(100svh - 8.5rem); }
-  .lp-hero-inner { padding-block: 6.25rem 2.75rem; }
-  /* The copy block is anchored near the top (rather than centred) so the
-     audience line and the headline sit high and close together; the spare
-     height falls below the CTAs, where the photo shows through. */
-  .lp-hero { align-items: flex-start; }
-  .lp-hero-inner { padding-block-start: 10rem; }
-  .lp-hero-title { margin-top: 0.85rem; }
-  .lp-hero .lp-flow-hint { display: none; }
-  .lp-hero-ctas { margin-top: 4rem; }
-  /* Centred under the stacked CTAs and set bold, so the "no commitment"
-     reassurance reads as part of the action rather than fine print. */
-  .lp-hero-micro {
-    text-align: center;
-    font-weight: 700;
-  }
-  /* The portrait crop (LP_HERO.imageMobile) is cut around the building, so
-     keep it centred. */
-  .lp-hero-img { object-position: 50% 40%; }
-
-  /* One clear action: the quote CTA is the big glowing button; WhatsApp stays
-     available but steps back to a quiet secondary. */
-  .lp-hero .glass-btn.lp-cta-main {
-    padding: 19px 28px;
-    font-size: 1.12rem;
-  }
-  .lp-hero .glass-btn.lp-cta-alt {
-    --_bg: transparent;
-    align-self: center;
-    padding: 10px 22px;
-    font-size: 0.95rem;
-    border-color: rgba(255, 255, 255, 0.2);
-  }
+    radial-gradient(60% 46% at 50% 100%, rgba(95, 154, 192, 0.3), transparent 72%),
+    radial-gradient(90% 60% at 50% 0%, rgba(62, 121, 159, 0.2), transparent 70%);
 }
 .lp-hero-grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(166, 195, 220, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(166, 195, 220, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(166, 195, 220, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(166, 195, 220, 0.07) 1px, transparent 1px);
   background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(90% 80% at 80% 40%, black, transparent 75%);
-  mask-image: radial-gradient(90% 80% at 80% 40%, black, transparent 75%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
 }
 .lp-hero-title {
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
   color: #fff;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-  font-size: clamp(2.15rem, 5.4vw, 4rem);
-  text-wrap: balance;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-size: clamp(2.5rem, 6.6vw, 5.5rem);
+}
+/* Two lines on a phone, one line across the screen from tablets up. */
+.lp-hero-title-line { display: block; }
+@media (min-width: 768px) {
+  .lp-hero-title-line { display: inline-block; }
 }
 .lp-hero-title-accent {
   background: linear-gradient(100deg, #ffffff 0%, var(--steel-300) 70%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+.lp-hero-sub {
+  margin: 1.1rem auto 0;
+  max-width: 44rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+  text-wrap: balance;
+}
+.lp-hero-gate {
+  margin: clamp(1.75rem, 3.5vw, 2.5rem) auto 0;
+  max-width: 62rem;
+  text-align: start;
+}
+/* The model, centred under the question. Cropped to the model itself (the
+   file's lower third is the dark table edge), and faded only at its outer
+   edges so the frame melts into the navy. */
+.lp-hero-stage {
+  position: relative;
+  margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
+  width: min(92vw, 1280px);
+  aspect-ratio: 16 / 9.6;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+}
+.lp-hero-img {
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+@media (max-width: 767px) {
+  .lp-hero-inner { padding-block-start: 5.75rem; }
+  .lp-hero-sub { margin-top: 0.85rem; }
+  /* Edge to edge on a phone, using the portrait crop. */
+  .lp-hero-stage {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+  }
 }
 /* Pure-CSS staggered entrance — paints from SSR, no hydration gate (LCP). */
 .lp-rise {
@@ -2880,92 +2759,100 @@ html.a11y-motion .a11y-panel {
   padding: 17px 30px;
   font-size: 1.05rem;
 }
-.glass-btn.lp-cta-dark {
-  --_bg: rgba(7, 13, 23, 0.4);
-}
-.lp-arrow-bob { animation: lpBob 1.8s var(--ease-brand) infinite; }
-@keyframes lpBob {
-  0%, 100% { transform: translateY(-1px); }
-  50% { transform: translateY(3px); }
-}
-/* Trust strip: one glass bar with hairline dividers, set bright enough to
-   read as part of the offer rather than fine print. */
-.lp-hero-trust {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.35rem 0.5rem;
-  background: rgba(10, 18, 31, 0.45);
-  border: 1px solid rgba(166, 195, 220, 0.22);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-}
-.lp-trust-item {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 1rem;
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 1rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.lp-trust-item + .lp-trust-item {
-  border-inline-start: 1px solid rgba(166, 195, 220, 0.22);
-}
-/* Phones: the strip is dropped to keep the first screen light; the logos
-   heading right below already carries the proof. */
-@media (max-width: 767px) {
-  .lp-hero-trust { display: none; }
-}
-.lp-check {
-  display: inline-grid;
-  place-items: center;
-  width: 1.3rem;
-  height: 1.3rem;
-  border-radius: 999px;
-  color: #d6e8f4;
-  background: rgba(95, 154, 192, 0.28);
-  border: 1px solid rgba(120, 176, 210, 0.5);
-}
-.lp-check svg { width: 0.75rem; height: 0.75rem; }
 
-/* ---------- The path line (hero hint + connectors) ---------- */
-.lp-flow-hint {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
+/* ---------- Screening question (LpQualifier) ----------
+   A dark-glass panel in the hero, where the CTAs used to be. It holds one
+   step at a time: the budget question, then either the lead form or the
+   "not a fit" line. The shared LeadForm is styled for dark surfaces, so it
+   sits here as is. */
+.lp-gate {
+  /* Anchor target of every CTA on the page — clear of the fixed header. */
+  scroll-margin-top: 6rem;
+  padding: clamp(1.15rem, 2.6vw, 1.75rem);
+  border-radius: 22px;
+  background: rgba(10, 18, 31, 0.72);
+  border: 1px solid rgba(166, 195, 220, 0.28);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 30px 60px -34px rgba(0, 0, 0, 0.9),
+    0 0 70px -20px rgba(95, 154, 192, 0.45);
+}
+.lp-gate-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  line-height: 1.3;
+  color: #fff;
+  text-wrap: balance;
+}
+.lp-gate-title:focus { outline: none; }
+/* Desktop, question step: one wide bar — the question at the reading start,
+   the three brackets in a row beside it. */
+@media (min-width: 1024px) {
+  .lp-gate--ask {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.4rem 1.75rem;
+  }
+  .lp-gate--ask .lp-gate-options { margin-top: 0; }
+}
+/* Form step: a narrower card, centred under the headline. */
+.lp-gate--form {
+  max-width: 44rem;
   margin-inline: auto;
-  width: 44px;
-  height: clamp(4rem, 9vh, 5.5rem);
-  display: flex;
-  justify-content: center;
-  z-index: 10;
 }
-.lp-flow-line {
-  position: relative;
-  display: block;
-  width: 2px;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 2px;
-  background: linear-gradient(180deg, transparent, rgba(166, 195, 220, 0.45));
+.lp-gate-hint {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
 }
-.lp-flow-pulse {
-  position: absolute;
-  inset-inline: 0;
-  top: -40%;
-  height: 40%;
-  border-radius: 2px;
-  background: linear-gradient(180deg, transparent, #fff, transparent);
-  box-shadow: 0 0 12px 2px rgba(166, 195, 220, 0.8);
-  animation: lpFlow 2.2s cubic-bezier(0.55, 0, 0.35, 1) infinite;
+.lp-gate-options {
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.6rem;
 }
-@keyframes lpFlow {
-  from { top: -40%; }
-  to { top: 100%; }
+.lp-gate-option {
+  min-height: 52px;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease-brand),
+    border-color 0.2s var(--ease-brand),
+    transform 0.2s var(--ease-brand);
 }
+@media (min-width: 640px) {
+  .lp-gate-options { grid-template-columns: repeat(3, 1fr); }
+  .lp-gate-option { padding-inline: 0.4rem; font-size: 1rem; white-space: nowrap; }
+}
+.lp-gate-option:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--gold-400);
+}
+.lp-gate-option:active { transform: scale(0.98); }
+.lp-gate-option:focus-visible,
+.lp-gate-back:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+.lp-gate-back {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.lp-gate form .glass-btn--primary { width: 100%; }
+
 /* Logo bar sits flush under the hero and hands straight over to the journey
    section — trim its padding. A lighter band framed by hairlines sets it apart
    from the navy-950 sections on both sides; on one shared background the logos
@@ -2977,123 +2864,6 @@ html.a11y-motion .a11y-panel {
     var(--navy-900);
   border-block: 1px solid rgba(166, 195, 220, 0.14);
 }
-/* ---------- Journey ---------- */
-.lp-journey {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.lp-journey-bg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(60% 40% at 85% 10%, rgba(110, 147, 184, 0.14), transparent 60%),
-    radial-gradient(60% 45% at 10% 90%, rgba(62, 121, 159, 0.16), transparent 62%),
-    var(--navy-950);
-}
-.lp-track {
-  --rail-x: 19px;
-  position: relative;
-  margin-top: clamp(3rem, 6vw, 4.5rem);
-  display: grid;
-  gap: clamp(3.5rem, 8vw, 6rem);
-}
-.lp-rail {
-  position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  inset-inline-start: var(--rail-x);
-  width: 2px;
-  transform: translateX(50%);
-  background: rgba(166, 195, 220, 0.14);
-  border-radius: 2px;
-}
-.lp-rail-fill {
-  position: absolute;
-  inset: 0;
-  transform-origin: top;
-  border-radius: 2px;
-  background: linear-gradient(180deg, var(--steel-300), var(--gold-400));
-  box-shadow: 0 0 14px 1px rgba(95, 154, 192, 0.55);
-}
-.lp-step {
-  position: relative;
-  display: grid;
-  gap: 1.25rem;
-  padding-inline-start: calc(var(--rail-x) * 2 + 1.25rem);
-}
-.lp-node {
-  position: absolute;
-  inset-inline-start: 0;
-  top: 0;
-  display: grid;
-  place-items: center;
-  width: calc(var(--rail-x) * 2 + 2px);
-  height: calc(var(--rail-x) * 2 + 2px);
-  border-radius: 999px;
-  background: var(--navy-950);
-  border: 1px solid rgba(166, 195, 220, 0.25);
-  transition: border-color 0.5s var(--ease-brand), box-shadow 0.5s var(--ease-brand);
-  z-index: 1;
-}
-.lp-node-core {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: rgba(166, 195, 220, 0.6);
-  transition: color 0.5s var(--ease-brand);
-}
-.lp-step.is-lit .lp-node {
-  border-color: var(--gold-400);
-  background: linear-gradient(155deg, rgba(62, 121, 159, 0.9), rgba(29, 51, 80, 0.95));
-  box-shadow: 0 0 0 6px rgba(95, 154, 192, 0.14), 0 0 24px 2px rgba(95, 154, 192, 0.55);
-}
-.lp-step.is-lit .lp-node-core { color: #fff; }
-.lp-step-kicker {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em; /* see .eyebrow: wide tracking breaks Hebrew words apart */
-  color: var(--steel-300);
-}
-.lp-step-media {
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(166, 195, 220, 0.12);
-}
-.lp-step-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  transition: transform 1.2s var(--ease-brand);
-}
-@media (hover: hover) {
-  .lp-step-media:hover .lp-step-img { transform: scale(1.04); }
-}
-/* Desktop: rail in the centre, steps alternate sides. */
-@media (min-width: 1024px) {
-  .lp-track { --rail-x: 50%; }
-  .lp-rail { inset-inline-start: 50%; }
-  .lp-step {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 7rem;
-    align-items: center;
-    padding-inline-start: 0;
-  }
-  .lp-node {
-    inset-inline-start: 50%;
-    top: 50%;
-    width: 44px;
-    height: 44px;
-    transform: translate(50%, -50%);
-  }
-  .lp-step-text { max-width: 26rem; }
-  .lp-step:not(.is-flip) .lp-step-text { justify-self: end; text-align: start; }
-  .lp-step.is-flip .lp-step-text { order: 2; }
-  .lp-step.is-flip .lp-step-media { order: 1; }
-}
-
 /* ---------- Numbers ---------- */
 /* Light section: white stat cards on ice, everything centred on one axis. */
 .lp-stat {
@@ -3252,237 +3022,17 @@ html.a11y-motion .a11y-panel {
 .lp-car-dot.is-active { width: 36px; }
 .lp-car-dot.is-active::before { width: 28px; background: var(--gold-500); }
 .lp-car-dot:not(.is-active):hover::before { background: rgba(14, 26, 44, 0.45); }
-.lp-car-cta-lead {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
-  color: var(--ink-950);
-  text-wrap: balance;
-}
 @media (prefers-reduced-motion: reduce) {
   .lp-car-card, .lp-car-img, .lp-car-cap { transform: none; }
 }
 
-/* ---------- Process ---------- */
-.lp-process {
-  position: relative;
-  display: grid;
-  gap: 1.25rem;
-}
-@media (min-width: 768px) {
-  .lp-process { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  /* The path line runs through the three numbers. */
-  .lp-process::before {
-    content: "";
-    position: absolute;
-    top: 2.9rem;
-    inset-inline: 16%;
-    height: 2px;
-    background: linear-gradient(to left, var(--steel-300), var(--gold-500));
-    opacity: 0.55;
-  }
-}
-.lp-process-item {
-  position: relative;
-  padding: 1.75rem;
-  border-radius: 22px;
-  background: #fff;
-  border: 1px solid rgba(10, 12, 15, 0.07);
-  box-shadow: 0 22px 44px -36px rgba(14, 26, 44, 0.6);
-  text-align: center;
-}
-.lp-process-n {
-  position: relative;
-  z-index: 1;
-  display: inline-grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(155deg, var(--gold-500), var(--gold-700));
-  box-shadow: 0 0 0 6px #fff, 0 0 0 7px rgba(62, 121, 159, 0.25);
-}
-
-/* ---------- FAQ ---------- */
-.lp-faq {
-  border-radius: 18px;
-  background: var(--ice-050);
-  border: 1px solid rgba(10, 12, 15, 0.06);
-  transition: background 0.3s var(--ease-brand);
-}
-.lp-faq[open] { background: #fff; box-shadow: 0 20px 40px -32px rgba(14, 26, 44, 0.6); }
-.lp-faq-section {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-}
-.lp-faq-title {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
-  line-height: 1.25;
-}
-.lp-faq summary {
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 1.15rem;
-  font-family: var(--font-display), sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--ink-950);
-}
-.lp-faq summary::-webkit-details-marker { display: none; }
-.lp-faq summary { transition: color 0.2s var(--ease-brand); }
-.lp-faq summary:hover { color: var(--gold-700); }
-.lp-faq summary:focus-visible { outline: 2px solid var(--gold-500); outline-offset: 2px; border-radius: 18px; }
-.lp-faq p {
-  padding: 0 1.15rem 1rem;
-  color: rgba(10, 12, 15, 0.7);
-  line-height: 1.75;
-  animation: revealRise 0.45s var(--ease-brand) both;
-}
-.lp-faq-icon {
-  position: relative;
-  flex-shrink: 0;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 999px;
-  background: rgba(62, 121, 159, 0.12);
-}
-.lp-faq-icon::before,
-.lp-faq-icon::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 0.8rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--gold-700);
-  transition: transform 0.35s var(--ease-brand);
-}
-.lp-faq-icon::after { transform: rotate(90deg); }
-.lp-faq[open] .lp-faq-icon::after { transform: rotate(0deg); }
-
-/* ---------- Final CTA ---------- */
-.lp-final { position: relative; isolation: isolate; overflow: hidden; }
-.lp-final-bg { position: absolute; inset: 0; z-index: -1; }
-.lp-final-img {
-  object-fit: cover;
-  filter: brightness(0.55) saturate(0.85);
-  animation: lpKenBurns 30s linear both;
-}
-.lp-final-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to left, rgba(10, 18, 31, 0.92) 10%, rgba(10, 18, 31, 0.6) 60%, rgba(10, 18, 31, 0.75) 100%),
-    linear-gradient(180deg, var(--navy-950) 0%, transparent 25%, transparent 75%, var(--navy-950) 100%);
-}
+/* ---------- Closing line ---------- */
 .lp-final-title {
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.015em;
   font-size: clamp(2rem, 4.4vw, 3.2rem);
-}
-/* A bright, solid card so the form is the unmistakable focal point of the
-   dark closing section. The shared LeadForm is styled for dark surfaces
-   (white text, translucent inputs), so it's re-skinned here — scoped to the
-   <form> so the other lead forms keep their styling. */
-.lp-form-card {
-  position: relative;
-  padding: clamp(1.5rem, 3.5vw, 2.4rem);
-  border-radius: 26px;
-  background: linear-gradient(180deg, #ffffff 0%, var(--ice-050) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 0 0 6px rgba(166, 195, 220, 0.16),
-    0 30px 70px -30px rgba(0, 0, 0, 0.85),
-    0 0 60px -10px rgba(120, 176, 210, 0.35);
-}
-.lp-form-card::before {
-  content: "";
-  position: absolute;
-  inset-inline: 1.6rem;
-  top: 0;
-  height: 3px;
-  border-radius: 0 0 3px 3px;
-  background: linear-gradient(to left, var(--steel-500), var(--gold-500));
-}
-.lp-form-card form label { color: rgba(10, 12, 15, 0.82); }
-.lp-form-card form label span { color: rgba(10, 12, 15, 0.45); }
-.lp-form-card form input:not(.sr-only),
-.lp-form-card form textarea {
-  background: #fff;
-  color: var(--ink-950);
-  border-color: rgba(14, 26, 44, 0.2);
-  box-shadow: inset 0 1px 2px rgba(14, 26, 44, 0.06);
-}
-.lp-form-card form input::placeholder,
-.lp-form-card form textarea::placeholder { color: rgba(10, 12, 15, 0.38); }
-.lp-form-card form input:focus,
-.lp-form-card form textarea:focus {
-  background: #fff;
-  border-color: #3e799f;
-  box-shadow: 0 0 0 3px rgba(62, 121, 159, 0.2);
-}
-.lp-form-card form input[aria-invalid="true"]:not(.sr-only) { border-color: #c0262d; }
-.lp-form-card form [id$="-err"],
-.lp-form-card form [role="alert"] { color: #c0262d; }
-.lp-form-card form .glass-btn--primary {
-  --_bg: linear-gradient(135deg, #3e799f, #1d3350);
-  color: #fff;
-  width: 100%;
-  padding-block: 16px;
-  font-size: 1.05rem;
-  border-color: transparent;
-  box-shadow: 0 14px 30px -14px rgba(29, 51, 80, 0.8);
-}
-
-/* ---------- Photo section (closing) ----------
-   It sat on a photo dimmed to ~50% under a heavy navy scrim and read as a flat
-   dark panel. It's shown bright here, on every breakpoint: the photo gets full
-   brightness and richer colour, and legibility comes from a soft text shadow
-   instead. */
-.lp-final .eyebrow,
-.lp-final-title,
-.lp-final-text,
-.lp-final .caption {
-  text-shadow: 0 2px 18px rgba(5, 9, 15, 0.85), 0 1px 3px rgba(5, 9, 15, 0.65);
-}
-.lp-final-img {
-  filter: brightness(0.95) saturate(1.15) contrast(1.05);
-}
-.lp-final-text { color: rgba(255, 255, 255, 0.92); }
-.lp-final .caption { color: rgba(255, 255, 255, 0.82); }
-/* Light wash on the copy side (RTL: right), open toward the form. */
-.lp-final-scrim {
-  background:
-    linear-gradient(to left, rgba(10, 18, 31, 0.74) 0%, rgba(10, 18, 31, 0.56) 32%, rgba(10, 18, 31, 0.22) 56%, rgba(10, 18, 31, 0.12) 100%),
-    linear-gradient(180deg, var(--navy-950) 0%, transparent 16%, transparent 84%, var(--navy-950) 100%);
-}
-
-@media (max-width: 767px) {
-  /* Closing section on a phone: the panoramic photo becomes a band behind
-     the heading (instead of being stretched over the whole tall section),
-     fading into navy behind the bright form card. */
-  .lp-final-bg {
-    bottom: auto;
-    height: min(38rem, 62%);
-    /* The photo's slow zoom scales it past the band; clip it so its lower edge
-       can't peek out below the scrim's navy fade. */
-    overflow: hidden;
-  }
-  .lp-final-img { object-position: 50% 45%; }
-  .lp-final-scrim {
-    background:
-      linear-gradient(180deg, var(--navy-950) 0%, rgba(10, 18, 31, 0.4) 16%, rgba(10, 18, 31, 0.5) 55%, var(--navy-950) 100%);
-  }
 }
 
 /* ---------- Scroll-linked motion ----------
@@ -3495,19 +3045,6 @@ html.a11y-motion .a11y-panel {
    <Reveal> wrappers themselves, whose inline transform would fight these. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    /* Hero: the photo sinks slower than the page (parallax) while the copy
-       drifts up and dims as it leaves — a soft hand-off, not a hard cut. */
-    .lp-hero-media {
-      animation: lpHeroSink linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
-    }
-    .lp-hero-inner {
-      animation: lpHeroLeave linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 80%;
-    }
-
     /* Stat cards and the banner settle up from a slight scale. */
     .lp-stat,
     .lp-banner {
@@ -3515,38 +3052,13 @@ html.a11y-motion .a11y-panel {
       animation-timeline: view();
       animation-range: entry 0% cover 35%;
     }
-
-    /* Process step numbers pop in as each step arrives. */
-    .lp-process-n {
-      animation: lpPop linear both;
-      animation-timeline: view();
-      animation-range: entry 20% cover 40%;
-    }
   }
-}
-@keyframes lpHeroSink {
-  to { transform: translateY(22%); }
-}
-@keyframes lpHeroLeave {
-  to { transform: translateY(-10%); opacity: 0.15; }
 }
 @keyframes lpSettle {
   from { transform: translateY(18px) scale(0.94); }
   to { transform: none; }
 }
-@keyframes lpPop {
-  from { transform: scale(0.55); }
-  to { transform: scale(1); }
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .lp-hero-img,
-  .lp-hero-sweep::before,
-  .lp-hero-specks,
-  .lp-final-img,
-  .lp-rise,
-  .lp-arrow-bob,
-  .lp-flow-pulse,
-  .lp-faq p { animation: none; }
-  .lp-flow-pulse { display: none; }
+  .lp-rise { animation: none; }
 }

@@ -44,7 +44,7 @@ export default function PortfolioPage() {
           singleLineTitle
           hideBreadcrumbs
           hideEyebrow
-          centerOnMobile
+          center
         />
         {/* Intro + showcase share ONE continuous ambient surface so the
             background flows seamlessly between them. The luminous seam line was

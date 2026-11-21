@@ -2,6 +2,7 @@ import { after, type NextRequest } from "next/server";
 import { checkBotId } from "botid/server";
 import { LEAD_SOURCES, leadSourceLabel, trafficType } from "@/lib/leadSources";
 import { sanitizeAttribution, type Attribution } from "@/lib/attribution";
+import { leadBudgetLabel } from "@/lib/leadBudgets";
 import {
   EMAIL_RE,
   LEAD_LIMITS,
@@ -50,6 +51,8 @@ type LeadPayload = {
   source?: unknown;
   /** Ad click id / UTMs captured on landing (see lib/attribution.ts). */
   attribution?: unknown;
+  /** Budget bracket id from the landing page's screening question (see lib/leadBudgets.ts). */
+  budget?: unknown;
   /** Honeypot — real visitors never see or fill this field. Renamed from
    *  `company`, which browser autofill filled for visitors with a saved
    *  company name, silently dropping their lead. */
@@ -354,7 +357,7 @@ export async function POST(request: NextRequest) {
   const name = clean(body.name);
   const phoneRaw = clean(body.phone);
   const email = clean(body.email);
-  const project = clean(body.project);
+  const projectNote = clean(body.project);
 
   // Same rules as the form (lib/leadValidation.ts), so the endpoint is safe
   // on its own and never rejects what the form accepted.
@@ -366,9 +369,16 @@ export async function POST(request: NextRequest) {
   if (email && (email.length > LEAD_LIMITS.emailMax || !EMAIL_RE.test(email))) {
     return Response.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
-  if (project.length > LEAD_LIMITS.projectMax) {
+  if (projectNote.length > LEAD_LIMITS.projectMax) {
     return Response.json({ ok: false, error: "invalid_project" }, { status: 400 });
   }
+  // The landing page asks for a budget bracket before the contact details.
+  // The bracket leads the project note, so it reaches both channels (email and
+  // sheet) without a new sheet column.
+  const budgetLabel = leadBudgetLabel(body.budget);
+  const project = [budgetLabel && `תקציב רצוי: ${budgetLabel}`, projectNote]
+    .filter(Boolean)
+    .join("\n");
   // One consistent format in the email and the sheet, however it was typed.
   const phone = formatIsraeliPhone(phoneDigits);
 
