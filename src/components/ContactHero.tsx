@@ -1,6 +1,7 @@
 import { Breadcrumbs, type Crumb } from "./legal/Breadcrumbs";
 import { Reveal } from "./ui/Reveal";
 import { DeferredVideo } from "./ui/DeferredVideo";
+import { ArchitecturalBlueprint } from "./ui/ArchitecturalBlueprint";
 
 // Same deterministic particle field used by the immersive CTA, trimmed for the
 // hero (avoids SSR/CSR hydration mismatch — no Math.random at render time).
@@ -18,6 +19,8 @@ type Props = {
   title: string;
   description: string;
   breadcrumbs: Crumb[];
+  action?: React.ReactNode;
+  background?: "video" | "blueprint";
   /** Override the background video (defaults to the shared drone-loop). */
   video?: {
     poster: string;
@@ -37,71 +40,70 @@ const DEFAULT_VIDEO = {
   ],
 };
 
-/**
- * Immersive, video-backed hero for the contact page. Reuses the drone-loop
- * background + overlays from the homepage CTA, with gentle staggered reveals
- * for the breadcrumbs, eyebrow, headline and description.
- */
+/** Shared contact-style hero; partner pages use the quiet blueprint variant. */
 export function ContactHero({
   eyebrow,
   title,
   description,
   breadcrumbs,
+  action,
+  background = "video",
   video = DEFAULT_VIDEO,
 }: Props) {
   return (
     <section
-      className="cta-immersive pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-36 md:pb-24"
+      className={`cta-immersive pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-36 md:pb-24${background === "blueprint" ? " partner-hero" : ""}`}
       aria-label={title}
     >
-      {/* Background video (same drone loop as the homepage CTA) */}
-      <DeferredVideo
-        className="cta-layer h-full w-full object-cover"
-        poster={video.poster}
-        posterVariants={video.posterVariants}
-        sources={video.sources}
-        priority
-        posterOnlyOnMobile
-      />
-
-      {/* Overlays for depth + legibility */}
-      <div className="cta-layer cta-gradient" />
-      <div className="cta-layer cta-grid" />
-      <div className="cta-layer cta-noise" />
-      {/* Extra scrim — the headline sits directly on the video (no glass card),
-          so it needs a reading-side gradient to stay legible. Kept light so the
-          drone footage reads clearly behind the text. */}
-      <div
-        className="cta-layer"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(7,13,23,0.55) 0%, rgba(7,13,23,0.18) 45%, rgba(7,13,23,0.6) 100%), linear-gradient(270deg, rgba(7,13,23,0.5) 0%, rgba(7,13,23,0.05) 60%)",
-        }}
-      />
-
-      {/* Particles */}
-      <div className="cta-layer overflow-hidden" aria-hidden="true">
-        {PARTICLES.map((p, i) => (
-          <span
-            key={i}
-            className="cta-particle"
+      {background === "blueprint" ? (
+        <div className="cta-layer partner-hero-art" aria-hidden="true">
+          <span className="lp-hero-glow" />
+          <ArchitecturalBlueprint />
+        </div>
+      ) : (
+        <>
+          {/* The existing video treatment remains for contact and FAQ. */}
+          <DeferredVideo
+            className="cta-layer h-full w-full object-cover"
+            poster={video.poster}
+            posterVariants={video.posterVariants}
+            sources={video.sources}
+            priority
+            posterOnlyOnMobile
+          />
+          <div className="cta-layer cta-gradient" />
+          <div className="cta-layer cta-grid" />
+          <div className="cta-layer cta-noise" />
+          <div
+            className="cta-layer"
             style={{
-              left: `${p.left}%`,
-              bottom: "12%",
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              animationDuration: `${p.dur}s`,
-              animationDelay: `${p.delay}s`,
+              background:
+                "linear-gradient(180deg, rgba(7,13,23,0.55) 0%, rgba(7,13,23,0.18) 45%, rgba(7,13,23,0.6) 100%), linear-gradient(270deg, rgba(7,13,23,0.5) 0%, rgba(7,13,23,0.05) 60%)",
             }}
           />
-        ))}
-      </div>
+          <div className="cta-layer overflow-hidden" aria-hidden="true">
+            {PARTICLES.map((p, i) => (
+              <span
+                key={i}
+                className="cta-particle"
+                style={{
+                  left: `${p.left}%`,
+                  bottom: "12%",
+                  width: `${p.size}px`,
+                  height: `${p.size}px`,
+                  animationDuration: `${p.dur}s`,
+                  animationDelay: `${p.delay}s`,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
-      {/* Content — a soft text-shadow keeps the headline legible over the
-          brighter video without darkening the footage itself. */}
+      {/* The video variant needs a text shadow; the blueprint variant stays clear. */}
       <div
         className="relative z-10 container-x"
-        style={{ textShadow: "0 2px 22px rgba(7,13,23,0.95), 0 1px 6px rgba(7,13,23,0.9), 0 0 3px rgba(7,13,23,0.75)" }}
+        style={background === "video" ? { textShadow: "0 2px 22px rgba(7,13,23,0.95), 0 1px 6px rgba(7,13,23,0.9), 0 0 3px rgba(7,13,23,0.75)" } : undefined}
       >
         <Reveal className="mb-6 md:mb-8">
           <Breadcrumbs items={breadcrumbs} />
@@ -117,6 +119,7 @@ export function ContactHero({
             {description}
           </p>
         </Reveal>
+        {action && <Reveal delay={0.24} className="mt-7">{action}</Reveal>}
       </div>
     </section>
   );

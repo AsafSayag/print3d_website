@@ -1,6 +1,7 @@
 import { getImageProps } from "next/image";
 import { LP_HERO } from "../content";
 import { LpQualifier } from "./LpQualifier";
+import { ArchitecturalBlueprint } from "@/components/ui/ArchitecturalBlueprint";
 
 /**
  * Landing hero — one centred column across the full width of the screen:
@@ -30,7 +31,9 @@ export function LpHero() {
     <section className="lp-hero surface-navy-950" aria-labelledby="lp-hero-title">
       <div aria-hidden="true" className="lp-hero-media">
         <span className="lp-hero-glow" />
-        <span className="lp-hero-grid" />
+        {/* Architectural elevation fragments trace in slowly behind the copy.
+            No script or images: the lines remain quiet and motion can be disabled. */}
+        <ArchitecturalBlueprint />
       </div>
 
       <div className="container-x lp-hero-inner">

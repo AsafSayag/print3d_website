@@ -31,12 +31,20 @@
 
 ## חלק ב׳ — קובץ הלידים (Google Sheets)
 
-1. צור גיליון חדש ב‑<https://sheets.new>. תן לו שם, למשל **"לידים – Print3D"**.
-2. בתפריט **Extensions → Apps Script**. מחק את הקוד שמופיע והדבק במקומו:
+1. פתח את קובץ הלידים הקיים. אם עדיין אין כזה, צור גיליון ב־<https://sheets.new>
+   בשם **"לידים – Print3D"**.
+2. בתפריט **Extensions → Apps Script**. החלף את קוד הסקריפט הקיים בקוד הבא:
 
 ```javascript
+function doGet() {
+  return jsonResponse({ partnerLeads: true, campaignLeads: true });
+}
+
 function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var data = JSON.parse(e.postData.contents);
+  var isPartner = data.leadType === "partners";
+  var isCampaign = data.leadType === "campaign";
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 
   // A–E: פרטי הליד · F: מקור (ממומן / אורגני / לא ידוע) · G ואילך: מאיזו מודעה/קמפיין הגיע הליד
   var HEADERS = [
@@ -45,43 +53,57 @@ function doPost(e) {
     "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
     "זמן המרה (ISO)"
   ];
-  // כותרות בפעם הראשונה, ובגיליון קיים — משלימים כותרות חסרות בלי לגעת בנתונים
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
-  } else {
-    var headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
-    var current = headerRange.getValues()[0];
-    var changed = false;
-    for (var i = 0; i < HEADERS.length; i++) {
-      if (current[i] === "") { current[i] = HEADERS[i]; changed = true; }
-    }
-    if (changed) headerRange.setValues([current]);
-  }
+  if (isPartner) HEADERS[4] = "שם העסק או תחום הפעילות";
 
-  var data = JSON.parse(e.postData.contents);
-  // ערך שמתחיל ב- = + - @ גוגל שיטס מריץ כנוסחה — גרש בהתחלה שומר אותו כטקסט
-  // (השרת כבר מנטרל את זה; כאן זו שכבת הגנה נוספת)
-  function safe(v) {
-    v = v == null ? "" : String(v);
-    return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+  // שמרו יצירת לשונית, כותרות והוספת שורה באותו מקטע נעול.
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var tabName = isPartner ? "פניות שותפים" : isCampaign ? "לידים מהקמפיין" : null;
+    var sheet = tabName
+      ? (spreadsheet.getSheetByName(tabName) || spreadsheet.insertSheet(tabName))
+      : spreadsheet.getSheets()[0];
+
+    // כותרות בפעם הראשונה, ובגיליון קיים — משלימים כותרות חסרות בלי לגעת בנתונים
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(HEADERS);
+    } else {
+      var headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
+      var current = headerRange.getValues()[0];
+      var changed = false;
+      for (var i = 0; i < HEADERS.length; i++) {
+        if (current[i] === "") { current[i] = HEADERS[i]; changed = true; }
+      }
+      if (changed) headerRange.setValues([current]);
+    }
+
+    // ערך שמתחיל ב- = + - @ גוגל שיטס מריץ כנוסחה — גרש בהתחלה שומר אותו כטקסט
+    // (השרת כבר מנטרל את זה; כאן זו שכבת הגנה נוספת)
+    function safe(v) {
+      v = v == null ? "" : String(v);
+      return /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+    }
+    sheet.appendRow([
+      data.receivedAt,
+      data.name,
+      data.phone,
+      data.email,
+      data.project,
+      data.channel,
+      data.gclid,
+      data.gbraid,
+      data.wbraid,
+      data.utm_source,
+      data.utm_medium,
+      data.utm_campaign,
+      data.utm_term,
+      data.utm_content,
+      data.receivedAtIso
+    ].map(safe));
+    SpreadsheetApp.flush();
+  } finally {
+    lock.releaseLock();
   }
-  sheet.appendRow([
-    data.receivedAt,
-    data.name,
-    data.phone,
-    data.email,
-    data.project,
-    data.channel,
-    data.gclid,
-    data.gbraid,
-    data.wbraid,
-    data.utm_source,
-    data.utm_medium,
-    data.utm_campaign,
-    data.utm_term,
-    data.utm_content,
-    data.receivedAtIso
-  ].map(safe));
 
   // מייל התראה לפרנק, נשלח ישירות מהגיליון (לא תלוי בהגדרות Resend/Vercel)
   try {
@@ -93,19 +115,24 @@ function doPost(e) {
       "מקור: " + (data.channel || "")
     ];
     if (data.email) lines.push("אימייל: " + data.email);
-    if (data.project) lines.push("על הפרויקט: " + data.project);
+    if (data.project) lines.push((isPartner ? "שם העסק או תחום הפעילות: " : "על הפרויקט: ") + data.project);
     if (data.utm_campaign) lines.push("קמפיין: " + data.utm_campaign);
     if (data.utm_term) lines.push("מילת מפתח: " + data.utm_term);
     lines.push("תאריך ושעה: " + (data.receivedAt || ""));
 
-    var subject = "ליד חדש - Print3D" + (data.channel ? " · " + data.channel : "");
+    var subject = isPartner ? "פנייה חדשה לתוכנית השותפים - Print3D"
+      : "ליד חדש - Print3D" + (data.channel ? " · " + data.channel : "");
     MailApp.sendEmail("frank@print3d.co.il", subject, lines.join("\n"));
   } catch (err) {
     // לא לחסום את השמירה בגיליון אם שליחת המייל נכשלה
   }
 
+  return jsonResponse({ ok: true, leadType: isPartner ? "partners" : isCampaign ? "campaign" : "website" });
+}
+
+function jsonResponse(payload) {
   return ContentService
-    .createTextOutput(JSON.stringify({ ok: true }))
+    .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
@@ -124,10 +151,17 @@ function doPost(e) {
 > ה‑Google שהגיליון שייך לו. בפריסה הראשונה של הגרסה הזו Google יבקש לאשר הרשאה
 > לשליחת מיילים — יש לאשר. המייל לא מעכב את המבקר: האתר עונה לו ברגע שהליד נשמר.
 
+> פניות מ־`/partners` יוצרות בעת הצורך את הלשונית **פניות שותפים**; פניות
+> מדף הקמפיין הממומן (`/lp/sales-model`) יוצרות את **לידים מהקמפיין**.
+> שתי הלשוניות נוצרות אוטומטית בפנייה הראשונה מכל עמוד. פניות מהאתר הראשי
+> נשמרות בלשונית הראשונה הקיימת. אין צורך ליצור גיליון Google נוסף.
+
 > **חשוב:** אחרי שמדביקים את הקוד המעודכן, צריך לפרסם מחדש כדי שהוא ייכנס לתוקף
 > על אותו URL קיים: **Deploy → Manage deployments** → לחצו על עיפרון העריכה ליד
 > הפריסה הקיימת → **Version: New version** → **Deploy**.
 > (אם עושים "New deployment" במקום זאת, מקבלים URL חדש וצריך לעדכן אותו ב-`LEADS_SHEET_WEBHOOK_URL`.)
+> עשו זאת **לפני מיזוג גרסת האתר החדשה**. עד שהסקריפט החדש יפורסם, האתר לא ישלח
+> את פניות הקמפיין והשותפים ללשונית הלא נכונה; ערוץ המייל עדיין ינסה לקבל אותן.
 
 3. לחץ **Deploy → New deployment**.
 4. ליד "Select type" לחץ על גלגל השיניים ובחר **Web app**.

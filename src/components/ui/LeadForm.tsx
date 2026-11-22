@@ -56,6 +56,8 @@ export function LeadForm({
   emailOptional = false,
   successRedirectPath,
   budget,
+  noteLabel = CONTACT_CTA.fields.project,
+  submitLabel = CONTACT_CTA.submit,
 }: {
   /** Identifies the form itself. There is currently only one across the site. */
   formName?: string;
@@ -70,6 +72,8 @@ export function LeadForm({
   successRedirectPath?: string;
   /** Budget bracket already picked in a screening step, recorded with the lead. */
   budget?: LeadBudget;
+  noteLabel?: string;
+  submitLabel?: string;
 }) {
   // Field ids are derived from useId, not from the visible label: the label
   // "שם מלא" contains a space, which broke aria-describedby (a space-separated
@@ -229,7 +233,7 @@ export function LeadForm({
       />
       <div className="sm:col-span-2">
         <label htmlFor={ids.project} className="block mb-2 text-sm font-semibold text-white/85">
-          {CONTACT_CTA.fields.project}{" "}
+          {noteLabel}{" "}
           <span className="font-normal text-white/60">(רשות)</span>
         </label>
         <textarea
@@ -270,7 +274,7 @@ export function LeadForm({
           disabled={status === "sending"}
           className="glass-btn glass-btn--primary min-w-[220px] disabled:opacity-70"
         >
-          {status === "sending" ? (slow ? "עוד רגע, שולחים…" : "שולח…") : CONTACT_CTA.submit}
+          {status === "sending" ? (slow ? "עוד רגע, שולחים…" : "שולח…") : submitLabel}
         </button>
         {status === "error" && (
           <p role="alert" className="text-sm text-red-300 text-center">

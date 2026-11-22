@@ -1175,6 +1175,9 @@ html.reveal-armed [data-reveal]:not([data-revealed]) {
   inset: 0;
   pointer-events: none;
 }
+.partner-hero-art {
+  background: radial-gradient(85% 75% at 50% 20%, #1b3650 0%, var(--navy-950) 100%);
+}
 /* gradient overlay for depth + legibility */
 .cta-gradient {
   background:
@@ -2668,8 +2671,8 @@ html.a11y-motion .a11y-panel {
   inset: 0;
   z-index: -1;
 }
-/* A cool light rising behind the model, and a faint drafting grid over the
-   whole width — the hero reads edge to edge even where it is plain navy. */
+/* A cool light rising behind the model and faint fragments of an architectural
+   elevation. The drawing never crosses the central copy at full strength. */
 .lp-hero-glow {
   position: absolute;
   inset: 0;
@@ -2677,15 +2680,52 @@ html.a11y-motion .a11y-panel {
     radial-gradient(60% 46% at 50% 100%, rgba(95, 154, 192, 0.3), transparent 72%),
     radial-gradient(90% 60% at 50% 0%, rgba(62, 121, 159, 0.2), transparent 70%);
 }
-.lp-hero-grid {
+.architectural-blueprint {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(166, 195, 220, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(166, 195, 220, 0.07) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
+  width: 100%;
+  height: 100%;
+  stroke: #a6c3dc;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 65%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 65%, transparent 100%);
+}
+.architectural-plan-fragment {
+  opacity: 0.16;
+  animation: lpPlanAppear 20s ease-in-out infinite;
+}
+.architectural-plan-fragment path,
+.architectural-plan-fragment circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: lpPlanTrace 20s ease-in-out infinite;
+}
+.architectural-plan-fragment--two,
+.architectural-plan-fragment--two path,
+.architectural-plan-fragment--two circle { animation-delay: -5s; }
+.architectural-plan-fragment--three,
+.architectural-plan-fragment--three path,
+.architectural-plan-fragment--three circle { animation-delay: -10s; }
+.architectural-plan-fragment--four,
+.architectural-plan-fragment--four path,
+.architectural-plan-fragment--four circle { animation-delay: -15s; }
+@keyframes lpPlanTrace {
+  0%, 8% { stroke-dashoffset: 1; }
+  48%, 78% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1; }
+}
+@keyframes lpPlanAppear {
+  0%, 7%, 100% { opacity: 0; }
+  18%, 72% { opacity: 0.18; }
+  86% { opacity: 0.08; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .architectural-plan-fragment,
+  .architectural-plan-fragment path,
+  .architectural-plan-fragment circle { animation: none; stroke-dashoffset: 0; }
+  .architectural-plan-fragment { opacity: 0.14; }
 }
 .lp-hero-title {
   font-family: var(--font-display), sans-serif;

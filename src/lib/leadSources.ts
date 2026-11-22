@@ -10,6 +10,7 @@ import { isOrganicSearchHost, type Attribution } from "@/lib/attribution";
  */
 export const LEAD_SOURCES = {
   website: "אתר",
+  partners: "תוכנית השותפים",
   lp_sales_model: "דף נחיתה – פרסום ממומן",
 } as const;
 
