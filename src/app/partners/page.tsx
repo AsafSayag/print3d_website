@@ -67,6 +67,7 @@ export default function PartnersPage() {
           title={title}
           description={description}
           breadcrumbs={breadcrumbs}
+          background="blueprint"
           action={<GlassButton href={formHref} variant="primary">{cta}</GlassButton>}
         />
 
