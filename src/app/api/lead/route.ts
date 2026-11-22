@@ -194,6 +194,10 @@ async function sendEmail(lead: {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("RESEND_API_KEY is not set");
 
+  const isPartner = lead.source === LEAD_SOURCES.partners;
+  const heading = isPartner ? "פנייה חדשה לתוכנית השותפים" : "לקוח מתעניין חדש השאיר פרטים";
+  const noteLabel = isPartner ? "שם העסק או תחום הפעילות" : "על הפרויקט";
+
   const rows: [string, string][] = [
     ["שם", lead.name],
     ["טלפון", lead.phone],
@@ -201,7 +205,7 @@ async function sendEmail(lead: {
     ["תאריך ושעת השארת פרטים", lead.receivedAt],
   ];
   if (lead.email) rows.push(["אימייל", lead.email]);
-  if (lead.project) rows.push(["על הפרויקט", lead.project]);
+  if (lead.project) rows.push([noteLabel, lead.project]);
   rows.push(...attributionRows(lead.attribution));
 
   const rowsHtml = rows
@@ -219,7 +223,7 @@ async function sendEmail(lead: {
   <body style="margin:0;background:#F4F7FA;font-family:Arial,Helvetica,sans-serif;">
     <div style="max-width:560px;margin:0 auto;padding:28px 20px;">
       <div style="background:#0E1A2C;color:#fff;border-radius:16px 16px 0 0;padding:22px 24px;">
-        <h1 style="margin:0;font-size:20px;">לקוח מתעניין חדש השאיר פרטים</h1>
+        <h1 style="margin:0;font-size:20px;">${heading}</h1>
       </div>
       <div style="background:#fff;border:1px solid #e5e9ef;border-top:0;border-radius:0 0 16px 16px;padding:20px 10px;">
         <p style="margin:0 14px 12px;color:#15263D;">אלו הפרטים שלו:</p>
@@ -230,7 +234,7 @@ async function sendEmail(lead: {
 </html>`;
 
   const textLines = [
-    "לקוח מתעניין חדש השאיר פרטים",
+    heading,
     "אלו הפרטים שלו:",
     `שם: ${lead.name}`,
     `טלפון: ${lead.phone}`,
@@ -238,7 +242,7 @@ async function sendEmail(lead: {
     `תאריך ושעת השארת פרטים: ${lead.receivedAt}`,
   ];
   if (lead.email) textLines.push(`אימייל: ${lead.email}`);
-  if (lead.project) textLines.push(`על הפרויקט: ${lead.project}`);
+  if (lead.project) textLines.push(`${noteLabel}: ${lead.project}`);
   for (const [label, value] of attributionRows(lead.attribution)) {
     textLines.push(`${label}: ${value}`);
   }
@@ -256,9 +260,9 @@ async function sendEmail(lead: {
       reply_to: lead.email || undefined,
       // Paid-traffic leads are flagged in the subject so they stand out in the inbox.
       subject:
-        lead.source === LEAD_SOURCES.website
-          ? "לקוח מתעניין חדש השאיר פרטים"
-          : `לקוח מתעניין חדש השאיר פרטים · ${lead.source}`,
+        isPartner || lead.source === LEAD_SOURCES.website
+          ? heading
+          : `${heading} · ${lead.source}`,
       html,
       text: textLines.join("\n"),
     }),
@@ -285,18 +289,37 @@ async function appendToSheet(lead: {
   const webhook = process.env.LEADS_SHEET_WEBHOOK_URL;
   if (!webhook) throw new Error("LEADS_SHEET_WEBHOOK_URL is not set");
 
+  const leadType = lead.source === LEAD_SOURCES.partners
+    ? "partners"
+    : lead.source === LEAD_SOURCES.lp_sales_model
+      ? "campaign"
+      : null;
+  const signal = AbortSignal.timeout(SHEET_TIMEOUT_MS);
+  if (leadType) {
+    // Older deployments write every POST to the first tab. Check support
+    // before sending a campaign or partner lead to the webhook.
+    const readiness = await fetch(webhook, { signal, cache: "no-store" });
+    const capabilities = await readiness.json().catch(() => null);
+    const supported = leadType === "partners"
+      ? capabilities?.partnerLeads === true
+      : capabilities?.campaignLeads === true;
+    if (!readiness.ok || !supported) {
+      throw new Error(`Sheet webhook does not support ${leadType} routing`);
+    }
+  }
+
   // Attribution is flattened to top-level fields (gclid, utm_campaign, …) so
   // the Apps Script reads them like any other column — see LEADS_SETUP.md.
   const { attribution, ...rest } = lead;
   const row = Object.fromEntries(
-    Object.entries({ ...rest, ...attribution }).map(([key, value]) => [
+    Object.entries({ ...rest, ...attribution, ...(leadType && { leadType }) }).map(([key, value]) => [
       key,
       typeof value === "string" ? sheetSafe(value) : value,
     ]),
   );
   const res = await fetch(webhook, {
     method: "POST",
-    signal: AbortSignal.timeout(SHEET_TIMEOUT_MS),
+    signal,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(row),
   });
@@ -304,6 +327,12 @@ async function appendToSheet(lead: {
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
     throw new Error(`Sheet webhook responded ${res.status}: ${detail}`);
+  }
+  if (leadType) {
+    const result = await res.json().catch(() => null);
+    if (result?.ok !== true || result?.leadType !== leadType) {
+      throw new Error(`Sheet webhook did not confirm ${leadType} routing`);
+    }
   }
 }
 

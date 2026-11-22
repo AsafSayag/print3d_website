@@ -18,6 +18,7 @@ type Props = {
   title: string;
   description: string;
   breadcrumbs: Crumb[];
+  action?: React.ReactNode;
   /** Override the background video (defaults to the shared drone-loop). */
   video?: {
     poster: string;
@@ -47,6 +48,7 @@ export function ContactHero({
   title,
   description,
   breadcrumbs,
+  action,
   video = DEFAULT_VIDEO,
 }: Props) {
   return (
@@ -117,6 +119,7 @@ export function ContactHero({
             {description}
           </p>
         </Reveal>
+        {action && <Reveal delay={0.24} className="mt-7">{action}</Reveal>}
       </div>
     </section>
   );
